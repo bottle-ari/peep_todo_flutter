@@ -8,13 +8,12 @@ class CategoryButton extends StatelessWidget {
   final String name;
   final String emoji;
 
-  CategoryButton({
+  const CategoryButton({
     Key? key,
-    required String hexColor,
+    required this.color,
     required this.name,
     required this.emoji,
-  })  : color = colorFromHex(hexColor),
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +56,5 @@ class CategoryButton extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  static colorFromHex(String hexColor) {
-    final hexCode = hexColor.replaceAll('#', '');
-    return Color(int.parse('FF$hexCode', radix: 16));
   }
 }
