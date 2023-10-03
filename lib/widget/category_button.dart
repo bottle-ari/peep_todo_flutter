@@ -27,14 +27,16 @@ class CategoryButton extends StatelessWidget {
         padding: const EdgeInsets.only(left: 10, right: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min, // 이 부분을 추가
+          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               children: [
+                // Emoji
                 Text(emoji),
                 const SizedBox(
                   width: 3,
                 ),
+                // Category Name
                 Text(
                   name,
                   style: TextStyle(
@@ -47,6 +49,7 @@ class CategoryButton extends StatelessWidget {
             const SizedBox(
               width: 15,
             ),
+            // Add Icon
             const Icon(
               Iconsax.add_circle5,
               color: Palette.peepYellow400,
