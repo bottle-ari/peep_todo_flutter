@@ -1,0 +1,51 @@
+name: peep_todo_flutter
+description: awesome todo app
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.5 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  iconsax: ^0.0.8
+  get: ^4.6.6
+  intl: ^0.18.1
+  http: ^1.1.0
+  loading_animation_widget: ^1.2.0+4
+  shared_preferences: ^2.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  assets:
+    - assets/image/
+  uses-material-design: true
+
+fonts:
+  - family: Pretendard
+    fonts:
+      - asset: assets/font/Pretendard-ExtraThin.otf
+        weight: 100
+      - asset: assets/font/Pretendard-Thin.otf
+        weight: 200
+      - asset: assets/font/Pretendard-Light.otf
+        weight: 300
+      - asset: assets/font/Pretendard-Regular.otf
+        weight: 400
+      - asset: assets/font/Pretendard-Medium.otf
+        weight: 500
+      - asset: assets/font/Pretendard-SemiBold.otf
+        weight: 600
+      - asset: assets/font/Pretendard-Bold.otf
+        weight: 700
+      - asset: assets/font/Pretendard-ExtraBold.otf
+        weight: 800
+      - asset: assets/font/Pretendard-Black.otf
+        weight: 900
