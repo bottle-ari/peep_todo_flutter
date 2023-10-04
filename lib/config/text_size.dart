@@ -1,6 +1,6 @@
 class TextSize {
-  static const huge = 24;
-  static const large = 20;
-  static const normal = 16;
-  static const small = 14;
+  static const huge = 24.0;
+  static const large = 20.0;
+  static const normal = 16.0;
+  static const small = 14.0;
 }
