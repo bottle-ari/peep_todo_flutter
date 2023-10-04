@@ -7,29 +7,23 @@ class CategoryButton extends StatelessWidget {
   final Color color;
   final String name;
   final String emoji;
+  final VoidCallback onTap;
+  final VoidCallback onLongPress;
 
   const CategoryButton({
     Key? key,
     required this.color,
     required this.name,
     required this.emoji,
+    required this.onTap,
+    required this.onLongPress,
   }) : super(key: key);
-
-  // onTap 이벤트 handler
-  void handleOnTap() {
-    debugPrint("Tapped");
-  }
-
-  // onLongPress 이벤트 handler
-  void handleOnLongPress() {
-    debugPrint("Long Pressed");
-  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: handleOnTap,
-      onLongPress: handleOnLongPress,
+      onTap: onTap,
+      onLongPress: onLongPress,
       child: Container(
         height: 34.0,
         decoration: BoxDecoration(
