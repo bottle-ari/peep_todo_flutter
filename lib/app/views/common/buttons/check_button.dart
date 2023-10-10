@@ -6,7 +6,8 @@ class CheckButtonController extends GetxController {
   var isCheck = false.obs;
   var isMain = true.obs;
 
-  CheckButtonController({required bool initialIsCheck, required bool initialIsMain}) {
+  CheckButtonController(
+      {required bool initialIsCheck, required bool initialIsMain}) {
     isCheck.value = initialIsCheck;
     isMain.value = initialIsMain;
   }
@@ -19,16 +20,17 @@ class CheckButton extends StatelessWidget {
   final bool initialIsMain;
 
   const CheckButton({
+    Key? key,
     required this.color,
     required this.onCheckedChanged,
     required this.initialIsCheck,
     required this.initialIsMain,
-    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CheckButtonController(initialIsCheck: initialIsCheck, initialIsMain: initialIsMain));
+    final controller = Get.put(CheckButtonController(
+        initialIsCheck: initialIsCheck, initialIsMain: initialIsMain));
     return Obx(() {
       return IconButton(
         onPressed: () {
@@ -38,13 +40,13 @@ class CheckButton extends StatelessWidget {
         iconSize: controller.isMain.value ? 24 : 20,
         icon: controller.isCheck.value
             ? Icon(
-          CupertinoIcons.check_mark_circled_solid,
-          color: color,
-        )
+                CupertinoIcons.check_mark_circled_solid,
+                color: color,
+              )
             : Icon(
-          CupertinoIcons.circle,
-          color: color,
-        ),
+                CupertinoIcons.circle,
+                color: color,
+              ),
       );
     });
   }
