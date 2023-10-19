@@ -1,5 +1,6 @@
 # peep_todo_flutter
 
+<<<<<<< HEAD
 awesome todo app
 
 ## Getting Started
