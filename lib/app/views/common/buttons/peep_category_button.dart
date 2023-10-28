@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
-import 'package:peep_todo_flutter/app/theme/text_size.dart';
+import 'package:peep_todo_flutter/app/theme/text_style.dart';
 
 class PeepCategoryButton extends StatelessWidget {
   final Color color;
@@ -46,11 +46,7 @@ class PeepCategoryButton extends StatelessWidget {
                   // Category Name
                   Text(
                     name,
-                    style: TextStyle(
-                        color: color,
-                        fontSize: TextSize.small,
-                        fontWeight: FontWeight.bold),
-                  ),
+                    style: PeepTextStyle.boldS(color)),
                 ],
               ),
               SizedBox(
