@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_check_button.dart';
 
+import 'common/todo/peep_todo_base.dart';
+
 class TestController extends GetxController {
   // 위젯 구현 및 테스트 중, 상위 컨트롤러가 필요하다면 여기에서 간단하게 구현하여 사용하세요.
 }
@@ -23,7 +25,7 @@ class Test extends StatelessWidget {
           height: double.infinity,
           child: Center(
             // 여기에 위젯 붙여넣기
-            child: Text("여기에 위젯 붙여넣기"),
+            child: PeepSubTodoBaseItem(),
           ),
         ),
       ),

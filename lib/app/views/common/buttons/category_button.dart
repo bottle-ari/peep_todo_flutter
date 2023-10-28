@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../theme/palette.dart';
-import '../../../theme/text_size.dart';
+import '../../../theme/text_style.dart';
 
 class CategoryButton extends StatelessWidget {
   final Color color;
