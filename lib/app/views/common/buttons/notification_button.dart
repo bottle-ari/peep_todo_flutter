@@ -26,8 +26,8 @@ class NotificationButton extends StatelessWidget {
         ),
         if (isNotified)
           Positioned(
-            top: 7, // 원의 상단 위치
-            right: 7, // 원의 오른쪽 위치
+            top: 3.w, // 원의 상단 위치
+            right: 3.w, // 원의 오른쪽 위치
             child: Container(
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
