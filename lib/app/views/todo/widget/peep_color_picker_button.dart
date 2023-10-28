@@ -16,8 +16,8 @@ class PeepColorPickerButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 32.h,
-        width: 32.h,
+        height: 32.w,
+        width: 32.w,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: color,
