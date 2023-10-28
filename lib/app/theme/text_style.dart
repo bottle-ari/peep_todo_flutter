@@ -50,23 +50,23 @@ abstract class PeepTextStyleBase {
     fontWeight: FontWeight.normal,
   );
 
-  static const TextStyle baseRegularS = TextStyle(
-    fontSize: 14.0,
+  static TextStyle baseRegularS = TextStyle(
+    fontSize: 14.sp,
     fontWeight: FontWeight.normal,
   );
 
-  static const TextStyle baseRegularM = TextStyle(
-    fontSize: 16.0,
+  static TextStyle baseRegularM = TextStyle(
+    fontSize: 16.sp,
     fontWeight: FontWeight.normal,
   );
 
-  static const TextStyle baseRegularL = TextStyle(
-    fontSize: 20.0,
+  static TextStyle baseRegularL = TextStyle(
+    fontSize: 20.sp,
     fontWeight: FontWeight.normal,
   );
 
-  static const TextStyle baseRegularXL = TextStyle(
-    fontSize: 24.0,
+  static TextStyle baseRegularXL = TextStyle(
+    fontSize: 24.sp,
     fontWeight: FontWeight.normal,
   );
 
@@ -75,23 +75,23 @@ abstract class PeepTextStyleBase {
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle baseBoldS = TextStyle(
-    fontSize: 14.0,
+  static TextStyle baseBoldS = TextStyle(
+    fontSize: 14.sp,
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle baseBoldM = TextStyle(
-    fontSize: 16.0,
+  static TextStyle baseBoldM = TextStyle(
+    fontSize: 16.sp,
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle baseBoldL = TextStyle(
-    fontSize: 20.0,
+  static TextStyle baseBoldL = TextStyle(
+    fontSize: 20.sp,
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle baseBoldXL = TextStyle(
-    fontSize: 24.0,
+  static TextStyle baseBoldXL = TextStyle(
+    fontSize: 24.sp,
     fontWeight: FontWeight.bold,
   );
 }
