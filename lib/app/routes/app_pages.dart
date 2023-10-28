@@ -21,7 +21,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.TEST_PAGE,
-      page: () => const Test(),
+      page: () => Test(),
     ),
   ];
 }
