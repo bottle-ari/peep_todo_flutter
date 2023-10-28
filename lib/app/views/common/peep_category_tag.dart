@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:peep_todo_flutter/app/theme/text_size.dart';
+import 'package:peep_todo_flutter/app/theme/text_style.dart';
 
 class PeepCategoryTag extends StatelessWidget {
   final Color color;
@@ -25,10 +25,7 @@ class PeepCategoryTag extends StatelessWidget {
         widthFactor: 1,
         child: Text(
           name,
-          style: const TextStyle(
-              color: Colors.white,
-              fontSize: TextSize.tiny,
-              fontWeight: FontWeight.bold),
+          style: PeepTextStyle.boldXS(Colors.white),
         ),
       ),
     );
