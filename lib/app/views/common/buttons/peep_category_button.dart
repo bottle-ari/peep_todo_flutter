@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:peep_todo_flutter/app/theme/palette.dart';
+import 'package:peep_todo_flutter/app/theme/text_style.dart';
 
-import '../../../theme/palette.dart';
-import '../../../theme/text_style.dart';
-
-class CategoryButton extends StatelessWidget {
+class PeepCategoryButton extends StatelessWidget {
   final Color color;
   final String name;
   final String emoji;
   final VoidCallback onTap;
   final VoidCallback onLongPress;
 
-  const CategoryButton({
+  const PeepCategoryButton({
     Key? key,
     required this.color,
     required this.name,
@@ -25,13 +25,13 @@ class CategoryButton extends StatelessWidget {
       onTap: onTap,
       onLongPress: onLongPress,
       child: Container(
-        height: 34.0,
+        height: 32.h,
         decoration: BoxDecoration(
           color: Palette.peepButton300,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(20.r),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(left: 10, right: 8),
+          padding: EdgeInsets.only(left: 10.w, right: 8.w),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
@@ -40,27 +40,23 @@ class CategoryButton extends StatelessWidget {
                 children: [
                   // Emoji
                   Text(emoji),
-                  const SizedBox(
-                    width: 3,
+                  SizedBox(
+                    width: 3.w,
                   ),
                   // Category Name
                   Text(
                     name,
-                    style: TextStyle(
-                        color: color,
-                        fontSize: TextSize.small,
-                        fontWeight: FontWeight.bold),
-                  ),
+                    style: PeepTextStyle.boldS(color: color)),
                 ],
               ),
-              const SizedBox(
-                width: 15,
+              SizedBox(
+                width: 15.w,
               ),
               // Add Icon
-              const Icon(
+              Icon(
                 Icons.add_circle,
                 color: Palette.peepYellow400,
-                size: 18,
+                size: 18.w,
               )
             ],
           ),

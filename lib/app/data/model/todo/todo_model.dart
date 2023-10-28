@@ -1,10 +1,12 @@
+import 'package:peep_todo_flutter/app/data/model/todo/sub_todo_model.dart';
+
 class TodoModel {
   final int id;
   final int categoryId;
   final int? reminderId;
   final String name;
   final DateTime? completedAt;
-  final String? subTodo;
+  final List<SubTodoModel>? subTodo;
   final String? date;
   final int priority;
   final String? memo;
