@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 
 import '../../../theme/palette.dart';
 import '../../../theme/text_size.dart';
@@ -59,7 +58,7 @@ class CategoryButton extends StatelessWidget {
               ),
               // Add Icon
               const Icon(
-                Iconsax.add_circle5,
+                Icons.add_circle,
                 color: Palette.peepYellow400,
                 size: 18,
               )
