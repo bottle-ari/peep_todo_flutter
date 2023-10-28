@@ -34,4 +34,6 @@ class Iconsax {
   static const priority = 'image/icon/priority.svg';
   static const arrowCircleUp = 'image/icon/arrow_circle_up.svg';
   static const arrowCircleDown = 'image/icon/arrow_circle_down.svg';
+  static const checkFalse = 'image/icon/check_false.svg';
+  static const checkTrue = 'image/icon/check_true.svg';
 }

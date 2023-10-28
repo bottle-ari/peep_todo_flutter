@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         title: '삐약Todo',
         debugShowCheckedModeBanner: false,
         theme: appThemeData,
-        initialRoute: AppPages.INITIAL,
+        initialRoute: AppPages.TEST,
         getPages: AppPages.routes,
         initialBinding: InitialBinding(),
         defaultTransition: Transition.fade,
