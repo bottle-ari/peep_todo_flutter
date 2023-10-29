@@ -5,7 +5,7 @@ import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 
 class PeepEmojiPickerButton extends StatelessWidget {
-  final String? emoji;
+  final String emoji;
   final VoidCallback onTap;
 
   const PeepEmojiPickerButton({
@@ -19,14 +19,14 @@ class PeepEmojiPickerButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       highlightColor: Palette.peepGray300, // 클릭 시 배경 어둡게
-      child: emoji == null
+      child: emoji == ""
           ? PeepIcon(
               Iconsax.emoji,
               color: Palette.peepYellow400,
               size: 30.w,
             )
           : Text(
-              emoji!,
+              emoji,
               style: PeepTextStyle.regularXL(null),
             ),
     );
