@@ -36,6 +36,7 @@ flutter:
     - assets/image/icon/check_false.svg
     - assets/image/icon/check_true.svg
     - assets/image/icon/emoji.svg
+    - assets/image/icon/clock.svg
   uses-material-design: true
 
 fonts:
