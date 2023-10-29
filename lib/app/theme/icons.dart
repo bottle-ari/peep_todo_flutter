@@ -31,6 +31,7 @@ class Iconsax {
   static const calendar = 'image/icon/calendar.svg';
   static const routine = 'image/icon/routine.svg';
   static const profile = 'image/icon/profile.svg';
+  static const clock = 'image/icon/clock.svg';
   static const checkFalse = 'image/icon/check_false.svg';
   static const checkTrue = 'image/icon/check_true.svg';
 }
