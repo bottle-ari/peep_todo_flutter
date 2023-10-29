@@ -18,19 +18,26 @@ class PeepButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 313.w,
-      height: 64.h,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(100.r),
-        color: isActive ? color : Palette.peepGray300,
+    return InkWell(
+      onTap: () {
+        if(isActive) {
+          func();
+        }
+      },
+      child: Container(
+        width: 313.w,
+        height: 64.h,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100.r),
+          color: isActive ? color : Palette.peepGray200,
+        ),
+        child: Center(
+            child: Text(
+          text,
+          style: PeepTextStyle.boldM(
+              isActive ? getTextColor(color) : Palette.peepGray400),
+        )),
       ),
-      child: Center(
-          child: Text(
-        text,
-        style: PeepTextStyle.boldM(
-            getTextColor(isActive ? color : Palette.peepGray300)),
-      )),
     );
   }
 }
