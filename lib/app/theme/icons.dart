@@ -36,4 +36,6 @@ class Iconsax {
   static const arrowCircleDown = 'assets/image/icon/arrow_circle_down.svg';
   static const checkFalse = 'assets/image/icon/check_false.svg';
   static const checkTrue = 'assets/image/icon/check_true.svg';
+  static const emoji = 'assets/image/icon/emoji.svg';
+  static const clock = 'assets/image/icon/clock.svg';
 }
