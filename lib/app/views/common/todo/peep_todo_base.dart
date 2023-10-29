@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
@@ -14,61 +15,110 @@ import '../../../data/model/todo/sub_todo_model.dart';
 class PeepTodoBase extends StatelessWidget {
   final Color color;
   final TodoModel todo;
+  final int index;
+  final Function(int) toggleFold;
+  final bool isChecked;
+  final Function(int) toggleChecked;
+  final Function(int, int) toggleSubChecked;
+  final bool isLast;
 
-  const PeepTodoBase({super.key, required this.color, required this.todo});
+  const PeepTodoBase(
+      {super.key,
+      required this.color,
+      required this.todo,
+      required this.toggleFold,
+      required this.index,
+      required this.isChecked,
+      required this.toggleChecked,
+      required this.toggleSubChecked,
+      required this.isLast});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: AppValues.screenWidth - AppValues.screenPadding * 2,
-      child: Column(
-        children: [
-          SizedBox(
-            child: Row(
-              children: [
-                PeepCheckButton(
-                  color: color,
-                  isToggled: () {},
-                  isMain: true,
-                  isChecked: false,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 4.w, right: 8.w),
-                  child: GestureDetector(
-                      onTap: () {},
-                      child: Text(todo.name, style: PeepTextStyle.regularM())),
-                ),
-                if (todo.priority != 0)
-                  PeepIcon(
-                    Iconsax.priority,
-                    color: priorityColor(todo.priority),
-                    size: 18.w,
+    return Obx(
+      () => SizedBox(
+        width: AppValues.screenWidth - AppValues.screenPadding * 2,
+        child: Column(
+          children: [
+            SizedBox(
+              child: Row(
+                children: [
+                  PeepCheckButton(
+                    color: color,
+                    index: index,
+                    isToggled: toggleChecked,
+                    isChecked: isChecked,
                   ),
-                Expanded(
-                  child: Align(
-                      alignment: Alignment.centerRight,
-                      child: PeepIcon(
-                        Iconsax.arrowCircleUp,
-                        color: Palette.peepGray300,
-                        size: 18.w,
-                      )),
-                ),
-              ],
+                  Padding(
+                    padding: EdgeInsets.only(left: 4.w, right: 8.w),
+                    child: GestureDetector(
+                        onTap: () {},
+                        child:
+                            Text(todo.name, style: PeepTextStyle.regularM())),
+                  ),
+                  if (todo.priority != 0)
+                    PeepIcon(
+                      Iconsax.priority,
+                      color: priorityColor(todo.priority),
+                      size: 18.w,
+                    ),
+                  Expanded(
+                    child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                              onTap: () {
+                                toggleFold(index);
+                              },
+                              child: PeepIcon(
+                                todo.isFold.value
+                                    ? Iconsax.arrowCircleDown
+                                    : Iconsax.arrowCircleUp,
+                                color: todo.subTodo != null
+                                    ? Palette.peepGray300
+                                    : Colors.transparent,
+                                size: 24.w,
+                              )),
+                        )),
+                  ),
+                ],
+              ),
             ),
-          ),
-          _buildSubTodoWidget(todo, color),
-        ],
+            _buildSubTodoWidget(todo, color),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildSubTodoWidget(TodoModel todo, Color color) {
-    if (todo.subTodo != null && todo.subTodo!.isNotEmpty) {
+    if (todo.subTodo != null &&
+        todo.subTodo!.isNotEmpty &&
+        !todo.isFold.value) {
       return Container(
           constraints: const BoxConstraints(minHeight: 0),
-          child: PeepSubTodoBase(subTodoList: todo.subTodo!, color: color));
+          child: PeepSubTodoBase(
+            subTodoList: todo.subTodo!,
+            color: color,
+            mainIndex: index,
+            toggleChecked: toggleSubChecked,
+            isLast: isLast,
+          ));
     }
-    return Container();
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: EdgeInsets.only(left: 13.w),
+        child: isLast
+            ? Container()
+            : Container(
+                width: 2.w,
+                height: 10.h,
+                color: color,
+              ),
+      ),
+    );
   }
 
   Color priorityColor(int value) {
@@ -88,29 +138,64 @@ class PeepTodoBase extends StatelessWidget {
 class PeepSubTodoBase extends StatelessWidget {
   final Color color;
   final List<SubTodoModel> subTodoList;
+  final int mainIndex;
+  final Function(int, int) toggleChecked;
+  final bool isLast;
 
   const PeepSubTodoBase(
-      {super.key, required this.subTodoList, required this.color});
+      {super.key,
+      required this.subTodoList,
+      required this.color,
+      required this.toggleChecked,
+      required this.mainIndex,
+      required this.isLast});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        for (SubTodoModel subTodo in subTodoList)
-          PeepSubTodoBaseItem(
-              color: color,
-              text: subTodo.text,
-              isChecked: subTodo.isChecked,
-              toggleCheck: () {}),
-      ],
+    return Obx(
+      () => SizedBox(
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.only(left: 13.w),
+                child: isLast
+                    ? Container(height: 10.h,)
+                    : Container(
+                  width: 2.w,
+                  height: 10.h,
+                  color: color,
+                ),
+              ),
+            ),
+            for (int inx = 0; inx < subTodoList.length; inx++)
+              PeepSubTodoBaseItem(
+                color: color,
+                text: subTodoList[inx].text,
+                isChecked: subTodoList[inx].isChecked.value,
+                toggleCheck: toggleChecked,
+                index: inx,
+                mainIndex: mainIndex,
+                isLast: isLast,
+              ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.only(left: 13.w),
+                child: isLast
+                    ? Container()
+                    : Container(
+                  width: 2.w,
+                  height: 10.h,
+                  color: color,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
     );
-    //ListView.builder(
-    //         itemCount: subTodoList.length,
-    //         itemBuilder: (context, index) => PeepSubTodoBaseItem(
-    //             color: color,
-    //             text: subTodoList[index].text,
-    //             isChecked: subTodoList[index].isChecked,
-    //             toggleCheck: () {}))
   }
 }
 
@@ -119,28 +204,43 @@ class PeepSubTodoBaseItem extends StatelessWidget {
   final Color color;
   final String text;
   final bool isChecked;
-  final VoidCallback toggleCheck;
+  final int mainIndex;
+  final int index;
+  final Function(int, int) toggleCheck;
+  final bool isLast;
 
   const PeepSubTodoBaseItem(
       {super.key,
       required this.color,
       required this.text,
       required this.isChecked,
-      required this.toggleCheck});
+      required this.toggleCheck,
+      required this.index,
+      required this.mainIndex, required this.isLast});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         SizedBox(
-          width: 30.w,
+          width: 13.w,
         ),
-        PeepCheckButton(
+        if(isLast)
+          SizedBox(width: 2.w)
+        else
+        Container(
+          width: 2.w,
+          height: 32.h,
           color: color,
-          isToggled: () {
-            toggleCheck();
-          },
-          isMain: false,
+        ),
+        SizedBox(
+          width: 15.w,
+        ),
+        PeepCheckSubButton(
+          color: color,
+          mainIndex: mainIndex,
+          index: index,
+          isToggled: toggleCheck,
           isChecked: isChecked,
         ),
         SizedBox(

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/controllers/todo_controller.dart';
 import 'package:peep_todo_flutter/app/data/mock_data.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'common/todo/peep_todo_list.dart';
@@ -15,6 +16,7 @@ class Test extends StatelessWidget {
   Test({super.key});
 
   final TestController controller = Get.put(TestController());
+  final TodoController todoController = Get.put(TodoController());
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class Test extends StatelessWidget {
           height: double.infinity,
           child: Center(
             // 여기에 위젯 붙여넣기
-            child: PeepTodoList(color: controller.color.value, todoList: mockTodos,),
+            child: PeepTodoList(color: controller.color.value, todoController: todoController,),
           ),
         ),
       ),

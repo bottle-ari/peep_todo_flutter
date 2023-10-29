@@ -6,7 +6,7 @@ abstract class AppValues {
   static double screenHeight = 852.h;
 
   static double screenPadding = 20.w;
-  static double margin = 16.w;
+  static double margin = 10.h;
 
   static double buttonRadius = 8.r;
   static double buttonHeight = 50.h;
