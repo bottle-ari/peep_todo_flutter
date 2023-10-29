@@ -49,8 +49,7 @@ class PeepCategoryButton extends StatelessWidget {
                   // Category Name
                   Text(
                     name,
-                    style: PeepTextStyle.boldS(color),
-                  ),
+                    style: PeepTextStyle.boldS(color: color)),
                 ],
               ),
               SizedBox(

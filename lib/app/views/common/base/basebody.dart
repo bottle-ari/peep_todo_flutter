@@ -18,7 +18,7 @@ class BaseBody extends StatelessWidget {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Container(
         padding:
-            const EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
+            EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
         width: double.infinity,
         child: SingleChildScrollView(
           controller: scrollController,
