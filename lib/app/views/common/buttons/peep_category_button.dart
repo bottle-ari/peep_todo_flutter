@@ -39,14 +39,18 @@ class PeepCategoryButton extends StatelessWidget {
               Row(
                 children: [
                   // Emoji
-                  Text(emoji),
+                  Text(
+                    emoji,
+                    style: PeepTextStyle.boldS(color),
+                  ),
                   SizedBox(
                     width: 3.w,
                   ),
                   // Category Name
                   Text(
                     name,
-                    style: PeepTextStyle.boldS(color)),
+                    style: PeepTextStyle.boldS(color),
+                  ),
                 ],
               ),
               SizedBox(
