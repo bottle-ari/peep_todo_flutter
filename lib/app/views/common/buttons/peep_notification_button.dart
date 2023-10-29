@@ -4,12 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../theme/icons.dart';
 import '../../../theme/palette.dart';
 
-class NotificationButton extends StatelessWidget {
+class PeepNotificationButton extends StatelessWidget {
   final PeepIcon icon;
   final bool isNotified;
   final Function() onTapFunc;
 
-  const NotificationButton({
+  const PeepNotificationButton({
     Key? key,
     required this.icon,
     required this.isNotified,
