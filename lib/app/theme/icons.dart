@@ -27,13 +27,13 @@ class PeepIcon extends StatelessWidget {
 }
 
 class Iconsax {
-  static const todo = 'image/icon/todo.svg';
-  static const calendar = 'image/icon/calendar.svg';
-  static const routine = 'image/icon/routine.svg';
-  static const profile = 'image/icon/profile.svg';
-  static const priority = 'image/icon/priority.svg';
-  static const arrowCircleUp = 'image/icon/arrow_circle_up.svg';
-  static const arrowCircleDown = 'image/icon/arrow_circle_down.svg';
-  static const checkFalse = 'image/icon/check_false.svg';
-  static const checkTrue = 'image/icon/check_true.svg';
+  static const todo = 'assets/image/icon/todo.svg';
+  static const calendar = 'assets/image/icon/calendar.svg';
+  static const routine = 'assets/image/icon/routine.svg';
+  static const profile = 'assets/image/icon/profile.svg';
+  static const priority = 'assets/image/icon/priority.svg';
+  static const arrowCircleUp = 'assets/image/icon/arrow_circle_up.svg';
+  static const arrowCircleDown = 'assets/image/icon/arrow_circle_down.svg';
+  static const checkFalse = 'assets/image/icon/check_false.svg';
+  static const checkTrue = 'assets/image/icon/check_true.svg';
 }
