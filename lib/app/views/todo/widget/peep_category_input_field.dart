@@ -12,7 +12,7 @@ class PeepCategoryInputField extends StatelessWidget {
   final Color color;
   final VoidCallback onTapEmojiPicker;
   final VoidCallback onTapColorPicker;
-  final ValueChanged<String> onNameChanged;
+  final Function(String) onNameChanged;
 
   const PeepCategoryInputField({
     Key? key,
@@ -59,9 +59,9 @@ class PeepCategoryInputField extends StatelessWidget {
               ],
             ),
           ),
-          const Divider(
+          Divider(
             height: 0,
-            thickness: 1,
+            thickness: 1.h,
             color: Palette.peepYellow400,
           ),
         ],
