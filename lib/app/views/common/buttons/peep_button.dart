@@ -35,7 +35,7 @@ class PeepButton extends StatelessWidget {
             child: Text(
           text,
           style: PeepTextStyle.boldM(
-              isActive ? getTextColor(color) : Palette.peepGray400),
+              color: isActive ? getTextColor(color) : Palette.peepGray400),
         )),
       ),
     );

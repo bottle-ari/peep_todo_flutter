@@ -27,7 +27,7 @@ class PeepEmojiPickerButton extends StatelessWidget {
             )
           : Text(
               emoji,
-              style: PeepTextStyle.regularXL(null),
+              style: PeepTextStyle.regularXL(color: null),
             ),
     );
   }

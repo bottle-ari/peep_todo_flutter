@@ -37,7 +37,7 @@ class PeepScheduledTodoAppBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(selectedDate, style: PeepTextStyle.boldXL(Palette.peepBlack)),
+          Text(selectedDate, style: PeepTextStyle.boldXL(color: Palette.peepBlack)),
           Row(
             children: [
               PeepNotificationButton(icon: PeepIcon(Iconsax.clock, size: 24.r, color: Palette.peepBlack,), isNotified: true, onTapFunc: onTapFunc,),

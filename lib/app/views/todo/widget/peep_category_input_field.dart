@@ -27,7 +27,7 @@ class PeepCategoryInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
+      padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -45,12 +45,12 @@ class PeepCategoryInputField extends StatelessWidget {
                     onChanged: (text) {
                       onNameChanged(text);
                     },
-                    style: PeepTextStyle.boldXL(Palette.peepBlack),
+                    style: PeepTextStyle.boldXL(color: Palette.peepBlack),
                     cursorColor: Palette.peepYellow400,
                     decoration: InputDecoration(
                       border: InputBorder.none, // 밑줄 제거
                       hintText: '이름을 입력해 주세요',
-                      hintStyle: PeepTextStyle.boldXL(Palette.peepGray300),
+                      hintStyle: PeepTextStyle.boldXL(color: Palette.peepGray300),
                     ),
                   ),
                 ),
