@@ -3,43 +3,43 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 
 class PeepTextStyle {
-  static TextStyle regularXS(Color? color) {
+  static TextStyle regularXS({Color? color}) {
     return PeepTextStyleBase.baseRegularXS.copyWith(color: color ?? Palette.peepBlack);
   }
 
-  static TextStyle regularS(Color? color) {
+  static TextStyle regularS({Color? color}) {
     return PeepTextStyleBase.baseRegularS.copyWith(color: color ?? Palette.peepBlack);
   }
 
-  static TextStyle regularM(Color? color) {
+  static TextStyle regularM({Color? color}) {
     return PeepTextStyleBase.baseRegularM.copyWith(color: color ?? Palette.peepBlack);
   }
 
-  static TextStyle regularL(Color? color) {
+  static TextStyle regularL({Color? color}) {
     return PeepTextStyleBase.baseRegularL.copyWith(color: color ?? Palette.peepBlack);
   }
 
-  static TextStyle regularXL(Color? color) {
+  static TextStyle regularXL({Color? color}) {
     return PeepTextStyleBase.baseRegularXL.copyWith(color: color ?? Palette.peepBlack);
   }
 
-  static TextStyle boldXS(Color? color) {
+  static TextStyle boldXS({Color? color}) {
     return PeepTextStyleBase.baseBoldXS.copyWith(color: color ?? Palette.peepBlack);
   }
 
-  static TextStyle boldS(Color? color) {
+  static TextStyle boldS({Color? color}) {
     return PeepTextStyleBase.baseBoldS.copyWith(color: color ?? Palette.peepBlack);
   }
 
-  static TextStyle boldM(Color? color) {
+  static TextStyle boldM({Color? color}) {
     return PeepTextStyleBase.baseBoldM.copyWith(color: color ?? Palette.peepBlack);
   }
 
-  static TextStyle boldL(Color? color) {
+  static TextStyle boldL({Color? color}) {
     return PeepTextStyleBase.baseBoldL.copyWith(color: color ?? Palette.peepBlack);
   }
 
-  static TextStyle boldXL(Color? color) {
+  static TextStyle boldXL({Color? color}) {
     return PeepTextStyleBase.baseBoldXL.copyWith(color: color ?? Palette.peepBlack);
   }
 }
