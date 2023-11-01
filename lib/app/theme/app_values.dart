@@ -4,19 +4,23 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 abstract class AppValues {
   static double screenWidth = 393.w;
   static double screenHeight = 852.h;
-
   static double screenPadding = 20.w;
-  static double margin = 10.h;
 
-  static double buttonRadius = 8.r;
-  static double buttonHeight = 50.h;
+  static double innerMargin = 5.w;
+  static double verticalMargin = 10.h;
+  static double horizontalMargin = 10.w;
 
-  static double iconDefaultSize = 24.w;
-  static double floatButtonSize = 72.w;
+  static double baseRadius = 20.r;
+  static double smallRadius = 10.r;
+  static double tinyRadius = 5.r;
+
+  static double baseOpacity = 0.7;
+  static double halfOpacity = 0.5;
+
+  static double smallIconSize = 20.w;
+  static double baseIconSize = 24.w;
+  static double largeIconSize = 32.w;
+  static double xlargeIconSize = 48.w;
+
   static double listBottomEmptySpace = 200.h;
-
-  static const int defaultPageSize = 10;
-  static const int defaultPageNumber = 1;
-  static const int defaultDebounceTimeInMilliSeconds = 1000;
-  static const int defaultThrottleTimeInMilliSeconds = 500;
 }
