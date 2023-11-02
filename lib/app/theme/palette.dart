@@ -11,10 +11,10 @@ class Palette {
   static const Color peepGray300 = Color(0xFFC9C9C9);
   static const Color peepGray200 = Color(0xFFE2E2E2);
   static const Color peepGray100 = Color(0xFFF2F2F2);
+  static const Color peepGray50 = Color(0xFFF9F9F9);
 
   static const Color peepButton300 = Color(0xFFEFECE5);
   static const Color peepButton200 = Color(0xFFFFFAEE);
-  static const Color peepButton100 = Color(0xFFF9F9F9);
 
   static const Color peepWhite = Color(0xFFFFFFFF);
   static const Color peepBlack = Color(0xFF1d1d1d);
@@ -22,7 +22,7 @@ class Palette {
   static const Color peepGreen = Color(0xFF51CF6C);
   static const Color peepBlue = Color(0xFF4685FF);
 
-  static const Color peepBackground = peepWhite;
+  static const Color peepBackground = peepGray50;
 }
 
 Color getTextColor(Color color) {

@@ -28,12 +28,13 @@ dev_dependencies:
 flutter:
   assets:
     - assets/image/icon/todo.svg
+    - assets/image/icon/constant_todo.svg
     - assets/image/icon/calendar.svg
     - assets/image/icon/routine.svg
     - assets/image/icon/profile.svg
-#    - assets/image/icon/priority.svg
-#    - assets/image/icon/arrow_circle_up.svg
-#    - assets/image/icon/arrow_circle_down.svg
+    - assets/image/icon/priority.svg
+    - assets/image/icon/arrow_circle_up.svg
+    - assets/image/icon/arrow_circle_down.svg
     - assets/image/icon/check_false.svg
     - assets/image/icon/check_true.svg
     - assets/image/icon/emoji.svg
