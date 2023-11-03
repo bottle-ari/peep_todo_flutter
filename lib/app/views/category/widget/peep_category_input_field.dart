@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
-import 'package:peep_todo_flutter/app/views/todo/widget/peep_color_picker_button.dart';
-import 'package:peep_todo_flutter/app/views/todo/widget/peep_emoji_picker_button.dart';
+import 'package:peep_todo_flutter/app/views/category/widget/peep_color_picker_button.dart';
+import 'package:peep_todo_flutter/app/views/category/widget/peep_emoji_picker_button.dart';
 
 class PeepCategoryInputField extends StatelessWidget {
   final String name;
