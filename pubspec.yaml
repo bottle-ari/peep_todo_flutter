@@ -39,6 +39,8 @@ flutter:
     - assets/image/icon/emoji.svg
     - assets/image/icon/clock.svg
     - assets/image/icon/more.svg
+    - assets/image/icon/add_square.svg
+    - assets/image/icon/arrow_down.svg
   uses-material-design: true
 
 fonts:
