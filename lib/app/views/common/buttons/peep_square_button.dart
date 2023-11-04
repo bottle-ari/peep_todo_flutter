@@ -8,19 +8,19 @@ import 'package:peep_todo_flutter/app/theme/text_style.dart';
 class PeepSquareButton extends StatelessWidget {
   final PeepIcon icon;
   final String text;
-  final Function() func;
+  final Function() onTap;
 
   const PeepSquareButton({
     super.key,
     required this.icon,
     required this.text,
-    required this.func,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: func,
+      onTap: onTap,
       child: Container(
         width: (AppValues.screenWidth -
                 AppValues.screenPadding * 2 -
