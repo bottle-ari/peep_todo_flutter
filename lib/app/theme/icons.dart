@@ -39,4 +39,6 @@ class Iconsax {
   static const emoji = 'assets/image/icon/emoji.svg';
   static const clock = 'assets/image/icon/clock.svg';
   static const more = 'assets/image/icon/more.svg';
+  static const trash = 'assets/image/icon/trash.svg';
+  static const rollback = 'assets/image/icon/rollback.svg';
 }

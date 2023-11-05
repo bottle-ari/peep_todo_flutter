@@ -39,6 +39,8 @@ flutter:
     - assets/image/icon/emoji.svg
     - assets/image/icon/clock.svg
     - assets/image/icon/more.svg
+    - assets/image/icon/trash.svg
+    - assets/image/icon/rollback.svg
   uses-material-design: true
 
 fonts:
