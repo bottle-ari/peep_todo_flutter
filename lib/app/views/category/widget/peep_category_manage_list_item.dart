@@ -33,36 +33,31 @@ class PeepCategoryManageListItem extends StatelessWidget {
         color: Palette.peepWhite,
         borderRadius: BorderRadius.circular(AppValues.baseRadius),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    PeepEmojiPickerButton(
-                        emoji: emoji, onTap: onTapEmojiPicker),
-                    // PeepEmojiPickerButton
-                    SizedBox(
-                      width: AppValues.horizontalMargin*2,
-                    ),
-                    Text(
-                      name,
-                      style: PeepTextStyle.boldXL(color: color),
-                    ),
-                  ],
+                PeepEmojiPickerButton(
+                    emoji: emoji, onTap: onTapEmojiPicker),
+                // PeepEmojiPickerButton
+                SizedBox(
+                  width: AppValues.horizontalMargin*2,
                 ),
-                PeepColorPickerButton(color: color, onTap: onTapColorPicker),
-                // PeepColorPickerButton
+                Text(
+                  name,
+                  style: PeepTextStyle.boldXL(color: color),
+                ),
               ],
             ),
-          ),
-        ],
+            PeepColorPickerButton(color: color, onTap: onTapColorPicker),
+            // PeepColorPickerButton
+          ],
+        ),
       ),
     );
   }
