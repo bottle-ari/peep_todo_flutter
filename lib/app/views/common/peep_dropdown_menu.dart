@@ -6,18 +6,23 @@ import 'package:peep_todo_flutter/app/theme/text_style.dart';
 
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 
+class DropdownMenuItemData {
+  //
+  final String value;
+  final PeepIcon icon;
+  final String text;
+
+  DropdownMenuItemData(this.value, this.icon, this.text);
+}
+
 class PeepDropdownMenu extends StatelessWidget {
-  final Function onTapFunc;
-  final Function onTapSecondFunc;
-  final Function onTapThirdFunc;
-  final Function onTapFourthFunc;
+  final List<DropdownMenuItemData> menuItems;
+  final Function(String) onMenuItemSelected;
 
   const PeepDropdownMenu({
     Key? key,
-    required this.onTapFunc,
-    required this.onTapSecondFunc,
-    required this.onTapThirdFunc,
-    required this.onTapFourthFunc,
+    required this.menuItems,
+    required this.onMenuItemSelected,
   }) : super(key: key);
 
   @override
@@ -25,75 +30,35 @@ class PeepDropdownMenu extends StatelessWidget {
     return PopupMenuButton<String>(
       icon: PeepIcon(
         Iconsax.more,
-        size: AppValues.smallIconSize,
+        size: AppValues.baseIconSize,
         color: Palette.peepBlack,
       ),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppValues.smallRadius), // 원하는 모서리 둥글기 설정
+        borderRadius:
+            BorderRadius.circular(AppValues.smallRadius), // 원하는 모서리 둥글기 설정
       ),
+      onSelected: onMenuItemSelected,
       itemBuilder: (BuildContext context) {
-        return <PopupMenuEntry<String>>[
-          PopupMenuItem<String>(
-            value: 'popup_action_1',
-            child: Row(
-              children: [
-                PeepIcon(Iconsax.addcircle,
-                    size: AppValues.smallIconSize, color: Palette.peepBlack),
-                SizedBox(width: AppValues.horizontalMargin),
-                Text('카테고리 추가',
-                    style: PeepTextStyle.regularXS(color: Palette.peepBlack)),
-              ],
-            ),
-            onTap: () {
-              onTapFunc();
-            },
-          ),
-          PopupMenuItem<String>(
-            value: 'popup_action_2',
-            child: Row(
-              children: [
-                PeepIcon(Iconsax.categorybox,
-                    size: AppValues.smallIconSize, color: Palette.peepBlack),
-                SizedBox(width: AppValues.horizontalMargin),
-                Text('카테고리 관리',
-                    style: PeepTextStyle.regularXS(color: Palette.peepBlack)),
-              ],
-            ),
-            onTap: () {
-              onTapSecondFunc();
-            },
-          ),
-          PopupMenuItem<String>(
-            value: 'popup_action_3',
-            child: Row(
-              children: [
-                PeepIcon(Iconsax.reminder,
-                    size: AppValues.smallIconSize, color: Palette.peepBlack),
-                SizedBox(width: AppValues.horizontalMargin),
-                Text('리마인더 관리',
-                    style: PeepTextStyle.regularXS(color: Palette.peepBlack)),
-              ],
-            ),
-            onTap: () {
-              onTapThirdFunc();
-            },
-          ),
-          PopupMenuItem<String>(
-            value: 'popup_action_4',
-            child: Row(
-              children: [
-                PeepIcon(Iconsax.routine,
-                    size: AppValues.smallIconSize, color: Palette.peepBlack),
-                SizedBox(width: AppValues.horizontalMargin),
-                Text('루틴 추가',
-                    style: PeepTextStyle.regularXS(color: Palette.peepBlack)),
-              ],
-            ),
-            onTap: () {
-              onTapFourthFunc();
-            },
-          ),
-        ];
+        return menuItems
+            .map((item) => PopupMenuItem<String>(
+                  value: item.value,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          item.icon,
+                          SizedBox(width: AppValues.horizontalMargin),
+                          Text(item.text,
+                              style: PeepTextStyle.regularXS(
+                                  color: Palette.peepBlack)),
+                        ],
+                      ),
+                      SizedBox(height: AppValues.verticalMargin),
+                      // 아이템과 아이템 사이의 간격 조절
+                    ],
+                  ),
+                ))
+            .toList();
       },
     );
   }
