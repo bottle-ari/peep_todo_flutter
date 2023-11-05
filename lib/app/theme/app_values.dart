@@ -1,21 +1,26 @@
 //앱 내 사용할 값들을 저장하는 공간
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 abstract class AppValues {
-  static const double screenPadding = 20;
-  static const double margin = 16;
+  static double screenWidth = 393.w;
+  static double screenHeight = 852.h;
+  static double screenPadding = 20.w;
 
-  static const double buttonRadius = 8;
-  static const double buttonHeight = 50;
+  static double innerMargin = 5.w;
+  static double verticalMargin = 10.h;
+  static double horizontalMargin = 10.w;
 
-  static const double iconDefaultSize = 24;
-  static const double floatButtonSize = 72;
-  static const double listBottomEmptySpace = 200;
+  static double baseRadius = 20.r;
+  static double smallRadius = 10.r;
+  static double tinyRadius = 5.r;
 
-  static const int loggerLineLength = 120;
-  static const int loggerErrorMethodCount = 8;
-  static const int loggerMethodCount = 2;
+  static double baseOpacity = 0.7;
+  static double halfOpacity = 0.5;
 
-  static const int defaultPageSize = 10;
-  static const int defaultPageNumber = 1;
-  static const int defaultDebounceTimeInMilliSeconds = 1000;
-  static const int defaultThrottleTimeInMilliSeconds = 500;
+  static double smallIconSize = 20.w;
+  static double baseIconSize = 24.w;
+  static double largeIconSize = 32.w;
+  static double xlargeIconSize = 48.w;
+
+  static double listBottomEmptySpace = 200.h;
 }

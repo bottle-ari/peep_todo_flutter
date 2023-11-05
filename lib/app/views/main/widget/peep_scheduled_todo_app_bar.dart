@@ -37,11 +37,11 @@ class PeepScheduledTodoAppBar extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
+      padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
       // 옆의 여백 조절
       decoration: BoxDecoration(
         border: Border.all(color: Palette.peepBackground), // 박스 테두리 스타일링
-        borderRadius: BorderRadius.circular(8.r), // 박스 모서리 라운딩
+        borderRadius: BorderRadius.circular(AppValues.smallRadius), // 박스 모서리 라운딩
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -50,15 +50,15 @@ class PeepScheduledTodoAppBar extends StatelessWidget {
           Row(
             children: [
               PeepNotificationButton(
-                icon: const PeepIcon(
+                icon: PeepIcon(
                   Iconsax.clock,
-                  size: AppValues.iconDefaultSize,
+                  size: AppValues.baseIconSize,
                   color: Palette.peepBlack,
                 ),
                 isNotified: true,
                 onTapFunc: onTapClock,
               ),
-              SizedBox(width: 10.w), // 아이콘 사이의 간격 조절
+              SizedBox(width: AppValues.horizontalMargin), // 아이콘 사이의 간격 조절
               PeepDropdownMenu(
                 onTapFunc: onTapFunc,
                 onTapSecondFunc: onTapSecondFunc,
