@@ -28,6 +28,7 @@ class PeepIcon extends StatelessWidget {
 
 class Iconsax {
   static const todo = 'assets/image/icon/todo.svg';
+  static const constantTodo = 'assets/image/icon/constant_todo.svg';
   static const calendar = 'assets/image/icon/calendar.svg';
   static const routine = 'assets/image/icon/routine.svg';
   static const profile = 'assets/image/icon/profile.svg';
