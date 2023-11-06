@@ -30,7 +30,7 @@ class PeepBottomNavigationBar extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppValues.baseRadius),
             boxShadow: [
               BoxShadow(
-                  color: Palette.peepBlack.withOpacity(0.1),
+                  color: Palette.peepBlack.withOpacity(AppValues.shadowOpacity),
                   spreadRadius: 2,
                   blurRadius: 4,
                   offset: const Offset(0, 3))

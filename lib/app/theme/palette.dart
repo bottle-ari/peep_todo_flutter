@@ -22,7 +22,7 @@ class Palette {
   static const Color peepGreen = Color(0xFF51CF6C);
   static const Color peepBlue = Color(0xFF4685FF);
 
-  static const Color peepBackground = peepGray50;
+  static const Color peepBackground = peepGray100;
 }
 
 Color getTextColor(Color color) {

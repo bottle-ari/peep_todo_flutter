@@ -16,7 +16,7 @@ class TestController extends GetxController {
   Rx<Color> color = Palette.peepYellow400.obs;
   RxBool isChecked = false.obs;
   RxBool isMain = true.obs;
-  RxBool isOpen = true.obs;
+  RxBool isOpen = false.obs;
 
   void toggleChecked() {
     isOpen.value = !isOpen.value;
@@ -28,7 +28,6 @@ class Test extends StatelessWidget {
 
   final TestController controller = Get.put(TestController());
   final TodoController todoController = Get.put(TodoController());
-  final TodoPriorityAnimationController animationController = Get.put(TodoPriorityAnimationController());
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +35,12 @@ class Test extends StatelessWidget {
       appBar: AppBar(title: const Text("Title")),
       body: SizedBox(
         height: double.infinity,
-        child: Center(
-          // 여기에 위젯 붙여넣기
-          child: PeepTodoItem(),
+        child: ListView(
+          children: [
+            SizedBox(height: 100.h,),
+            PeepTodoItem(color: Color(0xFFBD00FF), index: 0,),
+            PeepTodoItem(color: Color(0xFFBD00FF), index: 1,),
+          ],
         ),
       ),
     backgroundColor: Palette.peepBackground,

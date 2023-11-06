@@ -20,10 +20,10 @@ final List<TodoModel> mockTodos = [
       reminderId: null,
       name: '집가서 할 일',
       subTodo: [
-        SubTodoModel(text: '화분에 물 주기', isChecked: false.obs),
-        SubTodoModel(text: '샤워하기', isChecked: false.obs),
-        SubTodoModel(text: '스트레칭 하기', isChecked: true.obs)
-      ],
+        SubTodoModel(text: '화분에 물 주기'.obs, isChecked: false.obs),
+        SubTodoModel(text: '샤워하기'.obs, isChecked: false.obs),
+        SubTodoModel(text: '스트레칭 하기'.obs, isChecked: true.obs)
+      ].obs,
       date: '20231010',
       priority: 3,
       memo: null,
@@ -35,9 +35,9 @@ final List<TodoModel> mockTodos = [
       reminderId: null,
       name: '내일 짐 정리 하기',
       subTodo: [
-        SubTodoModel(text: '옷 정리하기', isChecked: false.obs),
-        SubTodoModel(text: '간식 정리하기', isChecked: false.obs),
-      ],
+        SubTodoModel(text: '옷 정리하기'.obs, isChecked: false.obs),
+        SubTodoModel(text: '간식 정리하기'.obs, isChecked: false.obs),
+      ].obs,
       date: '20231010',
       priority: 0,
       memo: null,
