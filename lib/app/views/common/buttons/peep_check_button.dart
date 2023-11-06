@@ -2,76 +2,40 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/controllers/todo_controller.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
+import 'package:peep_todo_flutter/app/theme/palette.dart';
 
 import '../../../theme/icons.dart';
+import '../../test.dart';
 
 class PeepCheckButton extends StatelessWidget {
   final Color color;
-  final int index;
-  final Function(int) isToggled;
-  final bool isChecked;
 
   const PeepCheckButton({
     Key? key,
     required this.color,
-    required this.isToggled,
-    required this.isChecked,
-    required this.index,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () {
-            isToggled(index);
-          },
-          child: isChecked
-              ? PeepIcon(Iconsax.checkTrue, color: color, size: 28.w)
-              : PeepIcon(Iconsax.checkFalse, color: color, size: 28.w),
-        ));
-  }
-}
+    //Todo : TodoController로 변경해야함
+    final TestController controller = Get.find();
 
-class PeepCheckSubButton extends StatelessWidget {
-  final Color color;
-  final int mainIndex;
-  final int index;
-  final Function(int, int) isToggled;
-  final bool isChecked;
-
-  const PeepCheckSubButton({
-    Key? key,
-    required this.color,
-    required this.isToggled,
-    required this.isChecked,
-    required this.index,
-    required this.mainIndex,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () {
-            isToggled(mainIndex, index);
-          },
-          child: Padding(
-              padding: EdgeInsets.all(4.w),
-              child: isChecked
-                  ? PeepIcon(
-                      Iconsax.checkTrue,
-                      color: color,
-                      size: 24.w,
-                    )
-                  : PeepIcon(
-                      Iconsax.checkFalse,
-                      color: color,
-                      size: 24.w,
-                    )),
-        ));
+    return Obx(
+      () => Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {
+              controller.isChecked.value = !controller.isChecked.value;
+            },
+            child: controller.isChecked.value
+                ? PeepIcon(Iconsax.checkTrue,
+                    color: color, size: controller.isMain.value ? 24.w : 20.w)
+                : PeepIcon(Iconsax.checkFalse,
+                    color: Palette.peepGray400,
+                    size: controller.isMain.value ? 24.w : 20.w),
+          )),
+    );
   }
 }
