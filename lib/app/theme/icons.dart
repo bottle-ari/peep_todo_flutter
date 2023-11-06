@@ -40,6 +40,8 @@ class Iconsax {
   static const emoji = 'assets/image/icon/emoji.svg';
   static const clock = 'assets/image/icon/clock.svg';
   static const more = 'assets/image/icon/more.svg';
+  static const trash = 'assets/image/icon/trash.svg';
+  static const rollback = 'assets/image/icon/rollback.svg';
   static const addSquare = 'assets/image/icon/add_square.svg';
   static const arrowDown = 'assets/image/icon/arrow_down.svg';
   static const addcircle = 'assets/image/icon/addcircle.svg';
