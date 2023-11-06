@@ -45,7 +45,9 @@ class PeepCategoryItem extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        name,
+                        name.length > 10
+                            ? "${name.substring(0, 10)}..."
+                            : name,
                         style: PeepTextStyle.boldL(color: color),
                       ),
                       SizedBox(
