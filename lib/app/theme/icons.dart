@@ -43,4 +43,14 @@ class Iconsax {
   static const eggTop = 'assets/image/icon/egg_top.svg';
   static const eggBottom = 'assets/image/icon/egg_bottom.svg';
   static const egg = 'assets/image/icon/egg.svg';
+  static const trash = 'assets/image/icon/trash.svg';
+  static const rollback = 'assets/image/icon/rollback.svg';
+  static const addSquare = 'assets/image/icon/add_square.svg';
+  static const arrowDown = 'assets/image/icon/arrow_down.svg';
+  static const addcircle = 'assets/image/icon/addcircle.svg';
+  static const categorybox = 'assets/image/icon/categorybox.svg';
+  static const reminder = 'assets/image/icon/reminder.svg';
+  static const clipboardCheck = 'assets/image/icon/clipboard_check.svg';
+  static const clipboardDelete = 'assets/image/icon/clipboard_delete.svg';
+  static const clockBold = 'assets/image/icon/clock_bold.svg';
 }

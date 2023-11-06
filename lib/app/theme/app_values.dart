@@ -10,15 +10,19 @@ abstract class AppValues {
   static double verticalMargin = 10.h;
   static double horizontalMargin = 10.w;
 
+  static double baseItemHeight = 48.h;
+
   static double baseRadius = 20.r;
   static double smallRadius = 10.r;
   static double tinyRadius = 5.r;
 
   static double baseOpacity = 0.7;
   static double halfOpacity = 0.5;
+  static double shadowOpacity = 0.1;
 
   static double smallIconSize = 20.w;
   static double baseIconSize = 24.w;
+  static double navigationIconSize = 28.w;
   static double largeIconSize = 32.w;
   static double xlargeIconSize = 48.w;
 
