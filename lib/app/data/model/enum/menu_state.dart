@@ -1,5 +1,6 @@
 enum MenuState {
   TODO,
+  CONSTANT_TODO,
   CALENDAR,
   ROUTINE,
   MYPAGE,
