@@ -16,9 +16,11 @@ abstract class AppValues {
 
   static double baseOpacity = 0.7;
   static double halfOpacity = 0.5;
+  static double shadowOpacity = 0.1;
 
   static double smallIconSize = 20.w;
   static double baseIconSize = 24.w;
+  static double navigationIconSize = 28.w;
   static double largeIconSize = 32.w;
   static double xlargeIconSize = 48.w;
 
