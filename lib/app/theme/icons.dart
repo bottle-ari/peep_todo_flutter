@@ -40,6 +40,9 @@ class Iconsax {
   static const emoji = 'assets/image/icon/emoji.svg';
   static const clock = 'assets/image/icon/clock.svg';
   static const more = 'assets/image/icon/more.svg';
+  static const addcircle = 'assets/image/icon/addcircle.svg';
+  static const categorybox = 'assets/image/icon/categorybox.svg';
+  static const reminder = 'assets/image/icon/reminder.svg';
   static const clipboardCheck = 'assets/image/icon/clipboard_check.svg';
   static const clipboardDelete = 'assets/image/icon/clipboard_delete.svg';
   static const clockBold = 'assets/image/icon/clock_bold.svg';
