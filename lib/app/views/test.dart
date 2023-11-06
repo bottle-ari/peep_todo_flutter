@@ -18,7 +18,7 @@ class TestController extends GetxController {
   Rx<Color> color = Palette.peepYellow400.obs;
   RxBool isChecked = false.obs;
   RxBool isMain = true.obs;
-  RxBool isOpen = false.obs;
+  RxBool isOpen = true.obs;
 
   void toggleChecked() {
     isOpen.value = !isOpen.value;

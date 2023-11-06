@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../views/test.dart';
+
 class TodoPriorityAnimationController extends GetxController with GetSingleTickerProviderStateMixin {
   late AnimationController animationController;
   late Animation<double> animation;
@@ -9,12 +11,19 @@ class TodoPriorityAnimationController extends GetxController with GetSingleTicke
 
   @override
   void onInit() {
+    //Todo : TodoController로 변경해야 함
+    final TestController todoController = Get.find();
+
     super.onInit();
     animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 100),
     );
     animation = Tween<double>(begin: 0.0, end: openHeight).animate(animationController);
+
+    if (todoController.isOpen.value) {
+      animationController.value = openHeight;
+    }
   }
 
   void toggleAnimation(bool isChecked) {

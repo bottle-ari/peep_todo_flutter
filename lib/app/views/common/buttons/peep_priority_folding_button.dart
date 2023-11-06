@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/theme/app_values.dart';
 
 import '../../../controllers/animation/todo_priority_animation_controller.dart';
 import '../../../theme/icons.dart';
