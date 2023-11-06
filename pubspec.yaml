@@ -40,6 +40,9 @@ flutter:
     - assets/image/icon/emoji.svg
     - assets/image/icon/clock.svg
     - assets/image/icon/more.svg
+    - assets/image/icon/clipboard_check.svg
+    - assets/image/icon/clipboard_delete.svg
+    - assets/image/icon/clock_bold.svg
   uses-material-design: true
 
 fonts:
