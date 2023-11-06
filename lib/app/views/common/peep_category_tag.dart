@@ -25,7 +25,7 @@ class PeepCategoryTag extends StatelessWidget {
         widthFactor: 1,
         child: Text(
           name,
-          style: PeepTextStyle.boldXS(Colors.white),
+          style: PeepTextStyle.boldXS(color: Colors.white),
         ),
       ),
     );

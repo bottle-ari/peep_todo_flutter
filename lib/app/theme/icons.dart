@@ -28,6 +28,7 @@ class PeepIcon extends StatelessWidget {
 
 class Iconsax {
   static const todo = 'assets/image/icon/todo.svg';
+  static const constantTodo = 'assets/image/icon/constant_todo.svg';
   static const calendar = 'assets/image/icon/calendar.svg';
   static const routine = 'assets/image/icon/routine.svg';
   static const profile = 'assets/image/icon/profile.svg';
@@ -38,4 +39,8 @@ class Iconsax {
   static const checkTrue = 'assets/image/icon/check_true.svg';
   static const emoji = 'assets/image/icon/emoji.svg';
   static const clock = 'assets/image/icon/clock.svg';
+  static const more = 'assets/image/icon/more.svg';
+  static const clipboardCheck = 'assets/image/icon/clipboard_check.svg';
+  static const clipboardDelete = 'assets/image/icon/clipboard_delete.svg';
+  static const clockBold = 'assets/image/icon/clock_bold.svg';
 }

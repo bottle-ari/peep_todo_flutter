@@ -18,6 +18,7 @@ dependencies:
   shared_preferences: ^2.2.0
   flutter_screenutil: ^5.9.0
   flutter_svg: ^2.0.7
+  reorderables: ^0.6.0
 
 dev_dependencies:
   flutter_test:
@@ -27,17 +28,21 @@ dev_dependencies:
 flutter:
   assets:
     - assets/image/icon/todo.svg
+    - assets/image/icon/constant_todo.svg
     - assets/image/icon/calendar.svg
     - assets/image/icon/routine.svg
     - assets/image/icon/profile.svg
-    #- assets/image/icon/priority.svg
-    #- assets/image/icon/arrow_circle_up.svg
-    #- assets/image/icon/arrow_circle_down.svg
+    - assets/image/icon/priority.svg
+    - assets/image/icon/arrow_circle_up.svg
+    - assets/image/icon/arrow_circle_down.svg
     - assets/image/icon/check_false.svg
     - assets/image/icon/check_true.svg
     - assets/image/icon/emoji.svg
     - assets/image/icon/clock.svg
     - assets/image/icon/more.svg
+    - assets/image/icon/clipboard_check.svg
+    - assets/image/icon/clipboard_delete.svg
+    - assets/image/icon/clock_bold.svg
   uses-material-design: true
 
 fonts:

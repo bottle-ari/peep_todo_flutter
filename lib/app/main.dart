@@ -3,6 +3,7 @@ import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/theme/app_theme.dart';
+import 'package:peep_todo_flutter/app/theme/app_values.dart';
 
 import 'bindings/initial_binding.dart';
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         title: '삐약Todo',
         debugShowCheckedModeBanner: false,
         theme: appThemeData,
-        initialRoute: AppPages.TEST,
+        initialRoute: AppPages.INITIAL,
         getPages: AppPages.routes,
         initialBinding: InitialBinding(),
         defaultTransition: Transition.fade,
