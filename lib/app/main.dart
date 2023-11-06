@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         title: '삐약Todo',
         debugShowCheckedModeBanner: false,
         theme: appThemeData,
-        initialRoute: AppPages.TEST,
+        initialRoute: AppPages.INITIAL,
         getPages: AppPages.routes,
         initialBinding: InitialBinding(),
         defaultTransition: Transition.fade,
