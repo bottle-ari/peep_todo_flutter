@@ -40,4 +40,7 @@ class Iconsax {
   static const emoji = 'assets/image/icon/emoji.svg';
   static const clock = 'assets/image/icon/clock.svg';
   static const more = 'assets/image/icon/more.svg';
+  static const eggTop = 'assets/image/icon/egg_top.svg';
+  static const eggBottom = 'assets/image/icon/egg_bottom.svg';
+  static const egg = 'assets/image/icon/egg.svg';
 }

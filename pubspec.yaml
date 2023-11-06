@@ -40,6 +40,9 @@ flutter:
     - assets/image/icon/emoji.svg
     - assets/image/icon/clock.svg
     - assets/image/icon/more.svg
+    - assets/image/icon/egg_top.svg
+    - assets/image/icon/egg_bottom.svg
+    - assets/image/icon/egg.svg
   uses-material-design: true
 
 fonts:
