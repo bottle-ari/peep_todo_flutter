@@ -42,6 +42,9 @@ flutter:
     - assets/image/icon/more.svg
     - assets/image/icon/add_square.svg
     - assets/image/icon/arrow_down.svg
+    - assets/image/icon/addcircle.svg
+    - assets/image/icon/categorybox.svg
+    - assets/image/icon/reminder.svg
     - assets/image/icon/clipboard_check.svg
     - assets/image/icon/clipboard_delete.svg
     - assets/image/icon/clock_bold.svg
