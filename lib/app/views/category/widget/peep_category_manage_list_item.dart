@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
@@ -28,7 +27,7 @@ class PeepCategoryManageListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: AppValues.screenWidth - AppValues.screenPadding * 2,
-      height: 64.h,
+      height: AppValues.largeItemHeight,
       decoration: BoxDecoration(
         color: Palette.peepWhite,
         borderRadius: BorderRadius.circular(AppValues.baseRadius),

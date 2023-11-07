@@ -33,7 +33,7 @@ class PeepTodoTextfield extends StatelessWidget {
 
     return Container(
       width: AppValues.screenWidth - AppValues.screenPadding * 2,
-      height: 64.h,
+      height: AppValues.largeItemHeight,
       decoration: BoxDecoration(
         color: Palette.peepGray50,
         borderRadius: BorderRadius.circular(AppValues.baseRadius),
@@ -105,7 +105,7 @@ class PeepCategoryTextfield extends StatelessWidget {
 
     return Container(
       width: AppValues.screenWidth - AppValues.screenPadding * 2,
-      height: 64.h,
+      height: AppValues.largeItemHeight,
       decoration: BoxDecoration(
         color: Palette.peepGray50,
         borderRadius: BorderRadius.circular(AppValues.baseRadius),
