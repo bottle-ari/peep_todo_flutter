@@ -86,6 +86,7 @@ class PeepCategoryTextfield extends StatelessWidget {
   final Color color;
   final VoidCallback onTapEmoji;
   final Function(String) onTapAddButton;
+  final VoidCallback onLongPressAddButton;
 
   const PeepCategoryTextfield({
     Key? key,
@@ -93,6 +94,7 @@ class PeepCategoryTextfield extends StatelessWidget {
     required this.color,
     required this.onTapEmoji,
     required this.onTapAddButton,
+    required this.onLongPressAddButton,
   }) : super(key: key);
 
   void handleAddButtonTap(String text) {
@@ -139,6 +141,7 @@ class PeepCategoryTextfield extends StatelessWidget {
               onTap: () {
                 handleAddButtonTap(controller.text);
               },
+              onLongPress: onLongPressAddButton,
               child: PeepIcon(
                 Iconsax.addSquare,
                 size: AppValues.largeIconSize,
