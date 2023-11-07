@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/todo_controller.dart';
+import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_priority_folding_button.dart';
+import 'package:peep_todo_flutter/app/views/main/page/main_page.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_todo_item.dart';
 import '../controllers/animation/todo_priority_animation_controller.dart';
 import '../theme/icons.dart';
@@ -37,13 +39,32 @@ class Test extends StatelessWidget {
         height: double.infinity,
         child: ListView(
           children: [
-            SizedBox(height: 100.h,),
-            PeepTodoItem(color: Color(0xFFBD00FF), index: 0,),
-            PeepTodoItem(color: Color(0xFFBD00FF), index: 1,),
+            SizedBox(
+              height: 100.h,
+            ),
+            PeepTodoItem(
+              color: Color(0xFFBD00FF),
+              index: 0,
+            ),
+            PeepTodoItem(
+              color: Color(0xFFBD00FF),
+              index: 1,
+            ),
+            InkWell(
+              onTap: () {
+                Get.back();
+                Get.toNamed(AppPages.INITIAL);
+              },
+              child: Container(
+                color: Colors.red,
+                width: 100,
+                height: 100,
+              ),
+            )
           ],
         ),
       ),
-    backgroundColor: Palette.peepBackground,
+      backgroundColor: Palette.peepBackground,
     );
   }
 }

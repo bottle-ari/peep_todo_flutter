@@ -17,7 +17,7 @@ class TodoPriorityAnimationController extends GetxController with GetSingleTicke
       vsync: this,
       duration: const Duration(milliseconds: 100),
     );
-    animation = Tween<double>(begin: 0.0, end: openHeight).animate(animationController);
+    animation = Tween<double>(begin: openHeight, end: 0.0).animate(animationController);
 
     if (isFold) {
       animationController.value = openHeight;

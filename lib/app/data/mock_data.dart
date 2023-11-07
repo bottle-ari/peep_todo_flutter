@@ -18,11 +18,11 @@ final List<TodoModel> mockTodos = [
       id: 1,
       categoryId: 1,
       reminderId: null,
-      name: '집가서 할 일',
+      name: '매우 긴 사이즈의 투두 제목 매우 긴 사이즈의 투두 제목  매우 긴 사이즈의 투두 제목 매우 긴 사이즈의 투두 제목',
       subTodo: [
         SubTodoModel(text: '화분에 물 주기'.obs, isChecked: false.obs),
         SubTodoModel(text: '샤워하기'.obs, isChecked: false.obs),
-        SubTodoModel(text: '스트레칭 하기'.obs, isChecked: true.obs)
+        SubTodoModel(text: '매우 긴 사이즈의 투두 제목 매우 긴 사이즈의 투두 제목  매우 긴 사이즈의 투두 제목 매우 긴 사이즈의 투두 제목'.obs, isChecked: true.obs)
       ].obs,
       date: '20231010',
       priority: 3,

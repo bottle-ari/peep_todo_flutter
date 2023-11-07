@@ -60,7 +60,8 @@ class PeepTodoItem extends StatelessWidget {
                     backgroundColor: Colors.transparent,
                     duration: const Duration(days: 9999999),
                     isDismissible: true,
-                    titleText: PeepRollbackSnackbar(
+                    reverseAnimationCurve: Curves.easeOutQuad,
+                    messageText: PeepRollbackSnackbar(
                         icon: PeepIcon(
                           Iconsax.trash,
                           size: AppValues.baseIconSize,
@@ -81,68 +82,134 @@ class PeepTodoItem extends StatelessWidget {
             },
             child: SizedBox(
               width: AppValues.screenWidth - AppValues.screenPadding * 2,
-              child: Stack(
-                children: [
-                  Container(
-                    height: 100.h, //AppValues.baseItemHeight,
-                    color: Palette.peepWhite,
-                  ),
-                  SizedBox(
-                    height: AppValues.baseItemHeight,
-                    child: Container(
-                      color: Palette.peepWhite,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppValues.innerMargin),
-                        child: Stack(
+              child: ConstrainedBox(
+                constraints:
+                    BoxConstraints(minHeight: AppValues.baseItemHeight),
+                child: Container(
+                  color: Palette.peepWhite,
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: AppValues.innerMargin),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              children: [
-                                PeepPriorityFoldingButton(
+                            PeepPriorityFoldingButton(
+                              index: index,
+                            ),
+                            Flexible(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: AppValues.verticalMargin),
+                                child: SizedBox(
+                                  width: 230.w,
+                                  child: Text(
+                                    controller.todoList[index].name,
+                                    style: PeepTextStyle.regularM(
+                                        color: controller
+                                                .todoList[index].isChecked.value
+                                            ? Palette.peepGray400
+                                            : Palette.peepBlack),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 3,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: AppValues.innerMargin),
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: PeepCheckButton(
+                                  color: color,
                                   index: index,
                                 ),
-                                Text(
-                                  controller.todoList[index].name,
-                                  style: PeepTextStyle.regularM(
-                                      color: controller
-                                              .todoList[index].isChecked.value
-                                          ? Palette.peepGray400
-                                          : Palette.peepBlack),
-                                ),
-                                Expanded(
-                                    child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: AppValues.horizontalMargin),
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: PeepCheckButton(
-                                      color: color,
-                                      index: index,
-                                    ),
-                                  ),
-                                )),
-                              ],
+                              ),
                             ),
                           ],
                         ),
-                      ),
+                        if ((controller.todoList[index].subTodo?.length ?? 0) !=
+                            0 && !controller.todoList[index].isFold.value)
+                          ListView.builder(
+                            shrinkWrap: true,
+                              itemCount:
+                                  controller.todoList[index].subTodo?.length ??
+                                      0,
+                              itemBuilder:
+                                  (BuildContext context, int subIndex) {
+                                return PeepSubTodoItem(
+                                    controller: controller,
+                                    mainIndex: index,
+                                    index: subIndex,
+                                    color: color);
+                              }),
+                      ],
                     ),
                   ),
-                  Positioned(
-                      top: AppValues.baseItemHeight,
-                      left: AppValues.horizontalMargin,
-                      child: Align(
-                        child: Container(
-                          width: AppValues.screenWidth - AppValues.screenPadding * 2 - AppValues.horizontalMargin * 2,
-                          height: 1.h,
-                          color: Palette.peepGray200,
-                        ),
-                      )),
-                ],
+                ),
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class PeepSubTodoItem extends StatelessWidget {
+  final TodoController controller;
+  final Color color;
+  final int mainIndex;
+  final int index;
+
+  const PeepSubTodoItem(
+      {super.key,
+      required this.controller,
+      required this.mainIndex,
+      required this.index,
+      required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 48.h,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            width: AppValues.baseIconSize,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: AppValues.verticalMargin),
+            child: SizedBox(
+              width: 230.w,
+              child: Text(
+                controller.todoList[mainIndex].subTodo?[index].text.value ?? '',
+                style: PeepTextStyle.regularM(
+                    color: controller
+                            .todoList[mainIndex].subTodo?[index].isChecked.value ?? true
+                        ? Palette.peepGray400
+                        : Palette.peepBlack),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: AppValues.innerMargin),
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: PeepSubCheckButton(
+                color: color,
+                mainIndex: mainIndex,
+                index: index,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
