@@ -11,6 +11,7 @@ abstract class AppValues {
   static double horizontalMargin = 10.w;
 
   static double baseItemHeight = 48.h;
+  static double largeItemHeight = 64.h;
 
   static double baseRadius = 20.r;
   static double smallRadius = 10.r;
