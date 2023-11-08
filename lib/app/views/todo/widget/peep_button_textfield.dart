@@ -23,13 +23,19 @@ class PeepTodoTextfield extends StatelessWidget {
     required this.onTapAddButton,
   }) : super(key: key);
 
-  void handleAddButtonTap(String text) {
-    onTapAddButton(text);
-  }
-
   @override
   Widget build(BuildContext context) {
+    // define TextEditingController
     TextEditingController controller = TextEditingController();
+
+    // handle submit(TextField) & onTap(AddButton) event
+    void handleAddButtonTap(String text) {
+      if (text.trim().isNotEmpty) {
+        onTapAddButton(text);
+      } else {
+        controller.text = "";
+      }
+    }
 
     return Container(
       width: AppValues.screenWidth - AppValues.screenPadding * 2,
@@ -97,13 +103,19 @@ class PeepCategoryTextfield extends StatelessWidget {
     required this.onLongPressAddButton,
   }) : super(key: key);
 
-  void handleAddButtonTap(String text) {
-    onTapAddButton(text);
-  }
-
   @override
   Widget build(BuildContext context) {
+    // define TextEditingController
     TextEditingController controller = TextEditingController();
+
+    // handle submit(TextField) & onTap(AddButton) event
+    void handleAddButtonTap(String text) {
+      if (text.trim().isNotEmpty) {
+        onTapAddButton(text);
+      } else {
+        controller.text = "";
+      }
+    }
 
     return Container(
       width: AppValues.screenWidth - AppValues.screenPadding * 2,
