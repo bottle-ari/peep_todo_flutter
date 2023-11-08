@@ -49,7 +49,13 @@ class ScheduledTodoController extends TodoController {
   @override
   void reorderTodoList(String date, int oldIndex, int newIndex) {
     if (_todoList[date] == null) return;
-    TodoModel todoItem = _todoList[date]!.removeAt(oldIndex);
-    _todoList[date]!.insert(newIndex, todoItem);
+
+    var list = _todoList[date]!;
+    final TodoModel todoItem = list.removeAt(oldIndex);
+
+    list.insert(newIndex, todoItem);
+    _todoList[date] = List.from(list);
+
+    update();
   }
 }

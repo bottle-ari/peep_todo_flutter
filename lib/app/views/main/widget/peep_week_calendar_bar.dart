@@ -202,15 +202,6 @@ class PeepWeekCalendarBar extends StatelessWidget {
                   ),
                 );
               },
-              headerTitleBuilder: (context, day) {
-                return PeepScheduledTodoAppBar(
-                    selectedDate: DateFormat.MMMEd('ko_KR')
-                        .format(calendarController.selectedDay.value),
-                    dropdownMenuItems: dropdownMenuItems,
-                    onMenuItemSelected: onMenuItemSelected,
-                    onTapClock: onTapClock,
-                    onTapToday: () => calendarController.onMoveToday());
-              },
             ),
             headerStyle: HeaderStyle(
               formatButtonVisible: false,
