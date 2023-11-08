@@ -11,15 +11,12 @@ import '../../../theme/app_values.dart';
 import '../../../theme/icons.dart';
 import '../../../theme/palette.dart';
 
-class DateOfPick extends GetxController {
-  var Date = 20231028;
-}
-
 class PeepScheduledTodoAppBar extends StatelessWidget {
   final String selectedDate;
   final List<DropdownMenuItemData> dropdownMenuItems;
   final Function(String) onMenuItemSelected;
   final Function() onTapClock;
+  final Function() onTapToday;
 
   const PeepScheduledTodoAppBar({
     Key? key,
@@ -27,36 +24,40 @@ class PeepScheduledTodoAppBar extends StatelessWidget {
     required this.dropdownMenuItems,
     required this.onMenuItemSelected,
     required this.onTapClock,
+    required this.onTapToday,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      height: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
+      width: AppValues.screenWidth,
+      height: 64.h,
+      //!@#
+      padding: EdgeInsets.symmetric(horizontal: AppValues.horizontalMargin),
       // 옆의 여백 조절
       decoration: BoxDecoration(
         border: Border.all(color: Palette.peepBackground), // 박스 테두리 스타일링
-        borderRadius:
-        BorderRadius.circular(AppValues.smallRadius), // 박스 모서리 라운딩
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(selectedDate, style: PeepTextStyle.boldXL(color: Palette.peepBlack)),
+          GestureDetector(
+            onTap: onTapToday,
+            child: Text(selectedDate,
+                style: PeepTextStyle.boldXL(color: Palette.peepGray500)),
+          ),
           Row(
             children: [
               PeepNotificationButton(
                 icon: PeepIcon(
                   Iconsax.clock,
                   size: AppValues.baseIconSize,
-                  color: Palette.peepBlack,
+                  color: Palette.peepGray500,
                 ),
                 isNotified: true,
                 onTapFunc: onTapClock,
               ),
-              SizedBox(width: AppValues.horizontalMargin), // 아이콘 사이의 간격 조절
+              SizedBox(width: AppValues.horizontalMargin),
               PeepDropdownMenu(
                 menuItems: dropdownMenuItems,
                 onMenuItemSelected: onMenuItemSelected,

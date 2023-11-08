@@ -5,6 +5,7 @@ class Palette {
   static const Color peepYellow300 = Color(0xFFFFCE50);
   static const Color peepYellow200 = Color(0xFFFFDD6F);
   static const Color peepYellow100 = Color(0xFFFEEC90);
+  static const Color peepYellow50 = Color(0xFFFFF2D2);
 
   static const Color peepGray500 = Color(0xFF575757);
   static const Color peepGray400 = Color(0xFF989898);
