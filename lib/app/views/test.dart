@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/todo_controller.dart';
 import 'package:peep_todo_flutter/app/data/mock_data.dart';
+import 'package:peep_todo_flutter/app/theme/app_values.dart';
+import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_check_button.dart';
+import 'package:peep_todo_flutter/app/views/common/peep_subpage_appbar.dart';
 import 'common/todo/peep_todo_list.dart';
 
 class TestController extends GetxController {
@@ -30,7 +33,21 @@ class Test extends StatelessWidget {
           height: double.infinity,
           child: Center(
             // 여기에 위젯 붙여넣기
-            child: PeepCheckButton(color: controller.color.value,),
+            child: PeepSubpageAppbar(
+              title: '완료된 Todo',
+              buttons: [
+                PeepIcon(
+                  Iconsax.trash,
+                  color: controller.color.value,
+                  size: AppValues.baseIconSize,
+                ),
+                PeepIcon(
+                  Iconsax.trash,
+                  color: Palette.peepRed,
+                  size: AppValues.baseIconSize,
+                )
+              ],
+            ),
           ),
         ),
       ),

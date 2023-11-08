@@ -50,4 +50,5 @@ class Iconsax {
   static const clipboardCheck = 'assets/image/icon/clipboard_check.svg';
   static const clipboardDelete = 'assets/image/icon/clipboard_delete.svg';
   static const clockBold = 'assets/image/icon/clock_bold.svg';
+  static const arrowLeft = 'assets/image/icon/arrow_left.svg';
 }
