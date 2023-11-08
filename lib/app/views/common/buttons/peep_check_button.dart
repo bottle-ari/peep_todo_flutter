@@ -64,15 +64,18 @@ class PeepSubCheckButton extends StatelessWidget {
           color: Colors.transparent,
           child: InkWell(
             onTap: () {
-              controller.todoList[mainIndex].subTodo![index].isChecked.value =
-                  !controller
-                      .todoList[mainIndex].subTodo![index].isChecked.value;
+              controller.toggleSubTodoChecked(mainIndex, index);
             },
-            child:
-                controller.todoList[mainIndex].subTodo![index].isChecked.value
-                    ? PeepIcon(Iconsax.checkTrue, color: color, size: 20.w)
-                    : PeepIcon(Iconsax.checkFalse,
-                        color: Palette.peepGray400, size: 20.w),
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: AppValues.innerMargin,
+                  vertical: AppValues.verticalMargin),
+              child:
+                  controller.todoList[mainIndex].subTodo![index].isChecked.value
+                      ? PeepIcon(Iconsax.checkTrue, color: color, size: 20.w)
+                      : PeepIcon(Iconsax.checkFalse,
+                          color: Palette.peepGray400, size: 20.w),
+            ),
           )),
     );
   }

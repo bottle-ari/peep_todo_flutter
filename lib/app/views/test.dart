@@ -46,9 +46,29 @@ class Test extends StatelessWidget {
               color: Color(0xFFBD00FF),
               index: 0,
             ),
+            SizedBox(
+              height: 10.h,
+            ),
             PeepTodoItem(
               color: Color(0xFFBD00FF),
               index: 1,
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            PeepTodoItem(
+              color: Color(0xFFBD00FF),
+              index: 2,
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            PeepTodoItem(
+              color: Color(0xFFBD00FF),
+              index: 3,
+            ),
+            SizedBox(
+              height: 10.h,
             ),
             InkWell(
               onTap: () {

@@ -9,10 +9,11 @@ import '../../../controllers/todo_controller.dart';
 import '../../../theme/icons.dart';
 
 class PeepPriorityFoldingButton extends StatelessWidget {
+  final Color color;
   final double size = AppValues.baseIconSize;
   final int index;
 
-  PeepPriorityFoldingButton({super.key, required this.index});
+  PeepPriorityFoldingButton({super.key, required this.index, required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -21,22 +22,6 @@ class PeepPriorityFoldingButton extends StatelessWidget {
         TodoPriorityAnimationController(
             controller.todoList[index].isFold.value),
         tag: controller.todoList[index].id.toString());
-    Color color = Palette.peepGray400;
-
-    switch (controller.todoList[index].priority) {
-      case 1:
-        color = Palette.peepGreen;
-        break;
-      case 2:
-        color = Palette.peepYellow400;
-        break;
-      case 3:
-        color = Palette.peepRed;
-        break;
-      default:
-        color = Palette.peepGray400;
-        break;
-    }
 
     return Material(
         color: Colors.transparent,

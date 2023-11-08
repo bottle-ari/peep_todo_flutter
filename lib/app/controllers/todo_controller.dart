@@ -11,10 +11,6 @@ class TodoController extends GetxController {
   // Getter
   RxList<TodoModel> get todoList => _todoList;
 
-  bool mainTodoIsChecked(int index) {
-    return _todoList[index].isChecked.value;
-  }
-
   // Setter
   void reorderTodoList(int oldIndex, int newIndex) {
     TodoModel todoItem = _todoList.removeAt(oldIndex);
@@ -27,6 +23,12 @@ class TodoController extends GetxController {
 
   void toggleMainTodoChecked(int index) {
     _todoList[index].isChecked.value = !_todoList[index].isChecked.value;
+    update();
+  }
+
+  void toggleSubTodoChecked(int mainIndex, int index) {
+    _todoList[mainIndex].subTodo![index].isChecked.value =
+        !_todoList[mainIndex].subTodo![index].isChecked.value;
     update();
   }
 }

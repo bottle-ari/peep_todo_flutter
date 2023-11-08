@@ -50,7 +50,7 @@ final List<TodoModel> mockTodos = [
       name: '영어 단어 만 개 외우기',
       subTodo: null,
       date: '20231010',
-      priority: 0,
+      priority: 1,
       memo: null,
       isFold: false.obs,
       isChecked: true.obs),
