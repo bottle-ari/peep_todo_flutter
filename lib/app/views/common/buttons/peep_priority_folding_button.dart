@@ -35,7 +35,7 @@ class PeepPriorityFoldingButton extends StatelessWidget {
                 animation: animationController.animation,
                 builder: (context, child) {
                   return Padding(
-                    padding: EdgeInsets.only(left: AppValues.horizontalMargin, right: AppValues.innerMargin),
+                    padding: EdgeInsets.symmetric(horizontal: AppValues.horizontalMargin,),
                     child: SizedBox(
                       width: size,
                       height: size * 1.6,

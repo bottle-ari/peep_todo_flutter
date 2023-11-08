@@ -56,4 +56,5 @@ class Iconsax {
   static const clockBold = 'assets/image/icon/clock_bold.svg';
   static const arrowLeft = 'assets/image/icon/arrow_left.svg';
   static const check = 'assets/image/icon/check.svg';
+  static const eggBroken = 'assets/image/icon/egg_broken';
 }
