@@ -5,15 +5,20 @@ import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/theme/app_theme.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:table_calendar/table_calendar.dart';
+
 import 'bindings/initial_binding.dart';
 
 void main() {
-  runApp(const MyApp());
+  initializeDateFormatting().then((_) => runApp(MyApp()));
+  
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
