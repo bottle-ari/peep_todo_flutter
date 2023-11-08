@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/data/mock_data.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 
-class TodoController extends GetxController {
+import '../core/base/base_controller.dart';
+
+class TodoController extends BaseController {
   // TODO : 현재는 Mock 데이터가 들어가 있으므로, 추후 변경 필요
   final RxList<TodoModel> _todoList = mockTodos.obs;
 

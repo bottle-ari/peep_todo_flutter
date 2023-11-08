@@ -2,6 +2,8 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 abstract class AppValues {
+  static double appbarHeight = 70.h;
+
   static double screenWidth = 393.w;
   static double screenHeight = 852.h;
   static double screenPadding = 20.w;

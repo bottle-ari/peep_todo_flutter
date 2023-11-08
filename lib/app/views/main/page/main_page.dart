@@ -1,18 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/main/main_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_view.dart';
-import 'package:peep_todo_flutter/app/theme/palette.dart';
+import 'package:peep_todo_flutter/app/views/main/widget/peep_constant_todo_appbar.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/scheduled_todo_page.dart';
 
 import '../../../data/model/enum/menu_state.dart';
+import '../../../theme/app_values.dart';
 import '../widget/peep_bottom_navigation_bar.dart';
 
 class MainPage extends BaseView<MainController> {
   // 앱바 구현하기
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
-    return AppBar(backgroundColor: Palette.peepBackground, elevation: 0,);
+    return PreferredSize(
+        preferredSize: Size.fromHeight(AppValues.appbarHeight),
+        child: SafeArea(
+          child: PeepConstantTodoAppbar(
+              dropdownMenuItems: [],
+              onMenuItemSelected: (String str) {},
+              onTapClipboard: () {}),
+        ));
   }
 
   @override

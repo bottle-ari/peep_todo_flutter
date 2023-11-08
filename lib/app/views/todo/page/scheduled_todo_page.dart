@@ -1,15 +1,56 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
-import '../../../theme/icons.dart';
-import '../../common/base/basebody.dart';
+import 'package:peep_todo_flutter/app/controllers/todo_controller.dart';
 
-class ScheduledTodoPage extends StatelessWidget {
+import '../../../core/base/base_view.dart';
+import '../../../routes/app_pages.dart';
+import '../widget/peep_todo_item.dart';
+
+class ScheduledTodoPage extends BaseView<TodoController> {
   @override
-  Widget build(BuildContext context) {
-    return BaseBody(widgetList: [
-      Text("Scheduled Todo Page"),
-      PeepIcon(Iconsax.calendar, size: 32)
-    ]);
+  PreferredSizeWidget? appBar(BuildContext context) {
+    return null;
   }
+
+  @override
+  Widget body(BuildContext context) {
+    return SizedBox(
+      height: double.infinity,
+      child: ListView(
+        children: [
+          PeepTodoItem(
+            color: Color(0xFFBD00FF),
+            index: 0,
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          PeepTodoItem(
+            color: Color(0xFFBD00FF),
+            index: 1,
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          PeepTodoItem(
+            color: Color(0xFFBD00FF),
+            index: 2,
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          PeepTodoItem(
+            color: Color(0xFFBD00FF),
+            index: 3,
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+        ],
+      ),
+    );
+  }
+
 }
