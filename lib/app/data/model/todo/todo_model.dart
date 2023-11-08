@@ -6,7 +6,7 @@ class TodoModel {
   final int categoryId;
   final int? reminderId;
   final String name;
-  final List<SubTodoModel>? subTodo;
+  final RxList<SubTodoModel>? subTodo;
   final String? date;
   final int priority;
   final String? memo;
