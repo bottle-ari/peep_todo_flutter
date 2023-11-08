@@ -29,61 +29,12 @@ class Test extends StatelessWidget {
   Test({super.key});
 
   final TestController controller = Get.put(TestController());
-  final TodoController todoController = Get.put(TodoController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Title")),
-      body: SizedBox(
-        height: double.infinity,
-        child: ListView(
-          children: [
-            SizedBox(
-              height: 100.h,
-            ),
-            PeepTodoItem(
-              color: Color(0xFFBD00FF),
-              index: 0,
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            PeepTodoItem(
-              color: Color(0xFFBD00FF),
-              index: 1,
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            PeepTodoItem(
-              color: Color(0xFFBD00FF),
-              index: 2,
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            PeepTodoItem(
-              color: Color(0xFFBD00FF),
-              index: 3,
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            InkWell(
-              onTap: () {
-                Get.back();
-                Get.toNamed(AppPages.INITIAL);
-              },
-              child: Container(
-                color: Colors.red,
-                width: 100,
-                height: 100,
-              ),
-            )
-          ],
-        ),
-      ),
+      body: SizedBox(),
       backgroundColor: Palette.peepBackground,
     );
   }
