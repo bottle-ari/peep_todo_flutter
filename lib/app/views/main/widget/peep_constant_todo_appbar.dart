@@ -27,7 +27,7 @@ class PeepConstantTodoAppbar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text("상시 Todo",
-              style: PeepTextStyle.boldXL(color: Palette.peepBlack)),
+              style: PeepTextStyle.boldXL(color: Palette.peepGray500)),
           Row(
             children: [
               InkWell(
@@ -35,7 +35,7 @@ class PeepConstantTodoAppbar extends StatelessWidget {
                 child: PeepIcon(
                   Iconsax.clipboardCheck,
                   size: AppValues.baseIconSize,
-                  color: Palette.peepBlack,
+                  color: Palette.peepGray500,
                 ),
               ),
               SizedBox(width: AppValues.horizontalMargin),
