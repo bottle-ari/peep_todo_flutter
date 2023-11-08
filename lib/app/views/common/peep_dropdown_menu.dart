@@ -31,7 +31,7 @@ class PeepDropdownMenu extends StatelessWidget {
       icon: PeepIcon(
         Iconsax.more,
         size: AppValues.baseIconSize,
-        color: Palette.peepBlack,
+        color: Palette.peepGray500,
       ),
       shape: RoundedRectangleBorder(
         borderRadius:
@@ -44,17 +44,19 @@ class PeepDropdownMenu extends StatelessWidget {
                   value: item.value,
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          item.icon,
-                          SizedBox(width: AppValues.horizontalMargin),
-                          Text(item.text,
-                              style: PeepTextStyle.regularXS(
-                                  color: Palette.peepBlack)),
-                        ],
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: AppValues.verticalMargin),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            item.icon,
+                            SizedBox(width: AppValues.horizontalMargin),
+                            Text(item.text,
+                                style: PeepTextStyle.regularXS(
+                                    color: Palette.peepBlack)),
+                          ],
+                        ),
                       ),
-                      SizedBox(height: AppValues.verticalMargin),
-                      // 아이템과 아이템 사이의 간격 조절
                     ],
                   ),
                 ))
