@@ -41,6 +41,9 @@ flutter:
     - assets/image/icon/emoji.svg
     - assets/image/icon/clock.svg
     - assets/image/icon/more.svg
+    - assets/image/icon/egg_top.svg
+    - assets/image/icon/egg_bottom.svg
+    - assets/image/icon/egg.svg
     - assets/image/icon/trash.svg
     - assets/image/icon/rollback.svg
     - assets/image/icon/add_square.svg
@@ -49,8 +52,12 @@ flutter:
     - assets/image/icon/addcircle.svg
     - assets/image/icon/categorybox.svg
     - assets/image/icon/clipboard_check.svg
+    - assets/image/icon/clipboard_check_bold.svg
     - assets/image/icon/clipboard_delete.svg
     - assets/image/icon/clock_bold.svg
+    - assets/image/icon/arrow_left.svg
+    - assets/image/icon/check.svg
+    - assets/image/icon/egg_broken.svg
   uses-material-design: true
 
 fonts:
