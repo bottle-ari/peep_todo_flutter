@@ -47,11 +47,20 @@ class MainPage extends BaseView<MainController> {
             onMenuItemSelected: (String str) {},
             onTapClipboard: () {});
       case MenuState.CALENDAR:
-        return Container();
+        return PeepConstantTodoAppbar(
+            dropdownMenuItems: [],
+            onMenuItemSelected: (String str) {},
+            onTapClipboard: () {});
       case MenuState.ROUTINE:
-        return Container();
+        return PeepConstantTodoAppbar(
+            dropdownMenuItems: [],
+            onMenuItemSelected: (String str) {},
+            onTapClipboard: () {});
       case MenuState.MYPAGE:
-        return Container();
+        return PeepConstantTodoAppbar(
+            dropdownMenuItems: [],
+            onMenuItemSelected: (String str) {},
+            onTapClipboard: () {});
       default:
         // return LoginPage();
         return Container();

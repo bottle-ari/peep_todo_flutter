@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/sub_todo_model.dart';
 
@@ -7,9 +9,11 @@ import 'model/todo/todo_model.dart';
 // Category에 대한 Mock Data
 final List<CategoryModel> mockCategories = [
   CategoryModel(
-      id: 1, userId: 1, name: '할 일', color: 'BD00FF', emoji: '🤔', order: 1),
+      id: 1, userId: 1, name: '할 일', color: const Color(0XFFBD00FF), emoji: '🤔', order: 1),
   CategoryModel(
-      id: 2, userId: 1, name: '공부', color: '00DB58', emoji: '📝', order: 2),
+      id: 2, userId: 1, name: '공부', color: const Color(0XFF00DB58), emoji: '📝', order: 2),
+  CategoryModel(
+      id: 3, userId: 1, name: '테스트', color: const Color(0XFF4685FF), emoji: '🥳', order: 3),
 ];
 
 // Todo에 대한 Mock Data
@@ -70,6 +74,104 @@ final Map<String, List<TodoModel>> mockTodos = {
         priority: 2,
         memo: '이 것은 메모입니당',
         isFold: false.obs,
+        isChecked: false.obs),
+    TodoModel(
+        id: 5,
+        categoryId: 3,
+        reminderId: null,
+        name: '테스트1',
+        subTodo: [
+          SubTodoModel(text: '서브 투두 1'.obs, isChecked: false.obs),
+          SubTodoModel(text: '서브 투두 2'.obs, isChecked: false.obs),
+        ].obs,
+        date: '20231010',
+        priority: 2,
+        memo: '이 것은 메모입니당',
+        isFold: true.obs,
+        isChecked: false.obs),
+    TodoModel(
+        id: 6,
+        categoryId: 3,
+        reminderId: null,
+        name: '테스트2',
+        subTodo: [
+          SubTodoModel(text: '서브 투두 1'.obs, isChecked: false.obs),
+          SubTodoModel(text: '서브 투두 2'.obs, isChecked: false.obs),
+        ].obs,
+        date: '20231010',
+        priority: 2,
+        memo: '이 것은 메모입니당',
+        isFold: true.obs,
+        isChecked: false.obs),
+    TodoModel(
+        id: 7,
+        categoryId: 3,
+        reminderId: null,
+        name: '테스트3',
+        subTodo: [
+          SubTodoModel(text: '서브 투두 1'.obs, isChecked: false.obs),
+          SubTodoModel(text: '서브 투두 2'.obs, isChecked: false.obs),
+        ].obs,
+        date: '20231010',
+        priority: 2,
+        memo: '이 것은 메모입니당',
+        isFold: true.obs,
+        isChecked: false.obs),
+    TodoModel(
+        id: 8,
+        categoryId: 3,
+        reminderId: null,
+        name: '테스트4',
+        subTodo: [
+          SubTodoModel(text: '서브 투두 1'.obs, isChecked: false.obs),
+          SubTodoModel(text: '서브 투두 2'.obs, isChecked: false.obs),
+        ].obs,
+        date: '20231010',
+        priority: 2,
+        memo: '이 것은 메모입니당',
+        isFold: true.obs,
+        isChecked: false.obs),
+    TodoModel(
+        id: 9,
+        categoryId: 3,
+        reminderId: null,
+        name: '테스트5',
+        subTodo: [
+          SubTodoModel(text: '서브 투두 1'.obs, isChecked: false.obs),
+          SubTodoModel(text: '서브 투두 2'.obs, isChecked: false.obs),
+        ].obs,
+        date: '20231010',
+        priority: 2,
+        memo: '이 것은 메모입니당',
+        isFold: true.obs,
+        isChecked: false.obs),
+    TodoModel(
+        id: 10,
+        categoryId: 3,
+        reminderId: null,
+        name: '테스트6',
+        subTodo: [
+          SubTodoModel(text: '서브 투두 1'.obs, isChecked: false.obs),
+          SubTodoModel(text: '서브 투두 2'.obs, isChecked: false.obs),
+        ].obs,
+        date: '20231010',
+        priority: 2,
+        memo: '이 것은 메모입니당',
+        isFold: true.obs,
+        isChecked: false.obs),
+    TodoModel(
+        id: 11,
+        categoryId: 3,
+        reminderId: null,
+        name: '테스트7',
+        subTodo: [
+          SubTodoModel(text: '서브 투두 1'.obs, isChecked: false.obs),
+          SubTodoModel(text: '서브 투두 2'.obs, isChecked: false.obs),
+        ].obs,
+        date: '20231010',
+        priority: 2,
+        memo: '이 것은 메모입니당',
+        isFold: true.obs,
         isChecked: false.obs),
   ]
 };

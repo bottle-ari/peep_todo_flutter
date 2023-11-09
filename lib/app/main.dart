@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
         getPages: AppPages.routes,
         initialBinding: InitialBinding(),
         defaultTransition: Transition.fade,
+        scrollBehavior: PeepScrollBehavior(),
       ),
     );
   }

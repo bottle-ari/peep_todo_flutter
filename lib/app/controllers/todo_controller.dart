@@ -8,8 +8,9 @@ import '../core/base/base_controller.dart';
 import '../data/model/todo/sub_todo_model.dart';
 
 abstract class TodoController extends BaseController {
+
   @override
-  List<TodoModel> getTodoList({required String date});
+  List<dynamic> getTodoList({required String date});
 
   @override
   List<SubTodoModel> getSubTodoList(

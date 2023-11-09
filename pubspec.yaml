@@ -58,6 +58,7 @@ flutter:
     - assets/image/icon/arrow_left.svg
     - assets/image/icon/check.svg
     - assets/image/icon/egg_broken.svg
+    - assets/image/icon/constant_todo.svg
   uses-material-design: true
 
 fonts:

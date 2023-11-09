@@ -128,167 +128,152 @@ class PeepWeekCalendarBar extends StatelessWidget {
     ]; // 아이템 색상
     List<double> itemCounts = [1, 3, 5];
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('TableCalendar - Range'),
+    return Obx(() => TableCalendar(
+      calendarBuilders: CalendarBuilders(
+        outsideBuilder: (context, day, focusedDay) {
+          return Center(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Text(
+                  DateFormat.d().format(day),
+                  style:
+                  PeepTextStyle.regularXS(color: Palette.peepGray400),
+                ),
+              ],
+            ),
+          );
+        },
+        selectedBuilder: (context, day, selectedDay) {
+          return Center(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  width: 44.w, // Container의 너비
+                  height: 70.h, // Container의 높이
+                  decoration: BoxDecoration(
+                    color: Palette.peepYellow50,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(AppValues.smallRadius),
+                      bottomRight: Radius.circular(AppValues.smallRadius),
+                    ),
+                  ),
+                ),
+                CustomPaint(
+                  size: Size(32.w, 32.h), // CustomPaint의 크기 고정
+                  painter: ringPainter(itemRanks, itemColors, itemCounts),
+                ),
+                Center(
+                  child: Text(
+                    DateFormat.d().format(selectedDay),
+                    style:
+                    PeepTextStyle.regularXS(color: Palette.peepBlack),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+        dowBuilder: customDowBuilder,
+        defaultBuilder: (context, day, focusedDay) {
+          return Center(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                CustomPaint(
+                  size: Size(32.w, 32.h),
+                  painter: ringPainter(itemRanks, itemColors, itemCounts),
+                ),
+                Text(
+                  DateFormat.d().format(day),
+                  style:
+                  PeepTextStyle.regularXS(color: Palette.peepBlack),
+                ),
+              ],
+            ),
+          );
+        },
       ),
-      body: Obx(() => TableCalendar(
-            calendarBuilders: CalendarBuilders(
-              outsideBuilder: (context, day, focusedDay) {
-                return Center(
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      //CustomPaint(
-                      //  size: Size(32.w, 32.h),
-                      //  painter: ringPainter(itemRanks, itemColors, itemCounts),
-                      //),
-                      Text(
-                        DateFormat.d().format(day),
-                        style:
-                            PeepTextStyle.regularXS(color: Palette.peepGray400),
-                      ),
-                    ],
-                  ),
-                );
-              },
-              selectedBuilder: (context, day, selectedDay) {
-                return Center(
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
-                        width: 44.w, // Container의 너비
-                        height: 70.h, // Container의 높이
-                        decoration: BoxDecoration(
-                          color: Palette.peepYellow50,
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(AppValues.smallRadius),
-                            bottomRight: Radius.circular(AppValues.smallRadius),
-                          ),
-                        ),
-                      ),
-                      CustomPaint(
-                        size: Size(32.w, 32.h), // CustomPaint의 크기 고정
-                        painter: ringPainter(itemRanks, itemColors, itemCounts),
-                      ),
-                      Center(
-                        child: Text(
-                          DateFormat.d().format(selectedDay),
-                          style:
-                              PeepTextStyle.regularXS(color: Palette.peepBlack),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-              dowBuilder: customDowBuilder,
-              defaultBuilder: (context, day, focusedDay) {
-                return Center(
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      CustomPaint(
-                        size: Size(32.w, 32.h),
-                        painter: ringPainter(itemRanks, itemColors, itemCounts),
-                      ),
-                      Text(
-                        DateFormat.d().format(day),
-                        style:
-                            PeepTextStyle.regularXS(color: Palette.peepBlack),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-            headerStyle: HeaderStyle(
-              formatButtonVisible: false,
-              leftChevronVisible: false,
-              rightChevronVisible: false,
-              headerMargin: EdgeInsets.all(2 * AppValues.horizontalMargin),
-              headerPadding:
-                  EdgeInsets.symmetric(vertical: AppValues.verticalMargin),
-            ),
-            calendarStyle: CalendarStyle(
-              defaultTextStyle: PeepTextStyleBase.baseRegularM,
-              defaultDecoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(AppValues.smallRadius),
-                  // 좌하단 반지름 값
-                  bottomRight:
-                      Radius.circular(AppValues.smallRadius), // 우하단 반지름 값
-                ),
-              ),
-              outsideDecoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(AppValues.smallRadius),
-                  // 좌하단 반지름 값
-                  bottomRight:
-                      Radius.circular(AppValues.smallRadius), // 우하단 반지름 값
-                ),
-                color: null,
-              ),
-              selectedDecoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(AppValues.smallRadius),
-                  bottomRight: Radius.circular(AppValues.smallRadius),
-                ),
-                color: Palette.peepYellow100,
-              ),
-              todayDecoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(AppValues.smallRadius),
-                  bottomRight: Radius.circular(AppValues.smallRadius),
-                ),
-                color: Palette.peepYellow100,
-              ),
-              weekendDecoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(AppValues.smallRadius),
-                  // 좌하단 반지름 값
-                  bottomRight:
-                      Radius.circular(AppValues.smallRadius), // 우하단 반지름 값
-                ),
-                color: null,
-              ),
-              isTodayHighlighted: false,
-              todayTextStyle: PeepTextStyleBase.baseRegularM,
-              selectedTextStyle: PeepTextStyleBase.baseRegularM,
-              weekendTextStyle: PeepTextStyleBase.baseRegularM,
-              outsideDaysVisible: false,
-            ),
+      headerVisible: false,
+      calendarStyle: CalendarStyle(
+        defaultTextStyle: PeepTextStyleBase.baseRegularM,
+        defaultDecoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(AppValues.smallRadius),
+            // 좌하단 반지름 값
+            bottomRight:
+            Radius.circular(AppValues.smallRadius), // 우하단 반지름 값
+          ),
+        ),
+        outsideDecoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(AppValues.smallRadius),
+            // 좌하단 반지름 값
+            bottomRight:
+            Radius.circular(AppValues.smallRadius), // 우하단 반지름 값
+          ),
+          color: null,
+        ),
+        selectedDecoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(AppValues.smallRadius),
+            bottomRight: Radius.circular(AppValues.smallRadius),
+          ),
+          color: Palette.peepYellow100,
+        ),
+        todayDecoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(AppValues.smallRadius),
+            bottomRight: Radius.circular(AppValues.smallRadius),
+          ),
+          color: Palette.peepYellow100,
+        ),
+        weekendDecoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(AppValues.smallRadius),
+            // 좌하단 반지름 값
+            bottomRight:
+            Radius.circular(AppValues.smallRadius), // 우하단 반지름 값
+          ),
+          color: null,
+        ),
+        isTodayHighlighted: false,
+        todayTextStyle: PeepTextStyleBase.baseRegularM,
+        selectedTextStyle: PeepTextStyleBase.baseRegularM,
+        weekendTextStyle: PeepTextStyleBase.baseRegularM,
+        outsideDaysVisible: false,
+      ),
 
-            daysOfWeekStyle: const DaysOfWeekStyle(
-                //weekdayStyle: TextStyle(color: P),
-                //decoration: Decoration()
+      daysOfWeekStyle: const DaysOfWeekStyle(
+        //weekdayStyle: TextStyle(color: P),
+        //decoration: Decoration()
 
-                ),
-            daysOfWeekHeight: 24.h,
-            rowHeight: 60.h,
-            locale: 'ko_KR',
-            firstDay: DateTime.utc(2023, 1, 1),
-            lastDay: DateTime.utc(2023, 12, 31),
-            focusedDay: calendarController.focusedDay.value,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            selectedDayPredicate: (day) {
-              return isSameDay(calendarController.selectedDay.value, day);
-            },
-            onDaySelected: (selectedDay, focusedDay) {
-              calendarController.onDaySelected(selectedDay, focusedDay);
-            },
-            calendarFormat: CalendarFormat.week,
-            //onFormatChanged: (format) {
-            //  calendarController.onFormatChanged(format);
-            //},
-            rangeSelectionMode: RangeSelectionMode.disabled,
-          )),
+      ),
+      daysOfWeekHeight: 24.h,
+      rowHeight: 60.h,
+      locale: 'ko_KR',
+      firstDay: DateTime.utc(2023, 1, 1),
+      lastDay: DateTime.utc(2023, 12, 31),
+      focusedDay: calendarController.focusedDay.value,
+      startingDayOfWeek: StartingDayOfWeek.monday,
+      selectedDayPredicate: (day) {
+        return isSameDay(calendarController.selectedDay.value, day);
+      },
+      onDaySelected: (selectedDay, focusedDay) {
+        calendarController.onDaySelected(selectedDay, focusedDay);
+      },
+      calendarFormat: CalendarFormat.week,
+      //onFormatChanged: (format) {
+      //  calendarController.onFormatChanged(format);
+      //},
+      rangeSelectionMode: RangeSelectionMode.disabled,
+    )
     );
   }
 }

@@ -16,3 +16,15 @@ final ThemeData appThemeData = ThemeData(
     ),
   ),
 );
+
+class PeepScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Widget buildOverscrollIndicator(
+      BuildContext context, Widget child, ScrollableDetails details) {
+    // 여기서는 오버스크롤 인디케이터를 아예 빌드하지 않도록 하여 제거합니다.
+    return StretchingOverscrollIndicator(
+      axisDirection: details.direction,
+      child: child,
+    );
+  }
+}

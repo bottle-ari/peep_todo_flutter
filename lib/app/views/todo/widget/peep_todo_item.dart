@@ -84,7 +84,7 @@ class PeepTodoItem extends StatelessWidget {
                     isDismissible: true,
                     reverseAnimationCurve: Curves.easeOutQuad,
                     barBlur: 0,
-                    messageText: PeepRollbackSnackbar(
+                    titleText: PeepRollbackSnackbar(
                         icon: PeepIcon(
                           Iconsax.trash,
                           size: AppValues.baseIconSize,
