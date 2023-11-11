@@ -9,6 +9,7 @@ import 'package:peep_todo_flutter/app/views/todo/page/scheduled_todo_page.dart';
 import '../../../data/model/enum/menu_state.dart';
 import '../../../theme/app_values.dart';
 import '../widget/peep_bottom_navigation_bar.dart';
+import '../widget/peep_scheduled_todo_app_bar.dart';
 
 class MainPage extends BaseView<MainController> {
   // 앱바 구현하기
@@ -17,10 +18,7 @@ class MainPage extends BaseView<MainController> {
     return PreferredSize(
         preferredSize: Size.fromHeight(AppValues.appbarHeight),
         child: SafeArea(
-          child: PeepConstantTodoAppbar(
-              dropdownMenuItems: [],
-              onMenuItemSelected: (String str) {},
-              onTapClipboard: () {}),
+          child: Obx(() => getAppbarOnSelectedMenu(controller.selectedMenuState)),
         ));
   }
 
@@ -39,10 +37,42 @@ class MainPage extends BaseView<MainController> {
     );
   }
 
+  Widget getAppbarOnSelectedMenu(MenuState menuState) {
+    switch (menuState) {
+      case MenuState.TODO:
+        return const PeepScheduledTodoAppBar();
+      case MenuState.CONSTANT_TODO:
+        return PeepConstantTodoAppbar(
+            dropdownMenuItems: [],
+            onMenuItemSelected: (String str) {},
+            onTapClipboard: () {});
+      case MenuState.CALENDAR:
+        return PeepConstantTodoAppbar(
+            dropdownMenuItems: [],
+            onMenuItemSelected: (String str) {},
+            onTapClipboard: () {});
+      case MenuState.ROUTINE:
+        return PeepConstantTodoAppbar(
+            dropdownMenuItems: [],
+            onMenuItemSelected: (String str) {},
+            onTapClipboard: () {});
+      case MenuState.MYPAGE:
+        return PeepConstantTodoAppbar(
+            dropdownMenuItems: [],
+            onMenuItemSelected: (String str) {},
+            onTapClipboard: () {});
+      default:
+        // return LoginPage();
+        return Container();
+    }
+  }
+
   Widget getPageOnSelectedMenu(MenuState menuState) {
     switch (menuState) {
       case MenuState.TODO:
         return ScheduledTodoPage();
+      case MenuState.CONSTANT_TODO:
+        return Container();
       case MenuState.CALENDAR:
         return Container();
       case MenuState.ROUTINE:

@@ -5,32 +5,26 @@ import 'package:peep_todo_flutter/app/data/mock_data.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 
 import '../core/base/base_controller.dart';
+import '../data/model/todo/sub_todo_model.dart';
 
-class TodoController extends BaseController {
-  // TODO : 현재는 Mock 데이터가 들어가 있으므로, 추후 변경 필요
-  final RxList<TodoModel> _todoList = mockTodos.obs;
+abstract class TodoController extends BaseController {
 
-  // Getter
-  RxList<TodoModel> get todoList => _todoList;
+  @override
+  List<dynamic> getTodoList({required String date});
 
-  // Setter
-  void reorderTodoList(int oldIndex, int newIndex) {
-    TodoModel todoItem = _todoList.removeAt(oldIndex);
-    _todoList.insert(newIndex, todoItem);
-  }
+  @override
+  List<SubTodoModel> getSubTodoList(
+      {required String date, required int mainIndex});
 
-  void toggleTodoIsFold(int index) {
-    _todoList[index].isFold.value = !_todoList[index].isFold.value;
-  }
+  @override
+  void reorderTodoList(String date, int oldIndex, int newIndex);
 
-  void toggleMainTodoChecked(int index) {
-    _todoList[index].isChecked.value = !_todoList[index].isChecked.value;
-    update();
-  }
+  @override
+  void toggleTodoIsFold(String date, int index);
 
-  void toggleSubTodoChecked(int mainIndex, int index) {
-    _todoList[mainIndex].subTodo![index].isChecked.value =
-        !_todoList[mainIndex].subTodo![index].isChecked.value;
-    update();
-  }
+  @override
+  void toggleMainTodoChecked(String date, int index);
+
+  @override
+  void toggleSubTodoChecked(String date, int mainIndex, int index);
 }

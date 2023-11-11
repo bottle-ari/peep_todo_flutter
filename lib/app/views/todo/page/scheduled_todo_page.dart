@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/theme/app_values.dart';
+import 'package:peep_todo_flutter/app/theme/palette.dart';
+import 'package:peep_todo_flutter/app/views/main/widget/peep_week_calendar_bar.dart';
+import 'package:peep_todo_flutter/app/views/todo/widget/peep_category_item.dart';
+import 'package:reorderables/reorderables.dart';
 
-import 'package:peep_todo_flutter/app/controllers/todo_controller.dart';
-
+import '../../../controllers/page/scheduled_todo_controller.dart';
 import '../../../core/base/base_view.dart';
-import '../../../routes/app_pages.dart';
 import '../widget/peep_todo_item.dart';
 
-class ScheduledTodoPage extends BaseView<TodoController> {
+class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
+  final date = '20231109';
+
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
     return null;
@@ -16,41 +21,71 @@ class ScheduledTodoPage extends BaseView<TodoController> {
 
   @override
   Widget body(BuildContext context) {
-    return SizedBox(
-      height: double.infinity,
-      child: ListView(
-        children: [
-          PeepTodoItem(
-            color: Color(0xFFBD00FF),
-            index: 0,
+    return Obx(
+      () => SizedBox(
+        height: double.infinity,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
+          child: Column(
+            children: [
+              Container(
+                height: 90.h,
+                child: PeepWeekCalendarBar(
+                    dropdownMenuItems: [],
+                    onMenuItemSelected: (String str) {},
+                    onTapClock: () {}),
+              ),
+              Expanded(
+                child: CustomScrollView(
+                  slivers: [
+                    ReorderableSliverList(
+                      delegate: ReorderableSliverChildListDelegate(
+                        [
+                          for (int index = 0;
+                              index < controller.getTodoList(date: date).length;
+                              index++)
+                            if (controller.isCategoryModel(date, index))
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: AppValues.verticalMargin),
+                                child: PeepCategoryItem(
+                                    color: controller
+                                        .getTodoList(date: date)[index]
+                                        .color,
+                                    name: controller
+                                        .getTodoList(date: date)[index]
+                                        .name,
+                                    emoji: controller
+                                        .getTodoList(date: date)[index]
+                                        .emoji,
+                                    onTapAddButton: () {},
+                                    onTapArrowButton: () {},
+                                    isFolded: false),
+                              )
+                            else
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: AppValues.innerMargin),
+                                child: PeepTodoItem(
+                                  color: controller.todoColor(date, index),
+                                  index: index,
+                                  controller: controller,
+                                  date: date,
+                                ),
+                              )
+                        ],
+                      ),
+                      onReorder: (int oldIndex, int newIndex) {
+                        controller.reorderTodoList(date, oldIndex, newIndex);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          SizedBox(
-            height: 10.h,
-          ),
-          PeepTodoItem(
-            color: Color(0xFFBD00FF),
-            index: 1,
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-          PeepTodoItem(
-            color: Color(0xFFBD00FF),
-            index: 2,
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-          PeepTodoItem(
-            color: Color(0xFFBD00FF),
-            index: 3,
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-        ],
+        ),
       ),
     );
   }
-
 }

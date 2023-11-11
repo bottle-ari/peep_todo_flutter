@@ -10,21 +10,27 @@ import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_check_button.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_priority_folding_button.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_rollback_snackbar.dart';
-
 import '../../../controllers/todo_controller.dart';
 
 class PeepTodoItem extends StatelessWidget {
+  final TodoController controller;
   final Color color;
+  final String date;
   final int index;
 
-  const PeepTodoItem({super.key, required this.color, required this.index});
+  const PeepTodoItem(
+      {super.key,
+      required this.color,
+      required this.index,
+      required this.controller,
+      required this.date});
 
   @override
   Widget build(BuildContext context) {
-    final TodoController controller = Get.find();
+
     Color priorityColor = Palette.peepGray400;
 
-    switch (controller.todoList[index].priority) {
+    switch (controller.getTodoList(date: date)[index].priority) {
       case 1:
         priorityColor = Palette.peepGreen;
         break;
@@ -78,13 +84,14 @@ class PeepTodoItem extends StatelessWidget {
                     isDismissible: true,
                     reverseAnimationCurve: Curves.easeOutQuad,
                     barBlur: 0,
-                    messageText: PeepRollbackSnackbar(
+                    titleText: PeepRollbackSnackbar(
                         icon: PeepIcon(
                           Iconsax.trash,
                           size: AppValues.baseIconSize,
                           color: Palette.peepRed,
                         ),
-                        boldText: controller.todoList[index].name,
+                        boldText:
+                            controller.getTodoList(date: date)[index].name,
                         regularText: '삭제!',
                         onTapRollback: () {
                           Get.back();
@@ -93,7 +100,7 @@ class PeepTodoItem extends StatelessWidget {
                 return false;
               } else {
                 Get.snackbar('체크!', '체크했습니다');
-                controller.toggleMainTodoChecked(index);
+                controller.toggleMainTodoChecked(date, index);
                 return false;
               }
             },
@@ -112,7 +119,10 @@ class PeepTodoItem extends StatelessWidget {
                       children: <Widget>[
                         Row(
                           children: [
-                            if ((controller.todoList[index].subTodo?.length ??
+                            if ((controller
+                                        .getTodoList(date: date)[index]
+                                        .subTodo
+                                        ?.length ??
                                     0) ==
                                 0)
                               Padding(
@@ -127,8 +137,10 @@ class PeepTodoItem extends StatelessWidget {
                               )
                             else
                               PeepPriorityFoldingButton(
+                                date: date,
                                 index: index,
                                 color: priorityColor,
+                                controller: controller,
                               ),
                             InkWell(
                               onTap: () {
@@ -141,10 +153,14 @@ class PeepTodoItem extends StatelessWidget {
                                 child: SizedBox(
                                   width: 230.w,
                                   child: Text(
-                                    controller.todoList[index].name,
+                                    controller
+                                        .getTodoList(date: date)[index]
+                                        .name,
                                     style: PeepTextStyle.regularM(
                                         color: controller
-                                                .todoList[index].isChecked.value
+                                                .getTodoList(date: date)[index]
+                                                .isChecked
+                                                .value
                                             ? Palette.peepGray400
                                             : Palette.peepBlack),
                                     overflow: TextOverflow.ellipsis,
@@ -163,7 +179,9 @@ class PeepTodoItem extends StatelessWidget {
                                     alignment: Alignment.centerRight,
                                     child: PeepCheckButton(
                                       color: color,
+                                      date: date,
                                       index: index,
+                                      controller: controller,
                                     ),
                                   ),
                                 ),
@@ -171,8 +189,14 @@ class PeepTodoItem extends StatelessWidget {
                             ),
                           ],
                         ),
-                        (controller.todoList[index].isFold.value ||
-                                controller.todoList[index].subTodo == null)
+                        (controller
+                                    .getTodoList(date: date)[index]
+                                    .isFold
+                                    .value ||
+                                controller
+                                        .getTodoList(date: date)[index]
+                                        .subTodo ==
+                                    null)
                             ? const SizedBox.shrink()
                             : Padding(
                                 padding: EdgeInsets.symmetric(
@@ -181,29 +205,26 @@ class PeepTodoItem extends StatelessWidget {
                                   color: Palette.peepGray200,
                                 ),
                               ),
-                        controller.todoList[index].isFold.value
+                        controller.getTodoList(date: date)[index].isFold.value
                             ? const SizedBox.shrink()
-                            : ConstrainedBox(
-                                constraints:
-                                    controller.todoList[index].isFold.value
-                                        ? const BoxConstraints(maxHeight: 0)
-                                        : const BoxConstraints(),
-                                child: ListView.builder(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: controller
-                                            .todoList[index].subTodo?.length ??
-                                        0,
-                                    itemBuilder:
-                                        (BuildContext context, int subIndex) {
-                                      return PeepSubTodoItem(
-                                          controller: controller,
-                                          mainIndex: index,
-                                          index: subIndex,
-                                          color: color);
-                                    }),
-                              ),
+                            : Column(
+                              children: [
+                                for (int subIndex = 0;
+                                    subIndex <
+                                        controller
+                                            .getSubTodoList(
+                                                date: date,
+                                                mainIndex: index)
+                                            .length;
+                                    subIndex++)
+                                  PeepSubTodoItem(
+                                      date: date,
+                                      controller: controller,
+                                      mainIndex: index,
+                                      index: subIndex,
+                                      color: color)
+                              ],
+                            ),
                       ],
                     ),
                   ),
@@ -220,6 +241,7 @@ class PeepTodoItem extends StatelessWidget {
 class PeepSubTodoItem extends StatelessWidget {
   final TodoController controller;
   final Color color;
+  final String date;
   final int mainIndex;
   final int index;
 
@@ -228,13 +250,14 @@ class PeepSubTodoItem extends StatelessWidget {
       required this.controller,
       required this.mainIndex,
       required this.index,
-      required this.color});
+      required this.color,
+      required this.date});
 
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => SizedBox(
-        height: AppValues.baseItemHeight,
+        height: 40.h,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -245,18 +268,21 @@ class PeepSubTodoItem extends StatelessWidget {
                   bottom: AppValues.verticalMargin),
               child: InkWell(
                 onTap: () {
-                  controller.toggleSubTodoChecked(mainIndex, index);
+                  controller.toggleSubTodoChecked(date, mainIndex, index);
                 },
                 child: SizedBox(
                   width: 230.w,
                   child: Text(
                     controller
-                            .todoList[mainIndex].subTodo?[index].text.value ??
-                        '',
+                        .getSubTodoList(date: date, mainIndex: mainIndex)[index]
+                        .text
+                        .value,
                     style: PeepTextStyle.regularM(
-                        color: controller.todoList[mainIndex].subTodo?[index]
-                                    .isChecked.value ??
-                                true
+                        color: controller
+                                .getSubTodoList(
+                                    date: date, mainIndex: mainIndex)[index]
+                                .isChecked
+                                .value
                             ? Palette.peepGray400
                             : Palette.peepBlack),
                     overflow: TextOverflow.ellipsis,
@@ -272,7 +298,9 @@ class PeepSubTodoItem extends StatelessWidget {
                 child: PeepSubCheckButton(
                   color: color,
                   mainIndex: mainIndex,
+                  date: date,
                   index: index,
+                  controller: controller,
                 ),
               ),
             ),

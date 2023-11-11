@@ -5,6 +5,7 @@ import 'package:peep_todo_flutter/app/data/model/menu/bottom_navigation_item.dar
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
+import 'package:peep_todo_flutter/app/theme/text_style.dart';
 
 import '../../../controllers/main/bottom_navigation_controller.dart';
 import '../../../data/model/enum/menu_state.dart';
@@ -26,39 +27,70 @@ class PeepBottomNavigationBar extends StatelessWidget {
 
     return Obx(
       () => Container(
+        height: 60.h,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppValues.baseRadius),
+            borderRadius: BorderRadius.circular(20.r),
             boxShadow: [
               BoxShadow(
-                  color: Palette.peepBlack.withOpacity(AppValues.shadowOpacity),
-                  spreadRadius: 2,
-                  blurRadius: 4,
-                  offset: const Offset(0, 3))
+                  color:
+                      Palette.peepGray300.withOpacity(AppValues.shadowOpacity),
+                  spreadRadius: 1,
+                  blurRadius: 3,
+                  offset: const Offset(0, -1))
             ]),
         child: ClipRRect(
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(AppValues.baseRadius),
-            topRight: Radius.circular(AppValues.baseRadius),
+            topLeft: Radius.circular(20.r),
+            topRight: Radius.circular(20.r),
           ),
           child: BottomNavigationBar(
             key: bottomNavKey,
             items: navItems
                 .map(
                   (BottomNavigationItem navItem) => BottomNavigationBarItem(
-                    icon: PeepIcon(
-                      navItem.iconName,
-                      size: 28.w,
-                      color: navItems.indexOf(navItem) ==
-                              navController.selectedIndex
-                          ? selectedItemColor
-                          : unselectedItemColor,
+                    icon: Padding(
+                      padding: EdgeInsets.only(
+                        left: navItem.menuState == MenuState.TODO
+                            ? 20.w
+                            : (navItem.menuState == MenuState.CONSTANT_TODO
+                                ? 10.w
+                                : 0),
+                        right: navItem.menuState == MenuState.MYPAGE
+                            ? 20.w
+                            : (navItem.menuState == MenuState.ROUTINE
+                                ? 10.w
+                                : 0),
+                      ),
+                      child: Column(
+                        children: [
+                          PeepIcon(
+                            navItem.iconName,
+                            size: 28.w,
+                            color: navItems.indexOf(navItem) ==
+                                    navController.selectedIndex
+                                ? selectedItemColor
+                                : unselectedItemColor,
+                          ),
+                          Text(
+                            navItem.label,
+                            style: navItems.indexOf(navItem) ==
+                                    navController.selectedIndex
+                                ? PeepTextStyle.boldXS(
+                                    color: Palette.peepYellow400)
+                                : PeepTextStyle.regularXS(
+                                    color: Palette.peepGray400),
+                          )
+                        ],
+                      ),
                     ),
-                    label: navItem.label,
+                    label: '',
                   ),
                 )
                 .toList(),
-            showSelectedLabels: true,
+            showSelectedLabels: false,
             showUnselectedLabels: false,
+            selectedFontSize: 10.sp,
+            unselectedFontSize: 10.sp,
             type: BottomNavigationBarType.fixed,
             backgroundColor: Palette.peepWhite,
             selectedItemColor: selectedItemColor,

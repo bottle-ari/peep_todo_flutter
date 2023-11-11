@@ -31,7 +31,6 @@ class Test extends StatelessWidget {
   Test({super.key});
 
   final TestController controller = Get.put(TestController());
-  final TodoController todoController = Get.put(TodoController());
 
   @override
   Widget build(BuildContext context) {
