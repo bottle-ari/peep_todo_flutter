@@ -6,14 +6,18 @@ import 'package:peep_todo_flutter/app/data/model/todo/sub_todo_model.dart';
 import 'model/category_model.dart';
 import 'model/todo/todo_model.dart';
 
+void addCategoryModel(CategoryModel model) {
+  mockCategories.add(model);
+}
+
 // Category에 대한 Mock Data
 final List<CategoryModel> mockCategories = [
   CategoryModel(
-      id: 1, userId: 1, name: '할 일', color: const Color(0XFFBD00FF), emoji: '🤔', order: 1),
+      id: 1,  name: '할 일', color: const Color(0XFFBD00FF), emoji: '🤔',),
   CategoryModel(
-      id: 2, userId: 1, name: '공부', color: const Color(0XFF00DB58), emoji: '📝', order: 2),
+      id: 2, name: '공부', color: const Color(0XFF00DB58), emoji: '📝',),
   CategoryModel(
-      id: 3, userId: 1, name: '테스트', color: const Color(0XFF4685FF), emoji: '🥳', order: 3),
+      id: 3, name: '테스트', color: const Color(0XFF4685FF), emoji: '🥳',),
 ];
 
 // Todo에 대한 Mock Data

@@ -27,7 +27,6 @@ class PeepTodoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     Color priorityColor = Palette.peepGray400;
 
     switch (controller.getTodoList(date: date)[index].priority) {
@@ -77,6 +76,9 @@ class PeepTodoItem extends StatelessWidget {
             ),
             confirmDismiss: (DismissDirection direction) async {
               if (direction == DismissDirection.endToStart) {
+                //TODO 여기서 삭제 및 복구 로직 작성
+
+
                 Get.snackbar('', '',
                     snackPosition: SnackPosition.BOTTOM,
                     backgroundColor: Colors.transparent,
@@ -157,12 +159,21 @@ class PeepTodoItem extends StatelessWidget {
                                         .getTodoList(date: date)[index]
                                         .name,
                                     style: PeepTextStyle.regularM(
-                                        color: controller
-                                                .getTodoList(date: date)[index]
-                                                .isChecked
-                                                .value
-                                            ? Palette.peepGray400
-                                            : Palette.peepBlack),
+                                            color: controller
+                                                    .getTodoList(
+                                                        date: date)[index]
+                                                    .isChecked
+                                                    .value
+                                                ? Palette.peepGray400
+                                                : Palette.peepBlack)
+                                        .copyWith(
+                                      decoration: controller
+                                              .getTodoList(date: date)[index]
+                                              .isChecked
+                                              .value
+                                          ? TextDecoration.lineThrough
+                                          : TextDecoration.none,
+                                    ),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 3,
                                   ),
@@ -208,23 +219,22 @@ class PeepTodoItem extends StatelessWidget {
                         controller.getTodoList(date: date)[index].isFold.value
                             ? const SizedBox.shrink()
                             : Column(
-                              children: [
-                                for (int subIndex = 0;
-                                    subIndex <
-                                        controller
-                                            .getSubTodoList(
-                                                date: date,
-                                                mainIndex: index)
-                                            .length;
-                                    subIndex++)
-                                  PeepSubTodoItem(
-                                      date: date,
-                                      controller: controller,
-                                      mainIndex: index,
-                                      index: subIndex,
-                                      color: color)
-                              ],
-                            ),
+                                children: [
+                                  for (int subIndex = 0;
+                                      subIndex <
+                                          controller
+                                              .getSubTodoList(
+                                                  date: date, mainIndex: index)
+                                              .length;
+                                      subIndex++)
+                                    PeepSubTodoItem(
+                                        date: date,
+                                        controller: controller,
+                                        mainIndex: index,
+                                        index: subIndex,
+                                        color: color)
+                                ],
+                              ),
                       ],
                     ),
                   ),
@@ -278,13 +288,22 @@ class PeepSubTodoItem extends StatelessWidget {
                         .text
                         .value,
                     style: PeepTextStyle.regularM(
-                        color: controller
-                                .getSubTodoList(
-                                    date: date, mainIndex: mainIndex)[index]
-                                .isChecked
-                                .value
-                            ? Palette.peepGray400
-                            : Palette.peepBlack),
+                            color: controller
+                                    .getSubTodoList(
+                                        date: date, mainIndex: mainIndex)[index]
+                                    .isChecked
+                                    .value
+                                ? Palette.peepGray400
+                                : Palette.peepBlack)
+                        .copyWith(
+                      decoration: controller
+                              .getSubTodoList(
+                                  date: date, mainIndex: mainIndex)[index]
+                              .isChecked
+                              .value
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none,
+                    ),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),

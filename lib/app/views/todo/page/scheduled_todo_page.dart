@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -58,7 +60,10 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
                                     emoji: controller
                                         .getTodoList(date: date)[index]
                                         .emoji,
-                                    onTapAddButton: () {},
+                                    onTapAddButton: () {
+                                      log("됨???");
+                                      controller.addCategoryItem(date, '😡', '화남', Palette.peepRed);
+                                    },
                                     onTapArrowButton: () {},
                                     isFolded: false),
                               )
