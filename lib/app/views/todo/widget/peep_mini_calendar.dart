@@ -215,9 +215,9 @@ class PeepMiniCalendar extends StatelessWidget {
   Widget build(BuildContext context) {
     List<int> itemRanks = [3, 2, 1]; // 아이템 순위 (1부터 시작)
     List<Color> itemColors = [
-      Palette.peepBlue,
-      Palette.peepRed,
-      Palette.peepGreen
+      Palette.peepBlue.withOpacity(AppValues.baseOpacity),
+      Palette.peepRed.withOpacity(AppValues.baseOpacity),
+      Palette.peepGreen.withOpacity(AppValues.baseOpacity)
     ]; // 아이템 색상
     List<double> itemCounts = [1, 3, 5];
 
