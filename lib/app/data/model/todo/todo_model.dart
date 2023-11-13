@@ -3,7 +3,7 @@ import 'package:peep_todo_flutter/app/data/model/todo/sub_todo_model.dart';
 
 class TodoModel {
   final int id;
-  final int categoryId;
+  int categoryId;
   final int? reminderId;
   final String name;
   final RxList<SubTodoModel>? subTodo;

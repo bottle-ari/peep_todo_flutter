@@ -98,13 +98,24 @@ class ScheduledTodoController extends TodoController {
     list.insert(newIndex, todoItem);
     _scheduledTodoList[date] = List.from(list);
 
+    updateCategoryIndexMap(date);
+
+    var oldCategory = getTodoCategory(date, oldIndex);
+    var newCategory = getTodoCategory(date, newIndex);
+
+    if(oldCategory != newCategory) {
+      todoItem.categoryId = _scheduledTodoList[date]![newCategory].id;
+    }
+
     update();
   }
 
   Color todoColor(String date, int index) {
     var categoryId = _scheduledTodoList[date]![index].categoryId;
 
-    return _categoryList.firstWhere((category) => category.id == categoryId).color;
+    return _categoryList
+        .firstWhere((category) => category.id == categoryId)
+        .color;
   }
 
   bool isCategoryModel(String date, int index) {
@@ -113,5 +124,30 @@ class ScheduledTodoController extends TodoController {
     } else {
       return false;
     }
+  }
+
+  int getTodoCategory(String date, int index) {
+    int i = 0;
+    for (; i < categoryIndexMap[date]!.length - 1; i++) {
+      if (categoryIndexMap[date]![i] < index &&
+          categoryIndexMap[date]![i + 1] > index) {
+        return categoryIndexMap[date]![i];
+      }
+    }
+    return categoryIndexMap[date]![i];
+  }
+
+  void updateCategoryIndexMap(String date) {
+    List<int> newCategoryIndexMap = [];
+
+    if(_scheduledTodoList[date] == null) return;
+
+    for(int i = 0; i < _scheduledTodoList[date]!.length; i++) {
+      if(_scheduledTodoList[date]![i] is CategoryModel) {
+        newCategoryIndexMap.add(i);
+      }
+    }
+
+    categoryIndexMap[date] = newCategoryIndexMap;
   }
 }

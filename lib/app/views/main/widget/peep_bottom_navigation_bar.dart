@@ -6,6 +6,7 @@ import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
+import 'package:peep_todo_flutter/app/utils/device_util.dart';
 
 import '../../../controllers/main/bottom_navigation_controller.dart';
 import '../../../data/model/enum/menu_state.dart';
@@ -27,7 +28,7 @@ class PeepBottomNavigationBar extends StatelessWidget {
 
     return Obx(
       () => Container(
-        height: 60.h,
+        height: isAndroid ? 60.h : 100.h,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.r),
             boxShadow: [
