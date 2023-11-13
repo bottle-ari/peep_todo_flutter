@@ -16,6 +16,7 @@ abstract class AppValues {
   static double largeItemHeight = 52.h;
 
   static double baseRadius = 20.r;
+  static double calendarItemRadius = 15.5.r;
   static double smallRadius = 10.r;
   static double tinyRadius = 5.r;
 
