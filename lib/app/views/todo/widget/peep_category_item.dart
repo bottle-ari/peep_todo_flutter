@@ -57,10 +57,10 @@ class PeepCategoryItem extends StatelessWidget {
                         ),
                         TweenAnimationBuilder(
                           tween: Tween(
-                            begin: 0.0,
+                            begin: isFolded ? 0.0 : 1.0,
                             end: isFolded ? 0.0 : 1.0,
                           ),
-                          duration: const Duration(milliseconds: 100),
+                          duration: const Duration(milliseconds: 120),
                           builder: (context, double value, child) {
                             return Transform.rotate(
                               angle: -value * pi, // 라디안 값으로 회전 (1.0은 180도)
