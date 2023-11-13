@@ -8,8 +8,16 @@ import '../../theme/palette.dart';
 class PeepSubpageAppbar extends StatelessWidget {
   final String title;
   final List<Widget>? buttons;
+  final Function() onTapBackArrow;
+  final List<Function()>? onTapButtons;
 
-  const PeepSubpageAppbar({super.key, required this.title, this.buttons});
+  const PeepSubpageAppbar({
+    super.key,
+    required this.title,
+    this.buttons,
+    required this.onTapBackArrow,
+    this.onTapButtons,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +28,13 @@ class PeepSubpageAppbar extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
         child: Row(
           children: [
-            PeepIcon(
-              Iconsax.arrowLeft,
-              size: AppValues.baseIconSize,
-              color: Palette.peepGray500,
+            InkWell(
+              onTap: onTapBackArrow,
+              child: PeepIcon(
+                Iconsax.arrowLeft,
+                size: AppValues.baseIconSize,
+                color: Palette.peepGray500,
+              ),
             ),
             Padding(
               padding:
@@ -39,11 +50,16 @@ class PeepSubpageAppbar extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    for (Widget button in buttons ?? [])
-                      Padding(
-                          padding:
-                              EdgeInsets.only(left: AppValues.horizontalMargin),
-                          child: button),
+                    if (buttons != null && onTapButtons != null)
+                      if (buttons!.length == onTapButtons!.length)
+                        for (int index = 0; index < buttons!.length; index++)
+                          InkWell(
+                            onTap: onTapButtons![index],
+                            child: Padding(
+                                padding: EdgeInsets.only(
+                                    left: AppValues.horizontalMargin),
+                                child: buttons![index]),
+                          ),
                   ],
                 ),
               ),
