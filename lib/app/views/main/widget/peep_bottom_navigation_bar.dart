@@ -27,81 +27,68 @@ class PeepBottomNavigationBar extends StatelessWidget {
     List<BottomNavigationItem> navItems = _getNavItems();
 
     return Obx(
-      () => Container(
-        height: isAndroid ? 60.h : 100.h,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20.r),
-            boxShadow: [
-              BoxShadow(
-                  color:
-                      Palette.peepGray300.withOpacity(AppValues.shadowOpacity),
-                  spreadRadius: 1,
-                  blurRadius: 3,
-                  offset: const Offset(0, -1))
-            ]),
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20.r),
-            topRight: Radius.circular(20.r),
-          ),
-          child: BottomNavigationBar(
-            key: bottomNavKey,
-            items: navItems
-                .map(
-                  (BottomNavigationItem navItem) => BottomNavigationBarItem(
-                    icon: Padding(
-                      padding: EdgeInsets.only(
-                        left: navItem.menuState == MenuState.TODO
-                            ? 20.w
-                            : (navItem.menuState == MenuState.CONSTANT_TODO
-                                ? 10.w
-                                : 0),
-                        right: navItem.menuState == MenuState.MYPAGE
-                            ? 20.w
-                            : (navItem.menuState == MenuState.ROUTINE
-                                ? 10.w
-                                : 0),
-                      ),
-                      child: Column(
-                        children: [
-                          PeepIcon(
-                            navItem.iconName,
-                            size: 28.w,
-                            color: navItems.indexOf(navItem) ==
-                                    navController.selectedIndex
-                                ? selectedItemColor
-                                : unselectedItemColor,
-                          ),
-                          Text(
-                            navItem.label,
-                            style: navItems.indexOf(navItem) ==
-                                    navController.selectedIndex
-                                ? PeepTextStyle.boldXS(
-                                    color: Palette.peepYellow400)
-                                : PeepTextStyle.regularXS(
-                                    color: Palette.peepGray400),
-                          )
-                        ],
-                      ),
+      () => ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20.r),
+          topRight: Radius.circular(20.r),
+        ),
+        child: BottomNavigationBar(
+          key: bottomNavKey,
+          items: navItems
+              .map(
+                (BottomNavigationItem navItem) => BottomNavigationBarItem(
+                  icon: Padding(
+                    padding: EdgeInsets.only(
+                      left: navItem.menuState == MenuState.TODO
+                          ? 20.w
+                          : (navItem.menuState == MenuState.CONSTANT_TODO
+                              ? 10.w
+                              : 0),
+                      right: navItem.menuState == MenuState.MYPAGE
+                          ? 20.w
+                          : (navItem.menuState == MenuState.ROUTINE
+                              ? 10.w
+                              : 0),
                     ),
-                    label: '',
+                    child: Column(
+                      children: [
+                        PeepIcon(
+                          navItem.iconName,
+                          size: 28.w,
+                          color: navItems.indexOf(navItem) ==
+                                  navController.selectedIndex
+                              ? selectedItemColor
+                              : unselectedItemColor,
+                        ),
+                        Text(
+                          navItem.label,
+                          style: navItems.indexOf(navItem) ==
+                                  navController.selectedIndex
+                              ? PeepTextStyle.boldXS(
+                                  color: Palette.peepYellow400)
+                              : PeepTextStyle.regularXS(
+                                  color: Palette.peepGray400),
+                        )
+                      ],
+                    ),
                   ),
-                )
-                .toList(),
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
-            selectedFontSize: 10.sp,
-            unselectedFontSize: 10.sp,
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: Palette.peepWhite,
-            selectedItemColor: selectedItemColor,
-            unselectedItemColor: unselectedItemColor,
-            currentIndex: navController.selectedIndex,
-            onTap: (index) {
-              navController.updateSelectedIndex(index);
-              onNewMenuSelected(navItems[index].menuState);
-            },
-          ),
+                  label: '',
+                ),
+              )
+              .toList(),
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          selectedFontSize: 10.sp,
+          unselectedFontSize: 10.sp,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Palette.peepWhite,
+          selectedItemColor: selectedItemColor,
+          unselectedItemColor: unselectedItemColor,
+          currentIndex: navController.selectedIndex,
+          onTap: (index) {
+            navController.updateSelectedIndex(index);
+            onNewMenuSelected(navItems[index].menuState);
+          },
         ),
       ),
     );
