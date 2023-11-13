@@ -10,8 +10,22 @@ void addCategoryModel(CategoryModel model) {
   mockCategories.add(model);
 }
 
+void reorderCategoryModel(oldIndex, newIndex){
+  var list = mockCategories;
+
+  final CategoryModel categoryItem = list.removeAt(oldIndex);
+  list.insert(newIndex, categoryItem);
+
+  mockCategories = List.from(list);
+
+  // final CategoryModel categoryItem = mockCategories.removeAt(oldIndex);
+  // mockCategories.insert(newIndex, categoryItem);
+
+  print(mockCategories);
+}
+
 // Category에 대한 Mock Data
-final List<CategoryModel> mockCategories = [
+List<CategoryModel> mockCategories = [
   CategoryModel(
       id: 1,  name: '할 일', color: const Color(0XFFBD00FF), emoji: '🤔',),
   CategoryModel(

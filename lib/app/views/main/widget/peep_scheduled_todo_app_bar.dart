@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_notification_button.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_dropdown_menu.dart';
@@ -66,13 +68,15 @@ class PeepScheduledTodoAppBar extends StatelessWidget {
                 ],
                 onMenuItemSelected: (popupNum) {
                   if (popupNum == 'popup_action_1') {
-
+                    debugPrint('1');
                   } else if (popupNum == 'popup_action_2') {
-
+                    debugPrint('2');
+                    // 카테고리 관리
+                    Get.toNamed(Routes.CATEGORY_MANAGE_PAGE);
                   } else if (popupNum == 'popup_action_3') {
-
+                    debugPrint('3');
                   } else {
-
+                    debugPrint('4');
                   }
                 },
               ),
