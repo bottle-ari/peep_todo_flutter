@@ -29,7 +29,7 @@ class AppPages {
       name: _Paths.CATEGORY_MANAGE_PAGE,
       page: () => CategoryManagePage(),
       binding: CategoryManagePageBinding(),
-      transition: Transition.fadeIn,
+      transition: Transition.rightToLeft,
     ),
   ];
 }
