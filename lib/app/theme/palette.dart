@@ -5,7 +5,7 @@ class Palette {
   static const Color peepYellow300 = Color(0xFFFFCE50);
   static const Color peepYellow200 = Color(0xFFFFDD6F);
   static const Color peepYellow100 = Color(0xFFFEEC90);
-  static const Color peepYellow50 = Color(0xFFFFF2D2);
+  static const Color peepYellow50 = Color(0xFFFFFBD2);
 
   static const Color peepGray500 = Color(0xFF575757);
   static const Color peepGray400 = Color(0xFF989898);
@@ -23,7 +23,7 @@ class Palette {
   static const Color peepGreen = Color(0xFF51CF6C);
   static const Color peepBlue = Color(0xFF4685FF);
 
-  static const Color peepBackground = peepGray100;
+  static const Color peepBackground = Color(0xFFF5F5F4);
 }
 
 Color getTextColor(Color color) {

@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
-import 'package:peep_todo_flutter/app/views/main/widget/peep_week_calendar_bar.dart';
+import 'package:peep_todo_flutter/app/views/todo/widget/peep_mini_calendar.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_category_item.dart';
 import 'package:reorderables/reorderables.dart';
 
@@ -32,10 +32,7 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
             children: [
               Container(
                 height: 90.h,
-                child: PeepWeekCalendarBar(
-                    dropdownMenuItems: [],
-                    onMenuItemSelected: (String str) {},
-                    onTapClock: () {}),
+                child: PeepMiniCalendar(),
               ),
               Expanded(
                 child: CustomScrollView(
