@@ -2,9 +2,9 @@ import 'dart:ui';
 
 class CategoryModel {
   final int id;
-  final String name;
-  final Color color;
-  final String emoji;
+  String name;
+  Color color;
+  String emoji;
 
   CategoryModel({
     required this.id,
