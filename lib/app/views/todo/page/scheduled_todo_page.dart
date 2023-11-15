@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/controllers/mini_calendar_controller.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
@@ -15,7 +16,7 @@ import '../../../core/base/base_view.dart';
 import '../widget/peep_todo_item.dart';
 
 class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
-  final date = '20231109';
+  final MiniCalendarController calendarController = Get.find();
 
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
@@ -25,74 +26,82 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
   @override
   Widget body(BuildContext context) {
     return Obx(
-      () => SizedBox(
-        height: double.infinity,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(bottom: AppValues.verticalMargin),
-                child: SizedBox(
-                  height: 90.h,
-                  child: PeepMiniCalendar(),
-                ),
-              ),
-              Expanded(
-                child: CustomScrollView(
-                  slivers: [
-                    ReorderableSliverList(
-                      delegate: ReorderableSliverChildListDelegate(
-                        [
-                          for (int index = 0;
-                              index < controller.getTodoList(date: date).length;
-                              index++)
-                            if (controller.isCategoryModel(date, index))
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: AppValues.verticalMargin),
-                                child: PeepCategoryItem(
-                                    color: controller
-                                        .getTodoList(date: date)[index]
-                                        .color,
-                                    name: controller
-                                        .getTodoList(date: date)[index]
-                                        .name,
-                                    emoji: controller
-                                        .getTodoList(date: date)[index]
-                                        .emoji,
-                                    onTapAddButton: () {
-                                      log("됨???");
-                                      controller.addCategoryItem(
-                                          date, '😡', '화남', Palette.peepRed);
-                                    },
-                                    onTapArrowButton: () {},
-                                    isFolded: false),
-                              )
-                            else
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: AppValues.innerMargin),
-                                child: PeepTodoItem(
-                                  color: controller.todoColor(date, index),
-                                  index: index,
-                                  controller: controller,
-                                  date: date,
-                                ),
-                              )
-                        ],
-                      ),
-                      onReorder: (int oldIndex, int newIndex) {
-                        controller.reorderTodoList(date, oldIndex, newIndex);
-                      },
+          () {
+        var date = DateFormat('yyyyMMdd').format(
+            calendarController.selectedDay.value);
+        return SizedBox(
+          height: double.infinity,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(bottom: AppValues.verticalMargin),
+                  child: SizedBox(
+                    height: 90.h,
+                    child: PeepMiniCalendar(
+                      controller: controller,
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ],
+                Expanded(
+                  child: CustomScrollView(
+                    slivers: [
+                      ReorderableSliverList(
+                        delegate: ReorderableSliverChildListDelegate(
+                          [
+                            for (int index = 0;
+                            index <
+                                controller
+                                    .getTodoList(date: date)
+                                    .length;
+                            index++)
+                              if (controller.isCategoryModel(date, index))
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: AppValues.verticalMargin),
+                                  child: PeepCategoryItem(
+                                      color: controller
+                                          .getTodoList(date: date)[index]
+                                          .color,
+                                      name: controller
+                                          .getTodoList(date: date)[index]
+                                          .name,
+                                      emoji: controller
+                                          .getTodoList(date: date)[index]
+                                          .emoji,
+                                      onTapAddButton: () {
+                                        controller.addCategoryItem(
+                                            date, '😡', '화남', Palette.peepRed);
+                                      },
+                                      onTapArrowButton: () {},
+                                      isFolded: false),
+                                )
+                              else
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: AppValues.innerMargin),
+                                  child: PeepTodoItem(
+                                    color: controller.todoColor(date, index),
+                                    index: index,
+                                    controller: controller,
+                                    date: date,
+                                  ),
+                                )
+                          ],
+                        ),
+                        onReorder: (int oldIndex, int newIndex) {
+                          controller.reorderTodoList(date, oldIndex, newIndex);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

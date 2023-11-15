@@ -19,10 +19,13 @@ class ScheduledTodoController extends TodoController {
       [false, true].obs; //TODO : categoryFoldMap에 대한 모델과 로컬 상태 저장이 필요함
   final RxMap<String, List<TodoModel>> _todoList = mockTodos.obs;
   final RxList<CategoryModel> _categoryList = mockCategories.obs;
+  final RxMap<String, List<double>> calendarItemCounts =
+      <String, List<double>>{}.obs;
 
   @override
   void onInit() {
     updateScheduledTodoList();
+    initCalendarItemCounts();
   }
 
   void updateScheduledTodoList() {
@@ -73,14 +76,17 @@ class ScheduledTodoController extends TodoController {
   void toggleTodoIsFold(String date, int index) {
     if (_scheduledTodoList[date] == null) return;
     _scheduledTodoList[date]![index].isFold.value =
-        !_scheduledTodoList[date]![index].isFold.value;
+    !_scheduledTodoList[date]![index].isFold.value;
   }
 
   @override
   void toggleMainTodoChecked(String date, int index) {
     if (_scheduledTodoList[date] == null) return;
     _scheduledTodoList[date]![index].isChecked.value =
-        !_scheduledTodoList[date]![index].isChecked.value;
+    !_scheduledTodoList[date]![index].isChecked.value;
+
+    updateCalendarItemCounts(date);
+
     update();
   }
 
@@ -88,7 +94,7 @@ class ScheduledTodoController extends TodoController {
   void toggleSubTodoChecked(String date, int mainIndex, int index) {
     if (_scheduledTodoList[date] == null) return;
     _scheduledTodoList[date]![mainIndex].subTodo![index].isChecked.value =
-        !_scheduledTodoList[date]![mainIndex].subTodo![index].isChecked.value;
+    !_scheduledTodoList[date]![mainIndex].subTodo![index].isChecked.value;
     update();
   }
 
@@ -110,15 +116,18 @@ class ScheduledTodoController extends TodoController {
 
     var newCategory = getTodoCategory(date, newIndex);
 
-    if(oldCategory != newCategory) {
+    if (oldCategory != newCategory) {
       todoItem.categoryId = _scheduledTodoList[date]![newCategory].id;
     }
+
+    updateCalendarItemCounts(date);
 
     update();
   }
 
   void addCategoryItem(String date, String emoji, String name, Color color) {
-    CategoryModel categoryModel = CategoryModel(id: 5, name: name, color: color, emoji: emoji);
+    CategoryModel categoryModel =
+    CategoryModel(id: 5, name: name, color: color, emoji: emoji);
     addCategoryModel(categoryModel);
 
     _categoryList.value = mockCategories;
@@ -130,9 +139,7 @@ class ScheduledTodoController extends TodoController {
     update();
   }
 
-  void deleteTodoItem(String date, int index) {
-
-  }
+  void deleteTodoItem(String date, int index) {}
 
   Color todoColor(String date, int index) {
     var categoryId = _scheduledTodoList[date]![index].categoryId;
@@ -164,14 +171,65 @@ class ScheduledTodoController extends TodoController {
   void updateCategoryIndexMap(String date) {
     List<int> newCategoryIndexMap = [];
 
-    if(_scheduledTodoList[date] == null) return;
+    if (_scheduledTodoList[date] == null) return;
 
-    for(int i = 0; i < _scheduledTodoList[date]!.length; i++) {
-      if(_scheduledTodoList[date]![i] is CategoryModel) {
+    for (int i = 0; i < _scheduledTodoList[date]!.length; i++) {
+      if (_scheduledTodoList[date]![i] is CategoryModel) {
         newCategoryIndexMap.add(i);
       }
     }
 
     categoryIndexMap[date] = newCategoryIndexMap;
+  }
+
+  /*
+  MiniCalendar
+   */
+  List<CategoryModel> getCategoryList() {
+    return _categoryList;
+  }
+
+  void initCalendarItemCounts() {
+    for (var date in _todoList.keys) {
+      if (_scheduledTodoList[date] == null) continue;
+
+      List<int> itemCounts = [];
+      int sum = 0;
+      for (int i = 0; i < _scheduledTodoList[date]!.length; i++) {
+        if (isCategoryModel(date, i)) {
+          itemCounts.add(0);
+        } else {
+          sum++;
+          if (_scheduledTodoList[date]![i].isChecked.value) {
+            itemCounts[itemCounts.length - 1]++;
+          }
+        }
+      }
+
+      if (sum != 0) {
+        calendarItemCounts[date] =
+            itemCounts.map((item) => item / sum).toList();
+      }
+    }
+  }
+
+  void updateCalendarItemCounts(String date) {
+    List<int> itemCounts = [];
+    int sum = 0;
+    for (int i = 0; i < _scheduledTodoList[date]!.length; i++) {
+      if (isCategoryModel(date, i)) {
+        itemCounts.add(0);
+      } else {
+        sum++;
+        if (_scheduledTodoList[date]![i].isChecked.value) {
+          itemCounts[itemCounts.length - 1]++;
+        }
+      }
+    }
+
+    if (sum != 0) {
+      calendarItemCounts[date] =
+          itemCounts.map((item) => item / sum).toList();
+    }
   }
 }
