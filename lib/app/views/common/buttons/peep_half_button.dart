@@ -8,7 +8,6 @@ import 'package:peep_todo_flutter/app/theme/text_style.dart';
 class PeepHalfButton extends StatelessWidget {
   final Color color;
   final VoidCallback onTap;
-  final VoidCallback onTapText;
   final VoidCallback onTapCancel;
   final String text;
   final Color textColor;
@@ -19,7 +18,6 @@ class PeepHalfButton extends StatelessWidget {
     Key? key,
     required this.color,
     required this.onTap,
-    required this.onTapText,
     required this.onTapCancel,
     required this.text,
     required this.textColor,
@@ -29,41 +27,39 @@ class PeepHalfButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 48.h,
-      width: 172.w,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppValues.baseRadius), // 48.w / 2
-        color: color,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 1.5 * AppValues.horizontalMargin),
-            child: GestureDetector(
-              onTap: onTap,
-              child: icon,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: AppValues.baseItemHeight,
+        width: 172.w,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppValues.baseRadius), // 48.w / 2
+          color: color,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 1.5 * AppValues.horizontalMargin),
+                child: icon,
             ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(left: 2 * AppValues.horizontalMargin),
-              child: GestureDetector(
-                  onTap: onTapText,
-                  child:
-                      Text(text, style: PeepTextStyle.boldM(color: textColor))),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(left: 2 * AppValues.horizontalMargin),
+                    child:
+                        Text(text, style: PeepTextStyle.boldM(color: textColor))
+              ),
             ),
-          ),
-          Padding(
-              padding: EdgeInsets.only(right: 1.5 * AppValues.horizontalMargin),
-              child: isDate
-                  ? GestureDetector(
-                      onTap: onTapCancel,
-                      child: PeepIcon(Iconsax.cancel,
-                          size: AppValues.smallRadius, color: Palette.peepWhite))
-                  : null),
-        ],
+            Padding(
+                padding: EdgeInsets.only(right: 1.5 * AppValues.horizontalMargin),
+                child: isDate
+                    ? GestureDetector(
+                        onTap: onTapCancel,
+                        child: PeepIcon(Iconsax.cancel,
+                            size: AppValues.smallRadius, color: Palette.peepWhite))
+                    : null),
+          ],
+        ),
       ),
     );
   }
