@@ -8,7 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:peep_todo_flutter/app/controllers/week_calendar_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/mini_calendar_controller.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_dropdown_menu.dart';
 import 'package:peep_todo_flutter/app/views/main/widget/peep_scheduled_todo_app_bar.dart';
@@ -58,8 +58,7 @@ class ringPainter extends CustomPainter {
 }
 
 class PeepMiniCalendar extends StatelessWidget {
-  final WeekCalendarController calendarController =
-      Get.put(WeekCalendarController());
+  MiniCalendarController calendarController = Get.find();
 
   PeepMiniCalendar({
     Key? key,
@@ -68,7 +67,7 @@ class PeepMiniCalendar extends StatelessWidget {
   Widget customDowBuilder(BuildContext context, DateTime day) {
     final text = DateFormat.E('ko_KR').format(day);
     final isSelected = calendarController.selectedDay.value;
-    final isToday = isSameDay(day, calendarController.toDay.value);
+    final isToday = isSameDay(day, calendarController.today);
     return Center(
       child: Stack(
         children: [
@@ -87,8 +86,10 @@ class PeepMiniCalendar extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: Palette.peepYellow50,
                           borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(AppValues.calendarItemRadius),
-                            topRight: Radius.circular(AppValues.calendarItemRadius),
+                            topLeft:
+                                Radius.circular(AppValues.calendarItemRadius),
+                            topRight:
+                                Radius.circular(AppValues.calendarItemRadius),
                           ),
                         ),
                       ),
@@ -153,8 +154,10 @@ class PeepMiniCalendar extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Palette.peepYellow50,
                         borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(AppValues.calendarItemRadius),
-                          topRight: Radius.circular(AppValues.calendarItemRadius),
+                          topLeft:
+                              Radius.circular(AppValues.calendarItemRadius),
+                          topRight:
+                              Radius.circular(AppValues.calendarItemRadius),
                         ),
                       ),
                     ),
@@ -233,7 +236,8 @@ class PeepMiniCalendar extends StatelessWidget {
                   return Center(
                     child: Text(
                       DateFormat.d().format(day),
-                      style: PeepTextStyle.regularXS(color: Palette.peepGray400),
+                      style:
+                          PeepTextStyle.regularXS(color: Palette.peepGray400),
                     ),
                   );
                 },
@@ -248,20 +252,23 @@ class PeepMiniCalendar extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Palette.peepYellow50,
                             borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(AppValues.calendarItemRadius),
-                              bottomRight: Radius.circular(AppValues.calendarItemRadius),
+                              bottomLeft:
+                                  Radius.circular(AppValues.calendarItemRadius),
+                              bottomRight:
+                                  Radius.circular(AppValues.calendarItemRadius),
                             ),
                           ),
                         ),
                         CustomPaint(
                           size: Size(32.w, 32.h), // CustomPaint의 크기 고정
-                          painter: ringPainter(itemRanks, itemColors, itemCounts),
+                          painter:
+                              ringPainter(itemRanks, itemColors, itemCounts),
                         ),
                         Center(
                           child: Text(
                             DateFormat.d().format(selectedDay),
-                            style:
-                                PeepTextStyle.regularXS(color: Palette.peepBlack),
+                            style: PeepTextStyle.regularXS(
+                                color: Palette.peepBlack),
                           ),
                         ),
                       ],
@@ -276,7 +283,8 @@ class PeepMiniCalendar extends StatelessWidget {
                       children: [
                         CustomPaint(
                           size: Size(32.w, 32.h),
-                          painter: ringPainter(itemRanks, itemColors, itemCounts),
+                          painter:
+                              ringPainter(itemRanks, itemColors, itemCounts),
                         ),
                         Text(
                           DateFormat.d().format(day),
@@ -296,8 +304,8 @@ class PeepMiniCalendar extends StatelessWidget {
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(AppValues.calendarItemRadius),
                     // 좌하단 반지름 값
-                    bottomRight:
-                        Radius.circular(AppValues.calendarItemRadius), // 우하단 반지름 값
+                    bottomRight: Radius.circular(
+                        AppValues.calendarItemRadius), // 우하단 반지름 값
                   ),
                 ),
                 outsideDecoration: BoxDecoration(
@@ -305,8 +313,8 @@ class PeepMiniCalendar extends StatelessWidget {
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(AppValues.calendarItemRadius),
                     // 좌하단 반지름 값
-                    bottomRight:
-                        Radius.circular(AppValues.calendarItemRadius), // 우하단 반지름 값
+                    bottomRight: Radius.circular(
+                        AppValues.calendarItemRadius), // 우하단 반지름 값
                   ),
                   color: null,
                 ),
@@ -331,8 +339,8 @@ class PeepMiniCalendar extends StatelessWidget {
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(AppValues.calendarItemRadius),
                     // 좌하단 반지름 값
-                    bottomRight:
-                        Radius.circular(AppValues.calendarItemRadius), // 우하단 반지름 값
+                    bottomRight: Radius.circular(
+                        AppValues.calendarItemRadius), // 우하단 반지름 값
                   ),
                   color: null,
                 ),

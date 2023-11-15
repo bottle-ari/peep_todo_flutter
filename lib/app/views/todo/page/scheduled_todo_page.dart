@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/controllers/mini_calendar_controller.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_mini_calendar.dart';
@@ -30,9 +31,12 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
           padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
           child: Column(
             children: [
-              Container(
-                height: 90.h,
-                child: PeepMiniCalendar(),
+              Padding(
+                padding: EdgeInsets.only(bottom: AppValues.verticalMargin),
+                child: SizedBox(
+                  height: 90.h,
+                  child: PeepMiniCalendar(),
+                ),
               ),
               Expanded(
                 child: CustomScrollView(
@@ -59,7 +63,8 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
                                         .emoji,
                                     onTapAddButton: () {
                                       log("됨???");
-                                      controller.addCategoryItem(date, '😡', '화남', Palette.peepRed);
+                                      controller.addCategoryItem(
+                                          date, '😡', '화남', Palette.peepRed);
                                     },
                                     onTapArrowButton: () {},
                                     isFolded: false),
