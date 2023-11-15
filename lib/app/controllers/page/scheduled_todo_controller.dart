@@ -13,22 +13,36 @@ import '../../data/model/category_model.dart';
 class ScheduledTodoController extends TodoController {
   // TODO : 현재는 Mock 데이터가 들어가 있으므로, 추후 변경 필요
   late RxMap<String, List<dynamic>> _scheduledTodoList;
-  late RxMap<String, List<int>> categoryIndexMap;
 
-  final RxList<bool> categoryFoldMap =
-      [false, true].obs; //TODO : categoryFoldMap에 대한 모델과 로컬 상태 저장이 필요함
+  late RxMap<String, List<int>> categoryIndexMap;
+  final RxList<bool> categoryFoldMap = <bool>[].obs;
+
   final RxMap<String, List<TodoModel>> _todoList = mockTodos.obs;
   final RxList<CategoryModel> _categoryList = mockCategories.obs;
+
   final RxMap<String, List<double>> calendarItemCounts =
       <String, List<double>>{}.obs;
+
   TodoModel? backupTodoItem;
   int? backupIndex;
   String? backupDate;
 
   @override
   void onInit() {
+    initCategoryFoldMap();
     updateScheduledTodoList();
     initCalendarItemCounts();
+  }
+
+  int reverseCategoryFoldMap(String date, int index) {
+    if(categoryIndexMap[date] == null) return -1;
+    return categoryIndexMap[date]!.indexOf(index);
+  }
+
+  void initCategoryFoldMap() {
+    for(var _ in _categoryList) {
+      categoryFoldMap.add(false);
+    }
   }
 
   void updateScheduledTodoList() {
@@ -80,6 +94,15 @@ class ScheduledTodoController extends TodoController {
     if (_scheduledTodoList[date] == null) return;
     _scheduledTodoList[date]![index].isFold.value =
     !_scheduledTodoList[date]![index].isFold.value;
+  }
+
+  void toggleCategoryIsFold(String date, int index) {
+    int inx = reverseCategoryFoldMap(date, index);
+    categoryFoldMap[inx] = !categoryFoldMap[inx];
+
+    log("$categoryFoldMap");
+
+    update();
   }
 
   @override

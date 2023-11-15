@@ -76,7 +76,6 @@ class PeepTodoItem extends StatelessWidget {
             ),
             confirmDismiss: (DismissDirection direction) async {
               if (direction == DismissDirection.endToStart) {
-                //TODO 여기서 삭제 및 복구 로직 작성
                 Get.back();
                 controller.deleteTodoItem(date, index);
 
@@ -100,7 +99,6 @@ class PeepTodoItem extends StatelessWidget {
                           controller.rollbackTodoItem();
                           Get.back();
                         }));
-                //Todo : 여기 true로 변경해야 함
                 return true;
               } else {
                 controller.toggleMainTodoChecked(date, index);

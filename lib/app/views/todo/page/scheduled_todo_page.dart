@@ -26,9 +26,9 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
   @override
   Widget body(BuildContext context) {
     return Obx(
-          () {
-        var date = DateFormat('yyyyMMdd').format(
-            calendarController.selectedDay.value);
+      () {
+        var date =
+            DateFormat('yyyyMMdd').format(calendarController.selectedDay.value);
         return SizedBox(
           height: double.infinity,
           child: Padding(
@@ -51,11 +51,9 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
                         delegate: ReorderableSliverChildListDelegate(
                           [
                             for (int index = 0;
-                            index <
-                                controller
-                                    .getTodoList(date: date)
-                                    .length;
-                            index++)
+                                index <
+                                    controller.getTodoList(date: date).length;
+                                index++)
                               if (controller.isCategoryModel(date, index))
                                 Padding(
                                   padding: EdgeInsets.symmetric(
@@ -74,10 +72,17 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
                                         controller.addCategoryItem(
                                             date, '😡', '화남', Palette.peepRed);
                                       },
-                                      onTapArrowButton: () {},
-                                      isFolded: false),
+                                      onTapArrowButton: () {
+                                        controller.toggleCategoryIsFold(
+                                            date, index);
+                                      },
+                                      isFolded: controller.categoryFoldMap[
+                                          controller.reverseCategoryFoldMap(
+                                              date, index)]),
                                 )
-                              else
+                              else if (!controller.categoryFoldMap[controller
+                                  .reverseCategoryFoldMap(date, controller.getTodoCategory(
+                                  date, index))])
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       vertical: AppValues.innerMargin),
