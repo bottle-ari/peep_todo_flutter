@@ -21,6 +21,9 @@ class ScheduledTodoController extends TodoController {
   final RxList<CategoryModel> _categoryList = mockCategories.obs;
   final RxMap<String, List<double>> calendarItemCounts =
       <String, List<double>>{}.obs;
+  TodoModel? backupTodoItem;
+  int? backupIndex;
+  String? backupDate;
 
   @override
   void onInit() {
@@ -139,7 +142,37 @@ class ScheduledTodoController extends TodoController {
     update();
   }
 
-  void deleteTodoItem(String date, int index) {}
+  @override
+  void deleteTodoItem(String? date, int index) {
+    if(date == null) return;
+
+    backupDate = date;
+    backupIndex = index;
+
+    var list = _scheduledTodoList[date]!;
+
+    backupTodoItem = list.removeAt(index);
+    _scheduledTodoList[date] = List.from(list);
+
+    updateCategoryIndexMap(date);
+    updateCalendarItemCounts(date);
+
+    update();
+  }
+
+  @override
+  void rollbackTodoItem() {
+    if(backupTodoItem == null || backupDate == null || backupIndex == null) return;
+
+    var list = _scheduledTodoList[backupDate]!;
+    list.insert(backupIndex!, backupTodoItem);
+    _scheduledTodoList[backupDate!] = List.from(list);
+
+    updateCategoryIndexMap(backupDate!);
+    updateCalendarItemCounts(backupDate!);
+
+    update();
+  }
 
   Color todoColor(String date, int index) {
     var categoryId = _scheduledTodoList[date]![index].categoryId;
