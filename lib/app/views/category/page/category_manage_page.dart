@@ -60,7 +60,9 @@ class CategoryManagePage extends BaseView<CategoryManagePageController> {
                           emoji: controller.categoryList[index].emoji,
                           color: controller.categoryList[index].color,
                           onTapEmojiPicker: () {},
-                          onTapColorPicker: () {},
+                          onTapColorPicker: () {
+                            controller.showCategoryColorPickerModal(context, index);
+                          },
                           onTap: () {},
                           onDelete: () {},
                         ),

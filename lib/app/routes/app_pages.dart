@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/bindings/page/category_manage_page_binding.dart';
 import 'package:peep_todo_flutter/app/views/test.dart';
-import 'package:peep_todo_flutter/app/views/todo/page/category_manage_page.dart';
+import 'package:peep_todo_flutter/app/views/category/page/category_manage_page.dart';
 
 import '../bindings/main_binding.dart';
 import '../views/main/page/main_page.dart';
