@@ -69,8 +69,6 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
                                           .getTodoList(date: date)[index]
                                           .emoji,
                                       onTapAddButton: () {
-                                        controller.addCategoryItem(
-                                            date, '😡', '화남', Palette.peepRed);
                                       },
                                       onTapArrowButton: () {
                                         controller.toggleCategoryIsFold(
