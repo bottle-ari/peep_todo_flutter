@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
+import 'package:peep_todo_flutter/app/views/todo/page/todo_add_modal.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_mini_calendar.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_category_item.dart';
 import 'package:reorderables/reorderables.dart';
@@ -58,8 +59,7 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
                                         .getTodoList(date: date)[index]
                                         .emoji,
                                     onTapAddButton: () {
-                                      log("됨???");
-                                      controller.addCategoryItem(date, '😡', '화남', Palette.peepRed);
+                                      Get.bottomSheet(TodoAddModal(color: controller.getTodoList(date: date)[index].color,));
                                     },
                                     onTapArrowButton: () {},
                                     isFolded: false),
