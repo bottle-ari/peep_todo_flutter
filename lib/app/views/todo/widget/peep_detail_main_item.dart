@@ -35,7 +35,7 @@ class PeepDetailMainItem extends StatelessWidget {
             controller: controller,
             decoration: InputDecoration(
               focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Palette.peepBlue),
+                borderSide: BorderSide(color: color),
                 borderRadius: BorderRadius.circular(AppValues.baseRadius),
               ),
               border: InputBorder.none,
