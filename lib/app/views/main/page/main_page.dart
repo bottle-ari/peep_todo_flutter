@@ -12,7 +12,6 @@ import '../widget/peep_bottom_navigation_bar.dart';
 import '../widget/peep_scheduled_todo_app_bar.dart';
 
 class MainPage extends BaseView<MainController> {
-  // 앱바 구현하기
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
     return PreferredSize(
@@ -40,7 +39,7 @@ class MainPage extends BaseView<MainController> {
   Widget getAppbarOnSelectedMenu(MenuState menuState) {
     switch (menuState) {
       case MenuState.TODO:
-        return const PeepScheduledTodoAppBar();
+        return PeepScheduledTodoAppBar();
       case MenuState.CONSTANT_TODO:
         return PeepConstantTodoAppbar(
             dropdownMenuItems: [],

@@ -27,4 +27,10 @@ abstract class TodoController extends BaseController {
 
   @override
   void toggleSubTodoChecked(String date, int mainIndex, int index);
+
+  @override
+  void deleteTodoItem(String? date, int index);
+
+  @override
+  void rollbackTodoItem();
 }
