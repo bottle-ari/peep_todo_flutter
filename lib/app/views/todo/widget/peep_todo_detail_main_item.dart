@@ -9,11 +9,11 @@ import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_check_button.dart';
 
-class PeepDetailMainItem extends StatelessWidget {
+class PeepTodoDetailMainItem extends StatelessWidget {
   final Color color;
   final VoidCallback onTap;
 
-  const PeepDetailMainItem({
+  const PeepTodoDetailMainItem({
     Key? key,
     required this.color,
     required this.onTap,
