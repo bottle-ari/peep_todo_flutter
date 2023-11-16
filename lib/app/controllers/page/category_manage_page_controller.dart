@@ -1,8 +1,10 @@
+import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/core/base/base_controller.dart';
 import 'package:peep_todo_flutter/app/data/mock_data.dart';
+import 'package:peep_todo_flutter/app/views/category/page/category_add_modal.dart';
 import 'package:peep_todo_flutter/app/views/category/page/category_color_picker_modal.dart';
 import '../../data/model/category_model.dart';
 
@@ -57,8 +59,6 @@ class CategoryManagePageController extends BaseController {
     Show Category Color Picker Modal
   */
   void showCategoryColorPickerModal(BuildContext context, int index) {
-    print("onTapColorPicker");
-    print("current color : ${categoryList[index].color}");
     showModalBottomSheet<void>(
       context: context,
       backgroundColor: Colors.transparent,
@@ -70,5 +70,26 @@ class CategoryManagePageController extends BaseController {
         );
       },
     );
+  }
+
+  /*
+    Show Category Add Modal
+  */
+  void showCategoryAddModal(BuildContext context) {
+    Color initColor =
+        Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: CategoryAddModal(
+              initColor: initColor,
+            ),
+          );
+        });
   }
 }
