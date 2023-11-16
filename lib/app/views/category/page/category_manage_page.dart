@@ -29,7 +29,7 @@ class CategoryManagePage extends BaseView<CategoryManagePageController> {
           ],
           onTapButtons: [
             () {
-              print("add category");
+              controller.showCategoryAddModal(context);
             }
           ],
         ),
@@ -61,7 +61,8 @@ class CategoryManagePage extends BaseView<CategoryManagePageController> {
                           color: controller.categoryList[index].color,
                           onTapEmojiPicker: () {},
                           onTapColorPicker: () {
-                            controller.showCategoryColorPickerModal(context, index);
+                            controller.showCategoryColorPickerModal(
+                                context, index);
                           },
                           onTap: () {},
                           onDelete: () {},

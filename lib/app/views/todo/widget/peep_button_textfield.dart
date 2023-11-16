@@ -140,12 +140,13 @@ class PeepCategoryTextfield extends StatelessWidget {
               child: TextField(
                 controller: controller,
                 onSubmitted: handleAddButtonTap,
-                style: PeepTextStyle.boldL(color: Palette.peepBlack),
+                autofocus: true,
+                style: PeepTextStyle.regularL(color: Palette.peepBlack),
                 cursorColor: color,
                 decoration: InputDecoration(
                   border: InputBorder.none, // 밑줄 제거
                   hintText: '이름을 입력해 주세요',
-                  hintStyle: PeepTextStyle.boldL(color: Palette.peepGray300),
+                  hintStyle: PeepTextStyle.regularL(color: Palette.peepGray300),
                 ),
               ),
             ),
