@@ -48,7 +48,9 @@ class PeepScheduledTodoAppBar extends BaseView<MiniCalendarController> {
                     color: Palette.peepGray500,
                   ),
                   isNotified: true,
-                  onTapFunc: () {},
+                  onTapFunc: () {
+                    Get.toNamed(AppPages.OVERDUETODO);
+                  },
                 ),
                 SizedBox(width: AppValues.horizontalMargin),
                 PeepDropdownMenu(
