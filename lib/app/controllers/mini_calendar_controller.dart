@@ -1,12 +1,14 @@
-import 'dart:ffi';
-
 import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/core/base/base_controller.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class WeekCalendarController extends GetxController {
+import '../data/mock_data.dart';
+import '../data/model/category_model.dart';
+
+class MiniCalendarController extends BaseController {
+  DateTime today = DateTime.now();
   Rx<DateTime> focusedDay = DateTime.now().obs;
   Rx<DateTime> selectedDay = DateTime.now().obs;
-  Rx<DateTime> toDay = DateTime.now().obs;
 
   void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     if (!isSameDay(this.selectedDay.value, selectedDay)) {
@@ -15,15 +17,20 @@ class WeekCalendarController extends GetxController {
     }
   }
 
-
-
   void onMoveToday() {
     // 오늘 선택 예외 처리
-    if(focusedDay.value == toDay.value && selectedDay.value == toDay.value){
+    if(focusedDay.value == today && selectedDay.value == today){
       focusedDay.update((val) { val = null; });
     }
-    focusedDay.value = toDay.value;
-    selectedDay.value = toDay.value;
+    focusedDay.value = today;
+    selectedDay.value = today;
+  }
+
+  void onPageChanged(DateTime newFocusedDay) {
+    focusedDay.value = newFocusedDay;
+    selectedDay.value = newFocusedDay;
+
+    update();
   }
 
 }

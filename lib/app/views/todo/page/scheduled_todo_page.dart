@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:peep_todo_flutter/app/controllers/mini_calendar_controller.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/todo_add_modal.dart';
@@ -15,7 +17,7 @@ import '../../../core/base/base_view.dart';
 import '../widget/peep_todo_item.dart';
 
 class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
-  final date = '20231109';
+  final MiniCalendarController calendarController = Get.find();
 
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
@@ -80,14 +82,15 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
                       onReorder: (int oldIndex, int newIndex) {
                         controller.reorderTodoList(date, oldIndex, newIndex);
                       },
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

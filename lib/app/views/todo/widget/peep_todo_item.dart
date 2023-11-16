@@ -76,8 +76,8 @@ class PeepTodoItem extends StatelessWidget {
             ),
             confirmDismiss: (DismissDirection direction) async {
               if (direction == DismissDirection.endToStart) {
-                //TODO 여기서 삭제 및 복구 로직 작성
-
+                Get.back();
+                controller.deleteTodoItem(date, index);
 
                 Get.snackbar('', '',
                     snackPosition: SnackPosition.BOTTOM,
@@ -96,12 +96,11 @@ class PeepTodoItem extends StatelessWidget {
                             controller.getTodoList(date: date)[index].name,
                         regularText: '삭제!',
                         onTapRollback: () {
+                          controller.rollbackTodoItem();
                           Get.back();
                         }));
-                //Todo : 여기 true로 변경해야 함
-                return false;
+                return true;
               } else {
-                Get.snackbar('체크!', '체크했습니다');
                 controller.toggleMainTodoChecked(date, index);
                 return false;
               }
