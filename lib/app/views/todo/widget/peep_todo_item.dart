@@ -164,15 +164,7 @@ class PeepTodoItem extends StatelessWidget {
                                                     .isChecked
                                                     .value
                                                 ? Palette.peepGray400
-                                                : Palette.peepBlack)
-                                        .copyWith(
-                                      decoration: controller
-                                              .getTodoList(date: date)[index]
-                                              .isChecked
-                                              .value
-                                          ? TextDecoration.lineThrough
-                                          : TextDecoration.none,
-                                    ),
+                                                : Palette.peepBlack),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 3,
                                   ),
@@ -293,16 +285,7 @@ class PeepSubTodoItem extends StatelessWidget {
                                     .isChecked
                                     .value
                                 ? Palette.peepGray400
-                                : Palette.peepBlack)
-                        .copyWith(
-                      decoration: controller
-                              .getSubTodoList(
-                                  date: date, mainIndex: mainIndex)[index]
-                              .isChecked
-                              .value
-                          ? TextDecoration.lineThrough
-                          : TextDecoration.none,
-                    ),
+                                : Palette.peepBlack),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),

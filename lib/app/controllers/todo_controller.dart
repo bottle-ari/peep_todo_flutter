@@ -33,4 +33,7 @@ abstract class TodoController extends BaseController {
 
   @override
   void rollbackTodoItem();
+
+  @override
+  bool isCategoryModel(String date, int index);
 }

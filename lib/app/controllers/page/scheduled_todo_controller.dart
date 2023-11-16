@@ -160,7 +160,7 @@ class ScheduledTodoController extends TodoController {
     updateScheduledTodoList();
     updateCategoryIndexMap(date);
 
-    log(_categoryList.value.toString());
+    log(_categoryList.toString());
 
     update();
   }
@@ -205,6 +205,7 @@ class ScheduledTodoController extends TodoController {
         .color;
   }
 
+  @override
   bool isCategoryModel(String date, int index) {
     if (categoryIndexMap[date]!.contains(index)) {
       return true;

@@ -55,6 +55,106 @@ List<CategoryModel> mockCategories = [
 
 // Todo에 대한 Mock Data
 final Map<String, List<TodoModel>> mockTodos = {
+  'constant': [
+    TodoModel(
+        id: 101,
+        categoryId: 1,
+        reminderId: null,
+        name:
+        '매우 긴 사이즈의 투두 제목 매우 긴 사이즈의 투두 제목  매우 긴 사이즈의 투두 제목 매우 긴 사이즈의 투두 제목',
+        subTodo: [
+          SubTodoModel(text: '화분에 물 주기'.obs, isChecked: false.obs),
+          SubTodoModel(text: '샤워하기'.obs, isChecked: false.obs),
+          SubTodoModel(
+              text:
+              '매우 긴 사이즈의 투두 제목 매우 긴 사이즈의 투두 제목  매우 긴 사이즈의 투두 제목 매우 긴 사이즈의 투두 제목'
+                  .obs,
+              isChecked: true.obs)
+        ].obs,
+        date: '20231010',
+        priority: 3,
+        memo: null,
+        isFold: false.obs,
+        isChecked: false.obs),
+    TodoModel(
+        id: 102,
+        categoryId: 1,
+        reminderId: null,
+        name: '내일 짐 정리 하기',
+        subTodo: [
+          SubTodoModel(text: '옷 정리하기'.obs, isChecked: false.obs),
+          SubTodoModel(text: '간식 정리하기'.obs, isChecked: false.obs),
+        ].obs,
+        date: '20231010',
+        priority: 0,
+        memo: null,
+        isFold: true.obs,
+        isChecked: true.obs),
+    TodoModel(
+        id: 103,
+        categoryId: 2,
+        reminderId: null,
+        name: '영어 단어 만 개 외우기',
+        subTodo: null,
+        date: '20231010',
+        priority: 1,
+        memo: null,
+        isFold: false.obs,
+        isChecked: true.obs),
+    TodoModel(
+        id: 104,
+        categoryId: 2,
+        reminderId: null,
+        name: '수학 1000 문제 풀기',
+        subTodo: null,
+        date: '20231010',
+        priority: 2,
+        memo: '이 것은 메모입니당',
+        isFold: false.obs,
+        isChecked: false.obs),
+    TodoModel(
+        id: 105,
+        categoryId: 3,
+        reminderId: null,
+        name: '테스트1',
+        subTodo: [
+          SubTodoModel(text: '서브 투두 1'.obs, isChecked: false.obs),
+          SubTodoModel(text: '서브 투두 2'.obs, isChecked: false.obs),
+        ].obs,
+        date: '20231010',
+        priority: 2,
+        memo: '이 것은 메모입니당',
+        isFold: true.obs,
+        isChecked: false.obs),
+    TodoModel(
+        id: 106,
+        categoryId: 3,
+        reminderId: null,
+        name: '테스트2',
+        subTodo: [
+          SubTodoModel(text: '서브 투두 1'.obs, isChecked: false.obs),
+          SubTodoModel(text: '서브 투두 2'.obs, isChecked: false.obs),
+        ].obs,
+        date: '20231010',
+        priority: 2,
+        memo: '이 것은 메모입니당',
+        isFold: true.obs,
+        isChecked: false.obs),
+    TodoModel(
+        id: 107,
+        categoryId: 3,
+        reminderId: null,
+        name: '테스트3',
+        subTodo: [
+          SubTodoModel(text: '서브 투두 1'.obs, isChecked: false.obs),
+          SubTodoModel(text: '서브 투두 2'.obs, isChecked: false.obs),
+        ].obs,
+        date: '20231010',
+        priority: 2,
+        memo: '이 것은 메모입니당',
+        isFold: true.obs,
+        isChecked: false.obs),
+  ],
   '20231115': [
     TodoModel(
         id: 1,

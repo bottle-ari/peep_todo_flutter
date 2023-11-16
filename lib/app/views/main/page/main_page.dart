@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/main/main_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_view.dart';
 import 'package:peep_todo_flutter/app/views/main/widget/peep_constant_todo_appbar.dart';
+import 'package:peep_todo_flutter/app/views/todo/page/constant_todo_page.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/scheduled_todo_page.dart';
 
 import '../../../data/model/enum/menu_state.dart';
@@ -71,7 +72,7 @@ class MainPage extends BaseView<MainController> {
       case MenuState.TODO:
         return ScheduledTodoPage();
       case MenuState.CONSTANT_TODO:
-        return Container();
+        return ConstantTodoPage();
       case MenuState.CALENDAR:
         return Container();
       case MenuState.ROUTINE:
