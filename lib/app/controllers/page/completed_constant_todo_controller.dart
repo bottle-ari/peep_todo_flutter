@@ -9,7 +9,7 @@ import '../../data/model/category_model.dart';
 import '../../data/model/todo/todo_model.dart';
 import '../todo_controller.dart';
 
-class ConstantTodoController extends TodoController {
+class CompletedConstantTodoController extends TodoController {
   late RxList<dynamic> _constantTodoList;
   late RxList<int> categoryIndexMap;
 
@@ -37,7 +37,7 @@ class ConstantTodoController extends TodoController {
 
           if (todo.categoryId != _categoryList[i].id) break;
 
-          if(!_todoList['constant']![index].isChecked.value) {
+          if(_todoList['constant']![index].isChecked.value) {
             _constantTodoList.add(todo);
           }
           index++;
