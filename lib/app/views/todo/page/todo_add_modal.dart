@@ -5,6 +5,7 @@ import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
+import 'package:peep_todo_flutter/app/views/todo/page/priority_picker_modal.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_button_textfield.dart';
 
 class TodoAddModal extends StatelessWidget {
@@ -27,11 +28,14 @@ class TodoAddModal extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(height: 10.h,),
+            SizedBox(
+              height: AppValues.verticalMargin,
+            ),
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: AppValues.verticalMargin),
+                padding:
+                    EdgeInsets.symmetric(vertical: AppValues.verticalMargin),
                 child: Text(
                   'Todo 추가하기',
                   style: PeepTextStyle.boldL(color: Palette.peepGray400),
@@ -45,9 +49,17 @@ class TodoAddModal extends StatelessWidget {
                   size: AppValues.baseIconSize,
                 ),
                 color: color,
-                onTapPriority: () {},
+                onTapPriority: () {
+                  Get.bottomSheet(
+                    PriorityPickerModal(
+                      currentPriority: 3,
+                    ),
+                  );
+                },
                 onTapAddButton: (String str) {}),
-            SizedBox(height: 30.h,),
+            SizedBox(
+              height: 30.h,
+            ),
           ],
         ),
       ),
