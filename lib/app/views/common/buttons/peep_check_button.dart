@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/controllers/todo_controller.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 
+import '../../../controllers/todo_controller.dart';
 import '../../../theme/icons.dart';
 import '../../test.dart';
 
@@ -30,16 +30,13 @@ class PeepCheckButton extends StatelessWidget {
           color: Colors.transparent,
           child: InkWell(
               onTap: () {
-                controller.toggleMainTodoChecked(date, index);
+                //Todo : controller.toggleMainTodoChecked(date, index);
               },
               child: Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: AppValues.innerMargin,
                     vertical: AppValues.verticalMargin),
-                child: controller
-                        .getTodoList(date: date)[index]
-                        .isChecked
-                        .value
+                child: true
                     ? PeepIcon(Iconsax.checkTrue, color: color, size: 24.w)
                     : PeepIcon(Iconsax.checkFalse,
                         color: Palette.peepGray400, size: 24.w),
@@ -70,17 +67,13 @@ class PeepSubCheckButton extends StatelessWidget {
           color: Colors.transparent,
           child: InkWell(
             onTap: () {
-              controller.toggleSubTodoChecked(date, mainIndex, index);
+              //controller.toggleSubTodoChecked(date, mainIndex, index);
             },
             child: Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: AppValues.innerMargin,
                   vertical: AppValues.verticalMargin),
-              child: controller
-                      .getSubTodoList(
-                          date: date, mainIndex: mainIndex)[index]
-                      .isChecked
-                      .value
+              child: false
                   ? PeepIcon(Iconsax.checkTrue, color: color, size: 20.w)
                   : PeepIcon(Iconsax.checkFalse,
                       color: Palette.peepGray400, size: 20.w),

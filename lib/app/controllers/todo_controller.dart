@@ -1,39 +1,54 @@
-import 'dart:developer';
-
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/data/mock_data.dart';
-import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
+import 'package:peep_todo_flutter/app/data/services/todo_service.dart';
 
-import '../core/base/base_controller.dart';
-import '../data/model/todo/sub_todo_model.dart';
+import '../data/model/todo/todo_model.dart';
 
-abstract class TodoController extends BaseController {
+class TodoController extends GetxController {
+  final TodoService _service = TodoService();
 
-  @override
-  List<dynamic> getTodoList({required String date});
+  // Data
+  final RxList<TodoModel> scheduledTodoList = <TodoModel>[].obs;
 
-  @override
-  List<SubTodoModel> getSubTodoList(
-      {required String date, required int mainIndex});
+  // Variables
+  final Rx<DateTime> selectDate = DateTime.now().obs;
 
   @override
-  void reorderTodoList(String date, int oldIndex, int newIndex);
+  void onInit() {
+    super.onInit();
 
-  @override
-  void toggleTodoIsFold(String date, int index);
+    ever(selectDate, (_) => loadScheduledData());
 
-  @override
-  void toggleMainTodoChecked(String date, int index);
+    loadScheduledData();
+  }
 
-  @override
-  void toggleSubTodoChecked(String date, int mainIndex, int index);
+  /*
+    Init Functions
+   */
+  void loadScheduledData() async {
+    final DateTime startDate =
+        selectDate.value.subtract(const Duration(days: 60));
+    final DateTime endDate = selectDate.value.add(const Duration(days: 60));
 
-  @override
-  void deleteTodoItem(String? date, int index);
+    var data = await _service.getScheduledTodoByDate(
+        startDate: startDate, endDate: endDate);
+    scheduledTodoList.value = data;
+  }
 
-  @override
-  void rollbackTodoItem();
+  /*
+    READ Functions
+   */
+  Future<TodoModel> getTodo({required int todoId}) async {
+    return await _service.getTodo(todoId: todoId);
+  }
 
-  @override
-  bool isCategoryModel(String date, int index);
+  /*
+    UPDATE Functions
+   */
+  void toggleMainTodoChecked({required int todoId}) async {
+    TodoModel todo = await getTodo(todoId: todoId);
+
+    todo.isChecked = !todo.isChecked;
+
+    await _service.updateTodo(todo);
+  }
 }

@@ -26,16 +26,16 @@ class PeepPriorityFoldingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final TodoPriorityAnimationController animationController = Get.put(
         TodoPriorityAnimationController(
-            controller.getTodoList(date: date)[index].isFold.value),
-        tag: controller.getTodoList(date: date)[index].id.toString());
+            true),
+        /*tag: */);
 
     return Material(
         color: Colors.transparent,
         child: InkWell(
             onTap: () {
-              controller.toggleTodoIsFold(date, index);
-              animationController.toggleAnimation(
-                  controller.getTodoList(date: date)[index].isFold.value);
+              // controller.toggleTodoIsFold(date, index);
+              // animationController.toggleAnimation(
+              //     controller.getTodoList(date: date)[index].isFold.value);
             },
             child: AnimatedBuilder(
                 animation: animationController.animation,

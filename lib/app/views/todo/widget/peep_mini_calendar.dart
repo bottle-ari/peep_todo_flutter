@@ -258,13 +258,13 @@ class PeepMiniCalendar extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Obx(()=>
-                          CustomPaint(
-                            size: Size(32.w, 32.h), // CustomPaint의 크기 고정
-                            painter:
-                                ringPainter(itemCounts: controller.calendarItemCounts[DateFormat('yyyyMMdd').format(day)] ?? [], categoryList: controller.getCategoryList()),
-                          ),
-                        ),
+                        // Obx(()=>
+                        //   CustomPaint(
+                        //     size: Size(32.w, 32.h), // CustomPaint의 크기 고정
+                        //     painter:
+                        //         ringPainter(itemCounts: controller.calendarItemCounts[DateFormat('yyyyMMdd').format(day)] ?? [], categoryList: controller.getCategoryList()),
+                        //   ),
+                        // ),
                         Center(
                           child: Text(
                             DateFormat.d().format(selectedDay),
@@ -282,13 +282,13 @@ class PeepMiniCalendar extends StatelessWidget {
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        Obx(()=>
-                          CustomPaint(
-                            size: Size(32.w, 32.h),
-                            painter:
-                            ringPainter(itemCounts: controller.calendarItemCounts[DateFormat('yyyyMMdd').format(day)] ?? [], categoryList: controller.getCategoryList()),
-                          ),
-                        ),
+                        // Obx(()=>
+                        //   CustomPaint(
+                        //     size: Size(32.w, 32.h),
+                        //     painter:
+                        //     ringPainter(itemCounts: controller.calendarItemCounts[DateFormat('yyyyMMdd').format(day)] ?? [], categoryList: controller.getCategoryList()),
+                        //   ),
+                        // ),
                         Text(
                           DateFormat.d().format(day),
                           style:

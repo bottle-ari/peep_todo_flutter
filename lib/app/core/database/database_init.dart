@@ -2,7 +2,14 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseInit {
+  static final DatabaseInit _instance = DatabaseInit._internal();
   Database? _database;
+
+  factory DatabaseInit() {
+    return _instance;
+  }
+
+  DatabaseInit._internal();
 
   Future<Database> get database async{
     _database ??= await initDB();
@@ -73,11 +80,12 @@ class DatabaseInit {
           category_id INTEGER,
           reminder_id INTEGER,
           name TEXT,
-          completed_at INTEGER,
           subtodo TEXT,
           date INTEGER,
           priority INTEGER,
           memo TEXT,
+          is_checked INTEGER,
+          is_fold INTEGER,
           pos INTEGER,
           FOREIGN KEY (category_id) REFERENCES category(id))
       """,
@@ -89,8 +97,8 @@ class DatabaseInit {
       CREATE TABLE subtodo(
           id INTEGER PRIMARY KEY,
           todo_id INTEGER,
-          routine_id INTEGER,
           name TEXT,
+          is_checked INTEGER,
           pos INTEGER,
           FOREIGN KEY (todo_id) REFERENCES todo(id))
       """

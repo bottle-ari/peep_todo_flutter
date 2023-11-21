@@ -48,55 +48,16 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
                       ReorderableSliverList(
                         delegate: ReorderableSliverChildListDelegate(
                           [
-                            for (int index = 0;
-                                index <
-                                    controller.getTodoList(date: date).length;
-                                index++)
-                              if (controller.isCategoryModel(date, index))
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: AppValues.verticalMargin),
-                                  child: PeepCategoryItem(
-                                      color: controller
-                                          .getTodoList(date: date)[index]
-                                          .color,
-                                      name: controller
-                                          .getTodoList(date: date)[index]
-                                          .name,
-                                      emoji: controller
-                                          .getTodoList(date: date)[index]
-                                          .emoji,
-                                      onTapAddButton: () {
-                                        Get.bottomSheet(TodoAddModal(
-                                            color: controller
-                                                .getTodoList(date: date)[index]
-                                                .color));
-                                      },
-                                      onTapArrowButton: () {
-                                        controller.toggleCategoryIsFold(
-                                            date, index);
-                                      },
-                                      isFolded: controller.categoryFoldMap[
-                                          controller.reverseCategoryFoldMap(
-                                              date, index)]),
-                                )
-                              else if (!controller.categoryFoldMap[
-                                  controller.reverseCategoryFoldMap(date,
-                                      controller.getTodoCategory(date, index))])
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: AppValues.innerMargin),
-                                  child: PeepTodoItem(
-                                    color: controller.todoColor(date, index),
-                                    index: index,
-                                    controller: controller,
-                                    date: date,
-                                  ),
-                                )
+                              for(int index = 0; index < controller.scheduledTodoList.length; index++)
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: AppValues.innerMargin),
+                                child: Text('추가됨'),
+                              )
                           ],
                         ),
                         onReorder: (int oldIndex, int newIndex) {
-                          controller.reorderTodoList(date, oldIndex, newIndex);
+                          //controller.reorderTodoList(date, oldIndex, newIndex);
                         },
                       ),
                     ],

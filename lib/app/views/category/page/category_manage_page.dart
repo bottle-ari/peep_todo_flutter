@@ -29,7 +29,7 @@ class CategoryManagePage extends BaseView<CategoryManagePageController> {
           ],
           onTapButtons: [
             () {
-              controller.showCategoryAddModal(context);
+              //TODO : controller.showCategoryAddModal(context);
             }
           ],
         ),
@@ -39,45 +39,46 @@ class CategoryManagePage extends BaseView<CategoryManagePageController> {
 
   @override
   Widget body(BuildContext context) {
-    return Obx(
-      () => SizedBox(
-        height: double.infinity,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
-          child: CustomScrollView(
-            slivers: [
-              ReorderableSliverList(
-                delegate: ReorderableSliverChildListDelegate(
-                  [
-                    for (int index = 0;
-                        index < controller.categoryList.length;
-                        index++)
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: AppValues.innerMargin),
-                        child: PeepCategoryManageListItem(
-                          name: controller.categoryList[index].name,
-                          emoji: controller.categoryList[index].emoji,
-                          color: controller.categoryList[index].color,
-                          onTapEmojiPicker: () {},
-                          onTapColorPicker: () {
-                            controller.showCategoryColorPickerModal(
-                                context, index);
-                          },
-                          onTap: () {},
-                          onDelete: () {},
-                        ),
-                      )
-                  ],
-                ),
-                onReorder: (int oldIndex, int newIndex) {
-                  controller.reorderCategoryList(oldIndex, newIndex);
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+    return Container();
+    // return Obx(
+    //   () => SizedBox(
+    //     height: double.infinity,
+    //     child: Padding(
+    //       padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
+    //       child: CustomScrollView(
+    //         slivers: [
+    //           ReorderableSliverList(
+    //             delegate: ReorderableSliverChildListDelegate(
+    //               [
+    //                 for (int index = 0;
+    //                     index < controller.categoryList.length;
+    //                     index++)
+    //                   Padding(
+    //                     padding: EdgeInsets.symmetric(
+    //                         vertical: AppValues.innerMargin),
+    //                     child: PeepCategoryManageListItem(
+    //                       name: controller.categoryList[index].name,
+    //                       emoji: controller.categoryList[index].emoji,
+    //                       color: controller.categoryList[index].color,
+    //                       onTapEmojiPicker: () {},
+    //                       onTapColorPicker: () {
+    //                         controller.showCategoryColorPickerModal(
+    //                             context, index);
+    //                       },
+    //                       onTap: () {},
+    //                       onDelete: () {},
+    //                     ),
+    //                   )
+    //               ],
+    //             ),
+    //             onReorder: (int oldIndex, int newIndex) {
+    //               controller.reorderCategoryList(oldIndex, newIndex);
+    //             },
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 }

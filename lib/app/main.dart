@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:peep_todo_flutter/app/data/provider/db_provider.dart';
 import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -10,16 +9,8 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'bindings/initial_binding.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  await initServices();
+  //WidgetsFlutterBinding.ensureInitialized();
   initializeDateFormatting().then((_) => runApp(const MyApp()));
-}
-
-Future<void> initServices() async{
-
-  var a = DBProvider().getTodoAll();
-  debugPrint(a.toString());
 }
 
 class MyApp extends StatelessWidget {
