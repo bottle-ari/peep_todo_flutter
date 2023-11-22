@@ -8,6 +8,16 @@ class TodoService extends GetxService {
   final TodoProvider _provider = TodoProvider();
 
   /*
+    CREATE DATA
+   */
+  Future<void> insertTodo({required TodoModel todo, required int pos}) async {
+    Map<String, Object?> todoMap = todo.toMap();
+    todoMap['pos'] = pos;
+    await _provider.insertTodo(todoMap);
+  }
+
+
+  /*
     READ DATA
    */
   Future<TodoModel> getTodo({required int todoId}) async {

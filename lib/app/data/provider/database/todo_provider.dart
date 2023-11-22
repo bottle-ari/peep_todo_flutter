@@ -5,6 +5,15 @@ import 'package:sqflite/sqflite.dart';
 import '../../../core/database/database_init.dart';
 
 class TodoProvider extends GetxService {
+
+  /*
+    CREATE DATA
+   */
+  Future<void> insertTodo(Map<String, Object?> todo) async {
+    final db = await DatabaseInit().database;
+    db.insert('todo', todo);
+  }
+
   /*
     READ DATA
    */

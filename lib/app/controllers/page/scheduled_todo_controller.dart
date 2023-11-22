@@ -291,6 +291,7 @@
 import 'dart:developer';
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/category_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/todo_controller.dart';
@@ -308,7 +309,7 @@ class ScheduledTodoController extends BaseController {
   final RxList<dynamic> scheduledTodoList = <dynamic>[].obs;
 
   // Variables
-  Map<int, int> categoryIndexMap = <int, int>{};
+  Map<int, List<int>> categoryIndexMap = <int, List<int>>{};
   BackupTodoModel? backup;
 
   @override
@@ -316,8 +317,6 @@ class ScheduledTodoController extends BaseController {
     ever(_todoController.scheduledTodoList, (callback) {
       updateScheduledTodoList();
     });
-
-    updateScheduledTodoList();
   }
 
   /*
@@ -326,27 +325,31 @@ class ScheduledTodoController extends BaseController {
   void updateScheduledTodoList() async {
     List<dynamic> newScheduledTodoList =
         List<dynamic>.from(_categoryController.categoryList);
-    initCategoryIndexMap();
+    initCategoryIndexMap(newScheduledTodoList);
 
-    List<TodoModel> reversedTodo = _todoController.scheduledTodoList;
-    reversedTodo = reversedTodo.reversed.toList();
+    for (var todo in _todoController.scheduledTodoList) {
+      var inx =
+          (categoryIndexMap[todo.categoryId] ?? [0, 0])[1]; // todo가 추가될 index
 
-    for (var todo in reversedTodo) {
-      var inx = (categoryIndexMap[todo.categoryId] ?? 0);
+      if (inx >= newScheduledTodoList.length) {
+        newScheduledTodoList.add(todo);
+      } else {
+        newScheduledTodoList.insert(inx, todo);
+      }
 
-      newScheduledTodoList.insert(inx+1, todo);
       updateCategoryIndexMap(inx);
+      categoryIndexMap[todo.categoryId]![1]++;
     }
-    
+
     scheduledTodoList.value = newScheduledTodoList;
   }
 
-  void initCategoryIndexMap() {
-    Map<int, int> newCategoryIndexMap = {};
+  void initCategoryIndexMap(List<dynamic> todoList) {
+    Map<int, List<int>> newCategoryIndexMap = {};
 
-    for (int i = 0; i < scheduledTodoList.length; i++) {
-      if (scheduledTodoList[i] is CategoryModel) {
-        newCategoryIndexMap[scheduledTodoList[i].id] = i;
+    for (int i = 0; i < todoList.length; i++) {
+      if (todoList[i] is CategoryModel) {
+        newCategoryIndexMap[todoList[i].id] = [i, i + 1];
       }
     }
 
@@ -354,15 +357,22 @@ class ScheduledTodoController extends BaseController {
   }
 
   void updateCategoryIndexMap(int index) {
-    Map<int, int> newCategoryIndexMap = {};
+    Map<int, List<int>> newCategoryIndexMap = {};
 
-    for(var key in categoryIndexMap.keys) {
-      if(categoryIndexMap[key] == null) throw Exception('error in updateCategoryIndexMap');
+    for (var key in categoryIndexMap.keys) {
+      if (categoryIndexMap[key] == null)
+        throw Exception('error in updateCategoryIndexMap');
 
-      if(categoryIndexMap[key]! > index) {
-        newCategoryIndexMap[key] = categoryIndexMap[key]!+1;
+      if (categoryIndexMap[key]![0] >= index) {
+        newCategoryIndexMap[key] = [
+          categoryIndexMap[key]![0] + 1,
+          categoryIndexMap[key]![1] + 1
+        ];
       } else {
-        newCategoryIndexMap[key] = categoryIndexMap[key]!;
+        newCategoryIndexMap[key] = [
+          categoryIndexMap[key]![0],
+          categoryIndexMap[key]![1]
+        ];
       }
     }
 
@@ -382,7 +392,55 @@ class ScheduledTodoController extends BaseController {
         .color;
   }
 
-/*
+  /*
     Update Function
    */
+
+  void addTodo(categoryId) {
+    int todoId = scheduledTodoList.length + 1;
+    if(categoryIndexMap[categoryId] == null){
+
+    }
+    int pos = categoryIndexMap[categoryId]![1] - 1;
+
+    TodoModel todo = TodoModel(
+        id: todoId,
+        categoryId: categoryId,
+        reminderId: 0,
+        name: "name$todoId",
+        subTodo: [],
+        date: DateTime.now(),
+        priority: 0,
+        memo: "memo",
+        isFold: false,
+        isChecked: false);
+
+    _todoController.addTodo(todo: todo, pos: pos);
+  }
+
+//   void reorderTodoList(String date, int oldIndex, int newIndex) {
+//     if (_scheduledTodoList[date] == null) return;
+//     if (newIndex == 0) return;
+//     if (isCategoryModel(date, oldIndex)) return;
+//
+//     var oldCategory = getTodoCategory(date, oldIndex);
+//
+//     var list = _scheduledTodoList[date]!;
+//     final TodoModel todoItem = list.removeAt(oldIndex);
+//
+//     list.insert(newIndex, todoItem);
+//     _scheduledTodoList[date] = List.from(list);
+//
+//     updateCategoryIndexMap(date);
+//
+//     var newCategory = getTodoCategory(date, newIndex);
+//
+//     if (oldCategory != newCategory) {
+//       todoItem.categoryId = _scheduledTodoList[date]![newCategory].id;
+//     }
+//
+//     updateCalendarItemCounts(date);
+//
+//     update();
+//   }
 }

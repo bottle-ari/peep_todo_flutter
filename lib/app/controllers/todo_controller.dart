@@ -15,7 +15,7 @@ class TodoController extends GetxController {
   final RxList<TodoModel> calendarTodoList = <TodoModel>[].obs;
 
   // Variables
-  final Rx<DateTime> selectedDate = DateTime(2023, 11, 21).obs;
+  final Rx<DateTime> selectedDate = DateTime.now().obs;
 
   @override
   void onInit() {
@@ -114,5 +114,10 @@ class TodoController extends GetxController {
     todo.isFold = !todo.isFold;
 
     await _service.updateTodo(todo);
+  }
+
+  void addTodo({required TodoModel todo, required int pos}) async {
+    await _service.insertTodo(todo: todo, pos: pos);
+    loadScheduledData();
   }
 }

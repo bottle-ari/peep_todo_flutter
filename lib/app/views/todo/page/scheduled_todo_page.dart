@@ -68,7 +68,9 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
                                       color: item.color,
                                       name: item.name,
                                       emoji: item.emoji,
-                                      onTapAddButton: () {},
+                                      onTapAddButton: () {
+                                        controller.addTodo(item.id);
+                                      },
                                       onTapArrowButton: () {},
                                       isFolded: false),
                                 )

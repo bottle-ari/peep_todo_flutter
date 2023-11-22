@@ -103,6 +103,14 @@ class DatabaseInit {
 
     // 기본 category 생성
     await db.insert('category',
-        {'id': 0, 'name': '할 일', 'color': 'BD00FF', 'emoji': '🤔', 'pos': 0});
+        {'id': 0, 'name': '할 일0', 'color': 'BD00FF', 'emoji': '🤔', 'pos': 0});
+
+    /*
+      test category 생성
+     */
+    await db.insert('category',
+        {'id': 1, 'name': '할 일1', 'color': '00DB58', 'emoji': '🤔', 'pos': 1});
+    await db.insert('category',
+        {'id': 2, 'name': '할 일2', 'color': 'FF5151', 'emoji': '🤔', 'pos': 2});
   }
 }
