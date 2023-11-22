@@ -289,24 +289,25 @@
 // }
 
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/controllers/category_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/todo_controller.dart';
+import 'package:peep_todo_flutter/app/data/model/category_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/backup_todo_model.dart';
 
 import '../../core/base/base_controller.dart';
-import '../../data/model/todo/todo_model.dart';
 
 class ScheduledTodoController extends BaseController {
   final CategoryController _categoryController = Get.find();
   final TodoController _todoController = Get.find();
 
   // Data
-  RxMap<String, List<dynamic>> scheduledTodoList = <String, List<dynamic>>{}.obs;
+  final RxList<dynamic> scheduledTodoList = <dynamic>[].obs;
 
   // Variables
+  Map<int, int> categoryIndexMap = <int, int>{};
   BackupTodoModel? backup;
 
   @override
@@ -322,28 +323,46 @@ class ScheduledTodoController extends BaseController {
     Init Functions
    */
   void updateScheduledTodoList() async {
-    List<TodoModel> todoList = _controller.scheduledTodoList;
+    List<dynamic> newScheduledTodoList =
+        List<dynamic>.from(_categoryController.categoryList);
+    updateCategoryIndexMap();
 
-    final DateFormat formatter = DateFormat('yyyyMMdd');
+    for (var todo in _todoController.scheduledTodoList) {
+      var inx = (categoryIndexMap[todo.categoryId] ?? 0) + 1;
 
-    for(var todo in todoList) {
-      String formattedDate = formatter.format(todo.date);
+      newScheduledTodoList.insert(inx, todo);
+      updateCategoryIndexMap();
+    }
+    
+    scheduledTodoList.value = newScheduledTodoList;
+  }
 
-      if(scheduledTodoList.containsKey(formattedDate)) {
-        scheduledTodoList[formattedDate]!.add(todo);
-      } else {
-        scheduledTodoList[formattedDate] = [todo];
+  void updateCategoryIndexMap() {
+    Map<int, int> newCategoryIndexMap = {};
+
+    for (int i = 0; i < scheduledTodoList.length; i++) {
+      if (scheduledTodoList[i] is CategoryModel) {
+        newCategoryIndexMap[scheduledTodoList[i].id] = i;
       }
     }
 
-    log(todoList.length.toString());
+    categoryIndexMap = newCategoryIndexMap;
   }
 
-  void toggleMainTodoChecked(int todoId) {
-    _controller.toggleMainTodoChecked(todoId: todoId);
+  /*
+    Read Function
+   */
+  Color getColor({required int todoId}) {
+    var categoryId = _todoController.scheduledTodoList
+        .firstWhere((e) => e.id == todoId)
+        .categoryId;
 
-    updateScheduledTodoList();
-    update();
+    return _categoryController.categoryList
+        .firstWhere((e) => e.id == categoryId)
+        .color;
   }
 
+/*
+    Update Function
+   */
 }

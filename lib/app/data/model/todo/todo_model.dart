@@ -6,7 +6,7 @@ class TodoModel {
   int categoryId;
   int? reminderId;
    String name;
-  List<SubTodoModel>? subTodo;
+  List<SubTodoModel> subTodo;
   DateTime date;
   int priority;
   String? memo;
@@ -28,8 +28,8 @@ class TodoModel {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'categoryId': categoryId,
-      'reminderId': reminderId,
+      'category_id': categoryId,
+      'reminder_id': reminderId,
       'name': name,
       'date': date.millisecondsSinceEpoch,
       'priority': priority,
@@ -45,7 +45,7 @@ class TodoModel {
       categoryId: map['category_id'],
       reminderId: map['reminder_id'],
       name: map['name'],
-      subTodo: null, // 이 부분은 별도로 처리해야 합니다.
+      subTodo: [],
       date: DateTime.fromMillisecondsSinceEpoch(map['date']),
       priority: map['priority'],
       memo: map['memo'],

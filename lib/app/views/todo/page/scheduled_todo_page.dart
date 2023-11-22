@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/controllers/mini_calendar_controller.dart';
+import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
+import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/todo_add_modal.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_mini_calendar.dart';
@@ -25,8 +27,6 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
   Widget body(BuildContext context) {
     return Obx(
       () {
-        var date =
-            DateFormat('yyyyMMdd').format(calendarController.selectedDay.value);
         return SizedBox(
           height: double.infinity,
           child: Padding(
@@ -48,12 +48,17 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
                       ReorderableSliverList(
                         delegate: ReorderableSliverChildListDelegate(
                           [
-                              for(int index = 0; index < controller.scheduledTodoList.length; index++)
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: AppValues.innerMargin),
-                                child: Text('추가됨'),
-                              )
+                            for (var item in controller.scheduledTodoList)
+                              if (item is TodoModel)
+                                Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: AppValues.innerMargin),
+                                    child: PeepTodoItem(
+                                      todoId: item.id,
+                                      color:
+                                          controller.getColor(todoId: item.id),
+                                      todoType: TodoType.scheduled,
+                                    ))
                           ],
                         ),
                         onReorder: (int oldIndex, int newIndex) {

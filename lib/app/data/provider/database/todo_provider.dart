@@ -20,7 +20,7 @@ class TodoProvider extends GetxService {
 
     final List<Map<String, dynamic>> result = await db.query(
       'todo',
-      where: 'date >= ? AND date <= ?',
+      where: 'date >= ? AND date < ?',
       whereArgs: [startDate, endDate],
       orderBy: 'date ASC, pos ASC',
     );
