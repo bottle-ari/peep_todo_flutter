@@ -9,6 +9,7 @@ abstract class Routes {
   static const OVERDUE_TODO_PAGE = _Paths.OVERDUE_TODO_PAGE;
   static const TODO_DETAIL_PAGE = _Paths.TODO_DETAIL_PAGE;
   static const TODO_MEMO_PAGE = _Paths.TODO_MEMO_PAGE;
+  static const COMPLETED_CONSTANT_TODO_PAGE = _Paths.COMPLETED_CONSTANT_TODO_PAGE;
 }
 
 abstract class _Paths {
@@ -18,4 +19,5 @@ abstract class _Paths {
   static const OVERDUE_TODO_PAGE = '/todo/overdue';
   static const TODO_DETAIL_PAGE = '/todo/detail';
   static const TODO_MEMO_PAGE = '/todo/memo';
+  static const COMPLETED_CONSTANT_TODO_PAGE = '/todo/constant/completed';
 }

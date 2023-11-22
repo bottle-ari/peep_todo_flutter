@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/preferred_size.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/page/overdue_todo_controller.dart';
@@ -10,6 +8,7 @@ import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_square_button.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_subpage_appbar.dart';
+import 'package:peep_todo_flutter/app/views/common/popup/confirm_popup.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_overdue_todo_item.dart';
 
 import '../../../theme/app_values.dart';
@@ -46,7 +45,8 @@ class OverdueTodoPage extends BaseView<OverdueTodoController> {
                 PeepSquareButton(
                     icon: PeepIcon(
                       Iconsax.clipboardCheckBold,
-                      color: Palette.peepGreen.withOpacity(AppValues.baseOpacity),
+                      color:
+                          Palette.peepGreen.withOpacity(AppValues.baseOpacity),
                       size: AppValues.largeIconSize,
                     ),
                     text: '모두 확인',
@@ -58,11 +58,19 @@ class OverdueTodoPage extends BaseView<OverdueTodoController> {
                       size: AppValues.largeIconSize,
                     ),
                     text: '모두 삭제',
-                    onTap: () {}),
+                    onTap: () {
+                      Get.dialog(const ConfirmPopup(
+                        icon: Iconsax.clipboardDelete,
+                        text: '모두 삭제',
+                        confirmText: '삭제',
+                        color: Palette.peepRed,
+                      ));
+                    }),
                 PeepSquareButton(
                     icon: PeepIcon(
                       Iconsax.clockBold,
-                      color: Palette.peepBlue.withOpacity(AppValues.baseOpacity),
+                      color:
+                          Palette.peepBlue.withOpacity(AppValues.baseOpacity),
                       size: AppValues.largeIconSize,
                     ),
                     text: '오늘 하기',
@@ -70,11 +78,20 @@ class OverdueTodoPage extends BaseView<OverdueTodoController> {
               ],
             ),
           ),
-          SizedBox(height: 30.h,),
-          Text('7월 23일', style: PeepTextStyle.boldL(color: Palette.peepRed),),
+          SizedBox(
+            height: 30.h,
+          ),
+          Text(
+            '7월 23일',
+            style: PeepTextStyle.boldL(color: Palette.peepRed),
+          ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 10.h),
-            child: PeepOverdueTodoItem(color: Palette.peepGreen, index: 2, controller: controller, date: '20231116'),
+            child: PeepOverdueTodoItem(
+                color: Palette.peepGreen,
+                index: 2,
+                controller: controller,
+                date: '20231116'),
           )
         ],
       ),

@@ -50,7 +50,10 @@ class PeepTodoTextfield extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            icon,
+            GestureDetector(
+              onTap: onTapPriority,
+              child: icon,
+            ),
             // PeepEmojiPickerButton
             SizedBox(
               width: 230.w,
