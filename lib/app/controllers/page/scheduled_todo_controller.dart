@@ -296,6 +296,7 @@ import 'package:peep_todo_flutter/app/controllers/category_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/todo_controller.dart';
 import 'package:peep_todo_flutter/app/data/model/category_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/backup_todo_model.dart';
+import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 
 import '../../core/base/base_controller.dart';
 
@@ -325,24 +326,43 @@ class ScheduledTodoController extends BaseController {
   void updateScheduledTodoList() async {
     List<dynamic> newScheduledTodoList =
         List<dynamic>.from(_categoryController.categoryList);
-    updateCategoryIndexMap();
+    initCategoryIndexMap();
 
-    for (var todo in _todoController.scheduledTodoList) {
-      var inx = (categoryIndexMap[todo.categoryId] ?? 0) + 1;
+    List<TodoModel> reversedTodo = _todoController.scheduledTodoList;
+    reversedTodo = reversedTodo.reversed.toList();
 
-      newScheduledTodoList.insert(inx, todo);
-      updateCategoryIndexMap();
+    for (var todo in reversedTodo) {
+      var inx = (categoryIndexMap[todo.categoryId] ?? 0);
+
+      newScheduledTodoList.insert(inx+1, todo);
+      updateCategoryIndexMap(inx);
     }
     
     scheduledTodoList.value = newScheduledTodoList;
   }
 
-  void updateCategoryIndexMap() {
+  void initCategoryIndexMap() {
     Map<int, int> newCategoryIndexMap = {};
 
     for (int i = 0; i < scheduledTodoList.length; i++) {
       if (scheduledTodoList[i] is CategoryModel) {
         newCategoryIndexMap[scheduledTodoList[i].id] = i;
+      }
+    }
+
+    categoryIndexMap = newCategoryIndexMap;
+  }
+
+  void updateCategoryIndexMap(int index) {
+    Map<int, int> newCategoryIndexMap = {};
+
+    for(var key in categoryIndexMap.keys) {
+      if(categoryIndexMap[key] == null) throw Exception('error in updateCategoryIndexMap');
+
+      if(categoryIndexMap[key]! > index) {
+        newCategoryIndexMap[key] = categoryIndexMap[key]!+1;
+      } else {
+        newCategoryIndexMap[key] = categoryIndexMap[key]!;
       }
     }
 

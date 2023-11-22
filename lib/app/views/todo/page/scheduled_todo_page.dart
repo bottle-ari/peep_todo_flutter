@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/controllers/mini_calendar_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
+import 'package:peep_todo_flutter/app/data/model/category_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/todo_add_modal.dart';
@@ -59,6 +60,18 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
                                           controller.getColor(todoId: item.id),
                                       todoType: TodoType.scheduled,
                                     ))
+                              else if (item is CategoryModel)
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: AppValues.innerMargin),
+                                  child: PeepCategoryItem(
+                                      color: item.color,
+                                      name: item.name,
+                                      emoji: item.emoji,
+                                      onTapAddButton: () {},
+                                      onTapArrowButton: () {},
+                                      isFolded: false),
+                                )
                           ],
                         ),
                         onReorder: (int oldIndex, int newIndex) {

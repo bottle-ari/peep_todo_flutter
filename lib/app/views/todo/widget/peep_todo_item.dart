@@ -124,7 +124,7 @@ class PeepTodoItem extends StatelessWidget {
                     children: <Widget>[
                       Row(
                         children: [
-                          if ((todo.subTodo?.length ?? 0) == 0)
+                          if ((todo.subTodo.length ?? 0) == 0)
                             Padding(
                               padding: EdgeInsets.symmetric(
                                 horizontal: AppValues.horizontalMargin,
