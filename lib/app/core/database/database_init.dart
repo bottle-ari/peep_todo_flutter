@@ -11,7 +11,7 @@ class DatabaseInit {
 
   DatabaseInit._internal();
 
-  Future<Database> get database async{
+  Future<Database> get database async {
     _database ??= await initDB();
     return _database!;
   }
@@ -28,7 +28,6 @@ class DatabaseInit {
   }
 
   static Future _onCreate(Database db, int version) async {
-
     // category table 생성
     await db.execute(
       """
@@ -92,8 +91,7 @@ class DatabaseInit {
     );
 
     // subtodo table 생성
-    await db.execute(
-      """
+    await db.execute("""
       CREATE TABLE subtodo(
           id INTEGER PRIMARY KEY,
           todo_id INTEGER,
@@ -101,7 +99,10 @@ class DatabaseInit {
           is_checked INTEGER,
           pos INTEGER,
           FOREIGN KEY (todo_id) REFERENCES todo(id))
-      """
-    );
+      """);
+
+    // 기본 category 생성
+    await db.insert('category',
+        {'id': 0, 'name': '할 일', 'color': 'BD00FF', 'emoji': '🤔', 'pos': 0});
   }
 }
