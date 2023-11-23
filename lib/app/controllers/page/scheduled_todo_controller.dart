@@ -295,6 +295,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/category_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/todo_controller.dart';
+import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/category_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/backup_todo_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
@@ -316,6 +317,12 @@ class ScheduledTodoController extends BaseController {
   void onInit() {
     ever(_todoController.scheduledTodoList, (callback) {
       updateScheduledTodoList();
+
+      for(var todo in scheduledTodoList) {
+        if(todo is TodoModel) {
+          log("${todo.name}, pos : ${todo.pos}");
+        }
+      }
     });
   }
 
@@ -360,8 +367,9 @@ class ScheduledTodoController extends BaseController {
     Map<int, List<int>> newCategoryIndexMap = {};
 
     for (var key in categoryIndexMap.keys) {
-      if (categoryIndexMap[key] == null)
+      if (categoryIndexMap[key] == null) {
         throw Exception('error in updateCategoryIndexMap');
+      }
 
       if (categoryIndexMap[key]![0] >= index) {
         newCategoryIndexMap[key] = [
@@ -380,6 +388,31 @@ class ScheduledTodoController extends BaseController {
   }
 
   /*
+    Create Function
+   */
+  void addTodo(categoryId) {
+    int todoId = scheduledTodoList.length + 1;
+    if (categoryIndexMap[categoryId] == null) {}
+    int pos =
+        categoryIndexMap[categoryId]![1] - categoryIndexMap[categoryId]![0] - 1;
+
+    TodoModel todo = TodoModel(
+        id: todoId,
+        categoryId: categoryId,
+        reminderId: 0,
+        name: "name$todoId",
+        subTodo: [],
+        date: DateTime.now(),
+        priority: 0,
+        memo: "memo",
+        isFold: false,
+        isChecked: false,
+        pos: pos);
+
+    _todoController.addTodo(todo: todo);
+  }
+
+  /*
     Read Function
    */
   Color getColor({required int todoId}) {
@@ -395,52 +428,99 @@ class ScheduledTodoController extends BaseController {
   /*
     Update Function
    */
+  void reorderTodoList(int oldIndex, int newIndex) {
+    if (newIndex == 0 || oldIndex == newIndex) return;
+    if (scheduledTodoList[oldIndex] is CategoryModel) return;
 
-  void addTodo(categoryId) {
-    int todoId = scheduledTodoList.length + 1;
-    if(categoryIndexMap[categoryId] == null){
+    TodoModel todo = scheduledTodoList[oldIndex];
+    int oldCategoryId = todo.categoryId;
+    int newCategoryId = 0;
 
+    List<TodoModel> updateTodos = [];
+
+    // 1. newCategoryId 구하기
+    if (oldIndex > newIndex) {
+      for (var key in categoryIndexMap.keys) {
+        if (categoryIndexMap[key]![0] < newIndex &&
+            categoryIndexMap[key]![1] >= newIndex) {
+          newCategoryId = key;
+          break;
+        }
+      }
+    } else {
+      for (var key in categoryIndexMap.keys) {
+        if (categoryIndexMap[key]![0] <= newIndex &&
+            categoryIndexMap[key]![1] > newIndex) {
+          newCategoryId = key;
+          break;
+        }
+      }
     }
-    int pos = categoryIndexMap[categoryId]![1] - 1;
 
-    TodoModel todo = TodoModel(
-        id: todoId,
-        categoryId: categoryId,
-        reminderId: 0,
-        name: "name$todoId",
-        subTodo: [],
-        date: DateTime.now(),
-        priority: 0,
-        memo: "memo",
-        isFold: false,
-        isChecked: false);
+    // 2. 만약 newCategoryId와 oldCategoryId가 같다면 카테고리 하나만 수정
+    int newPos = 0;
+    if(newCategoryId == oldCategoryId) {
+      // 2-1. category 내의 투두 수정
+      todo.pos = newIndex - categoryIndexMap[newCategoryId]![0] - 1;
+      updateTodos.add(todo);
 
-    _todoController.addTodo(todo: todo, pos: pos);
+      for (int inx = categoryIndexMap[oldCategoryId]![0] + 1;
+      inx < categoryIndexMap[oldCategoryId]![1];
+      inx++) {
+        if(inx != oldIndex) {
+          TodoModel item = scheduledTodoList[inx];
+          item.pos = newPos;
+
+          updateTodos.add(item);
+        }
+
+        if(inx == newIndex) {
+          newPos+=2;
+        } else if(inx != oldIndex) {
+          newPos++;
+        }
+      }
+    } else {
+      // 2-1. oldCategory 내의 투두 수정
+      for (int inx = categoryIndexMap[oldCategoryId]![0] + 1;
+      inx < categoryIndexMap[oldCategoryId]![1];
+      inx++) {
+        if(inx != oldIndex) {
+          TodoModel item = scheduledTodoList[inx];
+          item.pos = newPos;
+
+          updateTodos.add(item);
+          newPos++;
+        }
+      }
+
+      // 2-2. oldIndex의 투두 수정
+      todo.categoryId = newCategoryId;
+      todo.pos = newIndex - categoryIndexMap[newCategoryId]![0] - 1;
+      updateTodos.add(todo);
+
+      // 2-3. newCategory 내의 투두 수정
+      newPos = 0;
+      for (int inx = categoryIndexMap[newCategoryId]![0] + 1;
+      inx < categoryIndexMap[newCategoryId]![1]; inx++) {
+        if(inx == newIndex) newPos++;
+
+        TodoModel item = scheduledTodoList[inx];
+        item.pos = newPos;
+
+        updateTodos.add(item);
+
+        newPos++;
+      }
+    }
+
+    // 3. update
+    _todoController.updateTodos(type: TodoType.scheduled, todoList: updateTodos);
+
+    for(var todo in updateTodos) {
+      log("${todo.name}, pos : ${todo.pos}");
+    }
+
+    update();
   }
-
-//   void reorderTodoList(String date, int oldIndex, int newIndex) {
-//     if (_scheduledTodoList[date] == null) return;
-//     if (newIndex == 0) return;
-//     if (isCategoryModel(date, oldIndex)) return;
-//
-//     var oldCategory = getTodoCategory(date, oldIndex);
-//
-//     var list = _scheduledTodoList[date]!;
-//     final TodoModel todoItem = list.removeAt(oldIndex);
-//
-//     list.insert(newIndex, todoItem);
-//     _scheduledTodoList[date] = List.from(list);
-//
-//     updateCategoryIndexMap(date);
-//
-//     var newCategory = getTodoCategory(date, newIndex);
-//
-//     if (oldCategory != newCategory) {
-//       todoItem.categoryId = _scheduledTodoList[date]![newCategory].id;
-//     }
-//
-//     updateCalendarItemCounts(date);
-//
-//     update();
-//   }
 }

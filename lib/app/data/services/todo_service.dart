@@ -10,9 +10,8 @@ class TodoService extends GetxService {
   /*
     CREATE DATA
    */
-  Future<void> insertTodo({required TodoModel todo, required int pos}) async {
+  Future<void> insertTodo({required TodoModel todo}) async {
     Map<String, Object?> todoMap = todo.toMap();
-    todoMap['pos'] = pos;
     await _provider.insertTodo(todoMap);
   }
 
@@ -56,7 +55,13 @@ class TodoService extends GetxService {
     UPDATE DATA
    */
   Future<void> updateTodo(TodoModel todo) async {
-    var row = await _provider.updateTodo(todo.toMap(), todo.id);
+    var row = await _provider.updateTodo(todo.toMap());
+
+    debugPrint("update $row rows.");
+  }
+
+  Future<void> updateTodos(List<TodoModel> todoList) async {
+    var row = await _provider.updateTodos(todoList.map((e) => e.toMap()).toList());
 
     debugPrint("update $row rows.");
   }

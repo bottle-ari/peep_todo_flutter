@@ -48,6 +48,14 @@ class TodoController extends GetxController {
   }
 
   /*
+    CREATE Functions
+   */
+  void addTodo({required TodoModel todo}) async {
+    await _service.insertTodo(todo: todo);
+    loadScheduledData();
+  }
+
+  /*
     READ Functions
    */
   TodoModel getTodoById({required TodoType type, required int todoId}) {
@@ -116,8 +124,14 @@ class TodoController extends GetxController {
     await _service.updateTodo(todo);
   }
 
-  void addTodo({required TodoModel todo, required int pos}) async {
-    await _service.insertTodo(todo: todo, pos: pos);
-    loadScheduledData();
+  void updateTodos({required TodoType type, required List<TodoModel> todoList}) async {
+    await _service.updateTodos(todoList);
+
+    switch (type) {
+      case TodoType.scheduled:
+        loadScheduledData();
+      default:
+        break;
+    }
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:sqflite/sqflite.dart';
@@ -5,7 +7,6 @@ import 'package:sqflite/sqflite.dart';
 import '../../../core/database/database_init.dart';
 
 class TodoProvider extends GetxService {
-
   /*
     CREATE DATA
    */
@@ -27,12 +28,13 @@ class TodoProvider extends GetxService {
       int startDate, int endDate) async {
     final db = await DatabaseInit().database;
 
-    final List<Map<String, dynamic>> result = await db.query(
-      'todo',
-      where: 'date >= ? AND date < ?',
-      whereArgs: [startDate, endDate],
-      orderBy: 'date ASC, pos ASC',
-    );
+    final List<Map<String, dynamic>> result = await db.rawQuery(
+        "SELECT * FROM todo WHERE date >= $startDate AND date < $endDate ORDER BY date ASC, pos ASC");
+
+    log("DB ---------");
+    for (var item in result) {
+      log("DB : ${item['name']}, pos : ${item['pos']}");
+    }
 
     return result;
   }
@@ -50,9 +52,26 @@ class TodoProvider extends GetxService {
   /*
     UPDATE DATA
    */
-  Future<int> updateTodo(Map<String, Object?> todo, int todoId) async {
+  Future<int> updateTodo(Map<String, Object?> todo) async {
     final db = await DatabaseInit().database;
 
-    return await db.update('todo', todo, where: 'id = ?', whereArgs: [todoId]);
+    return await db
+        .update('todo', todo, where: 'id = ?', whereArgs: [todo['id']]);
+  }
+
+  Future<int> updateTodos(List<Map<String, Object?>> todoList) async {
+    final db = await DatabaseInit().database;
+
+    return await db.transaction((txn) async {
+      int totalUpdates = 0;
+
+      for (var todo in todoList) {
+        int updates = await txn
+            .update('todo', todo, where: 'id = ?', whereArgs: [todo['id']]);
+        totalUpdates += updates;
+      }
+
+      return totalUpdates;
+    });
   }
 }

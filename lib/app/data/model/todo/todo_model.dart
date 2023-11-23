@@ -12,6 +12,7 @@ class TodoModel {
   String? memo;
   bool isFold;
   bool isChecked;
+  int pos;
 
   TodoModel(
       {required this.id,
@@ -23,7 +24,8 @@ class TodoModel {
       required this.priority,
       required this.memo,
       required this.isFold,
-      required this.isChecked});
+      required this.isChecked,
+      required this.pos,});
 
   Map<String, dynamic> toMap() {
     return {
@@ -35,7 +37,8 @@ class TodoModel {
       'priority': priority,
       'memo': memo,
       'is_fold': isFold ? 1 : 0,
-      'is_checked': isChecked ? 1 : 0
+      'is_checked': isChecked ? 1 : 0,
+      'pos': pos,
     };
   }
 
@@ -51,6 +54,7 @@ class TodoModel {
       memo: map['memo'],
       isFold: (map['is_fold'] == 1),
       isChecked: (map['is_checked'] == 1),
+      pos : map['pos'],
     );
   }
 }

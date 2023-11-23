@@ -77,7 +77,7 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
                           ],
                         ),
                         onReorder: (int oldIndex, int newIndex) {
-                          //controller.reorderTodoList(date, oldIndex, newIndex);
+                          controller.reorderTodoList(oldIndex, newIndex);
                         },
                       ),
                     ],
