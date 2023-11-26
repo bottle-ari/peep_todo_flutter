@@ -28,6 +28,16 @@ class TodoController extends GetxController {
   /*
     Init Functions
    */
+  void loadData(TodoType type) {
+    switch(type) {
+      case TodoType.scheduled:
+        loadScheduledData();
+        break;
+      default:
+        break;
+    }
+  }
+
   void loadScheduledData() async {
     final DateTime startDate = DateTime(selectedDate.value.year, selectedDate.value.month, selectedDate.value.day);
     final DateTime endDate = startDate.add(const Duration(days: 1));
@@ -58,7 +68,7 @@ class TodoController extends GetxController {
   /*
     READ Functions
    */
-  TodoModel getTodoById({required TodoType type, required int todoId}) {
+  TodoModel getTodoById({required TodoType type, required String todoId}) {
     switch (type) {
       case TodoType.scheduled:
         return scheduledTodoList.firstWhere((e) => e.id == todoId);
@@ -68,7 +78,7 @@ class TodoController extends GetxController {
   }
 
   SubTodoModel? getSubTodoById(
-      {required TodoType type, required int todoId, required int subTodoId}) {
+      {required TodoType type, required String todoId, required String subTodoId}) {
     switch (type) {
       case TodoType.scheduled:
         return scheduledTodoList
@@ -83,7 +93,7 @@ class TodoController extends GetxController {
     UPDATE Functions
    */
   void toggleMainTodoChecked(
-      {required TodoType type, required int todoId}) async {
+      {required TodoType type, required String todoId}) async {
     TodoModel todo = getTodoById(todoId: todoId, type: type);
     todo.isChecked = !todo.isChecked;
 
@@ -100,8 +110,8 @@ class TodoController extends GetxController {
 
   void toggleSubTodoChecked(
       {required TodoType type,
-      required int todoId,
-      required int subTodoId}) async {
+      required String todoId,
+      required String subTodoId}) async {
     TodoModel todo = getTodoById(todoId: todoId, type: type);
     todo.subTodo.firstWhere((e) => e.id == subTodoId).isChecked =
         !todo.subTodo.firstWhere((e) => e.id == subTodoId).isChecked;
@@ -116,7 +126,7 @@ class TodoController extends GetxController {
     }
   }
 
-  void toggleIsFold({required TodoType type, required int todoId}) async {
+  void toggleIsFold({required TodoType type, required String todoId}) async {
     TodoModel todo = getTodoById(todoId: todoId, type: type);
 
     todo.isFold = !todo.isFold;

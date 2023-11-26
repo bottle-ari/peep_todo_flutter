@@ -310,7 +310,7 @@ class ScheduledTodoController extends BaseController {
   final RxList<dynamic> scheduledTodoList = <dynamic>[].obs;
 
   // Variables
-  Map<int, List<int>> categoryIndexMap = <int, List<int>>{};
+  Map<String, List<int>> categoryIndexMap = <String, List<int>>{};
   BackupTodoModel? backup;
 
   @override
@@ -347,8 +347,10 @@ class ScheduledTodoController extends BaseController {
     scheduledTodoList.value = newScheduledTodoList;
   }
 
-  void initCategoryIndexMap(List<dynamic> todoList) {
-    Map<int, List<int>> newCategoryIndexMap = {};
+  void initCategoryIndexMap(List<dynamic>? todoList) {
+    todoList ??= scheduledTodoList;
+
+    Map<String, List<int>> newCategoryIndexMap = {};
 
     for (int i = 0; i < todoList.length; i++) {
       if (todoList[i] is CategoryModel) {
@@ -362,7 +364,7 @@ class ScheduledTodoController extends BaseController {
   }
 
   void updateCategoryIndexMap(int index) {
-    Map<int, List<int>> newCategoryIndexMap = {};
+    Map<String, List<int>> newCategoryIndexMap = {};
 
     for (var key in categoryIndexMap.keys) {
       if (categoryIndexMap[key] == null) {
@@ -388,32 +390,11 @@ class ScheduledTodoController extends BaseController {
   /*
     Create Function
    */
-  void addTodo(categoryId) {
-    int todoId = scheduledTodoList.length + 1;
-    if (categoryIndexMap[categoryId] == null) {}
-    int pos =
-        categoryIndexMap[categoryId]![1] - categoryIndexMap[categoryId]![0] - 1;
-
-    TodoModel todo = TodoModel(
-        id: todoId,
-        categoryId: categoryId,
-        reminderId: 0,
-        name: "name$todoId",
-        subTodo: [],
-        date: DateTime.now(),
-        priority: 0,
-        memo: "memo",
-        isFold: false,
-        isChecked: false,
-        pos: pos);
-
-    _todoController.addTodo(todo: todo);
-  }
 
   /*
     Read Function
    */
-  Color getColor({required int todoId}) {
+  Color getColor({required String todoId}) {
     var categoryId = _todoController.scheduledTodoList
         .firstWhere((e) => e.id == todoId)
         .categoryId;
@@ -435,8 +416,8 @@ class ScheduledTodoController extends BaseController {
     var list = scheduledTodoList;
     final TodoModel todoItem = list.removeAt(oldIndex);
 
-    int oldCategoryId = todoItem.categoryId;
-    int newCategoryId = 0;
+    String oldCategoryId = todoItem.categoryId;
+    String newCategoryId = '';
 
     // 1. newCategoryId 구하기
     if (oldIndex > newIndex) {
@@ -469,7 +450,7 @@ class ScheduledTodoController extends BaseController {
   }
 
   void _reorderAndSaveTodoList(
-      int oldCategoryId, int newCategoryId, int newIndex) {
+      String oldCategoryId, String newCategoryId, int newIndex) {
     // 2. oldCategory pos 변경 후 저장
     var first = categoryIndexMap[oldCategoryId]![0];
     var last = categoryIndexMap[oldCategoryId]![1];

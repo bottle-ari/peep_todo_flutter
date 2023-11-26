@@ -10,7 +10,7 @@ import '../../../theme/icons.dart';
 class PeepPriorityFoldingButton extends StatelessWidget {
   final Color color;
   final double size = AppValues.baseIconSize;
-  final int todoId;
+  final String todoId;
   final TodoType todoType;
   final TodoController controller;
 

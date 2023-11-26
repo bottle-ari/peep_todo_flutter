@@ -1,11 +1,10 @@
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/sub_todo_model.dart';
 
 class TodoModel {
-  final int id;
-  int categoryId;
-  int? reminderId;
-   String name;
+  final String id;
+  String categoryId;
+  String? reminderId;
+  String name;
   List<SubTodoModel> subTodo;
   DateTime date;
   int priority;
@@ -14,18 +13,19 @@ class TodoModel {
   bool isChecked;
   int pos;
 
-  TodoModel(
-      {required this.id,
-      required this.categoryId,
-      required this.reminderId,
-      required this.name,
-      required this.subTodo,
-      required this.date,
-      required this.priority,
-      required this.memo,
-      required this.isFold,
-      required this.isChecked,
-      required this.pos,});
+  TodoModel({
+    required this.id,
+    required this.categoryId,
+    required this.reminderId,
+    required this.name,
+    required this.subTodo,
+    required this.date,
+    required this.priority,
+    required this.memo,
+    required this.isFold,
+    required this.isChecked,
+    required this.pos,
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -54,7 +54,7 @@ class TodoModel {
       memo: map['memo'],
       isFold: (map['is_fold'] == 1),
       isChecked: (map['is_checked'] == 1),
-      pos : map['pos'],
+      pos: map['pos'],
     );
   }
 }

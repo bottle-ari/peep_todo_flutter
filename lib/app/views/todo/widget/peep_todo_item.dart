@@ -19,7 +19,7 @@ import '../../../controllers/todo_controller.dart';
 class PeepTodoItem extends StatelessWidget {
   final Color color;
   final TodoType todoType;
-  final int todoId;
+  final String todoId;
 
   const PeepTodoItem(
       {super.key,
@@ -124,7 +124,7 @@ class PeepTodoItem extends StatelessWidget {
                     children: <Widget>[
                       Row(
                         children: [
-                          if ((todo.subTodo.length ?? 0) == 0)
+                          if (todo.subTodo.length == 0)
                             Padding(
                               padding: EdgeInsets.symmetric(
                                 horizontal: AppValues.horizontalMargin,
@@ -224,8 +224,8 @@ class PeepSubTodoItem extends StatelessWidget {
   final TodoController controller;
   final Color color;
   final TodoType todoType;
-  final int todoId;
-  final int subTodoId;
+  final String todoId;
+  final String subTodoId;
 
   const PeepSubTodoItem(
       {super.key,

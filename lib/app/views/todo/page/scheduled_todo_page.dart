@@ -69,7 +69,15 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
                                       name: item.name,
                                       emoji: item.emoji,
                                       onTapAddButton: () {
-                                        controller.addTodo(item.id);
+                                        int pos = controller
+                                            .categoryIndexMap[item.id]![1];
+                                        Get.bottomSheet(TodoAddModal(
+                                          category: item,
+                                          pos: pos,
+                                          type: TodoType.scheduled,
+                                        ));
+                                        controller.initCategoryIndexMap(null);
+                                        //controller.addTodo(item.id);
                                       },
                                       onTapArrowButton: () {},
                                       isFolded: false),

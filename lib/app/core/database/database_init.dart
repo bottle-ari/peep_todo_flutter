@@ -32,7 +32,7 @@ class DatabaseInit {
     await db.execute(
       """
       CREATE TABLE category(
-          id INTEGER PRIMARY KEY,
+          id TEXT PRIMARY KEY,
           name TEXT,
           color TEXT,
           emoji TEXT,
@@ -44,7 +44,7 @@ class DatabaseInit {
     await db.execute(
       """
       CREATE TABLE reminder(
-          id INTEGER PRIMARY KEY,
+          id TEXT PRIMARY KEY,
           name TEXT,
           icon TEXT,
           if_condition TEXT,
@@ -57,9 +57,9 @@ class DatabaseInit {
     await db.execute(
       """
       CREATE TABLE routine(
-          id INTEGER PRIMARY KEY,
-          category_id INTEGER,
-          reminder_id INTEGER,
+          id TEXT PRIMARY KEY,
+          category_id TEXT,
+          reminder_id TEXT,
           name TEXT,
           is_active INTEGER,
           priority INTEGER,
@@ -75,9 +75,9 @@ class DatabaseInit {
     await db.execute(
       """
       CREATE TABLE todo(
-          id INTEGER PRIMARY KEY,
-          category_id INTEGER,
-          reminder_id INTEGER,
+          id TEXT PRIMARY KEY,
+          category_id TEXT,
+          reminder_id TEXT,
           name TEXT,
           subtodo TEXT,
           date INTEGER,
@@ -93,8 +93,8 @@ class DatabaseInit {
     // subtodo table 생성
     await db.execute("""
       CREATE TABLE subtodo(
-          id INTEGER PRIMARY KEY,
-          todo_id INTEGER,
+          id TEXT PRIMARY KEY,
+          todo_id TEXT,
           name TEXT,
           is_checked INTEGER,
           pos INTEGER,

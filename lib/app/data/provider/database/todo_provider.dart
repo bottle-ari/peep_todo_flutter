@@ -34,7 +34,7 @@ class TodoProvider extends GetxService {
     return result;
   }
 
-  Future<List<Map<String, Object?>>> getSubTodos(int todoId) async {
+  Future<List<Map<String, Object?>>> getSubTodos(String todoId) async {
     final db = await DatabaseInit().database;
 
     return await db.query(

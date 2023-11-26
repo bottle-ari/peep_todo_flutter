@@ -14,7 +14,7 @@ class PeepCheckButton extends StatelessWidget {
   final TodoController controller;
   final Color color;
   final TodoType todoType;
-  final int todoId;
+  final String todoId;
 
   const PeepCheckButton({
     Key? key,
@@ -53,8 +53,8 @@ class PeepSubCheckButton extends StatelessWidget {
   final Color color;
   final TodoController controller;
   final TodoType todoType;
-  final int todoId;
-  final int subTodoId;
+  final String todoId;
+  final String subTodoId;
 
   const PeepSubCheckButton({
     Key? key,

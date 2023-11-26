@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 class CategoryModel {
-  final int id;
+  final String id;
   String name;
   Color color;
   String emoji;
