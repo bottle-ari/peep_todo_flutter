@@ -58,4 +58,5 @@ class Iconsax {
   static const check = 'assets/image/icon/check.svg';
   static const eggBroken = 'assets/image/icon/egg_broken';
   static const cancel = 'assets/image/icon/cancel.svg';
+  static const calendarSearch = 'assets/image/icon/calendar_search.svg';
 }
