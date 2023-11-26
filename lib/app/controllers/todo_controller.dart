@@ -126,12 +126,5 @@ class TodoController extends GetxController {
 
   void updateTodos({required TodoType type, required List<TodoModel> todoList}) async {
     await _service.updateTodos(todoList);
-
-    switch (type) {
-      case TodoType.scheduled:
-        loadScheduledData();
-      default:
-        break;
-    }
   }
 }

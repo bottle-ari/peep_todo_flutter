@@ -315,14 +315,10 @@ class ScheduledTodoController extends BaseController {
 
   @override
   void onInit() {
+    super.onInit();
+
     ever(_todoController.scheduledTodoList, (callback) {
       updateScheduledTodoList();
-
-      for(var todo in scheduledTodoList) {
-        if(todo is TodoModel) {
-          log("${todo.name}, pos : ${todo.pos}");
-        }
-      }
     });
   }
 
@@ -336,7 +332,7 @@ class ScheduledTodoController extends BaseController {
 
     for (var todo in _todoController.scheduledTodoList) {
       var inx =
-          (categoryIndexMap[todo.categoryId] ?? [0, 0])[1]; // todo가 추가될 index
+          (categoryIndexMap[todo.categoryId] ?? [0, 1])[1]; // todo가 추가될 index
 
       if (inx >= newScheduledTodoList.length) {
         newScheduledTodoList.add(todo);
@@ -357,6 +353,8 @@ class ScheduledTodoController extends BaseController {
     for (int i = 0; i < todoList.length; i++) {
       if (todoList[i] is CategoryModel) {
         newCategoryIndexMap[todoList[i].id] = [i, i + 1];
+      } else {
+        newCategoryIndexMap[todoList[i].categoryId]?[1]++;
       }
     }
 
@@ -432,11 +430,13 @@ class ScheduledTodoController extends BaseController {
     if (newIndex == 0 || oldIndex == newIndex) return;
     if (scheduledTodoList[oldIndex] is CategoryModel) return;
 
-    TodoModel todo = scheduledTodoList[oldIndex];
-    int oldCategoryId = todo.categoryId;
-    int newCategoryId = 0;
+    //_reorderAndSaveTodoList(oldIndex, newIndex);
 
-    List<TodoModel> updateTodos = [];
+    var list = scheduledTodoList;
+    final TodoModel todoItem = list.removeAt(oldIndex);
+
+    int oldCategoryId = todoItem.categoryId;
+    int newCategoryId = 0;
 
     // 1. newCategoryId 구하기
     if (oldIndex > newIndex) {
@@ -457,70 +457,48 @@ class ScheduledTodoController extends BaseController {
       }
     }
 
-    // 2. 만약 newCategoryId와 oldCategoryId가 같다면 카테고리 하나만 수정
-    int newPos = 0;
-    if(newCategoryId == oldCategoryId) {
-      // 2-1. category 내의 투두 수정
-      todo.pos = newIndex - categoryIndexMap[newCategoryId]![0] - 1;
-      updateTodos.add(todo);
+    todoItem.categoryId = newCategoryId;
 
-      for (int inx = categoryIndexMap[oldCategoryId]![0] + 1;
-      inx < categoryIndexMap[oldCategoryId]![1];
-      inx++) {
-        if(inx != oldIndex) {
-          TodoModel item = scheduledTodoList[inx];
-          item.pos = newPos;
+    list.insert(newIndex, todoItem);
+    scheduledTodoList.value = List.from(list);
 
-          updateTodos.add(item);
-        }
-
-        if(inx == newIndex) {
-          newPos+=2;
-        } else if(inx != oldIndex) {
-          newPos++;
-        }
-      }
-    } else {
-      // 2-1. oldCategory 내의 투두 수정
-      for (int inx = categoryIndexMap[oldCategoryId]![0] + 1;
-      inx < categoryIndexMap[oldCategoryId]![1];
-      inx++) {
-        if(inx != oldIndex) {
-          TodoModel item = scheduledTodoList[inx];
-          item.pos = newPos;
-
-          updateTodos.add(item);
-          newPos++;
-        }
-      }
-
-      // 2-2. oldIndex의 투두 수정
-      todo.categoryId = newCategoryId;
-      todo.pos = newIndex - categoryIndexMap[newCategoryId]![0] - 1;
-      updateTodos.add(todo);
-
-      // 2-3. newCategory 내의 투두 수정
-      newPos = 0;
-      for (int inx = categoryIndexMap[newCategoryId]![0] + 1;
-      inx < categoryIndexMap[newCategoryId]![1]; inx++) {
-        if(inx == newIndex) newPos++;
-
-        TodoModel item = scheduledTodoList[inx];
-        item.pos = newPos;
-
-        updateTodos.add(item);
-
-        newPos++;
-      }
-    }
-
-    // 3. update
-    _todoController.updateTodos(type: TodoType.scheduled, todoList: updateTodos);
-
-    for(var todo in updateTodos) {
-      log("${todo.name}, pos : ${todo.pos}");
-    }
+    initCategoryIndexMap(scheduledTodoList);
+    _reorderAndSaveTodoList(oldCategoryId, newCategoryId, newIndex);
 
     update();
+  }
+
+  void _reorderAndSaveTodoList(
+      int oldCategoryId, int newCategoryId, int newIndex) {
+    // 2. oldCategory pos 변경 후 저장
+    var first = categoryIndexMap[oldCategoryId]![0];
+    var last = categoryIndexMap[oldCategoryId]![1];
+
+    int newPos = 0;
+    for (int i = first + 1; i < last; i++) {
+      scheduledTodoList[i].pos = newPos;
+      newPos++;
+    }
+
+    _todoController.updateTodos(
+        type: TodoType.scheduled,
+        todoList: scheduledTodoList.sublist(first + 1, last).cast<TodoModel>());
+
+    // newCategory pos 변경 후 저장
+    if (newCategoryId != oldCategoryId) {
+      first = categoryIndexMap[newCategoryId]![0];
+      last = categoryIndexMap[newCategoryId]![1];
+
+      newPos = 0;
+      for (int i = first + 1; i < last; i++) {
+        scheduledTodoList[i].pos = newPos;
+        newPos++;
+      }
+
+      _todoController.updateTodos(
+          type: TodoType.scheduled,
+          todoList:
+              scheduledTodoList.sublist(first + 1, last).cast<TodoModel>());
+    }
   }
 }

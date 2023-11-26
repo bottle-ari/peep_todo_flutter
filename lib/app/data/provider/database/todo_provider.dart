@@ -29,12 +29,7 @@ class TodoProvider extends GetxService {
     final db = await DatabaseInit().database;
 
     final List<Map<String, dynamic>> result = await db.rawQuery(
-        "SELECT * FROM todo WHERE date >= $startDate AND date < $endDate ORDER BY date ASC, pos ASC");
-
-    log("DB ---------");
-    for (var item in result) {
-      log("DB : ${item['name']}, pos : ${item['pos']}");
-    }
+        "SELECT * FROM todo WHERE date >= $startDate AND date < $endDate ORDER BY pos ASC, date ASC");
 
     return result;
   }
