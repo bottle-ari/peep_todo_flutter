@@ -16,7 +16,6 @@ import '../../../core/base/base_view.dart';
 import '../widget/peep_todo_item.dart';
 
 class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
-
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
     return null;
@@ -36,9 +35,7 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
                   padding: EdgeInsets.only(bottom: AppValues.verticalMargin),
                   child: SizedBox(
                     height: 90.h,
-                    child: PeepMiniCalendar(
-                      controller: controller,
-                    ),
+                    child: PeepMiniCalendar(),
                   ),
                 ),
                 Expanded(

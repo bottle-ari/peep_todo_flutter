@@ -1,8 +1,10 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/services/todo_service.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import '../data/model/todo/sub_todo_model.dart';
 import '../data/model/todo/todo_model.dart';
@@ -12,11 +14,22 @@ class TodoController extends GetxController {
 
   // Data
   final RxList<TodoModel> scheduledTodoList = <TodoModel>[].obs;
-  final RxList<TodoModel> calendarTodoList = <TodoModel>[].obs;
+  final RxMap<String, List<TodoModel>> calendarTodoList =
+      <String, List<TodoModel>>{}.obs;
+
+  final RxMap<String, Map<String, double>> calendarItemCounts =
+      <String, Map<String, double>>{}.obs;
 
   // Variables
-  final Rx<DateTime> focusedDate = DateTime.now().obs;
-  final Rx<DateTime> selectedDate = DateTime.now().obs;
+  final Rx<DateTime> focusedDate = DateTime
+      .now()
+      .obs;
+  final Rx<DateTime> selectedDate = DateTime
+      .now()
+      .obs;
+  final Rx<DateTime> selectedCalendarDate = DateTime
+      .now()
+      .obs;
 
   @override
   void onInit() {
@@ -24,6 +37,7 @@ class TodoController extends GetxController {
 
     ever(selectedDate, (callback) => loadScheduledData());
 
+    loadScheduledData();
     loadCalendarData();
   }
 
@@ -52,12 +66,16 @@ class TodoController extends GetxController {
 
   void loadCalendarData() async {
     final DateTime startDate =
-        selectedDate.value.subtract(const Duration(days: 60));
-    final DateTime endDate = selectedDate.value.add(const Duration(days: 60));
+    selectedCalendarDate.value.subtract(const Duration(days: 60));
+    final DateTime endDate =
+    selectedCalendarDate.value.add(const Duration(days: 60));
 
     var data = await _service.getScheduledTodoByDate(
         startDate: startDate, endDate: endDate);
-    scheduledTodoList.value = data;
+
+    calendarTodoList.value = groupByDate(data);
+
+    initCalendarItemCounts();
   }
 
   /*
@@ -66,6 +84,8 @@ class TodoController extends GetxController {
   void addTodo({required TodoModel todo}) async {
     await _service.insertTodo(todo: todo);
     loadScheduledData();
+
+    updateCalendarItemCounts(todo.date);
   }
 
   /*
@@ -80,10 +100,9 @@ class TodoController extends GetxController {
     }
   }
 
-  SubTodoModel? getSubTodoById(
-      {required TodoType type,
-      required String todoId,
-      required String subTodoId}) {
+  SubTodoModel? getSubTodoById({required TodoType type,
+    required String todoId,
+    required String subTodoId}) {
     switch (type) {
       case TodoType.scheduled:
         return scheduledTodoList
@@ -112,15 +131,20 @@ class TodoController extends GetxController {
       default:
         break;
     }
+
+    updateCalendarItemCounts(todo.date);
   }
 
-  void toggleSubTodoChecked(
-      {required TodoType type,
-      required String todoId,
-      required String subTodoId}) async {
+  void toggleSubTodoChecked({required TodoType type,
+    required String todoId,
+    required String subTodoId}) async {
     TodoModel todo = getTodoById(todoId: todoId, type: type);
-    todo.subTodo.firstWhere((e) => e.id == subTodoId).isChecked =
-        !todo.subTodo.firstWhere((e) => e.id == subTodoId).isChecked;
+    todo.subTodo
+        .firstWhere((e) => e.id == subTodoId)
+        .isChecked =
+    !todo.subTodo
+        .firstWhere((e) => e.id == subTodoId)
+        .isChecked;
 
     await _service.updateTodo(todo);
 
@@ -143,5 +167,122 @@ class TodoController extends GetxController {
   void updateTodos(
       {required TodoType type, required List<TodoModel> todoList}) async {
     await _service.updateTodos(todoList);
+  }
+
+  /*
+    Util Function
+   */
+  // 날짜별로 데이터를 분류하는 함수
+  Map<String, List<TodoModel>> groupByDate(List<TodoModel> todoList) {
+    Map<String, List<TodoModel>> dateMap = {};
+
+    for (var todo in todoList) {
+      String formattedDate = DateFormat('yyyyMMdd').format(todo.date);
+      if (!dateMap.containsKey(formattedDate)) {
+        dateMap[formattedDate] = [];
+      }
+      dateMap[formattedDate]?.add(todo);
+    }
+
+    return dateMap;
+  }
+
+  /*
+    Calendar
+   */
+  void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    if (!isSameDay(selectedDate.value, selectedDay)) {
+      selectedDate.value = selectedDay;
+      focusedDate.value = focusedDay;
+    }
+  }
+
+  void onMoveToday() {
+    DateTime today = DateTime.now();
+
+    // 오늘 선택 예외 처리
+    if (focusedDate.value == today && selectedDate.value == today) {
+      focusedDate.update((val) {
+        val = null;
+      });
+    }
+    focusedDate.value = today;
+    selectedDate.value = today;
+  }
+
+  void onPageChanged(DateTime newFocusedDay) {
+    focusedDate.value = newFocusedDay;
+    selectedDate.value = newFocusedDay;
+
+    update();
+  }
+
+  void initCalendarItemCounts() {
+    for (var date in calendarTodoList.keys) {
+      if (calendarTodoList[date] == null) continue;
+
+      calendarItemCounts[date] = {};
+
+      int sum = 0;
+      for (int i = 0; i < calendarTodoList[date]!.length; i++) {
+        var categoryId = calendarTodoList[date]![i].categoryId;
+
+        if (calendarItemCounts[date]![categoryId] == null) {
+          calendarItemCounts[date]![categoryId] = 0;
+        }
+
+        if (calendarTodoList[date]![i].isChecked) {
+            calendarItemCounts[date]![categoryId] =
+                calendarItemCounts[date]![categoryId]! + 1;
+        }
+        sum++;
+      }
+
+      if (sum != 0) {
+        for (var key in calendarItemCounts[date]!.keys) {
+          if (calendarItemCounts[date]![key] == null) continue;
+
+          calendarItemCounts[date]![key] =
+              calendarItemCounts[date]![key]! / sum;
+        }
+      }
+    }
+  }
+
+  void updateCalendarItemCounts(DateTime dateTime) {
+    loadCalendarData();
+
+    String date = DateFormat('yyyyMMdd').format(dateTime);
+    if (calendarTodoList[date] == null) return;
+
+    calendarItemCounts[date] = {};
+
+    int sum = 0;
+    for (int i = 0; i < calendarTodoList[date]!.length; i++) {
+      var categoryId = calendarTodoList[date]![i].categoryId;
+
+      if (calendarItemCounts[date]![categoryId] == null) {
+        calendarItemCounts[date]![categoryId] = 0;
+      }
+
+      if (calendarTodoList[date]![i].isChecked) {
+        calendarItemCounts[date]![categoryId] =
+            calendarItemCounts[date]![categoryId]! + 1;
+      }
+      sum++;
+    }
+
+    if (sum != 0) {
+      for (var key in calendarItemCounts[date]!.keys) {
+        if (calendarItemCounts[date]![key] == null) continue;
+
+        calendarItemCounts[date]![key] =
+            calendarItemCounts[date]![key]! / sum;
+      }
+    }
+
+    for(var values in calendarItemCounts[date]!.values) {
+      log(values.toString());
+    }
   }
 }

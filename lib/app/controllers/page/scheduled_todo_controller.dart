@@ -309,6 +309,8 @@ class ScheduledTodoController extends BaseController {
 
   // Data
   final RxList<dynamic> scheduledTodoList = <dynamic>[].obs;
+  final RxMap<String, List<double>> calendarItemCounts =
+      <String, List<double>>{}.obs;
 
   // Variables
   Map<String, List<int>> categoryIndexMap = <String, List<int>>{};
@@ -321,6 +323,11 @@ class ScheduledTodoController extends BaseController {
     ever(_todoController.scheduledTodoList, (callback) {
       updateScheduledTodoList();
     });
+
+    ever(_categoryController.categoryList,
+        (callback) => updateScheduledTodoList());
+
+    updateScheduledTodoList();
   }
 
   /*
@@ -447,6 +454,7 @@ class ScheduledTodoController extends BaseController {
     initCategoryIndexMap(scheduledTodoList);
     _reorderAndSaveTodoList(oldCategoryId, newCategoryId, newIndex);
 
+    _todoController.updateCalendarItemCounts(todoItem.date);
     update();
   }
 
@@ -482,36 +490,5 @@ class ScheduledTodoController extends BaseController {
           todoList:
               scheduledTodoList.sublist(first + 1, last).cast<TodoModel>());
     }
-  }
-
-  /*
-    Mini Calendar Functions
-   */
-  void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    if (!isSameDay(_todoController.selectedDate.value, selectedDay)) {
-      _todoController.selectedDate.value = selectedDay;
-      _todoController.focusedDate.value = focusedDay;
-    }
-  }
-
-  void onMoveToday() {
-    DateTime today = DateTime.now();
-
-    // 오늘 선택 예외 처리
-    if (_todoController.focusedDate.value == today &&
-        _todoController.selectedDate.value == today) {
-      _todoController.focusedDate.update((val) {
-        val = null;
-      });
-    }
-    _todoController.focusedDate.value = today;
-    _todoController.selectedDate.value = today;
-  }
-
-  void onPageChanged(DateTime newFocusedDay) {
-    _todoController.focusedDate.value = newFocusedDay;
-    _todoController.selectedDate.value = newFocusedDay;
-
-    update();
   }
 }

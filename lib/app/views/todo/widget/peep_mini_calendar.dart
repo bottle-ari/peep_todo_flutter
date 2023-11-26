@@ -13,28 +13,29 @@ import 'package:peep_todo_flutter/app/theme/text_style.dart';
 
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../controllers/category_controller.dart';
 import '../../../controllers/todo_controller.dart';
 import '../../../data/model/category_model.dart';
 import '../../../theme/app_values.dart';
 import '../../../theme/palette.dart';
 
 class ringPainter extends CustomPainter {
-  final List<CategoryModel> categoryList;
-  final List<double> itemCounts;
+  final Map<String, double> itemCounts;
+  final CategoryController controller = Get.find();
 
-  ringPainter({required this.itemCounts, required this.categoryList});
+  ringPainter({required this.itemCounts});
 
   @override
   void paint(Canvas canvas, Size size) {
-    const double total = 1 / 2;
     const double startAngle = -pi / 2;
 
     double currentAngle = startAngle;
 
     if (itemCounts.isEmpty) return;
 
-    for (int i = 0; i < categoryList.length; i++) {
-      final sweepAngle = ((itemCounts[i] / total) * pi); // 아이템 수에 따른 각도
+    for (var category in controller.categoryList) {
+      final sweepAngle =
+      ((itemCounts[category.id] ?? 0) * pi * 2); // 아이템 수에 따른 각도
       final rect = Rect.fromCircle(
         center: Offset(size.width / 2, size.height / 2),
         radius: size.width / 2,
@@ -43,8 +44,7 @@ class ringPainter extends CustomPainter {
       final paint = Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = 5.0
-        ..color = categoryList[i]
-            .color
+        ..color = category.color
             .withOpacity(AppValues.halfOpacity); // 아이템 순위에 해당하는 색상 사용
 
       canvas.drawArc(rect, currentAngle, sweepAngle, false, paint);
@@ -56,25 +56,32 @@ class ringPainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     if (oldDelegate is ringPainter) {
-      return !listEquals(itemCounts, oldDelegate.itemCounts) ||
-          !listEquals(categoryList, oldDelegate.categoryList);
+      // Map의 키와 값 모두를 비교하기 위한 함수
+      bool mapsEqual(Map<String, double> a, Map<String, double> b) {
+        if (a.length != b.length) return false;
+        for (String key in a.keys) {
+          if (b.containsKey(key) && b[key] == a[key]) continue;
+          return false;
+        }
+        return true;
+      }
+
+      return !mapsEqual(itemCounts, oldDelegate.itemCounts);
     }
     return true;
   }
 }
 
 class PeepMiniCalendar extends StatelessWidget {
-  final ScheduledTodoController controller;
-  final TodoController todoController = Get.find();
+  final TodoController controller = Get.find();
 
   PeepMiniCalendar({
     Key? key,
-    required this.controller,
   }) : super(key: key);
 
   Widget customDowBuilder(BuildContext context, DateTime day) {
     final text = DateFormat.E('ko_KR').format(day);
-    final isSelected = todoController.selectedDate.value;
+    final isSelected = controller.selectedDate.value;
     final isToday = isSameDay(day, DateTime.now());
     return Center(
       child: Stack(
@@ -95,9 +102,9 @@ class PeepMiniCalendar extends StatelessWidget {
                           color: Palette.peepYellow50,
                           borderRadius: BorderRadius.only(
                             topLeft:
-                                Radius.circular(AppValues.calendarItemRadius),
+                            Radius.circular(AppValues.calendarItemRadius),
                             topRight:
-                                Radius.circular(AppValues.calendarItemRadius),
+                            Radius.circular(AppValues.calendarItemRadius),
                           ),
                         ),
                       ),
@@ -143,80 +150,81 @@ class PeepMiniCalendar extends StatelessWidget {
                     child: Center(
                       child: Text(text,
                           style:
-                              PeepTextStyle.boldXS(color: Palette.peepWhite)),
+                          PeepTextStyle.boldXS(color: Palette.peepWhite)),
                     ),
                   ),
                 ),
               )
-          else if (isSameDay(day, isSelected))
-            Stack(
-              children: [
-                Positioned(
-                  top: 5.h,
-                  left: 0,
-                  right: 0,
-                  child: Center(
-                    child: Container(
-                      width: 44.w, // Container의 너비
-                      height: 40.h, // Container의 높이
-                      decoration: BoxDecoration(
-                        color: Palette.peepYellow50,
-                        borderRadius: BorderRadius.only(
-                          topLeft:
-                              Radius.circular(AppValues.calendarItemRadius),
-                          topRight:
-                              Radius.circular(AppValues.calendarItemRadius),
+          else
+            if (isSameDay(day, isSelected))
+              Stack(
+                children: [
+                  Positioned(
+                    top: 5.h,
+                    left: 0,
+                    right: 0,
+                    child: Center(
+                      child: Container(
+                        width: 44.w, // Container의 너비
+                        height: 40.h, // Container의 높이
+                        decoration: BoxDecoration(
+                          color: Palette.peepYellow50,
+                          borderRadius: BorderRadius.only(
+                            topLeft:
+                            Radius.circular(AppValues.calendarItemRadius),
+                            topRight:
+                            Radius.circular(AppValues.calendarItemRadius),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Positioned(
-                  top: 10.h,
-                  left: 0,
-                  right: 0,
-                  child: Center(
-                    child: SizedBox(
-                      height: 24.w,
-                      width: 24.w,
-                      child: Center(
-                        child: Text(text,
-                            style: day.weekday == DateTime.sunday
-                                ? PeepTextStyle.regularXS(
-                                    color: Palette.peepRed)
-                                : day.weekday == DateTime.saturday
-                                    ? PeepTextStyle.regularXS(
-                                        color: Palette.peepBlue)
-                                    : PeepTextStyle.regularXS(
-                                        color: Palette.peepGray400)),
+                  Positioned(
+                    top: 10.h,
+                    left: 0,
+                    right: 0,
+                    child: Center(
+                      child: SizedBox(
+                        height: 24.w,
+                        width: 24.w,
+                        child: Center(
+                          child: Text(text,
+                              style: day.weekday == DateTime.sunday
+                                  ? PeepTextStyle.regularXS(
+                                  color: Palette.peepRed)
+                                  : day.weekday == DateTime.saturday
+                                  ? PeepTextStyle.regularXS(
+                                  color: Palette.peepBlue)
+                                  : PeepTextStyle.regularXS(
+                                  color: Palette.peepGray400)),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            )
-          else
-            Positioned(
-              top: 10.h,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: SizedBox(
-                  height: 24.w,
-                  width: 24.w,
-                  child: Center(
-                    child: Text(text,
-                        style: day.weekday == DateTime.sunday
-                            ? PeepTextStyle.regularXS(color: Palette.peepRed)
-                            : day.weekday == DateTime.saturday
-                                ? PeepTextStyle.regularXS(
-                                    color: Palette.peepBlue)
-                                : PeepTextStyle.regularXS(
-                                    color: Palette.peepGray400)),
+                ],
+              )
+            else
+              Positioned(
+                top: 10.h,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: SizedBox(
+                    height: 24.w,
+                    width: 24.w,
+                    child: Center(
+                      child: Text(text,
+                          style: day.weekday == DateTime.sunday
+                              ? PeepTextStyle.regularXS(color: Palette.peepRed)
+                              : day.weekday == DateTime.saturday
+                              ? PeepTextStyle.regularXS(
+                              color: Palette.peepBlue)
+                              : PeepTextStyle.regularXS(
+                              color: Palette.peepGray400)),
+                    ),
                   ),
                 ),
               ),
-            ),
         ],
       ),
     );
@@ -224,7 +232,8 @@ class PeepMiniCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Container(
+    return Obx(() =>
+        Container(
           decoration: BoxDecoration(
               color: Palette.peepWhite,
               borderRadius: BorderRadius.circular(AppValues.baseRadius)),
@@ -237,7 +246,7 @@ class PeepMiniCalendar extends StatelessWidget {
                     child: Text(
                       DateFormat.d().format(day),
                       style:
-                          PeepTextStyle.regularXS(color: Palette.peepGray400),
+                      PeepTextStyle.regularXS(color: Palette.peepGray400),
                     ),
                   );
                 },
@@ -253,19 +262,27 @@ class PeepMiniCalendar extends StatelessWidget {
                             color: Palette.peepYellow50,
                             borderRadius: BorderRadius.only(
                               bottomLeft:
-                                  Radius.circular(AppValues.calendarItemRadius),
+                              Radius.circular(AppValues.calendarItemRadius),
                               bottomRight:
-                                  Radius.circular(AppValues.calendarItemRadius),
+                              Radius.circular(AppValues.calendarItemRadius),
                             ),
                           ),
                         ),
-                        // Obx(()=>
-                        //   CustomPaint(
-                        //     size: Size(32.w, 32.h), // CustomPaint의 크기 고정
-                        //     painter:
-                        //         ringPainter(itemCounts: controller.calendarItemCounts[DateFormat('yyyyMMdd').format(day)] ?? [], categoryList: controller.getCategoryList()),
-                        //   ),
-                        // ),
+                        Obx(
+                              () {
+                            // dev.log(controller.calendarItemCounts[
+                            // DateFormat('yyyyMMdd').format(day)].toString());
+
+
+                            return CustomPaint(
+                              size: Size(32.w, 32.h), // CustomPaint의 크기 고정
+                              painter: ringPainter(
+                                  itemCounts: controller.calendarItemCounts[
+                                  DateFormat('yyyyMMdd').format(day)] ??
+                                      {}),
+                            );
+                          },
+                        ),
                         Center(
                           child: Text(
                             DateFormat.d().format(selectedDay),
@@ -283,17 +300,20 @@ class PeepMiniCalendar extends StatelessWidget {
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        // Obx(()=>
-                        //   CustomPaint(
-                        //     size: Size(32.w, 32.h),
-                        //     painter:
-                        //     ringPainter(itemCounts: controller.calendarItemCounts[DateFormat('yyyyMMdd').format(day)] ?? [], categoryList: controller.getCategoryList()),
-                        //   ),
-                        // ),
+                        Obx(
+                              () =>
+                              CustomPaint(
+                                size: Size(32.w, 32.h), // CustomPaint의 크기 고정
+                                painter: ringPainter(
+                                    itemCounts: controller.calendarItemCounts[
+                                    DateFormat('yyyyMMdd').format(day)] ??
+                                        {}),
+                              ),
+                        ),
                         Text(
                           DateFormat.d().format(day),
                           style:
-                              PeepTextStyle.regularXS(color: Palette.peepBlack),
+                          PeepTextStyle.regularXS(color: Palette.peepBlack),
                         ),
                       ],
                     ),
@@ -356,19 +376,19 @@ class PeepMiniCalendar extends StatelessWidget {
               ),
 
               daysOfWeekStyle: const DaysOfWeekStyle(
-                  //weekdayStyle: TextStyle(color: P),
-                  //decoration: Decoration()
+                //weekdayStyle: TextStyle(color: P),
+                //decoration: Decoration()
 
-                  ),
+              ),
               daysOfWeekHeight: 35.h,
               rowHeight: 50.h,
               locale: 'ko_KR',
               firstDay: DateTime.utc(2023, 1, 1),
               lastDay: DateTime.utc(2123, 12, 31),
-              focusedDay: todoController.focusedDate.value,
+              focusedDay: controller.focusedDate.value,
               startingDayOfWeek: StartingDayOfWeek.monday,
               selectedDayPredicate: (day) {
-                return isSameDay(todoController.selectedDate.value, day);
+                return isSameDay(controller.selectedDate.value, day);
               },
               onDaySelected: (selectedDay, focusedDay) {
                 controller.onDaySelected(selectedDay, focusedDay);

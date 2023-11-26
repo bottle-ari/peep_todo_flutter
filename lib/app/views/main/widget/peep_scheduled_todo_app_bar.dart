@@ -19,8 +19,7 @@ class PeepScheduledTodoAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ScheduledTodoController controller = Get.find();
-    final TodoController todoController = Get.find();
+    final TodoController controller = Get.find();
 
     return Obx(
       () => Container(
@@ -37,7 +36,7 @@ class PeepScheduledTodoAppBar extends StatelessWidget {
               },
               child: Text(
                   DateFormat('MM월 dd일')
-                      .format(todoController.selectedDate.value),
+                      .format(controller.selectedDate.value),
                   style: PeepTextStyle.boldXL(color: Palette.peepGray500)),
             ),
             Row(
