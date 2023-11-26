@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/controllers/page/calendar_page_contoller.dart';
@@ -23,8 +22,9 @@ class PeepCalendarAppBar extends BaseView<CalendarPageController> {
 
     return Obx(
       () => Container(
+        color: Palette.peepWhite,
         width: AppValues.screenWidth,
-        height: 64.h,
+        height: AppValues.appbarHeight,
         padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
         // 옆의 여백 조절
         child: Row(

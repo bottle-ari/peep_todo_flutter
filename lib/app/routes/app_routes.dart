@@ -8,6 +8,7 @@ abstract class Routes {
   static const CATEGORY_MANAGE_PAGE = _Paths.CATEGORY_MANAGE_PAGE;
   static const OVERDUE_TODO_PAGE = _Paths.OVERDUE_TODO_PAGE;
   static const COMPLETED_CONSTANT_TODO_PAGE = _Paths.COMPLETED_CONSTANT_TODO_PAGE;
+  static const CALENDAR_PAGE = _Paths.CALENDAR_PAGE;
 }
 
 abstract class _Paths {
@@ -16,4 +17,5 @@ abstract class _Paths {
   static const CATEGORY_MANAGE_PAGE = '/category/manage';
   static const OVERDUE_TODO_PAGE = '/todo/overdue';
   static const COMPLETED_CONSTANT_TODO_PAGE = '/todo/constant/completed';
+  static const CALENDAR_PAGE = '/calendar';
 }

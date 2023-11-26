@@ -13,11 +13,12 @@ import '../../../theme/palette.dart';
 
 class PeepCalendar extends StatelessWidget {
   final ScheduledTodoController scheduledTodoController;
-  PeepCalendarController calendarController = Get.find();
+  final PeepCalendarController calendarController;
 
-  PeepCalendar({
+  const PeepCalendar({
     Key? key,
     required this.scheduledTodoController,
+    required this.calendarController,
   }) : super(key: key);
 
   @override
@@ -106,10 +107,25 @@ class PeepCalendar extends StatelessWidget {
             },
             // 오늘 날짜 cell
             todayBuilder: (context, day, focusedDay) {
-              return PeepCalendarDayCell(
-                  day: day,
-                  scheduledTodoController: scheduledTodoController,
-                  calendarController: calendarController);
+              return Stack(
+                children: [
+                  PeepCalendarDayCell(
+                    day: day,
+                    scheduledTodoController: scheduledTodoController,
+                    calendarController: calendarController,
+                  ),
+                  if (day.month != focusedDay.month)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 1),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Palette.peepWhite
+                              .withOpacity(AppValues.baseOpacity),
+                        ),
+                      ),
+                    ),
+                ],
+              );
             },
             // 기본 날짜 cell
             defaultBuilder: (context, day, focusedDay) {
