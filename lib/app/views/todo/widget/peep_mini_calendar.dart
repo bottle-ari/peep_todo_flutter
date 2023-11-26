@@ -8,12 +8,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:peep_todo_flutter/app/controllers/mini_calendar_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/page/scheduled_todo_controller.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../controllers/todo_controller.dart';
 import '../../../data/model/category_model.dart';
 import '../../../theme/app_values.dart';
 import '../../../theme/palette.dart';
@@ -31,7 +31,7 @@ class ringPainter extends CustomPainter {
 
     double currentAngle = startAngle;
 
-    if(itemCounts.isEmpty) return;
+    if (itemCounts.isEmpty) return;
 
     for (int i = 0; i < categoryList.length; i++) {
       final sweepAngle = ((itemCounts[i] / total) * pi); // 아이템 수에 따른 각도
@@ -43,7 +43,9 @@ class ringPainter extends CustomPainter {
       final paint = Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = 5.0
-        ..color = categoryList[i].color.withOpacity(AppValues.halfOpacity); // 아이템 순위에 해당하는 색상 사용
+        ..color = categoryList[i]
+            .color
+            .withOpacity(AppValues.halfOpacity); // 아이템 순위에 해당하는 색상 사용
 
       canvas.drawArc(rect, currentAngle, sweepAngle, false, paint);
 
@@ -63,7 +65,7 @@ class ringPainter extends CustomPainter {
 
 class PeepMiniCalendar extends StatelessWidget {
   final ScheduledTodoController controller;
-  MiniCalendarController calendarController = Get.find();
+  final TodoController todoController = Get.find();
 
   PeepMiniCalendar({
     Key? key,
@@ -72,8 +74,8 @@ class PeepMiniCalendar extends StatelessWidget {
 
   Widget customDowBuilder(BuildContext context, DateTime day) {
     final text = DateFormat.E('ko_KR').format(day);
-    final isSelected = calendarController.selectedDay.value;
-    final isToday = isSameDay(day, calendarController.today);
+    final isSelected = todoController.selectedDate.value;
+    final isToday = isSameDay(day, DateTime.now());
     return Center(
       child: Stack(
         children: [
@@ -222,7 +224,6 @@ class PeepMiniCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Obx(() => Container(
           decoration: BoxDecoration(
               color: Palette.peepWhite,
@@ -364,21 +365,21 @@ class PeepMiniCalendar extends StatelessWidget {
               locale: 'ko_KR',
               firstDay: DateTime.utc(2023, 1, 1),
               lastDay: DateTime.utc(2123, 12, 31),
-              focusedDay: calendarController.focusedDay.value,
+              focusedDay: todoController.focusedDate.value,
               startingDayOfWeek: StartingDayOfWeek.monday,
               selectedDayPredicate: (day) {
-                return isSameDay(calendarController.selectedDay.value, day);
+                return isSameDay(todoController.selectedDate.value, day);
               },
               onDaySelected: (selectedDay, focusedDay) {
-                calendarController.onDaySelected(selectedDay, focusedDay);
+                controller.onDaySelected(selectedDay, focusedDay);
               },
               calendarFormat: CalendarFormat.week,
               //onFormatChanged: (format) {
-              //  calendarController.onFormatChanged(format);
+              //  controller.onFormatChanged(format);
               //},
               rangeSelectionMode: RangeSelectionMode.disabled,
               onPageChanged: (focusedDay) {
-                calendarController.onPageChanged(focusedDay);
+                controller.onPageChanged(focusedDay);
               },
             ),
           ),

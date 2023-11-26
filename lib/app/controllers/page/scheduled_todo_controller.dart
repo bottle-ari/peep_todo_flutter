@@ -299,6 +299,7 @@ import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/category_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/backup_todo_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import '../../core/base/base_controller.dart';
 
@@ -481,5 +482,36 @@ class ScheduledTodoController extends BaseController {
           todoList:
               scheduledTodoList.sublist(first + 1, last).cast<TodoModel>());
     }
+  }
+
+  /*
+    Mini Calendar Functions
+   */
+  void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    if (!isSameDay(_todoController.selectedDate.value, selectedDay)) {
+      _todoController.selectedDate.value = selectedDay;
+      _todoController.focusedDate.value = focusedDay;
+    }
+  }
+
+  void onMoveToday() {
+    DateTime today = DateTime.now();
+
+    // 오늘 선택 예외 처리
+    if (_todoController.focusedDate.value == today &&
+        _todoController.selectedDate.value == today) {
+      _todoController.focusedDate.update((val) {
+        val = null;
+      });
+    }
+    _todoController.focusedDate.value = today;
+    _todoController.selectedDate.value = today;
+  }
+
+  void onPageChanged(DateTime newFocusedDay) {
+    _todoController.focusedDate.value = newFocusedDay;
+    _todoController.selectedDate.value = newFocusedDay;
+
+    update();
   }
 }

@@ -15,13 +15,15 @@ class TodoController extends GetxController {
   final RxList<TodoModel> calendarTodoList = <TodoModel>[].obs;
 
   // Variables
+  final Rx<DateTime> focusedDate = DateTime.now().obs;
   final Rx<DateTime> selectedDate = DateTime.now().obs;
 
   @override
   void onInit() {
     super.onInit();
 
-    loadScheduledData();
+    ever(selectedDate, (callback) => loadScheduledData());
+
     loadCalendarData();
   }
 
@@ -29,7 +31,7 @@ class TodoController extends GetxController {
     Init Functions
    */
   void loadData(TodoType type) {
-    switch(type) {
+    switch (type) {
       case TodoType.scheduled:
         loadScheduledData();
         break;
@@ -39,7 +41,8 @@ class TodoController extends GetxController {
   }
 
   void loadScheduledData() async {
-    final DateTime startDate = DateTime(selectedDate.value.year, selectedDate.value.month, selectedDate.value.day);
+    final DateTime startDate = DateTime(selectedDate.value.year,
+        selectedDate.value.month, selectedDate.value.day);
     final DateTime endDate = startDate.add(const Duration(days: 1));
 
     var data = await _service.getScheduledTodoByDate(
@@ -78,12 +81,15 @@ class TodoController extends GetxController {
   }
 
   SubTodoModel? getSubTodoById(
-      {required TodoType type, required String todoId, required String subTodoId}) {
+      {required TodoType type,
+      required String todoId,
+      required String subTodoId}) {
     switch (type) {
       case TodoType.scheduled:
         return scheduledTodoList
             .firstWhere((e) => e.id == todoId)
-            .subTodo.firstWhere((e) => e.id == subTodoId);
+            .subTodo
+            .firstWhere((e) => e.id == subTodoId);
       default:
         throw Exception('An unexpected error occurred at getSubTodoById');
     }
@@ -134,7 +140,8 @@ class TodoController extends GetxController {
     await _service.updateTodo(todo);
   }
 
-  void updateTodos({required TodoType type, required List<TodoModel> todoList}) async {
+  void updateTodos(
+      {required TodoType type, required List<TodoModel> todoList}) async {
     await _service.updateTodos(todoList);
   }
 }

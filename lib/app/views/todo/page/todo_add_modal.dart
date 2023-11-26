@@ -82,7 +82,7 @@ class TodoAddModal extends StatelessWidget {
                           reminderId: null,
                           name: str,
                           subTodo: [],
-                          date: DateTime.now(),
+                          date: controller.selectedDate.value,
                           priority: 0,
                           memo: '',
                           isFold: false,
