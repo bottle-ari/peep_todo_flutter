@@ -98,7 +98,6 @@ class TodoController extends GetxController {
 
     await _service.insertTodo(todo: backup!.backupTodoItem);
 
-
     loadData(backup!.backupType);
 
     if(backup!.backupTodoItem.date != null) {

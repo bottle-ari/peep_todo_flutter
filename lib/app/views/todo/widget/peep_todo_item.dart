@@ -15,6 +15,7 @@ import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_check_button.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_priority_folding_button.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_rollback_snackbar.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../controllers/todo_controller.dart';
 
@@ -85,6 +86,25 @@ class PeepTodoItem extends StatelessWidget {
               }));
     }
 
+    void copyTodo() {
+      // UUID 생성
+      var uuid = const Uuid();
+      String newUuid = uuid.v4();
+
+      controller.addTodo(todo: TodoModel(
+          id: newUuid,
+          categoryId: todo.categoryId,
+          reminderId: todo.reminderId,
+          name: "${todo.name}*",
+          subTodo: todo.subTodo,
+          date: todo.date,
+          priority: todo.priority,
+          memo: todo.memo,
+          isFold: todo.isFold,
+          isChecked: todo.isChecked,
+          pos: todo.pos));
+    }
+
     return Center(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(AppValues.baseRadius),
@@ -107,7 +127,9 @@ class PeepTodoItem extends StatelessWidget {
                 label: '삭제',
               ),
               SlidableAction(
-                onPressed: (BuildContext context) {},
+                onPressed: (BuildContext context) {
+                  copyTodo();
+                },
                 backgroundColor: Palette.peepBlue,
                 foregroundColor: Colors.white,
                 label: '복사',
