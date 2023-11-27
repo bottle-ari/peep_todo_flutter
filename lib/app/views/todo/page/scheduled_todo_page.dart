@@ -46,15 +46,20 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
                           [
                             for (var item in controller.scheduledTodoList)
                               if (item is TodoModel)
-                                Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: AppValues.innerMargin),
-                                    child: PeepTodoItem(
-                                      todoId: item.id,
-                                      color:
-                                          controller.getColor(todoId: item.id),
-                                      todoType: TodoType.scheduled,
-                                    ))
+                                if (!(controller
+                                        .categoryFoldMap[item.categoryId] ??
+                                    false))
+                                  Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: AppValues.innerMargin),
+                                      child: PeepTodoItem(
+                                        todoId: item.id,
+                                        color: controller.getColor(
+                                            todoId: item.id),
+                                        todoType: TodoType.scheduled,
+                                      ))
+                                else
+                                  const SizedBox.shrink()
                               else if (item is CategoryModel)
                                 Padding(
                                   padding: EdgeInsets.symmetric(
@@ -74,8 +79,12 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
                                         controller.initCategoryIndexMap(null);
                                         //controller.addTodo(item.id);
                                       },
-                                      onTapArrowButton: () {},
-                                      isFolded: false),
+                                      onTapArrowButton: () {
+                                        controller.isCategoryFold(item.id);
+                                      },
+                                      isFolded:
+                                          controller.categoryFoldMap[item.id] ??
+                                              false),
                                 )
                           ],
                         ),

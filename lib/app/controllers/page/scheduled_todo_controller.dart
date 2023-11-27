@@ -288,17 +288,20 @@
 //   }
 // }
 
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/category_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/pref_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/todo_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/category_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/backup_todo_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
+import 'package:peep_todo_flutter/app/data/services/pref_service.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../core/base/base_controller.dart';
@@ -306,6 +309,7 @@ import '../../core/base/base_controller.dart';
 class ScheduledTodoController extends BaseController {
   final CategoryController _categoryController = Get.find();
   final TodoController _todoController = Get.find();
+  final PrefController prefController = Get.find();
 
   // Data
   final RxList<dynamic> scheduledTodoList = <dynamic>[].obs;
@@ -314,6 +318,7 @@ class ScheduledTodoController extends BaseController {
 
   // Variables
   Map<String, List<int>> categoryIndexMap = <String, List<int>>{};
+  RxMap<String, bool> categoryFoldMap = <String, bool>{}.obs;
 
   @override
   void onInit() {
@@ -352,6 +357,32 @@ class ScheduledTodoController extends BaseController {
     }
 
     scheduledTodoList.value = newScheduledTodoList;
+
+    initCategoryFoldMap();
+  }
+
+  void initCategoryFoldMap() {
+    if(_categoryController.categoryList.isEmpty) return;
+
+    var key = 'categoryFoldMap';
+    prefController.updateData(key);
+
+    if (prefController.data[key] == null) {
+      for (var category in _categoryController.categoryList) {
+        categoryFoldMap[category.id] = false;
+      }
+
+      String categoryFoldMapString = jsonEncode(categoryFoldMap);
+
+      prefController.saveData(key, categoryFoldMapString);
+    } else {
+      Map<String, dynamic> tempMap = jsonDecode(prefController.data[key]!);
+
+      categoryFoldMap.value =
+          tempMap.map((key, value) => MapEntry(key, value as bool));
+
+      log(categoryFoldMap.toString());
+    }
   }
 
   void initCategoryIndexMap(List<dynamic>? todoList) {
@@ -489,5 +520,14 @@ class ScheduledTodoController extends BaseController {
           todoList:
               scheduledTodoList.sublist(first + 1, last).cast<TodoModel>());
     }
+  }
+
+  void isCategoryFold(String id) async {
+    var key = 'categoryFoldMap';
+
+    categoryFoldMap[id] = !categoryFoldMap[id]!;
+
+    String categoryFoldMapString = jsonEncode(categoryFoldMap);
+    prefController.saveData(key, categoryFoldMapString);
   }
 }
