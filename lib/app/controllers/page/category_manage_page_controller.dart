@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -76,20 +75,30 @@ class CategoryManagePageController extends BaseController {
     Show Category Add Modal
   */
   void showCategoryAddModal(BuildContext context) {
-    Color initColor =
-        Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
+    CategoryAddModalController categoryAddModalController = Get.put(CategoryAddModalController());
+    categoryAddModalController.onInit();
+
     showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.transparent,
-        isScrollControlled: true,
-        builder: (BuildContext context) {
-          return Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: CategoryAddModal(
-              initColor: initColor,
-            ),
-          );
-        });
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return Padding(
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: CategoryAddModal(
+            categoryManagePageController: this, controller: categoryAddModalController,
+          ),
+        );
+      },
+    );
+  }
+
+  /*
+    Add Category
+  */
+  void addCategory(String emoji, String name, Color color){
+    // add category 연산 수행
+    debugPrint("$emoji, $name, ${color.toString()}");
   }
 }

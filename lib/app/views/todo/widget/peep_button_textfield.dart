@@ -97,6 +97,9 @@ class PeepCategoryTextfield extends StatelessWidget {
   final VoidCallback onTapEmoji;
   final Function(String) onTapAddButton;
   final VoidCallback onLongPressAddButton;
+  final TextEditingController textEditingController;
+  final FocusNode focusNode;
+  final VoidCallback onTapTextField;
 
   const PeepCategoryTextfield({
     Key? key,
@@ -105,19 +108,19 @@ class PeepCategoryTextfield extends StatelessWidget {
     required this.onTapEmoji,
     required this.onTapAddButton,
     required this.onLongPressAddButton,
+    required this.textEditingController,
+    required this.focusNode,
+    required this.onTapTextField,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // define TextEditingController
-    TextEditingController controller = TextEditingController();
-
     // handle submit(TextField) & onTap(AddButton) event
     void handleAddButtonTap(String text) {
       if (text.trim().isNotEmpty) {
         onTapAddButton(text);
       } else {
-        controller.text = "";
+        textEditingController.text = "";
       }
     }
 
@@ -142,7 +145,9 @@ class PeepCategoryTextfield extends StatelessWidget {
             SizedBox(
               width: 230.w,
               child: TextField(
-                controller: controller,
+                onTap: onTapTextField,
+                focusNode: focusNode,
+                controller: textEditingController,
                 onSubmitted: handleAddButtonTap,
                 autofocus: true,
                 style: PeepTextStyle.regularL(color: Palette.peepBlack),
@@ -156,7 +161,7 @@ class PeepCategoryTextfield extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                handleAddButtonTap(controller.text);
+                handleAddButtonTap(textEditingController.text);
               },
               onLongPress: onLongPressAddButton,
               child: PeepIcon(
