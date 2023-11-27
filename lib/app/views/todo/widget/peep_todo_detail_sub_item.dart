@@ -15,6 +15,7 @@ class PeepTodoDetailSubItem extends StatelessWidget {
   final VoidCallback onTapCancel;
   final VoidCallback onTapCheck;
   final VoidCallback onTapAddSub;
+
   //final VoidCallback onTap;
 
   const PeepTodoDetailSubItem({
@@ -47,6 +48,7 @@ class PeepTodoDetailSubItem extends StatelessWidget {
                   children: [
                     TextField(
                       controller: TextEditingController(text: text),
+                      maxLines: 1,
                       style: PeepTextStyle.regularM(color: Palette.peepBlack),
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -54,7 +56,8 @@ class PeepTodoDetailSubItem extends StatelessWidget {
                         prefixIcon: GestureDetector(
                           onTap: onTapCancel,
                           child: Padding(
-                            padding: EdgeInsets.only(right: AppValues.horizontalMargin),
+                            padding: EdgeInsets.only(
+                                right: AppValues.horizontalMargin),
                             child: Transform.scale(
                               scale: 0.4,
                               child: PeepIcon(
@@ -68,14 +71,13 @@ class PeepTodoDetailSubItem extends StatelessWidget {
                         suffixIcon: GestureDetector(
                           onTap: onTapCheck,
                           child: Padding(
-                            padding: EdgeInsets.only(right: AppValues.horizontalMargin),
+                            padding: EdgeInsets.only(
+                                right: AppValues.horizontalMargin),
                             child: Transform.scale(
                               scale: 0.8,
-                              child:PeepIcon(
-                                Iconsax.checkFalse,
-                                color: Palette.peepGray400,
-                                size: AppValues.baseIconSize
-                              ),
+                              child: PeepIcon(Iconsax.checkFalse,
+                                  color: Palette.peepGray400,
+                                  size: AppValues.baseIconSize),
                             ),
                           ),
                         ),

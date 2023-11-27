@@ -8,10 +8,12 @@ import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/backup_todo_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/sub_todo_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
+import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
+import 'package:peep_todo_flutter/app/utils/priority_util.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_check_button.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_priority_folding_button.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_rollback_snackbar.dart';
@@ -344,6 +346,7 @@ class PeepSubTodoItem extends StatelessWidget {
                     subTodo.name,
                     style: PeepTextStyle.regularM(
                         color: subTodo.isChecked
+
                             ? Palette.peepGray400
                             : Palette.peepBlack),
                     overflow: TextOverflow.ellipsis,
