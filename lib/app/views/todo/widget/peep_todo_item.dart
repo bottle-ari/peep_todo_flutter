@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
+import 'package:peep_todo_flutter/app/utils/priority_util.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_check_button.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_priority_folding_button.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_rollback_snackbar.dart';
@@ -27,22 +29,6 @@ class PeepTodoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color priorityColor = Palette.peepGray400;
-
-    switch (controller.getTodoList(date: date)[index].priority) {
-      case 1:
-        priorityColor = Palette.peepGreen;
-        break;
-      case 2:
-        priorityColor = Palette.peepYellow400;
-        break;
-      case 3:
-        priorityColor = Palette.peepRed;
-        break;
-      default:
-        priorityColor = Palette.peepGray400;
-        break;
-    }
 
     return Obx(
       () => Center(
@@ -133,20 +119,28 @@ class PeepTodoItem extends StatelessWidget {
                                 child: PeepIcon(
                                   Iconsax.egg,
                                   size: AppValues.baseIconSize,
-                                  color: priorityColor,
+                                  color: PriorityUtil.getPriority(controller.getTodoList(date: date)[index].priority).PriorityColor,
                                 ),
                               )
                             else
                               PeepPriorityFoldingButton(
                                 date: date,
                                 index: index,
-                                color: priorityColor,
+                                color:  PriorityUtil.getPriority(controller.getTodoList(date: date)[index].priority).PriorityColor,
                                 controller: controller,
                               ),
                             InkWell(
                               onTap: () {
                                 //Todo 페이지 이동
                                 log("페이지 이동");
+                                Get.toNamed(AppPages.TODODETAIL, arguments: {
+                                  'mainTodo': controller
+                                      .getTodoList(date: date)[index],
+                                  'priority': controller.getTodoList(date: date)[index].priority,
+                                  'subTodo' : controller.getSubTodoList(date: date, mainIndex: index),
+                                  'color' : color,
+                                  'date' : date,
+                                });
                               },
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
@@ -158,13 +152,12 @@ class PeepTodoItem extends StatelessWidget {
                                         .getTodoList(date: date)[index]
                                         .name,
                                     style: PeepTextStyle.regularM(
-                                            color: controller
-                                                    .getTodoList(
-                                                        date: date)[index]
-                                                    .isChecked
-                                                    .value
-                                                ? Palette.peepGray400
-                                                : Palette.peepBlack),
+                                        color: controller
+                                                .getTodoList(date: date)[index]
+                                                .isChecked
+                                                .value
+                                            ? Palette.peepGray400
+                                            : Palette.peepBlack),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 3,
                                   ),
@@ -279,13 +272,13 @@ class PeepSubTodoItem extends StatelessWidget {
                         .text
                         .value,
                     style: PeepTextStyle.regularM(
-                            color: controller
-                                    .getSubTodoList(
-                                        date: date, mainIndex: mainIndex)[index]
-                                    .isChecked
-                                    .value
-                                ? Palette.peepGray400
-                                : Palette.peepBlack),
+                        color: controller
+                                .getSubTodoList(
+                                    date: date, mainIndex: mainIndex)[index]
+                                .isChecked
+                                .value
+                            ? Palette.peepGray400
+                            : Palette.peepBlack),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),

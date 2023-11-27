@@ -1,8 +1,11 @@
+import 'dart:js_interop_unsafe';
+
 import 'package:flutter/material.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
+import 'package:peep_todo_flutter/app/utils/priority_util.dart';
 
 class PeepPriorityPickerItem extends StatelessWidget {
   final int priority;
@@ -18,24 +21,6 @@ class PeepPriorityPickerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color color;
-    String text;
-
-    if (priority == 3) {
-      color = Palette.peepRed;
-      text = "높음";
-    } else if (priority == 2) {
-      color = Palette.peepYellow400;
-      text = "보통";
-    } else if (priority == 1) {
-      color = Palette.peepGreen;
-      text = "낮음";
-    } else if (priority == 0) {
-      color = Palette.peepGray400;
-      text = "미설정";
-    } else {
-      return Container();
-    }
 
     return InkWell(
       onTap: onTap,
@@ -57,16 +42,16 @@ class PeepPriorityPickerItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               PeepIcon(
-                Iconsax.egg,
+                Iconsax.eggBroken,
                 size: AppValues.smallIconSize,
-                color: color,
+                color: PriorityUtil.getPriority(priority).PriorityColor,
               ),
               SizedBox(
                 width: AppValues.horizontalMargin,
               ),
               Text(
-                "중요도 $text",
-                style: PeepTextStyle.regularM(color: color),
+                PriorityUtil.getPriority(priority).PriorityString,
+                style: PeepTextStyle.regularM(color: PriorityUtil.getPriority(priority).PriorityColor),
               ),
             ],
           ),
