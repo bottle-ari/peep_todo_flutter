@@ -6,6 +6,7 @@ import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/services/todo_service.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../data/model/todo/backup_todo_model.dart';
 import '../data/model/todo/sub_todo_model.dart';
 import '../data/model/todo/todo_model.dart';
 
@@ -21,6 +22,7 @@ class TodoController extends GetxController {
       <String, Map<String, double>>{}.obs;
 
   // Variables
+  BackupTodoModel? backup;
   final Rx<DateTime> focusedDate = DateTime
       .now()
       .obs;
@@ -83,9 +85,25 @@ class TodoController extends GetxController {
    */
   void addTodo({required TodoModel todo}) async {
     await _service.insertTodo(todo: todo);
-    loadScheduledData();
 
-    updateCalendarItemCounts(todo.date);
+    if(todo.date != null) {
+      loadData(TodoType.scheduled);
+
+      updateCalendarItemCounts(todo.date);
+    }
+  }
+
+  void rollbackTodo() async {
+    if(backup == null) return;
+
+    await _service.insertTodo(todo: backup!.backupTodoItem);
+
+
+    loadData(backup!.backupType);
+
+    if(backup!.backupTodoItem.date != null) {
+      updateCalendarItemCounts(backup!.backupTodoItem.date);
+    }
   }
 
   /*
@@ -124,15 +142,8 @@ class TodoController extends GetxController {
 
     await _service.updateTodo(todo);
 
-    switch (type) {
-      case TodoType.scheduled:
-        loadScheduledData();
-        break;
-      default:
-        break;
-    }
-
     updateCalendarItemCounts(todo.date);
+    loadData(type);
   }
 
   void toggleSubTodoChecked({required TodoType type,
@@ -170,6 +181,19 @@ class TodoController extends GetxController {
   }
 
   /*
+    Delete Functions
+   */
+  Future<void> deleteTodo({required TodoType type, required TodoModel todo}) async {
+    await _service.deleteTodo(todo.id);
+
+    loadData(type);
+
+    if(todo.date != null) {
+      updateCalendarItemCounts(todo.date);
+    }
+  }
+
+  /*
     Util Function
    */
   // 날짜별로 데이터를 분류하는 함수
@@ -177,7 +201,8 @@ class TodoController extends GetxController {
     Map<String, List<TodoModel>> dateMap = {};
 
     for (var todo in todoList) {
-      String formattedDate = DateFormat('yyyyMMdd').format(todo.date);
+      if(todo.date == null) continue;
+      String formattedDate = DateFormat('yyyyMMdd').format(todo.date!);
       if (!dateMap.containsKey(formattedDate)) {
         dateMap[formattedDate] = [];
       }
@@ -249,7 +274,9 @@ class TodoController extends GetxController {
     }
   }
 
-  void updateCalendarItemCounts(DateTime dateTime) {
+  void updateCalendarItemCounts(DateTime? dateTime) {
+    if(dateTime == null) return;
+
     loadCalendarData();
 
     String date = DateFormat('yyyyMMdd').format(dateTime);

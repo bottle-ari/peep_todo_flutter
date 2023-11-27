@@ -69,4 +69,14 @@ class TodoProvider extends GetxService {
       return totalUpdates;
     });
   }
+
+  /*
+    DELETE DATA
+   */
+  Future<int> deleteTodo(String todoId) async {
+    final db = await DatabaseInit().database;
+
+    return await db.delete('todo', where: 'id = ?', whereArgs: [todoId]);
+  }
+
 }

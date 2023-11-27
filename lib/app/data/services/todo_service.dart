@@ -51,7 +51,7 @@ class TodoService extends GetxService {
     return todoList;
   }
 
-/*
+  /*
     UPDATE DATA
    */
   Future<void> updateTodo(TodoModel todo) async {
@@ -64,5 +64,14 @@ class TodoService extends GetxService {
     var row = await _provider.updateTodos(todoList.map((e) => e.toMap()).toList());
 
     debugPrint("update $row rows.");
+  }
+
+  /*
+    DELETE DATA
+   */
+  Future<void> deleteTodo(String todoId) async {
+    var row = await _provider.deleteTodo(todoId);
+
+    debugPrint("delete $row rows.");
   }
 }

@@ -314,7 +314,6 @@ class ScheduledTodoController extends BaseController {
 
   // Variables
   Map<String, List<int>> categoryIndexMap = <String, List<int>>{};
-  BackupTodoModel? backup;
 
   @override
   void onInit() {

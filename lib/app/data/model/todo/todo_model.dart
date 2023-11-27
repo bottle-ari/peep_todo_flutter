@@ -6,7 +6,7 @@ class TodoModel {
   String? reminderId;
   String name;
   List<SubTodoModel> subTodo;
-  DateTime date;
+  DateTime? date;
   int priority;
   String? memo;
   bool isFold;
@@ -33,7 +33,7 @@ class TodoModel {
       'category_id': categoryId,
       'reminder_id': reminderId,
       'name': name,
-      'date': date.millisecondsSinceEpoch,
+      'date': date?.millisecondsSinceEpoch,
       'priority': priority,
       'memo': memo,
       'is_fold': isFold ? 1 : 0,

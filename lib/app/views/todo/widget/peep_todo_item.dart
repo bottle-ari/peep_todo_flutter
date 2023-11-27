@@ -2,8 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
+import 'package:peep_todo_flutter/app/data/model/todo/backup_todo_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/sub_todo_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
@@ -49,71 +51,128 @@ class PeepTodoItem extends StatelessWidget {
         break;
     }
 
+    void deleteTodo() {
+      if (Get.isSnackbarOpen) {
+        Get.back();
+      }
+
+      controller.backup = BackupTodoModel(
+          backupTodoItem: todo,
+          backupIndex: todo.pos,
+          backupDate: todo.date,
+          backupType: todoType);
+
+      controller.deleteTodo(todo: todo, type: todoType);
+
+      Get.snackbar('', '',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.transparent,
+          duration: const Duration(days: 9999999),
+          isDismissible: true,
+          reverseAnimationCurve: Curves.easeOutQuad,
+          barBlur: 0,
+          titleText: PeepRollbackSnackbar(
+              icon: PeepIcon(
+                Iconsax.trash,
+                size: AppValues.baseIconSize,
+                color: Palette.peepRed,
+              ),
+              boldText: todo.name,
+              regularText: '삭제!',
+              onTapRollback: () {
+                controller.rollbackTodo();
+                Get.back();
+              }));
+    }
+
     return Center(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(AppValues.baseRadius),
-        child: Dismissible(
+        child: Slidable(
           key: UniqueKey(),
-          background: Container(
-            color: color,
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: EdgeInsets.only(left: AppValues.horizontalMargin),
-              child: PeepIcon(
-                Iconsax.check,
-                color: Palette.peepWhite,
-                size: AppValues.baseIconSize,
-              ),
+          startActionPane: ActionPane(
+            motion: const StretchMotion(),
+            dismissible: DismissiblePane(
+              onDismissed: () {
+                deleteTodo();
+              },
             ),
-          ),
-          secondaryBackground: Container(
-            color: Palette.peepRed,
-            alignment: Alignment.centerRight,
-            child: Padding(
-              padding: EdgeInsets.only(right: AppValues.horizontalMargin),
-              child: PeepIcon(
-                Iconsax.trash,
-                color: Palette.peepWhite,
-                size: AppValues.baseIconSize,
+            children: [
+              SlidableAction(
+                onPressed: (BuildContext context) {
+                  deleteTodo();
+                },
+                backgroundColor: Palette.peepRed,
+                foregroundColor: Colors.white,
+                label: '삭제',
               ),
-            ),
+              SlidableAction(
+                onPressed: (BuildContext context) {},
+                backgroundColor: Palette.peepBlue,
+                foregroundColor: Colors.white,
+                label: '복사',
+              ),
+            ],
           ),
-          confirmDismiss: (DismissDirection direction) async {
-            if (direction == DismissDirection.endToStart) {
-              Get.back();
-              //controller.deleteTodoItem(date, index);
-
-              Get.snackbar('', '',
-                  snackPosition: SnackPosition.BOTTOM,
-                  backgroundColor: Colors.transparent,
-                  duration: const Duration(days: 9999999),
-                  isDismissible: true,
-                  reverseAnimationCurve: Curves.easeOutQuad,
-                  barBlur: 0,
-                  titleText: PeepRollbackSnackbar(
-                      icon: PeepIcon(
-                        Iconsax.trash,
-                        size: AppValues.baseIconSize,
-                        color: Palette.peepRed,
-                      ),
-                      boldText: todo.name,
-                      regularText: '삭제!',
-                      onTapRollback: () {
-                        //controller.rollbackTodoItem();
-                        Get.back();
-                      }));
-              return true;
-            } else {
-              controller.toggleMainTodoChecked(
-                  type: todoType, todoId: todoId);
-              return false;
-            }
-          },
+          // background: Container(
+          //   color: color,
+          //   alignment: Alignment.centerLeft,
+          //   child: Padding(
+          //     padding: EdgeInsets.only(left: AppValues.horizontalMargin),
+          //     child: PeepIcon(
+          //       Iconsax.check,
+          //       color: Palette.peepWhite,
+          //       size: AppValues.baseIconSize,
+          //     ),
+          //   ),
+          // ),
+          // secondaryBackground: Container(
+          //   color: Palette.peepRed,
+          //   alignment: Alignment.centerRight,
+          //   child: Padding(
+          //     padding: EdgeInsets.only(right: AppValues.horizontalMargin),
+          //     child: PeepIcon(
+          //       Iconsax.trash,
+          //       color: Palette.peepWhite,
+          //       size: AppValues.baseIconSize,
+          //     ),
+          //   ),
+          // ),
+          // confirmDismiss: (DismissDirection direction) async {
+          //   if (direction == DismissDirection.endToStart) {
+          //     Get.back();
+          //     //controller.deleteTodoItem(date, index);
+          //
+          //     Get.snackbar('', '',
+          //         snackPosition: SnackPosition.BOTTOM,
+          //         backgroundColor: Colors.transparent,
+          //         duration: const Duration(days: 9999999),
+          //         isDismissible: true,
+          //         reverseAnimationCurve: Curves.easeOutQuad,
+          //         barBlur: 0,
+          //         titleText: PeepRollbackSnackbar(
+          //             icon: PeepIcon(
+          //               Iconsax.trash,
+          //               size: AppValues.baseIconSize,
+          //               color: Palette.peepRed,
+          //             ),
+          //             boldText: todo.name,
+          //             regularText: '삭제!',
+          //             onTapRollback: () {
+          //               //controller.rollbackTodoItem();
+          //               Get.back();
+          //             }));
+          //     return true;
+          //   } else {
+          //     controller.toggleMainTodoChecked(
+          //         type: todoType, todoId: todoId);
+          //     return false;
+          //   }
+          // },
           child: SizedBox(
             width: AppValues.screenWidth - AppValues.screenPadding * 2,
             child: ConstrainedBox(
-              constraints:
-                  BoxConstraints(minHeight: AppValues.baseItemHeight),
+              constraints: BoxConstraints(minHeight: AppValues.baseItemHeight),
               child: Container(
                 color: Palette.peepWhite,
                 child: Padding(
@@ -197,8 +256,7 @@ class PeepTodoItem extends StatelessWidget {
                           ? const SizedBox.shrink()
                           : Column(
                               children: [
-                                for (SubTodoModel subTodo
-                                    in todo.subTodo ?? [])
+                                for (SubTodoModel subTodo in todo.subTodo ?? [])
                                   PeepSubTodoItem(
                                     controller: controller,
                                     color: color,
