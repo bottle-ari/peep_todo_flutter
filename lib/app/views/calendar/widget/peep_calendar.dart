@@ -31,7 +31,8 @@ class PeepCalendar extends StatelessWidget {
         child: TableCalendar(
           headerVisible: false,
           daysOfWeekHeight: 35.h,
-          rowHeight: 93.h,
+          rowHeight: calendarController.rowHeight.value,
+          //93.h,
           locale: 'ko_KR',
           firstDay: DateTime.utc(1923, 1, 1),
           lastDay: DateTime.utc(2123, 12, 31),
@@ -48,6 +49,7 @@ class PeepCalendar extends StatelessWidget {
           onPageChanged: (focusedDay) {
             calendarController.onPageChanged(focusedDay);
           },
+            pageAnimationEnabled: false,
 
           // calendarBuilder
           calendarBuilders: CalendarBuilders(
