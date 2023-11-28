@@ -59,4 +59,7 @@ class Iconsax {
   static const eggBroken = 'assets/image/icon/egg_broken';
   static const cancel = 'assets/image/icon/cancel.svg';
   static const calendarSearch = 'assets/image/icon/calendar_search.svg';
+  static const notification = 'assets/image/icon/notification.svg';
+  static const memo = 'assets/image/icon/memo.svg';
+  static const eggCracked = 'assets/image/icon/egg_cracked.svg';
 }
