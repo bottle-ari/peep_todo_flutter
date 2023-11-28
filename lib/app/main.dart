@@ -8,9 +8,9 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'bindings/initial_binding.dart';
 
-void main() {
+void main() async {
+  //WidgetsFlutterBinding.ensureInitialized();
   initializeDateFormatting().then((_) => runApp(const MyApp()));
-  
 }
 
 class MyApp extends StatelessWidget {
@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+
     return ScreenUtilInit(
       designSize: const Size(393, 852),
       builder: (buildContext, widget) => GetMaterialApp(

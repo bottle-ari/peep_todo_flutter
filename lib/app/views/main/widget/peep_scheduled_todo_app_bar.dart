@@ -2,25 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:peep_todo_flutter/app/controllers/mini_calendar_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/page/scheduled_todo_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_view.dart';
 import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_notification_button.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_dropdown_menu.dart';
 
+import '../../../controllers/todo_controller.dart';
 import '../../../theme/app_values.dart';
 import '../../../theme/icons.dart';
 import '../../../theme/palette.dart';
 
-class PeepScheduledTodoAppBar extends BaseView<MiniCalendarController> {
-  @override
-  PreferredSizeWidget? appBar(BuildContext context) {
-    return null;
-  }
+class PeepScheduledTodoAppBar extends StatelessWidget {
+  const PeepScheduledTodoAppBar({super.key});
 
   @override
-  Widget body(BuildContext context) {
+  Widget build(BuildContext context) {
+    final TodoController controller = Get.find();
+
     return Obx(
       () => Container(
         width: AppValues.screenWidth,
@@ -34,9 +34,9 @@ class PeepScheduledTodoAppBar extends BaseView<MiniCalendarController> {
               onTap: () {
                 controller.onMoveToday();
               },
-              //Todo
               child: Text(
-                  DateFormat('MM월 dd일').format(controller.selectedDay.value),
+                  DateFormat('MM월 dd일')
+                      .format(controller.selectedDate.value),
                   style: PeepTextStyle.boldXL(color: Palette.peepGray500)),
             ),
             Row(

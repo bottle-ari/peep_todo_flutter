@@ -2,7 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
+import 'package:peep_todo_flutter/app/data/model/todo/backup_todo_model.dart';
+import 'package:peep_todo_flutter/app/data/model/todo/sub_todo_model.dart';
+import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
@@ -12,215 +17,281 @@ import 'package:peep_todo_flutter/app/utils/priority_util.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_check_button.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_priority_folding_button.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_rollback_snackbar.dart';
+import 'package:uuid/uuid.dart';
+
 import '../../../controllers/todo_controller.dart';
 
 class PeepTodoItem extends StatelessWidget {
-  final TodoController controller;
   final Color color;
-  final String date;
-  final int index;
+  final TodoType todoType;
+  final String todoId;
 
   const PeepTodoItem(
       {super.key,
+      required this.todoId,
       required this.color,
-      required this.index,
-      required this.controller,
-      required this.date});
+      required this.todoType});
 
   @override
   Widget build(BuildContext context) {
+    final TodoController controller = Get.find();
+    TodoModel todo = controller.getTodoById(type: todoType, todoId: todoId);
 
-    return Obx(
-      () => Center(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(AppValues.baseRadius),
-          child: Dismissible(
-            key: UniqueKey(),
-            background: Container(
-              color: color,
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: EdgeInsets.only(left: AppValues.horizontalMargin),
-                child: PeepIcon(
-                  Iconsax.check,
-                  color: Palette.peepWhite,
-                  size: AppValues.baseIconSize,
-                ),
+    Color priorityColor = Palette.peepGray400;
+
+    switch (todo.priority) {
+      case 1:
+        priorityColor = Palette.peepGreen;
+        break;
+      case 2:
+        priorityColor = Palette.peepYellow400;
+        break;
+      case 3:
+        priorityColor = Palette.peepRed;
+        break;
+      default:
+        priorityColor = Palette.peepGray400;
+        break;
+    }
+
+    void deleteTodo() {
+      if (Get.isSnackbarOpen) {
+        Get.back();
+      }
+
+      controller.backup = BackupTodoModel(
+          backupTodoItem: todo,
+          backupIndex: todo.pos,
+          backupDate: todo.date,
+          backupType: todoType);
+
+      controller.deleteTodo(todo: todo, type: todoType);
+
+      Get.snackbar('', '',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.transparent,
+          duration: const Duration(days: 9999999),
+          isDismissible: true,
+          reverseAnimationCurve: Curves.easeOutQuad,
+          barBlur: 0,
+          titleText: PeepRollbackSnackbar(
+              icon: PeepIcon(
+                Iconsax.trash,
+                size: AppValues.baseIconSize,
+                color: Palette.peepRed,
               ),
-            ),
-            secondaryBackground: Container(
-              color: Palette.peepRed,
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: EdgeInsets.only(right: AppValues.horizontalMargin),
-                child: PeepIcon(
-                  Iconsax.trash,
-                  color: Palette.peepWhite,
-                  size: AppValues.baseIconSize,
-                ),
-              ),
-            ),
-            confirmDismiss: (DismissDirection direction) async {
-              if (direction == DismissDirection.endToStart) {
+              boldText: todo.name,
+              regularText: '삭제!',
+              onTapRollback: () {
+                controller.rollbackTodo();
                 Get.back();
-                controller.deleteTodoItem(date, index);
+              }));
+    }
 
-                Get.snackbar('', '',
-                    snackPosition: SnackPosition.BOTTOM,
-                    backgroundColor: Colors.transparent,
-                    duration: const Duration(days: 9999999),
-                    isDismissible: true,
-                    reverseAnimationCurve: Curves.easeOutQuad,
-                    barBlur: 0,
-                    titleText: PeepRollbackSnackbar(
-                        icon: PeepIcon(
-                          Iconsax.trash,
-                          size: AppValues.baseIconSize,
-                          color: Palette.peepRed,
-                        ),
-                        boldText:
-                            controller.getTodoList(date: date)[index].name,
-                        regularText: '삭제!',
-                        onTapRollback: () {
-                          controller.rollbackTodoItem();
-                          Get.back();
-                        }));
-                return true;
-              } else {
-                controller.toggleMainTodoChecked(date, index);
-                return false;
-              }
-            },
-            child: SizedBox(
-              width: AppValues.screenWidth - AppValues.screenPadding * 2,
-              child: ConstrainedBox(
-                constraints:
-                    BoxConstraints(minHeight: AppValues.baseItemHeight),
-                child: Container(
-                  color: Palette.peepWhite,
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: AppValues.innerMargin),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Row(
-                          children: [
-                            if ((controller
-                                        .getTodoList(date: date)[index]
-                                        .subTodo
-                                        ?.length ??
-                                    0) ==
-                                0)
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: AppValues.horizontalMargin,
-                                ),
-                                child: PeepIcon(
-                                  Iconsax.egg,
-                                  size: AppValues.baseIconSize,
-                                  color: PriorityUtil.getPriority(controller.getTodoList(date: date)[index].priority).PriorityColor,
-                                ),
-                              )
-                            else
-                              PeepPriorityFoldingButton(
-                                date: date,
-                                index: index,
-                                color:  PriorityUtil.getPriority(controller.getTodoList(date: date)[index].priority).PriorityColor,
-                                controller: controller,
+    void copyTodo() {
+      // UUID 생성
+      var uuid = const Uuid();
+      String newUuid = uuid.v4();
+
+      controller.addTodo(
+          todo: TodoModel(
+              id: newUuid,
+              categoryId: todo.categoryId,
+              reminderId: todo.reminderId,
+              name: "${todo.name}*",
+              subTodo: todo.subTodo,
+              date: todo.date,
+              priority: todo.priority,
+              memo: todo.memo,
+              isFold: todo.isFold,
+              isChecked: todo.isChecked,
+              pos: todo.pos));
+    }
+
+    return Center(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(AppValues.baseRadius),
+        child: Slidable(
+          key: UniqueKey(),
+          startActionPane: ActionPane(
+            motion: const StretchMotion(),
+            dismissible: DismissiblePane(
+              onDismissed: () {
+                deleteTodo();
+              },
+            ),
+            children: [
+              SlidableAction(
+                onPressed: (BuildContext context) {
+                  deleteTodo();
+                },
+                backgroundColor: Palette.peepRed,
+                foregroundColor: Colors.white,
+                label: '삭제',
+              ),
+              SlidableAction(
+                onPressed: (BuildContext context) {
+                  copyTodo();
+                },
+                backgroundColor: Palette.peepBlue,
+                foregroundColor: Colors.white,
+                label: '복사',
+              ),
+            ],
+          ),
+          // background: Container(
+          //   color: color,
+          //   alignment: Alignment.centerLeft,
+          //   child: Padding(
+          //     padding: EdgeInsets.only(left: AppValues.horizontalMargin),
+          //     child: PeepIcon(
+          //       Iconsax.check,
+          //       color: Palette.peepWhite,
+          //       size: AppValues.baseIconSize,
+          //     ),
+          //   ),
+          // ),
+          // secondaryBackground: Container(
+          //   color: Palette.peepRed,
+          //   alignment: Alignment.centerRight,
+          //   child: Padding(
+          //     padding: EdgeInsets.only(right: AppValues.horizontalMargin),
+          //     child: PeepIcon(
+          //       Iconsax.trash,
+          //       color: Palette.peepWhite,
+          //       size: AppValues.baseIconSize,
+          //     ),
+          //   ),
+          // ),
+          // confirmDismiss: (DismissDirection direction) async {
+          //   if (direction == DismissDirection.endToStart) {
+          //     Get.back();
+          //     //controller.deleteTodoItem(date, index);
+          //
+          //     Get.snackbar('', '',
+          //         snackPosition: SnackPosition.BOTTOM,
+          //         backgroundColor: Colors.transparent,
+          //         duration: const Duration(days: 9999999),
+          //         isDismissible: true,
+          //         reverseAnimationCurve: Curves.easeOutQuad,
+          //         barBlur: 0,
+          //         titleText: PeepRollbackSnackbar(
+          //             icon: PeepIcon(
+          //               Iconsax.trash,
+          //               size: AppValues.baseIconSize,
+          //               color: Palette.peepRed,
+          //             ),
+          //             boldText: todo.name,
+          //             regularText: '삭제!',
+          //             onTapRollback: () {
+          //               //controller.rollbackTodoItem();
+          //               Get.back();
+          //             }));
+          //     return true;
+          //   } else {
+          //     controller.toggleMainTodoChecked(
+          //         type: todoType, todoId: todoId);
+          //     return false;
+          //   }
+          // },
+          child: SizedBox(
+            width: AppValues.screenWidth - AppValues.screenPadding * 2,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: AppValues.baseItemHeight),
+              child: Container(
+                color: Palette.peepWhite,
+                child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: AppValues.innerMargin),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Row(
+                        children: [
+                          if (todo.subTodo.length == 0)
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: AppValues.horizontalMargin,
                               ),
-                            InkWell(
-                              onTap: () {
-                                //Todo 페이지 이동
-                                log("페이지 이동");
-                                Get.toNamed(AppPages.TODODETAIL, arguments: {
-                                  'mainTodo': controller
-                                      .getTodoList(date: date)[index],
-                                  'priority': controller.getTodoList(date: date)[index].priority,
-                                  'subTodo' : controller.getSubTodoList(date: date, mainIndex: index),
-                                  'color' : color,
-                                  'date' : date,
-                                });
-                              },
+                              child: PeepIcon(
+                                Iconsax.egg,
+                                size: AppValues.baseIconSize,
+                                color: priorityColor,
+                              ),
+                            )
+                          else
+                            PeepPriorityFoldingButton(
+                              color: priorityColor,
+                              controller: controller,
+                              todoId: todo.id,
+                              todoType: todoType,
+                            ),
+                          InkWell(
+                            onTap: () {
+                              //Todo 페이지 이동
+                              log("페이지 이동");
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: AppValues.verticalMargin),
+                              child: SizedBox(
+                                width: 230.w,
+                                child: Text(
+                                  todo.name,
+                                  style: PeepTextStyle.regularM(
+                                      color: todo.isChecked
+                                          ? Palette.peepGray400
+                                          : Palette.peepBlack),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 3,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            child: Align(
+                              alignment: Alignment.centerRight,
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
-                                    vertical: AppValues.verticalMargin),
-                                child: SizedBox(
-                                  width: 230.w,
-                                  child: Text(
-                                    controller
-                                        .getTodoList(date: date)[index]
-                                        .name,
-                                    style: PeepTextStyle.regularM(
-                                        color: controller
-                                                .getTodoList(date: date)[index]
-                                                .isChecked
-                                                .value
-                                            ? Palette.peepGray400
-                                            : Palette.peepBlack),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 3,
+                                    horizontal: AppValues.innerMargin),
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: PeepCheckButton(
+                                    color: color,
+                                    controller: controller,
+                                    todoType: todoType,
+                                    todoId: todoId,
                                   ),
                                 ),
                               ),
                             ),
-                            Flexible(
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: AppValues.innerMargin),
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: PeepCheckButton(
-                                      color: color,
-                                      date: date,
-                                      index: index,
-                                      controller: controller,
-                                    ),
-                                  ),
-                                ),
+                          ),
+                        ],
+                      ),
+                      (todo.isFold || todo.subTodo.isEmpty)
+                          ? const SizedBox.shrink()
+                          : Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: AppValues.screenPadding),
+                              child: const Divider(
+                                color: Palette.peepGray200,
                               ),
                             ),
-                          ],
-                        ),
-                        (controller
-                                    .getTodoList(date: date)[index]
-                                    .isFold
-                                    .value ||
-                                controller
-                                        .getTodoList(date: date)[index]
-                                        .subTodo ==
-                                    null)
-                            ? const SizedBox.shrink()
-                            : Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: AppValues.screenPadding),
-                                child: const Divider(
-                                  color: Palette.peepGray200,
-                                ),
-                              ),
-                        controller.getTodoList(date: date)[index].isFold.value
-                            ? const SizedBox.shrink()
-                            : Column(
-                                children: [
-                                  for (int subIndex = 0;
-                                      subIndex <
-                                          controller
-                                              .getSubTodoList(
-                                                  date: date, mainIndex: index)
-                                              .length;
-                                      subIndex++)
-                                    PeepSubTodoItem(
-                                        date: date,
-                                        controller: controller,
-                                        mainIndex: index,
-                                        index: subIndex,
-                                        color: color)
-                                ],
-                              ),
-                      ],
-                    ),
+                      todo.isFold
+                          ? const SizedBox.shrink()
+                          : Column(
+                              children: [
+                                for (SubTodoModel subTodo in todo.subTodo ?? [])
+                                  PeepSubTodoItem(
+                                    controller: controller,
+                                    color: color,
+                                    todoType: todoType,
+                                    todoId: todoId,
+                                    subTodoId: subTodo.id,
+                                  )
+                              ],
+                            ),
+                    ],
                   ),
                 ),
               ),
@@ -235,20 +306,25 @@ class PeepTodoItem extends StatelessWidget {
 class PeepSubTodoItem extends StatelessWidget {
   final TodoController controller;
   final Color color;
-  final String date;
-  final int mainIndex;
-  final int index;
+  final TodoType todoType;
+  final String todoId;
+  final String subTodoId;
 
   const PeepSubTodoItem(
       {super.key,
       required this.controller,
-      required this.mainIndex,
-      required this.index,
       required this.color,
-      required this.date});
+      required this.todoType,
+      required this.todoId,
+      required this.subTodoId});
 
   @override
   Widget build(BuildContext context) {
+    SubTodoModel? subTodo = controller.getSubTodoById(
+        type: todoType, todoId: todoId, subTodoId: subTodoId);
+
+    if (subTodo == null) return Container();
+
     return Obx(
       () => SizedBox(
         height: 40.h,
@@ -262,21 +338,15 @@ class PeepSubTodoItem extends StatelessWidget {
                   bottom: AppValues.verticalMargin),
               child: InkWell(
                 onTap: () {
-                  controller.toggleSubTodoChecked(date, mainIndex, index);
+                  controller.toggleSubTodoChecked(
+                      type: todoType, todoId: todoId, subTodoId: subTodoId);
                 },
                 child: SizedBox(
                   width: 230.w,
                   child: Text(
-                    controller
-                        .getSubTodoList(date: date, mainIndex: mainIndex)[index]
-                        .text
-                        .value,
+                    subTodo.name,
                     style: PeepTextStyle.regularM(
-                        color: controller
-                                .getSubTodoList(
-                                    date: date, mainIndex: mainIndex)[index]
-                                .isChecked
-                                .value
+                        color: subTodo.isChecked
                             ? Palette.peepGray400
                             : Palette.peepBlack),
                     overflow: TextOverflow.ellipsis,
@@ -291,10 +361,10 @@ class PeepSubTodoItem extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: PeepSubCheckButton(
                   color: color,
-                  mainIndex: mainIndex,
-                  date: date,
-                  index: index,
                   controller: controller,
+                  todoType: todoType,
+                  todoId: todoId,
+                  subTodoId: subTodoId,
                 ),
               ),
             ),

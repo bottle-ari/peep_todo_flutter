@@ -65,7 +65,7 @@ class PeepTodoTextfield extends StatelessWidget {
                 cursorColor: color,
                 decoration: InputDecoration(
                   border: InputBorder.none, // 밑줄 제거
-                  hintText: '이름을 입력해 주세요',
+                  hintText: '할 일을 입력해 주세요',
                   hintStyle: PeepTextStyle.regularL(color: Palette.peepGray300),
                 ),
               ),
@@ -73,6 +73,7 @@ class PeepTodoTextfield extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 handleAddButtonTap(controller.text);
+                controller.text = '';
               },
               child: PeepIcon(
                 Iconsax.addSquare,
