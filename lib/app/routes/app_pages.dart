@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/bindings/page/category_manage_page_binding.dart';
 import 'package:peep_todo_flutter/app/bindings/page/completed_constant_todo_binding.dart';
 import 'package:peep_todo_flutter/app/bindings/page/overdue_todo_binding.dart';
 import 'package:peep_todo_flutter/app/bindings/page/todo_detail_binding.dart';
@@ -40,7 +39,6 @@ class AppPages {
     GetPage(
       name: _Paths.CATEGORY_MANAGE_PAGE,
       page: () => CategoryManagePage(),
-      binding: CategoryManagePageBinding(),
       transition: Transition.rightToLeft,
     ),
     GetPage(
