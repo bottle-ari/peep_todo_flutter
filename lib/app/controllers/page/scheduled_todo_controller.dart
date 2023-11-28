@@ -353,7 +353,7 @@ class ScheduledTodoController extends BaseController {
       }
 
       updateCategoryIndexMap(inx);
-      categoryIndexMap[todo.categoryId]![1]++;
+      categoryIndexMap[todo.categoryId]?[1]++;
     }
 
     scheduledTodoList.value = newScheduledTodoList;

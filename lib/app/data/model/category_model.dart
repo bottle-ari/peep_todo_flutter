@@ -5,12 +5,14 @@ class CategoryModel {
   String name;
   Color color;
   String emoji;
+  int pos;
 
   CategoryModel({
     required this.id,
     required this.name,
     required this.color,
     required this.emoji,
+    required this.pos,
   });
 
   Map<String, dynamic> toMap() {
@@ -18,7 +20,8 @@ class CategoryModel {
       'id': id,
       'name': name,
       'color': color.value.toRadixString(16).substring(2, 8).toUpperCase(),
-      'emoji': emoji
+      'emoji': emoji,
+      'pos': pos,
     };
   }
 
@@ -27,6 +30,7 @@ class CategoryModel {
         id: map['id'],
         name: map['name'],
         color: Color(int.parse("0xFF${map['color']}")),
-        emoji: map['emoji']);
+        emoji: map['emoji'],
+        pos: map['pos']);
   }
 }

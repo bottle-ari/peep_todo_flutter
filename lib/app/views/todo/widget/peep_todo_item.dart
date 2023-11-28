@@ -93,18 +93,19 @@ class PeepTodoItem extends StatelessWidget {
       var uuid = const Uuid();
       String newUuid = uuid.v4();
 
-      controller.addTodo(todo: TodoModel(
-          id: newUuid,
-          categoryId: todo.categoryId,
-          reminderId: todo.reminderId,
-          name: "${todo.name}*",
-          subTodo: todo.subTodo,
-          date: todo.date,
-          priority: todo.priority,
-          memo: todo.memo,
-          isFold: todo.isFold,
-          isChecked: todo.isChecked,
-          pos: todo.pos));
+      controller.addTodo(
+          todo: TodoModel(
+              id: newUuid,
+              categoryId: todo.categoryId,
+              reminderId: todo.reminderId,
+              name: "${todo.name}*",
+              subTodo: todo.subTodo,
+              date: todo.date,
+              priority: todo.priority,
+              memo: todo.memo,
+              isFold: todo.isFold,
+              isChecked: todo.isChecked,
+              pos: todo.pos));
     }
 
     return Center(
@@ -346,7 +347,6 @@ class PeepSubTodoItem extends StatelessWidget {
                     subTodo.name,
                     style: PeepTextStyle.regularM(
                         color: subTodo.isChecked
-
                             ? Palette.peepGray400
                             : Palette.peepBlack),
                     overflow: TextOverflow.ellipsis,

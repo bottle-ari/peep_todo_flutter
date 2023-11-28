@@ -2,20 +2,22 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/controllers/category_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_controller.dart';
 import 'package:peep_todo_flutter/app/data/mock_data.dart';
 import 'package:peep_todo_flutter/app/views/category/page/category_add_modal.dart';
 import 'package:peep_todo_flutter/app/views/category/page/category_color_picker_modal.dart';
 import '../../data/model/category_model.dart';
 
+//TODO : 이제 해당 컨트롤러는 사용하지 않습니다, 제거 필요.
+
 class CategoryManagePageController extends BaseController {
-  // // TODO : 현재는 Mock 데이터가 들어가 있으므로, 추후 변경 필요
-  // final RxList<CategoryModel> categoryList = mockCategories.obs;
+  // final CategoryController _categoryController = Get.find();
   //
   // /*
   //   카테고리 아이템 추가
   // */
-  // void addCategoryItem(String date, String emoji, String name, Color color) {
+  // void addCategoryItem(String emoji, String name, Color color) {
   //   // 카테고리 모델 생성
   //   CategoryModel categoryModel =
   //       CategoryModel(id: 5, name: name, color: color, emoji: emoji);
