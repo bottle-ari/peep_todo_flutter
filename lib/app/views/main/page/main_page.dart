@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/main/main_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_view.dart';
 import 'package:peep_todo_flutter/app/routes/app_pages.dart';
+import 'package:peep_todo_flutter/app/views/calendar/page/calendar_page.dart';
+import 'package:peep_todo_flutter/app/views/main/widget/peep_calendar_app_bar.dart';
 import 'package:peep_todo_flutter/app/views/main/widget/peep_constant_todo_appbar.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/constant_todo_page.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/scheduled_todo_page.dart';
@@ -50,10 +51,7 @@ class MainPage extends BaseView<MainController> {
               Get.toNamed(AppPages.COMPLETED_CONSTANT_TODO);
             });
       case MenuState.CALENDAR:
-        return PeepConstantTodoAppbar(
-            dropdownMenuItems: [],
-            onMenuItemSelected: (String str) {},
-            onTapClipboard: () {});
+        return PeepCalendarAppBar();
       case MenuState.ROUTINE:
         return PeepConstantTodoAppbar(
             dropdownMenuItems: [],
@@ -77,7 +75,7 @@ class MainPage extends BaseView<MainController> {
       case MenuState.CONSTANT_TODO:
         return ConstantTodoPage();
       case MenuState.CALENDAR:
-        return Container();
+        return CalendarPage();
       case MenuState.ROUTINE:
         return Container();
       case MenuState.MYPAGE:
