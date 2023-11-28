@@ -10,27 +10,15 @@ import '../../../core/base/base_view.dart';
 class CalendarPage extends BaseView<CalendarPageController> {
   final ScheduledTodoController scheduledTodoController = Get.find();
 
-  // Todo : statusBar 색, peepWhite 적용 확인
-  //statusBar 색 지정
-  @override
-  Color statusBarColor() {
-    return Palette.peepWhite;
-  }
-
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
     return null;
   }
 
-  //배경색 지정
-  @override
-  Color pageBackgroundColor() {
-    return Palette.peepWhite;
-  }
-
   @override
   Widget body(BuildContext context) {
     return Container(
+      color: Palette.peepWhite,
       height: double.infinity,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
