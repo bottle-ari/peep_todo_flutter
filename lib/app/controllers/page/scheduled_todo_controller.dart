@@ -298,7 +298,7 @@ import 'package:peep_todo_flutter/app/controllers/category_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/pref_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/todo_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
-import 'package:peep_todo_flutter/app/data/model/category_model.dart';
+import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/backup_todo_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:peep_todo_flutter/app/data/services/pref_service.dart';
@@ -371,18 +371,19 @@ class ScheduledTodoController extends BaseController {
       for (var category in _categoryController.categoryList) {
         categoryFoldMap[category.id] = false;
       }
-
-      String categoryFoldMapString = jsonEncode(categoryFoldMap);
-
-      prefController.saveData(key, categoryFoldMapString);
     } else {
       Map<String, dynamic> tempMap = jsonDecode(prefController.data[key]!);
 
-      categoryFoldMap.value =
+      Map<String, bool> storedCategoryFoldMap =
           tempMap.map((key, value) => MapEntry(key, value as bool));
 
-      log(categoryFoldMap.toString());
+      for (var category in _categoryController.categoryList) {
+        categoryFoldMap[category.id] = storedCategoryFoldMap[category.id] ?? false;
+      }
     }
+
+    String categoryFoldMapString = jsonEncode(categoryFoldMap);
+    prefController.saveData(key, categoryFoldMapString);
   }
 
   void initCategoryIndexMap(List<dynamic>? todoList) {

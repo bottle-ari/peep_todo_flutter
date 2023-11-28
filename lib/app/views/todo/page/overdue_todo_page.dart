@@ -59,11 +59,12 @@ class OverdueTodoPage extends BaseView<OverdueTodoController> {
                     ),
                     text: '모두 삭제',
                     onTap: () {
-                      Get.dialog(const ConfirmPopup(
+                      Get.dialog(ConfirmPopup(
                         icon: Iconsax.clipboardDelete,
                         text: '모두 삭제',
                         confirmText: '삭제',
                         color: Palette.peepRed,
+                        func: () {},
                       ));
                     }),
                 PeepSquareButton(

@@ -56,9 +56,7 @@ class CategoryManagePage extends BaseView<CategoryController> {
                         padding: EdgeInsets.symmetric(
                             vertical: AppValues.innerMargin),
                         child: PeepCategoryManageListItem(
-                          name: category.name,
-                          emoji: category.emoji,
-                          color: category.color,
+                          category: category,
                           onTapEmojiPicker: () {},
                           onTapColorPicker: () {
                             Get.bottomSheet(CategoryColorPickerModal(

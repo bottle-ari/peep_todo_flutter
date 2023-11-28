@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/data/model/category_model.dart';
+import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
 import 'package:peep_todo_flutter/app/data/provider/database/category_provider.dart';
 
 class CategoryService extends GetxService {

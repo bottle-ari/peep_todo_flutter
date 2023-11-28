@@ -10,15 +10,21 @@ import '../../../theme/app_values.dart';
 class ConfirmPopup extends StatelessWidget {
   final String icon;
   final String text;
+  final String? hintText;
+  final Color? hintColor;
   final String confirmText;
   final Color color;
+  final Function func;
 
   const ConfirmPopup(
       {super.key,
       required this.icon,
       required this.text,
       required this.confirmText,
-      required this.color});
+      required this.color,
+      this.hintText,
+      required this.func,
+      this.hintColor});
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +52,19 @@ class ConfirmPopup extends StatelessWidget {
                 text: ' 하시겠습니까?',
                 style: PeepTextStyle.regularM(color: Palette.peepBlack))
           ])),
+          if (hintText != null)
+            Padding(
+              padding: EdgeInsets.only(top: 5.h),
+              child: Text(
+                hintText!,
+                style: PeepTextStyle.regularXS(
+                    color: hintColor ?? Palette.peepGray400),
+              ),
+            ),
         ],
       ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppValues.baseRadius)),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppValues.baseRadius)),
       actions: [
         TextButton(
             onPressed: () {
@@ -56,9 +72,12 @@ class ConfirmPopup extends StatelessWidget {
             },
             child: Text('취소',
                 style: PeepTextStyle.boldL(color: Palette.peepGray500))),
-        SizedBox(width: 50.w,),
+        SizedBox(
+          width: 50.w,
+        ),
         TextButton(
             onPressed: () {
+              func();
               Get.back();
             },
             child: Text(confirmText, style: PeepTextStyle.boldL(color: color))),
