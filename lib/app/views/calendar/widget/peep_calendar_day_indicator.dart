@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:peep_todo_flutter/app/controllers/page/scheduled_todo_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/todo_controller.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/utils/peep_calendar_util.dart';
@@ -11,13 +11,12 @@ import 'package:peep_todo_flutter/app/views/common/painter/ring_painter.dart';
 class PeepCalendarDayIndicator extends StatelessWidget {
   final DateTime day;
   final bool isToday;
-  final ScheduledTodoController scheduledTodoController;
+  final TodoController todoController = Get.find();
 
-  const PeepCalendarDayIndicator({
+  PeepCalendarDayIndicator({
     super.key,
     required this.isToday,
     required this.day,
-    required this.scheduledTodoController,
   });
 
   @override
@@ -33,10 +32,9 @@ class PeepCalendarDayIndicator extends StatelessWidget {
             () => CustomPaint(
               size: Size(32.w, 32.w),
               painter: RingPainter(
-                  itemCounts: scheduledTodoController.calendarItemCounts[
-                          DateFormat('yyyyMMdd').format(day)] ??
-                      [],
-                  categoryList: scheduledTodoController.getCategoryList()),
+                  itemCounts: todoController.calendarItemCounts[
+                  DateFormat('yyyyMMdd').format(day)] ??
+                      {}),
             ),
           ),
           /* 선택된 날짜 == 오늘 날짜 */

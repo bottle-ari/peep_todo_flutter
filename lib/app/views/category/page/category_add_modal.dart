@@ -2,27 +2,21 @@ import 'dart:math';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/controllers/page/category_manage_page_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/category_controller.dart';
+import 'package:peep_todo_flutter/app/data/model/category_model.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_button_textfield.dart';
+import 'package:uuid/uuid.dart';
 
 class CategoryAddModalController extends GetxController {
-  late RxString emoji;
-  late Rx<Color> color;
-  late RxBool emojiShowing;
+  RxString emoji = "🤔".obs;
+  Rx<Color> color = Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0).obs;
+  RxBool emojiShowing = false.obs;
 
   FocusNode focusNode = FocusNode();
-
-  @override
-  void onInit() {
-    super.onInit();
-    emoji = "🤔".obs;
-    emojiShowing = false.obs;
-    color = Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0).obs;
-  }
 
   void onTapEmojiPicker() {
     focusNode.unfocus();
@@ -31,30 +25,35 @@ class CategoryAddModalController extends GetxController {
 }
 
 class CategoryAddModal extends StatelessWidget {
-  final CategoryAddModalController controller;
-  final CategoryManagePageController categoryManagePageController;
+  final CategoryController categoryController = Get.find();
 
-  const CategoryAddModal({
+  CategoryAddModal({
     super.key,
-    required this.categoryManagePageController,
-    required this.controller,
   });
 
   @override
   Widget build(BuildContext context) {
     TextEditingController textEditingController = TextEditingController();
+    CategoryAddModalController controller = CategoryAddModalController();
 
     // handle submit(TextField) & onTap(AddButton) event
     void handleAddButtonTap(String text) {
       if (text.trim().isNotEmpty) {
-        // return category name, emoji, color
-        categoryManagePageController.addCategory(
-          controller.emoji.value,
-          text,
-          controller.color.value,
+        // UUID 생성
+        var uuid = const Uuid();
+        String newUuid = uuid.v4();
+
+        categoryController.addCategory(
+          category: CategoryModel(
+            id: newUuid,
+            name: text,
+            color: controller.color.value,
+            emoji: controller.emoji.value,
+            pos: categoryController.categoryList.length,
+          ),
         );
 
-        Navigator.of(context).pop();
+        Get.back();
       } else {
         textEditingController.text = "";
       }
@@ -122,7 +121,8 @@ class CategoryAddModal extends StatelessWidget {
                     config: Config(
                       columns: 7,
                       emojiSizeMax: 32 *
-                          (foundation.defaultTargetPlatform == TargetPlatform.iOS
+                          (foundation.defaultTargetPlatform ==
+                                  TargetPlatform.iOS
                               ? 1.30
                               : 1.0),
                       // Issue: https://github.com/flutter/flutter/issues/28894

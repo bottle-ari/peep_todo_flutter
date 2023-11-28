@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/category_controller.dart';
-import 'package:peep_todo_flutter/app/controllers/page/category_manage_page_controller.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
+import 'package:peep_todo_flutter/app/views/category/page/category_add_modal.dart';
 import 'package:peep_todo_flutter/app/views/category/page/category_color_picker_modal.dart';
 import 'package:peep_todo_flutter/app/views/category/widget/peep_category_manage_list_item.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_subpage_appbar.dart';
@@ -31,7 +31,7 @@ class CategoryManagePage extends BaseView<CategoryController> {
           ],
           onTapButtons: [
             () {
-              //TODO : controller.showCategoryAddModal(context);
+              Get.bottomSheet(CategoryAddModal());
             }
           ],
         ),

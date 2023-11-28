@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:peep_todo_flutter/app/controllers/peep_calendar_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/page/scheduled_todo_controller.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
-import 'package:peep_todo_flutter/app/views/calendar/widget/peep_calendar_day_cell_list_item.dart';
 import 'package:peep_todo_flutter/app/views/calendar/widget/peep_calendar_day_indicator.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -34,7 +33,6 @@ class PeepCalendarDayCell extends StatelessWidget {
           child: PeepCalendarDayIndicator(
             isToday: isSameDay(day, calendarController.today),
             day: day,
-            scheduledTodoController: scheduledTodoController,
           ),
         ),
 
