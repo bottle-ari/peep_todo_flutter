@@ -24,8 +24,8 @@ class TodoPriorityAnimationController extends GetxController with GetSingleTicke
     }
   }
 
-  void toggleAnimation(bool isChecked) {
-    if (isChecked) {
+  void toggleAnimation() {
+    if (isFold) {
       animationController.forward();
     } else {
       animationController.reverse();

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:peep_todo_flutter/app/controllers/mini_calendar_controller.dart';
+import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
+import 'package:peep_todo_flutter/app/data/model/category_model.dart';
+import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/todo_add_modal.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_mini_calendar.dart';
@@ -14,8 +16,6 @@ import '../../../core/base/base_view.dart';
 import '../widget/peep_todo_item.dart';
 
 class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
-  final MiniCalendarController calendarController = Get.find();
-
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
     return null;
@@ -25,8 +25,6 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
   Widget body(BuildContext context) {
     return Obx(
       () {
-        var date =
-            DateFormat('yyyyMMdd').format(calendarController.selectedDay.value);
         return SizedBox(
           height: double.infinity,
           child: Padding(
@@ -37,9 +35,7 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
                   padding: EdgeInsets.only(bottom: AppValues.verticalMargin),
                   child: SizedBox(
                     height: 90.h,
-                    child: PeepMiniCalendar(
-                      controller: controller,
-                    ),
+                    child: PeepMiniCalendar(),
                   ),
                 ),
                 Expanded(
@@ -48,55 +44,52 @@ class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
                       ReorderableSliverList(
                         delegate: ReorderableSliverChildListDelegate(
                           [
-                            for (int index = 0;
-                                index <
-                                    controller.getTodoList(date: date).length;
-                                index++)
-                              if (controller.isCategoryModel(date, index))
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: AppValues.verticalMargin),
-                                  child: PeepCategoryItem(
-                                      color: controller
-                                          .getTodoList(date: date)[index]
-                                          .color,
-                                      name: controller
-                                          .getTodoList(date: date)[index]
-                                          .name,
-                                      emoji: controller
-                                          .getTodoList(date: date)[index]
-                                          .emoji,
-                                      onTapAddButton: () {
-                                        Get.bottomSheet(TodoAddModal(
-                                            color: controller
-                                                .getTodoList(date: date)[index]
-                                                .color));
-                                      },
-                                      onTapArrowButton: () {
-                                        controller.toggleCategoryIsFold(
-                                            date, index);
-                                      },
-                                      isFolded: controller.categoryFoldMap[
-                                          controller.reverseCategoryFoldMap(
-                                              date, index)]),
-                                )
-                              else if (!controller.categoryFoldMap[
-                                  controller.reverseCategoryFoldMap(date,
-                                      controller.getTodoCategory(date, index))])
+                            for (var item in controller.scheduledTodoList)
+                              if (item is TodoModel)
+                                if (!(controller
+                                        .categoryFoldMap[item.categoryId] ??
+                                    false))
+                                  Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: AppValues.innerMargin),
+                                      child: PeepTodoItem(
+                                        todoId: item.id,
+                                        color: controller.getColor(
+                                            todoId: item.id),
+                                        todoType: TodoType.scheduled,
+                                      ))
+                                else
+                                  const SizedBox.shrink()
+                              else if (item is CategoryModel)
                                 Padding(
                                   padding: EdgeInsets.symmetric(
                                       vertical: AppValues.innerMargin),
-                                  child: PeepTodoItem(
-                                    color: controller.todoColor(date, index),
-                                    index: index,
-                                    controller: controller,
-                                    date: date,
-                                  ),
+                                  child: PeepCategoryItem(
+                                      color: item.color,
+                                      name: item.name,
+                                      emoji: item.emoji,
+                                      onTapAddButton: () {
+                                        int pos = controller
+                                            .categoryIndexMap[item.id]![1];
+                                        Get.bottomSheet(TodoAddModal(
+                                          category: item,
+                                          pos: pos,
+                                          type: TodoType.scheduled,
+                                        ));
+                                        controller.initCategoryIndexMap(null);
+                                        //controller.addTodo(item.id);
+                                      },
+                                      onTapArrowButton: () {
+                                        controller.isCategoryFold(item.id);
+                                      },
+                                      isFolded:
+                                          controller.categoryFoldMap[item.id] ??
+                                              false),
                                 )
                           ],
                         ),
                         onReorder: (int oldIndex, int newIndex) {
-                          controller.reorderTodoList(date, oldIndex, newIndex);
+                          controller.reorderTodoList(oldIndex, newIndex);
                         },
                       ),
                     ],

@@ -39,70 +39,71 @@ class CompletedConstantTodoPage
 
   @override
   Widget body(BuildContext context) {
-    return Obx(
-          () {
-        const date = 'constant';
-        return SizedBox(
-          height: double.infinity,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
-            child: Column(
-              children: [
-                Expanded(
-                  child: CustomScrollView(
-                    slivers: [
-                      ReorderableSliverList(
-                        delegate: ReorderableSliverChildListDelegate(
-                          [
-                            for (int index = 0;
-                            index <
-                                controller.getTodoList(date: date).length;
-                            index++)
-                              if (controller.isCategoryModel(date, index))
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: AppValues.verticalMargin),
-                                  child: PeepCategoryItem(
-                                      color: controller
-                                          .getTodoList(date: date)[index]
-                                          .color,
-                                      name: controller
-                                          .getTodoList(date: date)[index]
-                                          .name,
-                                      emoji: controller
-                                          .getTodoList(date: date)[index]
-                                          .emoji,
-                                      onTapAddButton: () {
-                                      },
-                                      onTapArrowButton: () {
-                                      },
-                                      isFolded: false),
-                                )
-                              else
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: AppValues.innerMargin),
-                                  child: PeepTodoItem(
-                                    color: controller.todoColor(date, index),
-                                    index: index,
-                                    controller: controller,
-                                    date: date,
-                                  ),
-                                )
-                          ],
-                        ),
-                        onReorder: (int oldIndex, int newIndex) {
-                          controller.reorderTodoList(date, oldIndex, newIndex);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
+    return Container();
+    // return Obx(
+    //       () {
+    //     const date = 'constant';
+    //     return SizedBox(
+    //       height: double.infinity,
+    //       child: Padding(
+    //         padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
+    //         child: Column(
+    //           children: [
+    //             Expanded(
+    //               child: CustomScrollView(
+    //                 slivers: [
+    //                   ReorderableSliverList(
+    //                     delegate: ReorderableSliverChildListDelegate(
+    //                       [
+    //                         for (int index = 0;
+    //                         index <
+    //                             controller.getTodoList(date: date).length;
+    //                         index++)
+    //                           if (controller.isCategoryModel(date, index))
+    //                             Padding(
+    //                               padding: EdgeInsets.symmetric(
+    //                                   vertical: AppValues.verticalMargin),
+    //                               child: PeepCategoryItem(
+    //                                   color: controller
+    //                                       .getTodoList(date: date)[index]
+    //                                       .color,
+    //                                   name: controller
+    //                                       .getTodoList(date: date)[index]
+    //                                       .name,
+    //                                   emoji: controller
+    //                                       .getTodoList(date: date)[index]
+    //                                       .emoji,
+    //                                   onTapAddButton: () {
+    //                                   },
+    //                                   onTapArrowButton: () {
+    //                                   },
+    //                                   isFolded: false),
+    //                             )
+    //                           else
+    //                             Padding(
+    //                               padding: EdgeInsets.symmetric(
+    //                                   vertical: AppValues.innerMargin),
+    //                               child: PeepTodoItem(
+    //                                 color: controller.todoColor(date, index),
+    //                                 index: index,
+    //                                 controller: controller,
+    //                                 date: date,
+    //                               ),
+    //                             )
+    //                       ],
+    //                     ),
+    //                     onReorder: (int oldIndex, int newIndex) {
+    //                       controller.reorderTodoList(date, oldIndex, newIndex);
+    //                     },
+    //                   ),
+    //                 ],
+    //               ),
+    //             ),
+    //           ],
+    //         ),
+    //       ),
+    //     );
+    //   },
+    // );
   }
 }

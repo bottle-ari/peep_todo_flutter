@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
-import 'package:peep_todo_flutter/app/theme/palette.dart';
 
 import '../../../controllers/animation/todo_priority_animation_controller.dart';
 import '../../../controllers/todo_controller.dart';
@@ -11,31 +10,28 @@ import '../../../theme/icons.dart';
 class PeepPriorityFoldingButton extends StatelessWidget {
   final Color color;
   final double size = AppValues.baseIconSize;
-  final String date;
-  final int index;
+  final String todoId;
+  final TodoType todoType;
   final TodoController controller;
 
   PeepPriorityFoldingButton(
       {super.key,
-      required this.index,
+      required this.todoId,
       required this.color,
-      required this.date,
-      required this.controller});
+      required this.controller,
+      required this.todoType});
 
   @override
   Widget build(BuildContext context) {
-    final TodoPriorityAnimationController animationController = Get.put(
-        TodoPriorityAnimationController(
-            controller.getTodoList(date: date)[index].isFold.value),
-        tag: controller.getTodoList(date: date)[index].id.toString());
+    final TodoPriorityAnimationController animationController =
+        Get.put(TodoPriorityAnimationController(true), tag: todoId.toString());
 
     return Material(
         color: Colors.transparent,
         child: InkWell(
             onTap: () {
-              controller.toggleTodoIsFold(date, index);
-              animationController.toggleAnimation(
-                  controller.getTodoList(date: date)[index].isFold.value);
+              controller.toggleIsFold(todoId: todoId, type: todoType);
+              animationController.toggleAnimation();
             },
             child: AnimatedBuilder(
                 animation: animationController.animation,

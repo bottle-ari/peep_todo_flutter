@@ -2,10 +2,7 @@ import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/core/base/base_controller.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../data/mock_data.dart';
-import '../data/model/category_model.dart';
-
-class MiniCalendarController extends BaseController {
+class PeepCalendarController extends BaseController {
   DateTime today = DateTime.now();
   Rx<DateTime> focusedDay = DateTime.now().obs;
   Rx<DateTime> selectedDay = DateTime.now().obs;
@@ -13,7 +10,7 @@ class MiniCalendarController extends BaseController {
   void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     if (!isSameDay(this.selectedDay.value, selectedDay)) {
       this.selectedDay.value = selectedDay;
-      this.focusedDay.value = focusedDay;
+      this.focusedDay.value = selectedDay;
     }
   }
 
@@ -29,8 +26,6 @@ class MiniCalendarController extends BaseController {
   void onPageChanged(DateTime newFocusedDay) {
     focusedDay.value = newFocusedDay;
     selectedDay.value = newFocusedDay;
-
-    update();
   }
 
 }

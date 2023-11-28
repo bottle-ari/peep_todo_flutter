@@ -85,14 +85,14 @@ class OverdueTodoPage extends BaseView<OverdueTodoController> {
             '7월 23일',
             style: PeepTextStyle.boldL(color: Palette.peepRed),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 10.h),
-            child: PeepOverdueTodoItem(
-                color: Palette.peepGreen,
-                index: 2,
-                controller: controller,
-                date: '20231116'),
-          )
+          // Padding(
+          //   padding: EdgeInsets.symmetric(vertical: 10.h),
+          //   child: PeepOverdueTodoItem(
+          //       color: Palette.peepGreen,
+          //       index: 2,
+          //       controller: controller,
+          //       date: '20231116'),
+          // )
         ],
       ),
     );
