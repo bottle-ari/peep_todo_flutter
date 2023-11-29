@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/controllers/modal/todo_add_controller.dart';
-import 'package:peep_todo_flutter/app/controllers/todo_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
@@ -13,6 +11,9 @@ import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/priority_picker_modal.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_button_textfield.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../../controllers/data/todo_controller.dart';
+import '../../../controllers/data/todo_detail_controller.dart';
 
 class TodoAddModal extends StatelessWidget {
   final CategoryModel category;
@@ -28,7 +29,7 @@ class TodoAddModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TodoController controller = Get.find();
-    final TodoAddController todoAddController = TodoAddController();
+    final TodoDetailController todoAddController = TodoDetailController();
 
     return Container(
       decoration: BoxDecoration(

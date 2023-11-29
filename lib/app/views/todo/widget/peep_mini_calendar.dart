@@ -5,8 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/common/painter/ring_painter.dart';
 import 'package:table_calendar/table_calendar.dart';
-
-import '../../../controllers/todo_controller.dart';
+import '../../../controllers/data/todo_controller.dart';
 import '../../../theme/app_values.dart';
 import '../../../theme/palette.dart';
 

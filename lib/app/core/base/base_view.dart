@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -100,6 +102,7 @@ abstract class BaseView<Controller extends BaseController>
 
   //로딩 화면
   Widget _showLoading() {
+    log("LOADING!");
     return const Loading();
   }
 }

@@ -294,17 +294,14 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/controllers/category_controller.dart';
-import 'package:peep_todo_flutter/app/controllers/pref_controller.dart';
-import 'package:peep_todo_flutter/app/controllers/todo_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
-import 'package:peep_todo_flutter/app/data/model/todo/backup_todo_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
-import 'package:peep_todo_flutter/app/data/services/pref_service.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 import '../../core/base/base_controller.dart';
+import '../data/pref_controller.dart';
+import '../data/todo_controller.dart';
 
 class ScheduledTodoController extends BaseController {
   final CategoryController _categoryController = Get.find();

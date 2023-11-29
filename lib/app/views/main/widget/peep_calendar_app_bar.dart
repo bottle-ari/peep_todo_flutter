@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/controllers/page/calendar_page_contoller.dart';
-import 'package:peep_todo_flutter/app/controllers/peep_calendar_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/data/peep_calendar_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_view.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import '../../../theme/app_values.dart';

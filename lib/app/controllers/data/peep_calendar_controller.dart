@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/core/base/base_controller.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../utils/peep_calendar_util.dart';
+import '../../utils/peep_calendar_util.dart';
 
 class PeepCalendarController extends BaseController {
   DateTime today = DateTime.now();

@@ -6,9 +6,9 @@ import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/services/todo_service.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../data/model/todo/backup_todo_model.dart';
-import '../data/model/todo/sub_todo_model.dart';
-import '../data/model/todo/todo_model.dart';
+import '../../data/model/todo/backup_todo_model.dart';
+import '../../data/model/todo/sub_todo_model.dart';
+import '../../data/model/todo/todo_model.dart';
 
 class TodoController extends GetxController {
   final TodoService _service = TodoService();

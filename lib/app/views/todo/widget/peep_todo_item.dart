@@ -19,7 +19,7 @@ import 'package:peep_todo_flutter/app/views/common/buttons/peep_priority_folding
 import 'package:peep_todo_flutter/app/views/common/peep_rollback_snackbar.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../controllers/todo_controller.dart';
+import '../../../controllers/data/todo_controller.dart';
 
 class PeepTodoItem extends StatelessWidget {
   final Color color;
@@ -156,8 +156,7 @@ class PeepTodoItem extends StatelessWidget {
                             ),
                           InkWell(
                             onTap: () {
-                              //Todo 페이지 이동
-                              log("페이지 이동");
+                              Get.toNamed(Routes.TODO_DETAIL_PAGE, arguments: {'todo' : todo, 'color' : color});
                             },
                             child: Padding(
                               padding: EdgeInsets.symmetric(

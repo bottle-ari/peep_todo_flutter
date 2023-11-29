@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../data/services/pref_service.dart';
+import '../../data/services/pref_service.dart';
 
 class PrefController extends GetxController {
   final PrefService _service = PrefService();

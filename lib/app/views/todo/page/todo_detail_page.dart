@@ -3,25 +3,23 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/controllers/page/todo_detail_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_view.dart';
 import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/utils/priority_util.dart';
-import 'package:peep_todo_flutter/app/views/category/widget/peep_emoji_picker_button.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_category_picker_button.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_half_button.dart';
-import 'package:peep_todo_flutter/app/views/common/peep_category_tag.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_subpage_appbar.dart';
+import 'package:peep_todo_flutter/app/views/todo/page/priority_picker_modal.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_todo_detail_main_item.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_todo_detail_sub_item.dart';
-import 'package:reorderables/reorderables.dart';
 
+import '../../../controllers/data/todo_detail_controller.dart';
+import '../../../data/enums/priority.dart';
+import '../../../data/model/todo/todo_model.dart';
 import '../../../theme/app_values.dart';
-import '../widget/peep_category_item.dart';
-import '../widget/peep_todo_item.dart';
 
 class TodoDetailPage extends BaseView<TodoDetailController> {
   @override
@@ -39,15 +37,8 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
 
   @override
   Widget body(BuildContext context) {
-    List<String> textList = [];
-    if (Get.arguments != null && Get.arguments["subTodo"] != null) {
-      for (int subIndex = 0;
-          subIndex < Get.arguments["subTodo"].length;
-          subIndex++) {
-        String text = Get.arguments["subTodo"][subIndex].text.value;
-        textList.add(text);
-      }
-    }
+    TodoModel todo = Get.arguments['todo'];
+    Color color = Get.arguments['color'];
 
     return SizedBox(
       height: double.infinity,
@@ -62,37 +53,35 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // 왼쪽 half button
                     PeepHalfButton(
                       color: Palette.peepWhite,
-                      onTap: () => {print('on tap')},
-                      onTapCancel: () => {print('on tap cancel')},
-                      text: PriorityUtil.getPriority(Get.arguments['priority'])
+                      onTap: () {
+                        Get.bottomSheet(PriorityPickerModal(controller: controller));
+                      },
+                      text: PriorityUtil.getPriority(todo.priority)
                           .PriorityString,
-                      textColor:
-                          PriorityUtil.getPriority(Get.arguments['priority'])
+                      textColor: PriorityUtil.getPriority(todo.priority) ==
+                              Priority.unspecified
+                          ? Palette.peepGray400
+                          : PriorityUtil.getPriority(todo.priority)
                               .PriorityColor,
                       icon: PeepIcon(
-                        Iconsax.egg,
+                        Iconsax.eggCracked,
                         size: AppValues.smallIconSize,
-                        color:
-                            PriorityUtil.getPriority(Get.arguments['priority'])
-                                .PriorityColor,
+                        color: PriorityUtil.getPriority(todo.priority)
+                            .PriorityColor,
                       ),
-                      isDate: true,
                     ),
                     PeepHalfButton(
                       // overdue -> color change 수정 필요
-                      color: PriorityUtil.getPriority(Get.arguments['priority'])
-                          .PriorityColor,
+                      color:
+                          PriorityUtil.getPriority(todo.priority).PriorityColor,
                       onTap: () => {print('on tap')},
-                      onTapCancel: () => {print('on tap cancel')},
-                      text: Get.arguments['date'].toString(),
+                      text: todo.date.toString(),
                       textColor: Palette.peepWhite,
                       icon: PeepIcon(Iconsax.calendar,
                           size: AppValues.smallIconSize,
                           color: Palette.peepWhite),
-                      isDate: true,
                     ),
                   ],
                 ),
@@ -121,9 +110,9 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
                         vertical: AppValues.innerMargin,
                       ),
                       child: PeepTodoDetailMainItem(
-                        color: Get.arguments["color"],
+                        color: color,
                         onTap: () => print('detail main item tap'),
-                        text: Get.arguments["mainTodo"].name,
+                        text: todo.name,
                       ),
                     );
                   } else if (index == 2) {
@@ -132,8 +121,8 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
                         vertical: AppValues.verticalMargin,
                       ),
                       child: PeepTodoDetailSubItem(
-                        color: Get.arguments["color"],
-                        textList: textList,
+                        color: color,
+                        textList: [],
                         onTap: () => log("detail sub item on tap"),
                         onTapCancel: () => log("detail sub item on tap cancel"),
                         onTapCheck: () => log("detail sub item on tap check"),
@@ -200,12 +189,11 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
                               Icon(
                                 Icons.add_circle_outline,
                                 size: AppValues.baseIconSize,
-                                color: Get.arguments["color"],
+                                color: color,
                               ),
                               Text(
                                 "리마인더 추가",
-                                style: PeepTextStyle.regularM(
-                                    color: Get.arguments["color"]),
+                                style: PeepTextStyle.regularM(color: color),
                               ),
                             ],
                           ),
@@ -261,7 +249,7 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
                           log("페이지 이동");
                           Get.toNamed(AppPages.TODOMEMO, arguments: {
                             'text': controller.text.value,
-                            'name': Get.arguments["mainTodo"].name,
+                            'name': todo.name,
                           });
                         },
                         child: Container(

@@ -4,7 +4,7 @@ import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 
 import '../../../controllers/animation/todo_priority_animation_controller.dart';
-import '../../../controllers/todo_controller.dart';
+import '../../../controllers/data/todo_controller.dart';
 import '../../../theme/icons.dart';
 
 class PeepPriorityFoldingButton extends StatelessWidget {
