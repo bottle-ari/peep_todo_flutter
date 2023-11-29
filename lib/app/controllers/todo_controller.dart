@@ -39,13 +39,17 @@ class TodoController extends GetxController {
 
     ever(selectedDate, (callback) => loadScheduledData());
 
-    loadScheduledData();
-    loadCalendarData();
+    loadAllData();
   }
 
   /*
     Init Functions
    */
+  void loadAllData() {
+    loadScheduledData();
+    loadCalendarData();
+  }
+
   void loadData(TodoType type) {
     switch (type) {
       case TodoType.scheduled:

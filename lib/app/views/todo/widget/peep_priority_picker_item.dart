@@ -40,7 +40,7 @@ class PeepPriorityPickerItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               PeepIcon(
-                Iconsax.eggBroken,
+                Iconsax.eggCracked,
                 size: AppValues.smallIconSize,
                 color: PriorityUtil.getPriority(priority).PriorityColor,
               ),

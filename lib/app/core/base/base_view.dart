@@ -7,11 +7,12 @@ import 'package:peep_todo_flutter/app/theme/palette.dart';
 import '../../views/common/base/loading.dart';
 import '../../data/model/enum/page_state.dart';
 
-abstract class BaseView<Controller extends BaseController> extends GetView<Controller> {
-
+abstract class BaseView<Controller extends BaseController>
+    extends GetView<Controller> {
   final GlobalKey<ScaffoldState> globalKey = GlobalKey<ScaffoldState>();
 
   Widget body(BuildContext context);
+
   PreferredSizeWidget? appBar(BuildContext context);
 
   @override
@@ -32,8 +33,8 @@ abstract class BaseView<Controller extends BaseController> extends GetView<Contr
   //statusBar부분
   Widget annotatedRegion(BuildContext context) {
     return AnnotatedRegion(
-        value: SystemUiOverlayStyle(
-            statusBarColor: statusBarColor(),
+        value: const SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
             statusBarIconBrightness: Brightness.dark),
         child: Material(
           color: Colors.transparent,
@@ -42,19 +43,22 @@ abstract class BaseView<Controller extends BaseController> extends GetView<Contr
   }
 
   bool? resizeToAvoidBottomInset;
+
   //scaffold부분
   Widget pageScaffold(BuildContext context) {
-    return Scaffold(
-      //sets ios status bar color
-      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-      backgroundColor: pageBackgroundColor(),
-      key: globalKey,
-      appBar: appBar(context),
-      floatingActionButton: floatingActionButton(),
-      body: pageContent(context),
-      bottomNavigationBar: bottomNavigationBar(),
-      bottomSheet: bottomSheet(),
-      drawer: drawer(),
+    return Obx(
+      ()=> Scaffold(
+        //sets ios status bar color
+        resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+        backgroundColor: controller.backgroundColor.value,
+        key: globalKey,
+        appBar: appBar(context),
+        floatingActionButton: floatingActionButton(),
+        body: pageContent(context),
+        bottomNavigationBar: bottomNavigationBar(),
+        bottomSheet: bottomSheet(),
+        drawer: drawer(),
+      ),
     );
   }
 
@@ -98,5 +102,4 @@ abstract class BaseView<Controller extends BaseController> extends GetView<Contr
   Widget _showLoading() {
     return const Loading();
   }
-
 }

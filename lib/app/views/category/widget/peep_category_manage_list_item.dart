@@ -1,55 +1,71 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/controllers/category_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/todo_controller.dart';
+import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/category/widget/peep_color_picker_button.dart';
 import 'package:peep_todo_flutter/app/views/category/widget/peep_emoji_picker_button.dart';
+import 'package:peep_todo_flutter/app/views/common/popup/confirm_popup.dart';
+
+import '../../common/peep_rollback_snackbar.dart';
 
 class PeepCategoryManageListItem extends StatelessWidget {
-  final String name;
-  final String emoji;
-  final Color color;
+  final CategoryController controller = Get.find();
+  final TodoController todoController = Get.find();
+  final CategoryModel category;
   final VoidCallback onTapEmojiPicker;
   final VoidCallback onTapColorPicker;
   final VoidCallback onTap;
   final VoidCallback onDelete;
 
-  const PeepCategoryManageListItem({
+  PeepCategoryManageListItem({
     Key? key,
-    required this.name,
-    required this.emoji,
-    required this.color,
+    required this.category,
     required this.onTapEmojiPicker,
     required this.onTapColorPicker,
     required this.onTap,
     required this.onDelete,
   }) : super(key: key);
 
+  void deleteCategory() {
+    Get.dialog(ConfirmPopup(
+      icon: Iconsax.trash,
+      text: '삭제',
+      hintText: '카테고리 내 모든 [할 일]이 삭제됩니다!',
+      hintColor: Palette.peepRed,
+      confirmText: '삭제',
+      color: Palette.peepRed,
+      func: () {
+        controller.deleteCategory(category: category);
+        todoController.loadAllData();
+      },
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(AppValues.baseRadius),
-      child: Dismissible(
+      child: Slidable(
         key: UniqueKey(),
-        direction: DismissDirection.endToStart,
-        background: Container(
-          color: Palette.peepRed,
-          alignment: Alignment.centerRight,
-          child: Padding(
-            padding: EdgeInsets.only(right: AppValues.horizontalMargin),
-            child: PeepIcon(
-              Iconsax.trash,
-              color: Palette.peepWhite,
-              size: AppValues.baseIconSize,
+        startActionPane: ActionPane(
+          motion: const StretchMotion(),
+          children: [
+            SlidableAction(
+              onPressed: (BuildContext context) {
+                deleteCategory();
+              },
+              backgroundColor: Palette.peepRed,
+              foregroundColor: Colors.white,
+              label: '삭제',
             ),
-          ),
+          ],
         ),
-        confirmDismiss: (DismissDirection direction) async {
-          onDelete();
-          //Todo : 여기 true로 변경해야 함
-          return false;
-        },
         child: GestureDetector(
           onTap: onTap,
           child: Container(
@@ -59,7 +75,8 @@ class PeepCategoryManageListItem extends StatelessWidget {
               color: Palette.peepWhite,
             ),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
+              padding:
+                  EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -68,20 +85,21 @@ class PeepCategoryManageListItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       PeepEmojiPickerButton(
-                          emoji: emoji, onTap: onTapEmojiPicker),
+                          emoji: category.emoji, onTap: onTapEmojiPicker),
                       // PeepEmojiPickerButton
                       SizedBox(
-                        width: AppValues.horizontalMargin*2,
+                        width: AppValues.horizontalMargin * 2,
                       ),
                       Text(
-                        name.length > 9
-                            ? "${name.substring(0, 9)}..."
-                            : name,
-                        style: PeepTextStyle.boldXL(color: color),
+                        category.name.length > 9
+                            ? "${category.name.substring(0, 9)}..."
+                            : category.name,
+                        style: PeepTextStyle.boldXL(color: category.color),
                       ),
                     ],
                   ),
-                  PeepColorPickerButton(color: color, onTap: onTapColorPicker),
+                  PeepColorPickerButton(
+                      color: category.color, onTap: onTapColorPicker),
                   // PeepColorPickerButton
                 ],
               ),

@@ -1,5 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:uuid/uuid.dart';
 
 class DatabaseInit {
   static final DatabaseInit _instance = DatabaseInit._internal();
@@ -24,7 +25,13 @@ class DatabaseInit {
       path,
       version: 1,
       onCreate: _onCreate,
+      onOpen: _onOpen,
     );
+  }
+
+  static Future _onOpen(Database db) async {
+    // 외래키 제약조건 설정
+    await db.execute('PRAGMA foreign_keys = ON');
   }
 
   static Future _onCreate(Database db, int version) async {
@@ -86,7 +93,7 @@ class DatabaseInit {
           is_checked INTEGER,
           is_fold INTEGER,
           pos INTEGER,
-          FOREIGN KEY (category_id) REFERENCES category(id))
+          FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE CASCADE)
       """,
     );
 
@@ -102,15 +109,10 @@ class DatabaseInit {
       """);
 
     // 기본 category 생성
-    await db.insert('category',
-        {'id': 0, 'name': '할 일0', 'color': 'BD00FF', 'emoji': '🤔', 'pos': 0});
+    var uuid = const Uuid();
+    String newUuid = uuid.v4();
 
-    /*
-      test category 생성
-     */
     await db.insert('category',
-        {'id': 1, 'name': '할 일1', 'color': '00DB58', 'emoji': '🤔', 'pos': 1});
-    await db.insert('category',
-        {'id': 2, 'name': '할 일2', 'color': 'FF5151', 'emoji': '🤔', 'pos': 2});
+        {'id': newUuid, 'name': '할 일0', 'color': 'BD00FF', 'emoji': '🤔', 'pos': 0});
   }
 }

@@ -17,7 +17,7 @@ class PeepBottomNavigationBar extends StatelessWidget {
   PeepBottomNavigationBar({Key? key, required this.onNewMenuSelected})
       : super(key: key);
 
-  final navController = BottomNavigationController();
+  final BottomNavigationController navController = Get.find();
   final Key bottomNavKey = GlobalKey();
 
   @override
@@ -27,68 +27,90 @@ class PeepBottomNavigationBar extends StatelessWidget {
     List<BottomNavigationItem> navItems = _getNavItems();
 
     return Obx(
-      () => ClipRRect(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20.r),
-          topRight: Radius.circular(20.r),
+      () => Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.r),
+            topRight: Radius.circular(20.r),
+          ),
+          border: Border(
+            top: BorderSide(
+              color: Palette.peepGray200, // 왼쪽 상단 모서리 테두리 색상
+              width: 1.5.w, // 테두리 두께
+            ),
+            left: BorderSide(
+              color: Palette.peepGray200, // 왼쪽 상단 모서리 테두리 색상
+              width: 1.5.w, // 테두리 두께
+            ),
+            right: BorderSide(
+              color: Palette.peepGray200, // 왼쪽 상단 모서리 테두리 색상
+              width: 1.5.w, // 테두리 두께
+            ),
+          )
         ),
-        child: BottomNavigationBar(
-          key: bottomNavKey,
-          items: navItems
-              .map(
-                (BottomNavigationItem navItem) => BottomNavigationBarItem(
-                  icon: Padding(
-                    padding: EdgeInsets.only(
-                      left: navItem.menuState == MenuState.TODO
-                          ? 20.w
-                          : (navItem.menuState == MenuState.CONSTANT_TODO
-                              ? 10.w
-                              : 0),
-                      right: navItem.menuState == MenuState.MYPAGE
-                          ? 20.w
-                          : (navItem.menuState == MenuState.ROUTINE
-                              ? 10.w
-                              : 0),
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.r),
+            topRight: Radius.circular(20.r),
+          ),
+          child: BottomNavigationBar(
+            key: bottomNavKey,
+            items: navItems
+                .map(
+                  (BottomNavigationItem navItem) => BottomNavigationBarItem(
+                    icon: Padding(
+                      padding: EdgeInsets.only(
+                        left: navItem.menuState == MenuState.TODO
+                            ? 20.w
+                            : (navItem.menuState == MenuState.CONSTANT_TODO
+                                ? 10.w
+                                : 0),
+                        right: navItem.menuState == MenuState.MYPAGE
+                            ? 20.w
+                            : (navItem.menuState == MenuState.ROUTINE
+                                ? 10.w
+                                : 0),
+                      ),
+                      child: Column(
+                        children: [
+                          PeepIcon(
+                            navItem.iconName,
+                            size: 28.w,
+                            color: navItems.indexOf(navItem) ==
+                                    navController.selectedIndex
+                                ? selectedItemColor
+                                : unselectedItemColor,
+                          ),
+                          Text(
+                            navItem.label,
+                            style: navItems.indexOf(navItem) ==
+                                    navController.selectedIndex
+                                ? PeepTextStyle.boldXS(
+                                    color: Palette.peepYellow400)
+                                : PeepTextStyle.regularXS(
+                                    color: Palette.peepGray400),
+                          )
+                        ],
+                      ),
                     ),
-                    child: Column(
-                      children: [
-                        PeepIcon(
-                          navItem.iconName,
-                          size: 28.w,
-                          color: navItems.indexOf(navItem) ==
-                                  navController.selectedIndex
-                              ? selectedItemColor
-                              : unselectedItemColor,
-                        ),
-                        Text(
-                          navItem.label,
-                          style: navItems.indexOf(navItem) ==
-                                  navController.selectedIndex
-                              ? PeepTextStyle.boldXS(
-                                  color: Palette.peepYellow400)
-                              : PeepTextStyle.regularXS(
-                                  color: Palette.peepGray400),
-                        )
-                      ],
-                    ),
+                    label: '',
                   ),
-                  label: '',
-                ),
-              )
-              .toList(),
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          selectedFontSize: 10.sp,
-          unselectedFontSize: 10.sp,
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Palette.peepWhite,
-          selectedItemColor: selectedItemColor,
-          unselectedItemColor: unselectedItemColor,
-          currentIndex: navController.selectedIndex,
-          onTap: (index) {
-            navController.updateSelectedIndex(index);
-            onNewMenuSelected(navItems[index].menuState);
-          },
+                )
+                .toList(),
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            selectedFontSize: 10.sp,
+            unselectedFontSize: 10.sp,
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Palette.peepWhite,
+            selectedItemColor: selectedItemColor,
+            unselectedItemColor: unselectedItemColor,
+            currentIndex: navController.selectedIndex,
+            onTap: (index) {
+              navController.updateSelectedIndex(index);
+              onNewMenuSelected(navItems[index].menuState);
+            },
+          ),
         ),
       ),
     );

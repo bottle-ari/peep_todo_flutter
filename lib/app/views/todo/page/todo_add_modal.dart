@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/controllers/modal/todo_add_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/todo_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
-import 'package:peep_todo_flutter/app/data/model/category_model.dart';
+import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
@@ -27,6 +28,7 @@ class TodoAddModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TodoController controller = Get.find();
+    final TodoAddController todoAddController = TodoAddController();
 
     return Container(
       decoration: BoxDecoration(
@@ -55,44 +57,46 @@ class TodoAddModal extends StatelessWidget {
                 ),
               ),
             ),
-            PeepTodoTextfield(
-                icon: PeepIcon(
-                  Iconsax.egg,
-                  color: Palette.peepGray400,
-                  size: AppValues.baseIconSize,
-                ),
-                color: category.color,
-                onTapPriority: () {
-                  Get.bottomSheet(
-                    PriorityPickerModal(
-                      currentPriority: 3,
-                    ),
-                  );
-                },
-                onTapAddButton: (String str) {
-                  // UUID 생성
-                  var uuid = const Uuid();
-                  String newUuid = uuid.v4();
+            Obx(
+              () => PeepTodoTextfield(
+                  icon: PeepIcon(
+                    Iconsax.eggCracked,
+                    color: todoAddController.priority.value.PriorityColor,
+                    size: AppValues.baseIconSize,
+                  ),
+                  color: category.color,
+                  onTapPriority: () {
+                    Get.bottomSheet(
+                      PriorityPickerModal(
+                        controller: todoAddController,
+                      ),
+                    );
+                  },
+                  onTapAddButton: (String str) {
+                    // UUID 생성
+                    var uuid = const Uuid();
+                    String newUuid = uuid.v4();
 
-                  // 할 일 추가
-                  controller.addTodo(
-                      todo: TodoModel(
-                          id: newUuid,
-                          categoryId: category.id,
-                          reminderId: null,
-                          name: str,
-                          subTodo: [],
-                          date: controller.selectedDate.value,
-                          priority: 0,
-                          memo: '',
-                          isFold: false,
-                          isChecked: false,
-                          pos: pos));
-                  controller.loadData(type);
+                    // 할 일 추가
+                    controller.addTodo(
+                        todo: TodoModel(
+                            id: newUuid,
+                            categoryId: category.id,
+                            reminderId: null,
+                            name: str,
+                            subTodo: [],
+                            date: controller.selectedDate.value,
+                            priority: todoAddController.priority.value.index,
+                            memo: '',
+                            isFold: false,
+                            isChecked: false,
+                            pos: pos));
+                    controller.loadData(type);
 
-                  //TODO 위치 및 위젯 조정 필요.
-                  Get.snackbar('', str + ' 추가되었습니다!');
-                }),
+                    //TODO 위치 및 위젯 조정 필요.
+                    Get.snackbar('', str + ' 추가되었습니다!');
+                  }),
+            ),
             SizedBox(
               height: 30.h,
             ),

@@ -37,23 +37,6 @@ class PeepTodoItem extends StatelessWidget {
     final TodoController controller = Get.find();
     TodoModel todo = controller.getTodoById(type: todoType, todoId: todoId);
 
-    Color priorityColor = Palette.peepGray400;
-
-    switch (todo.priority) {
-      case 1:
-        priorityColor = Palette.peepGreen;
-        break;
-      case 2:
-        priorityColor = Palette.peepYellow400;
-        break;
-      case 3:
-        priorityColor = Palette.peepRed;
-        break;
-      default:
-        priorityColor = Palette.peepGray400;
-        break;
-    }
-
     void deleteTodo() {
       if (Get.isSnackbarOpen) {
         Get.back();
@@ -139,61 +122,6 @@ class PeepTodoItem extends StatelessWidget {
               ),
             ],
           ),
-          // background: Container(
-          //   color: color,
-          //   alignment: Alignment.centerLeft,
-          //   child: Padding(
-          //     padding: EdgeInsets.only(left: AppValues.horizontalMargin),
-          //     child: PeepIcon(
-          //       Iconsax.check,
-          //       color: Palette.peepWhite,
-          //       size: AppValues.baseIconSize,
-          //     ),
-          //   ),
-          // ),
-          // secondaryBackground: Container(
-          //   color: Palette.peepRed,
-          //   alignment: Alignment.centerRight,
-          //   child: Padding(
-          //     padding: EdgeInsets.only(right: AppValues.horizontalMargin),
-          //     child: PeepIcon(
-          //       Iconsax.trash,
-          //       color: Palette.peepWhite,
-          //       size: AppValues.baseIconSize,
-          //     ),
-          //   ),
-          // ),
-          // confirmDismiss: (DismissDirection direction) async {
-          //   if (direction == DismissDirection.endToStart) {
-          //     Get.back();
-          //     //controller.deleteTodoItem(date, index);
-          //
-          //     Get.snackbar('', '',
-          //         snackPosition: SnackPosition.BOTTOM,
-          //         backgroundColor: Colors.transparent,
-          //         duration: const Duration(days: 9999999),
-          //         isDismissible: true,
-          //         reverseAnimationCurve: Curves.easeOutQuad,
-          //         barBlur: 0,
-          //         titleText: PeepRollbackSnackbar(
-          //             icon: PeepIcon(
-          //               Iconsax.trash,
-          //               size: AppValues.baseIconSize,
-          //               color: Palette.peepRed,
-          //             ),
-          //             boldText: todo.name,
-          //             regularText: '삭제!',
-          //             onTapRollback: () {
-          //               //controller.rollbackTodoItem();
-          //               Get.back();
-          //             }));
-          //     return true;
-          //   } else {
-          //     controller.toggleMainTodoChecked(
-          //         type: todoType, todoId: todoId);
-          //     return false;
-          //   }
-          // },
           child: SizedBox(
             width: AppValues.screenWidth - AppValues.screenPadding * 2,
             child: ConstrainedBox(
@@ -208,7 +136,7 @@ class PeepTodoItem extends StatelessWidget {
                     children: <Widget>[
                       Row(
                         children: [
-                          if (todo.subTodo.length == 0)
+                          if (todo.subTodo.isEmpty)
                             Padding(
                               padding: EdgeInsets.symmetric(
                                 horizontal: AppValues.horizontalMargin,
@@ -216,12 +144,12 @@ class PeepTodoItem extends StatelessWidget {
                               child: PeepIcon(
                                 Iconsax.egg,
                                 size: AppValues.baseIconSize,
-                                color: priorityColor,
+                                color: PriorityUtil.getPriority(todo.priority).PriorityColor,
                               ),
                             )
                           else
                             PeepPriorityFoldingButton(
-                              color: priorityColor,
+                              color: PriorityUtil.getPriority(todo.priority).PriorityColor,
                               controller: controller,
                               todoId: todo.id,
                               todoType: todoType,

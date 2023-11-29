@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
-import 'package:peep_todo_flutter/app/data/model/category_model.dart';
+import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/todo_add_modal.dart';

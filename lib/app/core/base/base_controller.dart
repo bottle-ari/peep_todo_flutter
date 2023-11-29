@@ -1,5 +1,9 @@
-import 'package:get/get.dart';
+import 'dart:ui';
 
+import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/theme/palette.dart';
+
+import '../../data/model/enum/menu_state.dart';
 import '../../data/model/enum/page_state.dart';
 
 abstract class BaseController extends GetxController {
@@ -20,6 +24,9 @@ abstract class BaseController extends GetxController {
   showLoading() => updatePageState(PageState.LOADING);
   //로딩 끄기
   hideLoading() => resetPageState();
+
+  //스테이터스 바, 배경 색 지정
+  Rx<Color> backgroundColor = Palette.peepBackground.obs;
 
   //종료시 초기화
   @override

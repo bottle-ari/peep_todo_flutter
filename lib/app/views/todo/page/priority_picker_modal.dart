@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/controllers/modal/todo_add_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/todo_controller.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_priority_picker_item.dart';
 
 class PriorityPickerModal extends StatelessWidget {
-  final int currentPriority;
+  final TodoAddController controller;
 
-  const PriorityPickerModal({super.key, required this.currentPriority});
+  const PriorityPickerModal(
+      {super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +44,15 @@ class PriorityPickerModal extends StatelessWidget {
             Padding(
               padding:
                   EdgeInsets.symmetric(horizontal: AppValues.screenPadding / 2),
-              child: PeepPriorityPickerItem(
-                priority: i,
-                onTap: () {
-                  debugPrint("onTap $i");
-                },
-                currentPriority: i == currentPriority,
+              child: Obx(
+                () => PeepPriorityPickerItem(
+                  priority: i,
+                  onTap: () {
+                    controller.updatePriority(i);
+                    Get.back();
+                  },
+                  currentPriority: i == controller.priority.value.index,
+                ),
               ),
             ),
           SizedBox(
