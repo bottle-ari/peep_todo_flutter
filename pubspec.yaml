@@ -70,6 +70,11 @@ flutter:
     - assets/image/icon/notification.svg
     - assets/image/icon/memo.svg
     - assets/image/icon/egg_cracked.svg
+    - assets/image/icon/add_square_outline.svg
+    - assets/image/icon/categorybox_add.svg
+    - assets/image/icon/routine_outline.svg
+    - assets/image/icon/check_bold.svg
+    - assets/image/icon/diary.svg
 
 
   uses-material-design: true

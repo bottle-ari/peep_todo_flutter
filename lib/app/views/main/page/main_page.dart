@@ -29,9 +29,9 @@ class MainPage extends BaseView<MainController> {
   Widget getAppbarOnSelectedMenu(MenuState menuState) {
     switch (menuState) {
       case MenuState.TODO:
-        return const PeepTodoAppBar();
+        return PeepTodoAppBar(controller: controller,);
       case MenuState.DAIRY:
-        return const PeepTodoAppBar();
+        return PeepTodoAppBar(controller: controller,);
       default:
         // return LoginPage();
         return Container();

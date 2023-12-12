@@ -4,10 +4,11 @@ import 'package:peep_todo_flutter/app/controllers/animation/peep_animation_effec
 
 class PeepAnimationEffect extends StatelessWidget {
   final Widget child;
-  final Function onTap;
+  final double scale;
+  final Function? onTap;
 
   const PeepAnimationEffect(
-      {super.key, required this.child, required this.onTap});
+      {super.key, required this.child, this.onTap, this.scale = 0.9});
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +19,13 @@ class PeepAnimationEffect extends StatelessWidget {
       onTapUp: (_) => controller.isPressed.value = false,
       onTapCancel: () => controller.isPressed.value = false,
       onTap: () {
-        onTap();
+        if (onTap != null) onTap!();
         controller.isPressed.value = false;
       },
       child: Obx(
-        () => Transform.scale(
-          scale: controller.isPressed.value ? 0.9 : 1.0,
+        () => AnimatedScale(
+          scale: controller.isPressed.value ? scale : 1.0,
+          duration: const Duration(milliseconds: 50),
           child: child,
         ),
       ),

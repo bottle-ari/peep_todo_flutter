@@ -8,7 +8,7 @@ import 'package:peep_todo_flutter/app/views/category/page/category_manage_page.d
 import 'package:peep_todo_flutter/app/views/todo/page/todo_detail_page.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/todo_memo_page.dart';
 
-import '../bindings/main_binding.dart';
+import '../bindings/main/main_binding.dart';
 import '../views/main/page/main_page.dart';
 
 part './app_routes.dart';
