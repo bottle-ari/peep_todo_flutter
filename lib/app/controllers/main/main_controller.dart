@@ -13,34 +13,5 @@ class MainController extends BaseController {
 
   onMenuSelected(MenuState menuState) async {
     _selectedMenuStateController(menuState);
-    getColorOnSelectedMenu(menuState);
-  }
-
-  getColorOnSelectedMenu(MenuState menuState) {
-    switch (menuState) {
-      case MenuState.TODO:
-        backgroundColor.value = Palette.peepBackground;
-        break;
-      case MenuState.CONSTANT_TODO:
-        backgroundColor.value = Palette.peepBackground;
-        break;
-      case MenuState.CALENDAR:
-        backgroundColor.value = Palette.peepWhite;
-        break;
-      case MenuState.ROUTINE:
-        backgroundColor.value = Palette.peepBackground;
-        break;
-      case MenuState.MYPAGE:
-        backgroundColor.value = Palette.peepWhite;
-        break;
-      default:
-      // return LoginPage();
-        backgroundColor.value = Palette.peepBackground;
-        break;
-    }
-
-    log(backgroundColor.value.toString());
-
-    update();
   }
 }

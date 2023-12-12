@@ -12,8 +12,8 @@ import '../../../theme/app_values.dart';
 import '../../../theme/icons.dart';
 import '../../../theme/palette.dart';
 
-class PeepScheduledTodoAppBar extends StatelessWidget {
-  const PeepScheduledTodoAppBar({super.key});
+class PeepTodoAppBar extends StatelessWidget {
+  const PeepTodoAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {

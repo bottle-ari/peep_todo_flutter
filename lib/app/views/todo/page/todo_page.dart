@@ -15,7 +15,7 @@ import '../../../controllers/page/scheduled_todo_controller.dart';
 import '../../../core/base/base_view.dart';
 import '../widget/peep_todo_item.dart';
 
-class ScheduledTodoPage extends BaseView<ScheduledTodoController> {
+class TodoPage extends BaseView<ScheduledTodoController> {
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
     return null;
