@@ -26,7 +26,7 @@ abstract class AppValues {
 
   static double smallIconSize = 20.w;
   static double baseIconSize = 24.w;
-  static double navigationIconSize = 28.w;
+  static double mediumIconSize = 28.w;
   static double largeIconSize = 32.w;
   static double xlargeIconSize = 48.w;
 
