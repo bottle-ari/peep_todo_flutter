@@ -33,6 +33,8 @@ dev_dependencies:
 
 flutter:
   assets:
+    - assets/image/chick.png
+    - assets/image/default_profile.png
     - assets/image/icon/todo.svg
     - assets/image/icon/calendar.svg
     - assets/image/icon/routine.svg
