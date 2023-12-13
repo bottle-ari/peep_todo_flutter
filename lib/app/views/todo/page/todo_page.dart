@@ -6,6 +6,9 @@ import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
+import 'package:peep_todo_flutter/app/theme/palette.dart';
+import 'package:peep_todo_flutter/app/theme/text_style.dart';
+import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/todo_add_modal.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_mini_calendar.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_category_item.dart';
@@ -31,6 +34,14 @@ class TodoPage extends BaseView<ScheduledTodoController> {
             padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
             child: Column(
               children: [
+                Center(
+                    child: PeepAnimationEffect(
+                  onTap: () {},
+                  child: Text(
+                    DateFormat('MM월 dd일').format(controller.getSelectedDate()),
+                    style: PeepTextStyle.boldM(color: Palette.peepGray500),
+                  ),
+                )),
                 Padding(
                   padding: EdgeInsets.only(bottom: AppValues.verticalMargin),
                   child: SizedBox(

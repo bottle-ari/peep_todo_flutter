@@ -440,6 +440,10 @@ class ScheduledTodoController extends BaseController {
         .color;
   }
 
+  DateTime getSelectedDate() {
+    return _todoController.selectedDate.value;
+  }
+
   /*
     Update Function
    */

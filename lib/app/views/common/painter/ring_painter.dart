@@ -30,7 +30,7 @@ class RingPainter extends CustomPainter {
         ..style = PaintingStyle.stroke
         ..strokeWidth = 5.0
         ..color = category.color
-            .withOpacity(AppValues.halfOpacity); // 아이템 순위에 해당하는 색상 사용
+            .withOpacity(AppValues.baseOpacity); // 아이템 순위에 해당하는 색상 사용
 
       canvas.drawArc(rect, currentAngle, sweepAngle, false, paint);
 

@@ -7,6 +7,7 @@ import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/views/common/base/loading.dart';
 import '../../../data/model/enum/menu_state.dart';
+import '../../../data/model/palette/palette_model.dart';
 
 class PeepMainToggleButton extends StatelessWidget {
   final Function(MenuState menuState) onNewMenuSelected;
@@ -73,7 +74,7 @@ class PeepMainToggleButton extends StatelessWidget {
                             Iconsax.checkBold,
                             size: AppValues.smallIconSize,
                             color: controller.selectedIndex.value == 0
-                                ? Palette.peepYellow400
+                                ? defaultPalette.primaryColor.color
                                 : Palette.peepGray300,
                           ),
                         ),
@@ -95,7 +96,7 @@ class PeepMainToggleButton extends StatelessWidget {
                             Iconsax.diary,
                             size: AppValues.smallIconSize,
                             color: controller.selectedIndex.value == 1
-                                ? Palette.peepYellow400
+                                ? defaultPalette.primaryColor.color
                                 : Palette.peepGray300,
                           ),
                         ),
