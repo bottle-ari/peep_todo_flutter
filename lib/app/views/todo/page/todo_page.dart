@@ -84,7 +84,7 @@ class TodoPage extends BaseView<ScheduledTodoController> {
                                 child: ConstrainedBox(
                                   constraints: constraints,
                                   child: Transform.scale(
-                                      scale: 0.95, child: child),
+                                      scale: 1.05, child: child),
                                 ),
                               ),
                             );
