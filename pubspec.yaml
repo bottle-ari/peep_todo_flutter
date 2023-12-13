@@ -75,6 +75,7 @@ flutter:
     - assets/image/icon/routine_outline.svg
     - assets/image/icon/check_bold.svg
     - assets/image/icon/diary.svg
+    - assets/image/icon/edit.svg
 
 
   uses-material-design: true

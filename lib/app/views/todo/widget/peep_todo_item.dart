@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/controllers/page/scheduled_todo_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/backup_todo_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/sub_todo_model.dart';
@@ -35,6 +36,7 @@ class PeepTodoItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TodoController controller = Get.find();
+    final ScheduledTodoController scheduledTodoController = Get.find();
     TodoModel todo = controller.getTodoById(type: todoType, todoId: todoId);
 
     void deleteTodo() {
@@ -133,7 +135,8 @@ class PeepTodoItem extends StatelessWidget {
                 constraints:
                     BoxConstraints(minHeight: AppValues.baseItemHeight),
                 child: Container(
-                  color: todo.isChecked ? Palette.peepGray50 : Palette.peepWhite,
+                  color:
+                      todo.isChecked ? Palette.peepGray50 : Palette.peepWhite,
                   child: Padding(
                     padding:
                         EdgeInsets.symmetric(horizontal: AppValues.innerMargin),
@@ -146,6 +149,8 @@ class PeepTodoItem extends StatelessWidget {
                             SizedBox(width: AppValues.textMargin),
                             InkWell(
                               onTap: () {
+                                scheduledTodoController.addNewTodoConfirm();
+
                                 Get.toNamed(Routes.TODO_DETAIL_PAGE,
                                     arguments: {'todo': todo, 'color': color});
                               },

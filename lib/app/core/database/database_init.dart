@@ -113,6 +113,6 @@ class DatabaseInit {
     String newUuid = uuid.v4();
 
     await db.insert('category',
-        {'id': newUuid, 'name': '할 일0', 'color': 'BD00FF', 'emoji': '🤔', 'pos': 0});
+        {'id': newUuid, 'name': '할 일0', 'color': 'FF968A', 'emoji': '🤔', 'pos': 0});
   }
 }

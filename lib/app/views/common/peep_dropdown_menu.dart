@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
@@ -49,6 +50,7 @@ class PeepDropdownMenu extends StatelessWidget {
                       children: [
                         PeepAnimationEffect(
                           onTap: () {
+                            Get.back();
                             if (onMenuItemSelected[item.value] != null) {
                               onMenuItemSelected[item.value]!();
                             }

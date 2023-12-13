@@ -53,6 +53,13 @@ class CategoryController extends BaseController {
   }
 
   /*
+    Read Functions
+   */
+  CategoryModel getCategoryById({required String categoryId}) {
+    return categoryList.firstWhere((element) => element.id == categoryId);
+  }
+
+  /*
     Update Functions
    */
   void reorderCategoryList(int oldIndex, int newIndex) async {
