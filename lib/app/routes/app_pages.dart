@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/bindings/page/completed_constant_todo_binding.dart';
 import 'package:peep_todo_flutter/app/bindings/page/overdue_todo_binding.dart';
 import 'package:peep_todo_flutter/app/bindings/page/todo_detail_binding.dart';
 import 'package:peep_todo_flutter/app/bindings/page/todo_memo_binding.dart';

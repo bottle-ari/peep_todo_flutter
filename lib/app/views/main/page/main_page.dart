@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/main/main_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_view.dart';
+import 'package:peep_todo_flutter/app/views/diary/page/dairy_page.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/todo_page.dart';
 
 import '../../../data/model/enum/menu_state.dart';
@@ -43,7 +44,7 @@ class MainPage extends BaseView<MainController> {
       case MenuState.TODO:
         return TodoPage();
       case MenuState.DAIRY:
-        return Container();
+        return DiaryPage();
       default:
         // return LoginPage();
         return Container();

@@ -7,28 +7,34 @@ class PeepAnimationEffect extends StatelessWidget {
   final double scale;
   final Function? onTap;
 
-  const PeepAnimationEffect(
-      {super.key, required this.child, this.onTap, this.scale = 0.9});
+  const PeepAnimationEffect({
+    super.key,
+    required this.child,
+    this.onTap,
+    this.scale = 0.9,
+  });
 
   @override
   Widget build(BuildContext context) {
     final controller = PeepAnimationEffectController();
 
-    return GestureDetector(
-      onTapDown: (_) => controller.isPressed.value = true,
-      onTapUp: (_) => controller.isPressed.value = false,
-      onTapCancel: () => controller.isPressed.value = false,
-      onTap: () {
-        if (onTap != null) onTap!();
-        controller.isPressed.value = false;
-      },
-      child: Obx(
-        () => AnimatedScale(
-          scale: controller.isPressed.value ? scale : 1.0,
-          duration: const Duration(milliseconds: 50),
-          child: child,
+    return Listener(
+      onPointerDown: (_) => controller.isPressed.value = true,
+      onPointerUp: (_) => controller.isPressed.value = false,
+      child: GestureDetector(
+        onTap: () {
+          if (onTap != null) onTap!();
+          controller.isPressed.value = false;
+        },
+        child: Obx(
+              () => AnimatedScale(
+            scale: controller.isPressed.value ? scale : 1.0,
+            duration: const Duration(milliseconds: 50),
+            child: child,
+          ),
         ),
       ),
     );
   }
 }
+
