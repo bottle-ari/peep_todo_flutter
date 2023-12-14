@@ -5,12 +5,11 @@ class TodoModel {
   String categoryId;
   String? reminderId;
   String name;
-  List<SubTodoModel> subTodo;
   DateTime? date;
   int priority;
   String? memo;
-  bool isFold;
   bool isChecked;
+  DateTime? checkTime;
   int pos;
 
   TodoModel({
@@ -18,12 +17,11 @@ class TodoModel {
     required this.categoryId,
     required this.reminderId,
     required this.name,
-    required this.subTodo,
     required this.date,
     required this.priority,
     required this.memo,
-    required this.isFold,
     required this.isChecked,
+    required this.checkTime,
     required this.pos,
   });
 
@@ -36,8 +34,8 @@ class TodoModel {
       'date': date?.millisecondsSinceEpoch,
       'priority': priority,
       'memo': memo,
-      'is_fold': isFold ? 1 : 0,
       'is_checked': isChecked ? 1 : 0,
+      'check_time': checkTime?.millisecondsSinceEpoch,
       'pos': pos,
     };
   }
@@ -48,12 +46,13 @@ class TodoModel {
       categoryId: map['category_id'],
       reminderId: map['reminder_id'],
       name: map['name'],
-      subTodo: [],
       date: DateTime.fromMillisecondsSinceEpoch(map['date']),
       priority: map['priority'],
       memo: map['memo'],
-      isFold: (map['is_fold'] == 1),
       isChecked: (map['is_checked'] == 1),
+      checkTime: map['check_time'] == null
+          ? null
+          : DateTime.fromMillisecondsSinceEpoch(map['check_time']),
       pos: map['pos'],
     );
   }

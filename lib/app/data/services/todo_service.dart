@@ -23,11 +23,6 @@ class TodoService extends GetxService {
     Map<String, dynamic> todoMap = await _provider.getTodo(todoId: todoId);
     TodoModel todo = TodoModel.fromMap(todoMap);
 
-    final List<Map<String, dynamic>> subTodoMaps =
-        await _provider.getSubTodos(todo.id);
-
-    todo.subTodo = subTodoMaps.map((e) => SubTodoModel.fromMap(e)).toList();
-
     return todo;
   }
 
@@ -41,10 +36,6 @@ class TodoService extends GetxService {
 
     for (var todoMap in todoMaps) {
       TodoModel todo = TodoModel.fromMap(todoMap);
-      final List<Map<String, dynamic>> subTodoMaps =
-          await _provider.getSubTodos(todo.id);
-      todo.subTodo = subTodoMaps.map((e) => SubTodoModel.fromMap(e)).toList();
-
       todoList.add(todo);
     }
 

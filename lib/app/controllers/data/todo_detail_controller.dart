@@ -20,30 +20,31 @@ class TodoDetailController extends BaseController {
   }
 
   void updatePriority(int index) {
-    TodoModel newTodo = TodoModel(id: todo.value.id,
+    TodoModel newTodo = TodoModel(
+        id: todo.value.id,
         categoryId: todo.value.categoryId,
         reminderId: todo.value.reminderId,
         name: todo.value.name,
-        subTodo: todo.value.subTodo,
         date: todo.value.date,
         priority: index,
         memo: todo.value.memo,
-        isFold: todo.value.isFold,
         isChecked: todo.value.isChecked,
-        pos: todo.value.pos);
+        pos: todo.value.pos,
+        checkTime: todo.value.checkTime);
 
-    todoController
-        .updateTodos(type: TodoType.scheduled, todoList: [newTodo]);
+    todoController.updateTodos(type: TodoType.scheduled, todoList: [newTodo]);
 
     todo.value = newTodo;
   }
 
   bool isOverdue() {
     final now = DateTime.now();
-    return todo.value.date?.isBefore(DateTime(now.year, now.month, now.day)) ?? false;
+    return todo.value.date?.isBefore(DateTime(now.year, now.month, now.day)) ??
+        false;
   }
 
   CategoryModel getCategory() {
-    return categoryController.getCategoryById(categoryId: todo.value.categoryId);
+    return categoryController.getCategoryById(
+        categoryId: todo.value.categoryId);
   }
 }

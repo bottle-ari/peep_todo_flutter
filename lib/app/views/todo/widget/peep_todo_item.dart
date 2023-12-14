@@ -16,7 +16,6 @@ import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/utils/priority_util.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_check_button.dart';
-import 'package:peep_todo_flutter/app/views/common/buttons/peep_priority_folding_button.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_rollback_snackbar.dart';
 import 'package:uuid/uuid.dart';
 
@@ -84,12 +83,11 @@ class PeepTodoItem extends StatelessWidget {
               categoryId: todo.categoryId,
               reminderId: todo.reminderId,
               name: "${todo.name}*",
-              subTodo: todo.subTodo,
               date: todo.date,
               priority: todo.priority,
               memo: todo.memo,
-              isFold: todo.isFold,
               isChecked: todo.isChecked,
+              checkTime: null,
               pos: todo.pos));
     }
 

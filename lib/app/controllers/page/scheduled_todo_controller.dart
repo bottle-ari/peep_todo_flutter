@@ -469,12 +469,11 @@ class ScheduledTodoController extends BaseController {
             categoryId: categoryId,
             reminderId: null,
             name: '',
-            subTodo: [],
             date: _todoController.selectedDate.value,
             priority: 0,
             memo: 'memo',
-            isFold: false,
             isChecked: false,
+            checkTime: null,
             pos: newTodoPos));
 
     initCategoryIndexMap(newScheduledTodoList);
@@ -497,12 +496,11 @@ class ScheduledTodoController extends BaseController {
           categoryId: todo.categoryId,
           reminderId: null,
           name: textFieldController.text,
-          subTodo: [],
           date: todo.date,
           priority: 0,
           memo: '',
-          isFold: false,
           isChecked: false,
+          checkTime: null,
           pos: todo.pos);
 
       _todoController.addTodo(

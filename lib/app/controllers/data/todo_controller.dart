@@ -121,20 +121,6 @@ class TodoController extends GetxController {
     }
   }
 
-  SubTodoModel? getSubTodoById({required TodoType type,
-    required String todoId,
-    required String subTodoId}) {
-    switch (type) {
-      case TodoType.scheduled:
-        return scheduledTodoList
-            .firstWhere((e) => e.id == todoId)
-            .subTodo
-            .firstWhere((e) => e.id == subTodoId);
-      default:
-        throw Exception('An unexpected error occurred at getSubTodoById');
-    }
-  }
-
   /*
     UPDATE Functions
    */
@@ -142,40 +128,16 @@ class TodoController extends GetxController {
       {required TodoType type, required String todoId}) async {
     TodoModel todo = getTodoById(todoId: todoId, type: type);
     todo.isChecked = !todo.isChecked;
+    if(todo.checkTime == null) {
+      todo.checkTime = DateTime.now();
+    } else {
+      todo.checkTime = null;
+    }
 
     await _service.updateTodo(todo);
 
     updateCalendarItemCounts(todo.date);
     loadData(type);
-  }
-
-  void toggleSubTodoChecked({required TodoType type,
-    required String todoId,
-    required String subTodoId}) async {
-    TodoModel todo = getTodoById(todoId: todoId, type: type);
-    todo.subTodo
-        .firstWhere((e) => e.id == subTodoId)
-        .isChecked =
-    !todo.subTodo
-        .firstWhere((e) => e.id == subTodoId)
-        .isChecked;
-
-    await _service.updateTodo(todo);
-
-    switch (type) {
-      case TodoType.scheduled:
-        loadScheduledData();
-      default:
-        break;
-    }
-  }
-
-  void toggleIsFold({required TodoType type, required String todoId}) async {
-    TodoModel todo = getTodoById(todoId: todoId, type: type);
-
-    todo.isFold = !todo.isFold;
-
-    await _service.updateTodo(todo);
   }
 
   void updateTodos(
