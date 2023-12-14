@@ -290,7 +290,6 @@
 
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -445,8 +444,8 @@ class ScheduledTodoController extends BaseController {
    */
   // TODO : add NEW TODO
   void addNewTodo({required String categoryId}) {
-    if(newTodoCategoryId != null) {
-      if(newTodoCategoryId == categoryId) {
+    if (newTodoCategoryId != null) {
+      if (newTodoCategoryId == categoryId) {
         return;
       } else {
         addNewTodoConfirm();
@@ -633,5 +632,18 @@ class ScheduledTodoController extends BaseController {
 
     String categoryFoldMapString = jsonEncode(categoryFoldMap);
     prefController.saveData(key, categoryFoldMapString);
+  }
+
+  void onMoveToday() {
+    final today = DateTime.now();
+    // 오늘 선택 예외 처리
+    if (_todoController.focusedDate.value == today &&
+        _todoController.selectedDate.value == today) {
+      _todoController.focusedDate.update((val) {
+        val = null;
+      });
+    }
+    _todoController.focusedDate.value = today;
+    _todoController.selectedDate.value = today;
   }
 }

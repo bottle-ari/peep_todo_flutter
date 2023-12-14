@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:peep_todo_flutter/app/controllers/data/peep_calendar_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/main/main_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
@@ -49,7 +50,9 @@ class TodoPage extends BaseView<ScheduledTodoController> {
                 children: [
                   Center(
                       child: PeepAnimationEffect(
-                    onTap: () {},
+                    onTap: () {
+                      controller.onMoveToday();
+                    },
                     child: Text(
                       DateFormat('MM월 dd일')
                           .format(controller.getSelectedDate()),
