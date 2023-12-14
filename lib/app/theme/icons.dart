@@ -69,4 +69,5 @@ class Iconsax {
   static const diary = 'assets/image/icon/diary.svg';
   static const edit = 'assets/image/icon/edit.svg';
   static const trashBold = 'assets/image/icon/trash_bold.svg';
+  static const image = 'assets/image/icon/image.svg';
 }

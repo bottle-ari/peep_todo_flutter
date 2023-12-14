@@ -34,14 +34,14 @@ class TodoProvider extends GetxService {
     return result;
   }
 
-  Future<List<Map<String, Object?>>> getSubTodos(String todoId) async {
+  Future<List<Map<String, Object?>>> getCheckedTodoByDate(
+      int startDate, int endDate) async {
     final db = await DatabaseInit().database;
 
-    return await db.query(
-      'subtodo',
-      where: 'todo_id = ?',
-      whereArgs: [todoId],
-    );
+    final List<Map<String, dynamic>> result = await db.rawQuery(
+        "SELECT * FROM todo WHERE check_time >= $startDate AND check_time < $endDate ORDER BY pos ASC, date ASC");
+
+    return result;
   }
 
   /*
@@ -78,5 +78,4 @@ class TodoProvider extends GetxService {
 
     return await db.delete('todo', where: 'id = ?', whereArgs: [todoId]);
   }
-
 }
