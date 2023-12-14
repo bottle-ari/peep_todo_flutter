@@ -12,7 +12,6 @@ import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
-import 'package:peep_todo_flutter/app/views/todo/page/todo_add_modal.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_mini_calendar.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_category_item.dart';
 import 'package:reorderables/reorderables.dart';

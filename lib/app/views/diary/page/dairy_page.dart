@@ -39,7 +39,9 @@ class DiaryPage extends BaseView<DiaryController> {
               children: [
                 Center(
                     child: PeepAnimationEffect(
-                      onTap: () {},
+                      onTap: () {
+                        controller.onMoveToday();
+                      },
                       child: Text(
                         DateFormat('MM월 dd일')
                             .format(controller.getSelectedDate()),

@@ -4,6 +4,7 @@ import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
+import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 
 class PeepHalfButton extends StatelessWidget {
   final Color color;
@@ -23,12 +24,13 @@ class PeepHalfButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return PeepAnimationEffect(
       onTap: onTap,
       child: Container(
         height: AppValues.baseItemHeight,
         width: 172.w,
         decoration: BoxDecoration(
+          border: Border.all(color: Palette.peepGray200),
           borderRadius: BorderRadius.circular(AppValues.baseRadius),
           color: color,
         ),

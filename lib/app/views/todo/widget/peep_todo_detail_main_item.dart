@@ -25,54 +25,47 @@ class PeepTodoDetailMainItem extends StatelessWidget {
     // define TextEditingController
     TextEditingController controller = TextEditingController();
 
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: AppValues.horizontalMargin),
-      child: Material(
-        color: Colors.transparent,
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: color),
         borderRadius: BorderRadius.circular(AppValues.baseRadius),
-        child: Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: AppValues.horizontalMargin),
-          child: TextField(
-            controller: TextEditingController(text: text),
-            maxLines: 1,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Palette.peepWhite,
-              enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Palette.peepWhite),
-                borderRadius: BorderRadius.circular(AppValues.baseRadius),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: color),
-                borderRadius: BorderRadius.circular(AppValues.baseRadius),
-              ),
-              border: InputBorder.none,
-              // hint text 고정
-              contentPadding: EdgeInsets.fromLTRB(
-                AppValues.horizontalMargin, // 왼쪽
-                2 * AppValues.verticalMargin, // 위쪽
-                AppValues.horizontalMargin, // 오른쪽
-                2 * AppValues.verticalMargin, // 아래쪽
-              ),
-              suffixIcon: GestureDetector(
-                onTap: onTap,
-                child: Padding(
-                  padding:
-                      EdgeInsets.only(right: AppValues.horizontalMargin),
-                  child: Transform.scale(
-                    scale: 1.0,
-                    child: PeepIcon(Iconsax.checkFalse,
-                        color: Palette.peepGray400,
-                        size: AppValues.baseIconSize),
-                  ),
+      ),
+      child: Padding(
+        padding:
+            EdgeInsets.symmetric(horizontal: AppValues.horizontalMargin),
+        child: TextField(
+          controller: TextEditingController(text: text),
+          maxLines: 1,
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Palette.peepWhite),
+              borderRadius: BorderRadius.circular(AppValues.baseRadius),
+            ),
+            border: InputBorder.none,
+            // hint text 고정
+            contentPadding: EdgeInsets.fromLTRB(
+              AppValues.horizontalMargin, // 왼쪽
+              2 * AppValues.verticalMargin, // 위쪽
+              AppValues.horizontalMargin, // 오른쪽
+              2 * AppValues.verticalMargin, // 아래쪽
+            ),
+            suffixIcon: GestureDetector(
+              onTap: onTap,
+              child: Padding(
+                padding:
+                    EdgeInsets.only(right: AppValues.horizontalMargin),
+                child: Transform.scale(
+                  scale: 1.0,
+                  child: PeepIcon(Iconsax.checkFalse,
+                      color: Palette.peepGray400,
+                      size: AppValues.baseIconSize),
                 ),
               ),
-              hintText: '할 일을 입력해주세요!',
-              hintStyle: PeepTextStyle.boldL(color: Palette.peepGray300),
             ),
-            style: PeepTextStyle.boldL(color: Palette.peepBlack),
+            hintText: '할 일을 입력해주세요!',
+            hintStyle: PeepTextStyle.boldL(color: Palette.peepGray300),
           ),
+          style: PeepTextStyle.boldL(color: Palette.peepBlack),
         ),
       ),
     );

@@ -51,7 +51,7 @@ class PriorityPickerModal extends StatelessWidget {
                     controller.updatePriority(i);
                     Get.back();
                   },
-                  currentPriority: i == controller.priority.value.index,
+                  currentPriority: i == controller.todo.value.priority,
                 ),
               ),
             ),

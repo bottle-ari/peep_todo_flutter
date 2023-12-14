@@ -9,4 +9,8 @@ class DiaryController extends BaseController {
   DateTime getSelectedDate() {
     return _todoController.selectedDate.value;
   }
+
+  void onMoveToday() {
+    _todoController.onMoveToday();
+  }
 }

@@ -635,15 +635,6 @@ class ScheduledTodoController extends BaseController {
   }
 
   void onMoveToday() {
-    final today = DateTime.now();
-    // 오늘 선택 예외 처리
-    if (_todoController.focusedDate.value == today &&
-        _todoController.selectedDate.value == today) {
-      _todoController.focusedDate.update((val) {
-        val = null;
-      });
-    }
-    _todoController.focusedDate.value = today;
-    _todoController.selectedDate.value = today;
+    _todoController.onMoveToday();
   }
 }
