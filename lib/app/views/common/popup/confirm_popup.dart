@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
+import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 
 import '../../../theme/app_values.dart';
 
@@ -29,6 +30,7 @@ class ConfirmPopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      surfaceTintColor: Palette.peepWhite,
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -66,8 +68,8 @@ class ConfirmPopup extends StatelessWidget {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppValues.baseRadius)),
       actions: [
-        TextButton(
-            onPressed: () {
+        PeepAnimationEffect(
+            onTap: () {
               Get.back();
             },
             child: Text('취소',
@@ -75,10 +77,10 @@ class ConfirmPopup extends StatelessWidget {
         SizedBox(
           width: 50.w,
         ),
-        TextButton(
-            onPressed: () {
-              func();
+        PeepAnimationEffect(
+            onTap: () {
               Get.back();
+              func();
             },
             child: Text(confirmText, style: PeepTextStyle.boldL(color: color))),
       ],

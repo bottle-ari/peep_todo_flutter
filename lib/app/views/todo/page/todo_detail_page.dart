@@ -5,34 +5,123 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/data/todo_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_view.dart';
+import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/utils/priority_util.dart';
+import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_category_picker_button.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_half_button.dart';
+import 'package:peep_todo_flutter/app/views/common/buttons/peep_notification_button.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_subpage_appbar.dart';
+import 'package:peep_todo_flutter/app/views/common/popup/confirm_popup.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/priority_picker_modal.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_todo_detail_main_item.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_todo_detail_sub_item.dart';
 
 import '../../../controllers/data/todo_detail_controller.dart';
 import '../../../data/enums/priority.dart';
+import '../../../data/model/todo/backup_todo_model.dart';
 import '../../../data/model/todo/todo_model.dart';
 import '../../../theme/app_values.dart';
+import '../../common/peep_dropdown_menu.dart';
+import '../../common/peep_rollback_snackbar.dart';
 
 class TodoDetailPage extends BaseView<TodoDetailController> {
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
+    final TodoController todoController = Get.find();
+    TodoModel todo = Get.arguments['todo'];
+
+    void deleteTodo() {
+      if (Get.isSnackbarOpen) {
+        Get.back();
+      }
+
+      todoController.backup = BackupTodoModel(
+          backupTodoItem: todo,
+          backupIndex: todo.pos,
+          backupDate: todo.date,
+          backupType: TodoType.scheduled);
+
+      todoController.deleteTodo(todo: todo, type: TodoType.scheduled);
+
+      Get.snackbar('', '',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.transparent,
+          duration: const Duration(days: 9999999),
+          isDismissible: true,
+          reverseAnimationCurve: Curves.easeOutQuad,
+          barBlur: 0,
+          titleText: PeepRollbackSnackbar(
+              icon: PeepIcon(
+                Iconsax.trash,
+                size: AppValues.baseIconSize,
+                color: Palette.peepRed,
+              ),
+              boldText: todo.name,
+              regularText: '삭제!',
+              onTapRollback: () {
+                todoController.rollbackTodo();
+                Get.back();
+              }));
+    }
+
     return PreferredSize(
         preferredSize: Size.fromHeight(AppValues.appbarHeight),
         child: SafeArea(
           child: PeepSubpageAppbar(
-              title: 'Todo 상세',
-              onTapBackArrow: () {
-                Get.back();
-              }),
+            title: 'Todo 상세',
+            onTapBackArrow: () {
+              Get.back();
+            },
+            buttons: [
+              PeepAnimationEffect(
+                onTap: () {
+                  Get.dialog(ConfirmPopup(
+                      icon: Iconsax.trashBold,
+                      text: '삭제',
+                      confirmText: '삭제',
+                      color: Palette.peepRed,
+                      func: () {
+                        Get.back();
+                        deleteTodo();
+                      }));
+                },
+                child: PeepIcon(
+                  Iconsax.trash,
+                  size: AppValues.baseIconSize,
+                  color: Palette.peepRed,
+                ),
+              ),
+              PeepDropdownMenu(
+                menuItems: [
+                  DropdownMenuItemData(
+                      'popup_action_1',
+                      PeepIcon(Iconsax.categoryboxAdd,
+                          size: AppValues.smallIconSize,
+                          color: Palette.peepBlack),
+                      'Todo 복사'),
+                  DropdownMenuItemData(
+                      'popup_action_2',
+                      PeepIcon(Iconsax.categorybox,
+                          size: AppValues.smallIconSize,
+                          color: Palette.peepBlack),
+                      'Todo 공유'),
+                ],
+                onMenuItemSelected: {
+                  'popup_action_1': () {
+                    debugPrint('1');
+                  },
+                  'popup_action_2': () {
+                    debugPrint('2');
+                  },
+                },
+              ),
+            ],
+          ),
         ));
   }
 
@@ -57,7 +146,8 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
                     PeepHalfButton(
                       color: Palette.peepWhite,
                       onTap: () {
-                        Get.bottomSheet(PriorityPickerModal(controller: controller));
+                        Get.bottomSheet(
+                            PriorityPickerModal(controller: controller));
                       },
                       text: PriorityUtil.getPriority(todo.priority)
                           .PriorityString,

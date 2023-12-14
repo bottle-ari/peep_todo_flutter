@@ -7,6 +7,7 @@ import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/views/category/page/category_add_modal.dart';
 import 'package:peep_todo_flutter/app/views/category/page/category_color_picker_modal.dart';
 import 'package:peep_todo_flutter/app/views/category/widget/peep_category_manage_list_item.dart';
+import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_subpage_appbar.dart';
 import 'package:reorderables/reorderables.dart';
 import '../../../core/base/base_view.dart';
@@ -23,16 +24,16 @@ class CategoryManagePage extends BaseView<CategoryController> {
             Get.back();
           },
           buttons: [
-            PeepIcon(
-              Iconsax.addcircle,
-              size: AppValues.baseIconSize,
-              color: Palette.peepGray500,
+            PeepAnimationEffect(
+              onTap: () {
+                Get.bottomSheet(CategoryAddModal());
+              },
+              child: PeepIcon(
+                Iconsax.addcircle,
+                size: AppValues.baseIconSize,
+                color: Palette.peepGray500,
+              ),
             ),
-          ],
-          onTapButtons: [
-            () {
-              Get.bottomSheet(CategoryAddModal());
-            }
           ],
         ),
       ),
