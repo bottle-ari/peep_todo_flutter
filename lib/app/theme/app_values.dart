@@ -11,6 +11,7 @@ abstract class AppValues {
   static double innerMargin = 5.w;
   static double verticalMargin = 10.h;
   static double horizontalMargin = 10.w;
+  static double textMargin = 15.w;
 
   static double baseItemHeight = 48.h;
   static double largeItemHeight = 52.h;
@@ -26,7 +27,7 @@ abstract class AppValues {
 
   static double smallIconSize = 20.w;
   static double baseIconSize = 24.w;
-  static double navigationIconSize = 28.w;
+  static double mediumIconSize = 28.w;
   static double largeIconSize = 32.w;
   static double xlargeIconSize = 48.w;
 

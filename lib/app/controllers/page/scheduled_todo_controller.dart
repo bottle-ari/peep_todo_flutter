@@ -290,21 +290,18 @@
 
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/controllers/category_controller.dart';
-import 'package:peep_todo_flutter/app/controllers/pref_controller.dart';
-import 'package:peep_todo_flutter/app/controllers/todo_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
-import 'package:peep_todo_flutter/app/data/model/todo/backup_todo_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
-import 'package:peep_todo_flutter/app/data/services/pref_service.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../core/base/base_controller.dart';
+import '../data/pref_controller.dart';
+import '../data/todo_controller.dart';
 
 class ScheduledTodoController extends BaseController {
   final CategoryController _categoryController = Get.find();
@@ -320,9 +317,22 @@ class ScheduledTodoController extends BaseController {
   Map<String, List<int>> categoryIndexMap = <String, List<int>>{};
   RxMap<String, bool> categoryFoldMap = <String, bool>{}.obs;
 
+  String? newTodoId;
+  String? newTodoCategoryId;
+
+  final TextEditingController textFieldController = TextEditingController();
+  final FocusNode focusNode = FocusNode();
+
   @override
   void onInit() {
     super.onInit();
+
+    focusNode.addListener(() {
+      if (!focusNode.hasFocus) {
+        addNewTodoConfirm();
+        log('focus off');
+      }
+    });
 
     ever(_todoController.scheduledTodoList, (callback) {
       updateScheduledTodoList();
@@ -338,6 +348,8 @@ class ScheduledTodoController extends BaseController {
     Init Functions
    */
   void updateScheduledTodoList() async {
+    addNewTodoConfirm();
+
     List<dynamic> newScheduledTodoList =
         List<dynamic>.from(_categoryController.categoryList);
     initCategoryIndexMap(newScheduledTodoList);
@@ -362,7 +374,7 @@ class ScheduledTodoController extends BaseController {
   }
 
   void initCategoryFoldMap() {
-    if(_categoryController.categoryList.isEmpty) return;
+    if (_categoryController.categoryList.isEmpty) return;
 
     var key = 'categoryFoldMap';
     prefController.updateData(key);
@@ -378,7 +390,8 @@ class ScheduledTodoController extends BaseController {
           tempMap.map((key, value) => MapEntry(key, value as bool));
 
       for (var category in _categoryController.categoryList) {
-        categoryFoldMap[category.id] = storedCategoryFoldMap[category.id] ?? false;
+        categoryFoldMap[category.id] =
+            storedCategoryFoldMap[category.id] ?? false;
       }
     }
 
@@ -429,6 +442,82 @@ class ScheduledTodoController extends BaseController {
   /*
     Create Function
    */
+  // TODO : add NEW TODO
+  void addNewTodo({required String categoryId}) {
+    if (newTodoCategoryId != null) {
+      if (newTodoCategoryId == categoryId) {
+        return;
+      } else {
+        addNewTodoConfirm();
+      }
+    }
+    focusNode.requestFocus();
+    newTodoCategoryId = categoryId;
+
+    final newTodoPos = categoryIndexMap[categoryId]![1];
+    log(newTodoPos.toString());
+
+    var uuid = const Uuid();
+    newTodoId = uuid.v4();
+
+    List<dynamic> newScheduledTodoList = List<dynamic>.from(scheduledTodoList);
+
+    newScheduledTodoList.insert(
+        newTodoPos,
+        TodoModel(
+            id: newTodoId!,
+            categoryId: categoryId,
+            reminderId: null,
+            name: '',
+            date: _todoController.selectedDate.value,
+            priority: 0,
+            memo: 'memo',
+            isChecked: false,
+            checkTime: null,
+            pos: newTodoPos));
+
+    initCategoryIndexMap(newScheduledTodoList);
+    scheduledTodoList.value = newScheduledTodoList;
+
+    log(scheduledTodoList.toString());
+    log(categoryIndexMap.toString());
+    update();
+  }
+
+  void addNewTodoConfirm({bool isContinued = false}) {
+    if (newTodoId == null) return;
+
+    TodoModel todo =
+        scheduledTodoList.firstWhere((element) => element.id == newTodoId);
+
+    if (textFieldController.text != '') {
+      final newTodo = TodoModel(
+          id: todo.id,
+          categoryId: todo.categoryId,
+          reminderId: null,
+          name: textFieldController.text,
+          date: todo.date,
+          priority: 0,
+          memo: '',
+          isChecked: false,
+          checkTime: null,
+          pos: todo.pos);
+
+      _todoController.addTodo(
+        todo: newTodo,
+      );
+
+      textFieldController.clear();
+    }
+
+    focusNode.unfocus();
+    newTodoId = null;
+    newTodoCategoryId = null;
+    updateScheduledTodoList();
+    _todoController.updateCalendarItemCounts(todo.date);
+
+    update();
+  }
 
   /*
     Read Function
@@ -441,6 +530,17 @@ class ScheduledTodoController extends BaseController {
     return _categoryController.categoryList
         .firstWhere((e) => e.id == categoryId)
         .color;
+  }
+
+  Color getColorByCategory({required TodoModel item}) {
+    CategoryModel category =
+        _categoryController.getCategoryById(categoryId: item.categoryId);
+
+    return category.color;
+  }
+
+  DateTime getSelectedDate() {
+    return _todoController.selectedDate.value;
   }
 
   /*
@@ -530,5 +630,9 @@ class ScheduledTodoController extends BaseController {
 
     String categoryFoldMapString = jsonEncode(categoryFoldMap);
     prefController.saveData(key, categoryFoldMapString);
+  }
+
+  void onMoveToday() {
+    _todoController.onMoveToday();
   }
 }

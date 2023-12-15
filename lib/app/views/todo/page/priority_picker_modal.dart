@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/controllers/modal/todo_add_controller.dart';
-import 'package:peep_todo_flutter/app/controllers/todo_controller.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_priority_picker_item.dart';
 
+import '../../../controllers/data/todo_detail_controller.dart';
+
 class PriorityPickerModal extends StatelessWidget {
-  final TodoAddController controller;
+  final TodoDetailController controller;
 
   const PriorityPickerModal(
       {super.key, required this.controller});
@@ -51,7 +51,7 @@ class PriorityPickerModal extends StatelessWidget {
                     controller.updatePriority(i);
                     Get.back();
                   },
-                  currentPriority: i == controller.priority.value.index,
+                  currentPriority: i == controller.todo.value.priority,
                 ),
               ),
             ),

@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/controllers/category_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 
 class RingPainter extends CustomPainter {
@@ -30,7 +30,7 @@ class RingPainter extends CustomPainter {
         ..style = PaintingStyle.stroke
         ..strokeWidth = 5.0
         ..color = category.color
-            .withOpacity(AppValues.halfOpacity); // 아이템 순위에 해당하는 색상 사용
+            .withOpacity(AppValues.baseOpacity); // 아이템 순위에 해당하는 색상 사용
 
       canvas.drawArc(rect, currentAngle, sweepAngle, false, paint);
 

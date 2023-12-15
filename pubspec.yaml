@@ -33,6 +33,8 @@ dev_dependencies:
 
 flutter:
   assets:
+    - assets/image/chick.png
+    - assets/image/default_profile.png
     - assets/image/icon/todo.svg
     - assets/image/icon/calendar.svg
     - assets/image/icon/routine.svg
@@ -68,6 +70,14 @@ flutter:
     - assets/image/icon/notification.svg
     - assets/image/icon/memo.svg
     - assets/image/icon/egg_cracked.svg
+    - assets/image/icon/add_square_outline.svg
+    - assets/image/icon/categorybox_add.svg
+    - assets/image/icon/routine_outline.svg
+    - assets/image/icon/check_bold.svg
+    - assets/image/icon/diary.svg
+    - assets/image/icon/edit.svg
+    - assets/image/icon/trash_bold.svg
+    - assets/image/icon/image.svg
 
 
   uses-material-design: true

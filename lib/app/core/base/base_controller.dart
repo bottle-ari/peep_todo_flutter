@@ -25,9 +25,6 @@ abstract class BaseController extends GetxController {
   //로딩 끄기
   hideLoading() => resetPageState();
 
-  //스테이터스 바, 배경 색 지정
-  Rx<Color> backgroundColor = Palette.peepBackground.obs;
-
   //종료시 초기화
   @override
   void onClose() {

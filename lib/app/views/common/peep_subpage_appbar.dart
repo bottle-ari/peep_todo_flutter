@@ -9,14 +9,12 @@ class PeepSubpageAppbar extends StatelessWidget {
   final String title;
   final List<Widget>? buttons;
   final Function() onTapBackArrow;
-  final List<Function()>? onTapButtons;
 
   const PeepSubpageAppbar({
     super.key,
     required this.title,
     this.buttons,
     required this.onTapBackArrow,
-    this.onTapButtons,
   });
 
   @override
@@ -50,16 +48,9 @@ class PeepSubpageAppbar extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    if (buttons != null && onTapButtons != null)
-                      if (buttons!.length == onTapButtons!.length)
+                    if (buttons != null)
                         for (int index = 0; index < buttons!.length; index++)
-                          InkWell(
-                            onTap: onTapButtons![index],
-                            child: Padding(
-                                padding: EdgeInsets.only(
-                                    left: AppValues.horizontalMargin),
-                                child: buttons![index]),
-                          ),
+                          buttons![index],
                   ],
                 ),
               ),

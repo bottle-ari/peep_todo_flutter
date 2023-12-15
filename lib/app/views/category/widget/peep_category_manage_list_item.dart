@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/controllers/category_controller.dart';
-import 'package:peep_todo_flutter/app/controllers/todo_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
@@ -12,7 +11,7 @@ import 'package:peep_todo_flutter/app/views/category/widget/peep_color_picker_bu
 import 'package:peep_todo_flutter/app/views/category/widget/peep_emoji_picker_button.dart';
 import 'package:peep_todo_flutter/app/views/common/popup/confirm_popup.dart';
 
-import '../../common/peep_rollback_snackbar.dart';
+import '../../../controllers/data/todo_controller.dart';
 
 class PeepCategoryManageListItem extends StatelessWidget {
   final CategoryController controller = Get.find();

@@ -6,11 +6,11 @@ import 'package:peep_todo_flutter/app/data/model/category/backup_category_model.
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
 import 'package:peep_todo_flutter/app/data/services/category_service.dart';
 
-import '../core/base/base_controller.dart';
-import '../theme/app_values.dart';
-import '../theme/icons.dart';
-import '../theme/palette.dart';
-import '../views/common/peep_rollback_snackbar.dart';
+import '../../core/base/base_controller.dart';
+import '../../theme/app_values.dart';
+import '../../theme/icons.dart';
+import '../../theme/palette.dart';
+import '../../views/common/peep_rollback_snackbar.dart';
 
 class CategoryController extends BaseController {
   final CategoryService _service = CategoryService();
@@ -50,6 +50,13 @@ class CategoryController extends BaseController {
     await _service.insertCategory(category: backup!.backupCategoryItem);
 
     loadCategoryData();
+  }
+
+  /*
+    Read Functions
+   */
+  CategoryModel getCategoryById({required String categoryId}) {
+    return categoryList.firstWhere((element) => element.id == categoryId);
   }
 
   /*

@@ -86,33 +86,21 @@ class DatabaseInit {
           category_id TEXT,
           reminder_id TEXT,
           name TEXT,
-          subtodo TEXT,
           date INTEGER,
           priority INTEGER,
           memo TEXT,
           is_checked INTEGER,
-          is_fold INTEGER,
+          check_time INTEGER,
           pos INTEGER,
           FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE CASCADE)
       """,
     );
-
-    // subtodo table 생성
-    await db.execute("""
-      CREATE TABLE subtodo(
-          id TEXT PRIMARY KEY,
-          todo_id TEXT,
-          name TEXT,
-          is_checked INTEGER,
-          pos INTEGER,
-          FOREIGN KEY (todo_id) REFERENCES todo(id))
-      """);
 
     // 기본 category 생성
     var uuid = const Uuid();
     String newUuid = uuid.v4();
 
     await db.insert('category',
-        {'id': newUuid, 'name': '할 일0', 'color': 'BD00FF', 'emoji': '🤔', 'pos': 0});
+        {'id': newUuid, 'name': '할 일', 'color': 'FF968A', 'emoji': '🤔', 'pos': 0});
   }
 }

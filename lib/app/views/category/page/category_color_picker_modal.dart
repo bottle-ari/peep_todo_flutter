@@ -1,5 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/data/model/palette/palette_model.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
@@ -48,19 +50,19 @@ class CategoryColorPickerModal extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  for (int i = 0; i < 5; i++)
+                  for (int i = 0; i < 1; i++)
                     Padding(
                       padding:
                           EdgeInsets.symmetric(vertical: AppValues.verticalMargin),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          for (int j = 0; j < 6; j++)
+                            for(var item in defaultPalette.colors)
                             PeepColorPickerButton(
-                              color: randomColorList[i * 6 + j],
+                              color: item.color,
                               onTap: () {
-                                onColorSelected(randomColorList[i * 6 + j]);
-                                Navigator.pop(context);
+                                onColorSelected(item.color);
+                                Get.back();
                               },
                             ),
                         ],

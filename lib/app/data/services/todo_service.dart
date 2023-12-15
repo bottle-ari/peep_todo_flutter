@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/sub_todo_model.dart';
@@ -23,11 +25,6 @@ class TodoService extends GetxService {
     Map<String, dynamic> todoMap = await _provider.getTodo(todoId: todoId);
     TodoModel todo = TodoModel.fromMap(todoMap);
 
-    final List<Map<String, dynamic>> subTodoMaps =
-        await _provider.getSubTodos(todo.id);
-
-    todo.subTodo = subTodoMaps.map((e) => SubTodoModel.fromMap(e)).toList();
-
     return todo;
   }
 
@@ -41,10 +38,24 @@ class TodoService extends GetxService {
 
     for (var todoMap in todoMaps) {
       TodoModel todo = TodoModel.fromMap(todoMap);
-      final List<Map<String, dynamic>> subTodoMaps =
-          await _provider.getSubTodos(todo.id);
-      todo.subTodo = subTodoMaps.map((e) => SubTodoModel.fromMap(e)).toList();
+      todoList.add(todo);
+    }
 
+    return todoList;
+  }
+
+  Future<List<TodoModel>> getCheckedTodoByDate(
+      {required DateTime startDate, required DateTime endDate}) async {
+    final List<Map<String, dynamic>> todoMaps =
+    await _provider.getCheckedTodoByDate(
+        startDate.millisecondsSinceEpoch, endDate.millisecondsSinceEpoch);
+
+    log('todoMaps : ${todoMaps.length}');
+
+    List<TodoModel> todoList = [];
+
+    for (var todoMap in todoMaps) {
+      TodoModel todo = TodoModel.fromMap(todoMap);
       todoList.add(todo);
     }
 

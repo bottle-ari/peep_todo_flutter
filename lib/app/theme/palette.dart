@@ -24,7 +24,7 @@ class Palette {
   static const Color peepBlue = Color(0xFF4685FF);
   static const Color peepPurple = Color(0xFFBD00FF);
 
-  static const Color peepBackground = Color(0xFFF5F5F4);
+  static const Color peepBackground = peepWhite;
 }
 
 Color getTextColor(Color color) {

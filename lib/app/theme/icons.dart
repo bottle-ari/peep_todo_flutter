@@ -62,4 +62,12 @@ class Iconsax {
   static const notification = 'assets/image/icon/notification.svg';
   static const memo = 'assets/image/icon/memo.svg';
   static const eggCracked = 'assets/image/icon/egg_cracked.svg';
+  static const addSquareOutline = 'assets/image/icon/add_square_outline.svg';
+  static const categoryboxAdd = 'assets/image/icon/categorybox_add.svg';
+  static const routineOutline = 'assets/image/icon/routine_outline.svg';
+  static const checkBold = 'assets/image/icon/check_bold.svg';
+  static const diary = 'assets/image/icon/diary.svg';
+  static const edit = 'assets/image/icon/edit.svg';
+  static const trashBold = 'assets/image/icon/trash_bold.svg';
+  static const image = 'assets/image/icon/image.svg';
 }
