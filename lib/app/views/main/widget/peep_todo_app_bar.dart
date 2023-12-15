@@ -11,6 +11,7 @@ import '../../../data/model/enum/menu_state.dart';
 import '../../../theme/app_values.dart';
 import '../../../theme/icons.dart';
 import '../../../theme/palette.dart';
+import '../page/test_page.dart';
 
 class PeepTodoAppBar extends StatelessWidget {
   final MainController controller;
@@ -72,6 +73,12 @@ class PeepTodoAppBar extends StatelessWidget {
                                 size: AppValues.smallIconSize,
                                 color: Palette.peepBlack),
                             '루틴 관리'),
+                        DropdownMenuItemData(
+                            'popup_action_5', // Todo 액션 수정
+                            PeepIcon(Iconsax.emoji,
+                                size: AppValues.smallIconSize,
+                                color: Palette.peepBlack),
+                            '리마인더 페이지'),
                       ],
                       onMenuItemSelected: {
                         'popup_action_1': () {
@@ -85,6 +92,14 @@ class PeepTodoAppBar extends StatelessWidget {
                         },
                         'popup_action_4': () {
                           debugPrint('4');
+                        },
+                        'popup_action_5': () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => TestPage()),
+                          );
+                          // todo : reminder 기능 추가
+                          debugPrint('5');
                         },
                       },
                     ),
