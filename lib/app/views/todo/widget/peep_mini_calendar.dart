@@ -22,27 +22,26 @@ class PeepMiniCalendar extends StatelessWidget {
     return Center(
       child: Stack(
         children: [
-              Positioned(
-                top: 10.h,
-                left: 0,
-                right: 0,
+          Positioned(
+            top: 10.h,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: SizedBox(
+                height: 24.w,
+                width: 24.w,
                 child: Center(
-                  child: SizedBox(
-                    height: 24.w,
-                    width: 24.w,
-                    child: Center(
-                      child: Text(text,
-                          style: day.weekday == DateTime.sunday
-                              ? PeepTextStyle.regularXS(color: Palette.peepRed)
-                              : day.weekday == DateTime.saturday
-                              ? PeepTextStyle.regularXS(
-                              color: Palette.peepBlue)
+                  child: Text(text,
+                      style: day.weekday == DateTime.sunday
+                          ? PeepTextStyle.regularXS(color: Palette.peepRed)
+                          : day.weekday == DateTime.saturday
+                              ? PeepTextStyle.regularXS(color: Palette.peepBlue)
                               : PeepTextStyle.regularXS(
-                              color: Palette.peepGray400)),
-                    ),
-                  ),
+                                  color: Palette.peepGray400)),
                 ),
               ),
+            ),
+          ),
         ],
       ),
     );
@@ -50,8 +49,9 @@ class PeepMiniCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() =>
-        Container(
+    return Obx(
+      () => GestureDetector(
+        child: Container(
           decoration: BoxDecoration(
               color: Palette.peepWhite,
               borderRadius: BorderRadius.circular(AppValues.baseRadius)),
@@ -64,7 +64,7 @@ class PeepMiniCalendar extends StatelessWidget {
                     child: Text(
                       DateFormat.d().format(day),
                       style:
-                      PeepTextStyle.regularXS(color: Palette.peepGray400),
+                          PeepTextStyle.regularXS(color: Palette.peepGray400),
                     ),
                   );
                 },
@@ -77,21 +77,23 @@ class PeepMiniCalendar extends StatelessWidget {
                           width: 20.w, // Container의 너비
                           height: 20.w, // Container의 높이
                           decoration: BoxDecoration(
-                            color: defaultPalette.primaryColor.color.withOpacity(AppValues.halfOpacity),
-                            borderRadius: BorderRadius.circular(AppValues.baseRadius),
+                            color: defaultPalette.primaryColor.color
+                                .withOpacity(AppValues.halfOpacity),
+                            borderRadius:
+                                BorderRadius.circular(AppValues.baseRadius),
                           ),
                         ),
                         Obx(
-                              () {
+                          () {
                             // dev.log(controller.calendarItemCounts[
                             // DateFormat('yyyyMMdd').format(day)].toString());
-
 
                             return CustomPaint(
                               size: Size(32.w, 32.w), // CustomPaint의 크기 고정
                               painter: RingPainter(
                                   itemCounts: controller.calendarItemCounts[
-                                  DateFormat('yyyyMMdd').format(day)] ??
+                                          DateFormat('yyyyMMdd')
+                                              .format(day)] ??
                                       {}),
                             );
                           },
@@ -114,19 +116,19 @@ class PeepMiniCalendar extends StatelessWidget {
                       alignment: Alignment.center,
                       children: [
                         Obx(
-                              () =>
-                              CustomPaint(
-                                size: Size(32.w, 32.w), // CustomPaint의 크기 고정
-                                painter: RingPainter(
-                                    itemCounts: controller.calendarItemCounts[
-                                    DateFormat('yyyyMMdd').format(day)] ??
-                                        {}),
-                              ),
+                          () => CustomPaint(
+                            size: Size(32.w, 32.w),
+                            // CustomPaint의 크기 고정
+                            painter: RingPainter(
+                                itemCounts: controller.calendarItemCounts[
+                                        DateFormat('yyyyMMdd').format(day)] ??
+                                    {}),
+                          ),
                         ),
                         Text(
                           DateFormat.d().format(day),
-                          style:
-                          PeepTextStyle.regularXS(color: Palette.peepBlack),
+                          style: PeepTextStyle.regularXS(
+                              color: Palette.peepBlack),
                         ),
                       ],
                     ),
@@ -141,17 +143,18 @@ class PeepMiniCalendar extends StatelessWidget {
                 selectedTextStyle: PeepTextStyleBase.baseRegularM,
                 weekendTextStyle: PeepTextStyleBase.baseRegularM,
                 outsideDaysVisible: false,
+
               ),
 
               daysOfWeekStyle: const DaysOfWeekStyle(
-                //weekdayStyle: TextStyle(color: P),
-                //decoration: Decoration()
+                  //weekdayStyle: TextStyle(color: P),
+                  //decoration: Decoration()
 
-              ),
+                  ),
               daysOfWeekHeight: 35.h,
               rowHeight: 50.h,
               locale: 'ko_KR',
-              firstDay: DateTime.utc(2023, 1, 1),
+              firstDay: DateTime.utc(1923, 1, 1),
               lastDay: DateTime.utc(2123, 12, 31),
               focusedDay: controller.focusedDate.value,
               startingDayOfWeek: StartingDayOfWeek.monday,
@@ -161,16 +164,18 @@ class PeepMiniCalendar extends StatelessWidget {
               onDaySelected: (selectedDay, focusedDay) {
                 controller.onDaySelected(selectedDay, focusedDay);
               },
-              calendarFormat: CalendarFormat.week,
-              //onFormatChanged: (format) {
-              //  controller.onFormatChanged(format);
-              //},
+              calendarFormat: controller.calendarFormat.value,
+              onFormatChanged: (format) {
+                controller.calendarFormat.value = format;
+              },
               rangeSelectionMode: RangeSelectionMode.disabled,
               onPageChanged: (focusedDay) {
                 controller.onPageChanged(focusedDay);
               },
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

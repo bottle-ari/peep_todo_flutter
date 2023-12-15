@@ -60,119 +60,103 @@ class TodoPage extends BaseView<ScheduledTodoController> {
                   )),
                   Padding(
                     padding: EdgeInsets.only(bottom: AppValues.verticalMargin),
-                    child: SizedBox(
-                      height: 90.h,
-                      child: PeepMiniCalendar(),
-                    ),
+                    child: PeepMiniCalendar(),
                   ),
                   Expanded(
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onHorizontalDragEnd: (DragEndDetails details) {
-                        if (details.primaryVelocity! < 0) {
-                          mainToggleButtonController.selectedIndex.value = 1;
-                          mainToggleButtonController.animationController
-                              .forward()
-                              .then((value) =>
-                                  mainToggleButtonController.selectedIndex(1));
-                          mainController.onMenuSelected(MenuState.DAIRY);
-                        }
-                      },
-                      child: CustomScrollView(
-                        slivers: [
-                          ReorderableSliverList(
-                            buildDraggableFeedback: (BuildContext context,
-                                BoxConstraints constraints, Widget child) {
-                              return Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
+                    child: CustomScrollView(
+                      slivers: [
+                        ReorderableSliverList(
+                          buildDraggableFeedback: (BuildContext context,
+                              BoxConstraints constraints, Widget child) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              margin: EdgeInsets.zero,
+                              child: Material(
+                                type: MaterialType.transparency,
+                                child: ConstrainedBox(
+                                  constraints: constraints,
+                                  child: Transform.scale(
+                                      scale: 1.05, child: child),
                                 ),
-                                margin: EdgeInsets.zero,
-                                child: Material(
-                                  type: MaterialType.transparency,
-                                  child: ConstrainedBox(
-                                    constraints: constraints,
-                                    child: Transform.scale(
-                                        scale: 1.05, child: child),
-                                  ),
-                                ),
-                              );
-                            },
-                            delegate: ReorderableSliverChildListDelegate(
-                              [
-                                for (var item in controller.scheduledTodoList)
-                                  if (item is TodoModel)
-                                    if (!(controller
-                                            .categoryFoldMap[item.categoryId] ??
-                                        false))
-                                      if (item.name == '')
-                                        Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical:
-                                                    AppValues.innerMargin),
-                                            child: PeepTodoInputItem(
-                                              todoId: item.id,
-                                              color:
-                                                  controller.getColorByCategory(
-                                                      item: item),
-                                              todoType: TodoType.scheduled,
-                                              focusNode: controller.focusNode,
-                                              textEditingController: controller
-                                                  .textFieldController,
-                                              categoryId: item.categoryId,
-                                            ))
-                                      else
-                                        Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical:
-                                                    AppValues.innerMargin),
-                                            child: PeepTodoItem(
-                                              todoId: item.id,
-                                              color: controller.getColor(
-                                                  todoId: item.id),
-                                              todoType: TodoType.scheduled,
-                                            ))
+                              ),
+                            );
+                          },
+                          delegate: ReorderableSliverChildListDelegate(
+                            [
+                              for (var item in controller.scheduledTodoList)
+                                if (item is TodoModel)
+                                  if (!(controller
+                                          .categoryFoldMap[item.categoryId] ??
+                                      false))
+                                    if (item.name == '')
+                                      Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical:
+                                                  AppValues.innerMargin),
+                                          child: PeepTodoInputItem(
+                                            todoId: item.id,
+                                            color:
+                                                controller.getColorByCategory(
+                                                    item: item),
+                                            todoType: TodoType.scheduled,
+                                            focusNode: controller.focusNode,
+                                            textEditingController: controller
+                                                .textFieldController,
+                                            categoryId: item.categoryId,
+                                          ))
                                     else
-                                      const SizedBox.shrink()
-                                  else if (item is CategoryModel)
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: AppValues.innerMargin),
-                                      child: PeepCategoryItem(
-                                          color: item.color,
-                                          name: item.name,
-                                          emoji: item.emoji,
-                                          onTapAddButton: () {
-                                            if (controller
-                                                    .categoryFoldMap[item.id] ??
-                                                false) {
-                                              controller
-                                                  .isCategoryFold(item.id);
-                                            }
-
-                                            controller.addNewTodo(
-                                                categoryId: item.id);
-                                          },
-                                          onTapArrowButton: () {
-                                            controller.addNewTodoConfirm();
-
-                                            controller.isCategoryFold(item.id);
-                                          },
-                                          isFolded: controller
+                                      Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical:
+                                                  AppValues.innerMargin),
+                                          child: PeepTodoItem(
+                                            todoId: item.id,
+                                            color: controller.getColor(
+                                                todoId: item.id),
+                                            todoType: TodoType.scheduled,
+                                          ))
+                                  else
+                                    const SizedBox.shrink()
+                                else if (item is CategoryModel)
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: AppValues.innerMargin),
+                                    child: PeepCategoryItem(
+                                        color: item.color,
+                                        name: item.name,
+                                        emoji: item.emoji,
+                                        onTapAddButton: () {
+                                          if (controller
                                                   .categoryFoldMap[item.id] ??
-                                              false),
-                                    )
-                              ],
-                            ),
-                            onReorder: (int oldIndex, int newIndex) {
-                              controller.reorderTodoList(oldIndex, newIndex);
-                            },
-                            onReorderStarted: (int oldIndx) {
-                              controller.addNewTodoConfirm();
-                            },
+                                              false) {
+                                            controller
+                                                .isCategoryFold(item.id);
+                                          }
+
+                                          controller.addNewTodo(
+                                              categoryId: item.id);
+                                        },
+                                        onTapArrowButton: () {
+                                          controller.addNewTodoConfirm();
+
+                                          controller.isCategoryFold(item.id);
+                                        },
+                                        isFolded: controller
+                                                .categoryFoldMap[item.id] ??
+                                            false),
+                                  )
+                            ],
                           ),
-                        ],
-                      ),
+                          onReorder: (int oldIndex, int newIndex) {
+                            controller.reorderTodoList(oldIndex, newIndex);
+                          },
+                          onReorderStarted: (int oldIndx) {
+                            controller.addNewTodoConfirm();
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ],

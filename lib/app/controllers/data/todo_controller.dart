@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
@@ -17,11 +18,12 @@ class TodoController extends GetxController {
   final RxList<TodoModel> scheduledTodoList = <TodoModel>[].obs;
   final RxMap<String, List<TodoModel>> calendarTodoList =
       <String, List<TodoModel>>{}.obs;
-  final RxList<TodoModel> diaryTodoList =
-      <TodoModel>[].obs;
+  final RxList<TodoModel> diaryTodoList = <TodoModel>[].obs;
 
   final RxMap<String, Map<String, double>> calendarItemCounts =
       <String, Map<String, double>>{}.obs;
+
+  final Rx<CalendarFormat> calendarFormat = CalendarFormat.week.obs;
 
   // Variables
   BackupTodoModel? backup;

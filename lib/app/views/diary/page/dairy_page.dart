@@ -50,97 +50,80 @@ class DiaryPage extends BaseView<DiaryController> {
                 )),
                 Padding(
                   padding: EdgeInsets.only(bottom: AppValues.verticalMargin),
-                  child: SizedBox(
-                    height: 90.h,
-                    child: PeepMiniCalendar(),
-                  ),
+                  child: PeepMiniCalendar(),
                 ),
                 Expanded(
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onHorizontalDragEnd: (DragEndDetails details) {
-                      if (details.primaryVelocity! > 0) {
-                        mainToggleButtonController.selectedIndex.value = 0;
-                        mainToggleButtonController.animationController
-                            .reverse()
-                            .then((value) =>
-                                mainToggleButtonController.selectedIndex(0));
-                        mainController.onMenuSelected(MenuState.TODO);
-                      }
-                    },
-                    child: Column(
-                      children: [
-                        PeepAnimationEffect(
-                          onTap: () {},
-                          scale: 0.95,
-                          child: Container(
-                            height: 36.h,
-                            decoration: BoxDecoration(
-                              color: Palette.peepGray50,
-                              border: Border.all(color: Palette.peepGray200),
-                              borderRadius:
-                                  BorderRadius.circular(AppValues.baseRadius),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                PeepIcon(
-                                  Iconsax.image,
-                                  size: AppValues.smallIconSize,
-                                  color: Palette.peepGray400,
+                  child: Column(
+                    children: [
+                      PeepAnimationEffect(
+                        onTap: () {},
+                        scale: 0.95,
+                        child: Container(
+                          height: 36.h,
+                          decoration: BoxDecoration(
+                            color: Palette.peepGray50,
+                            border: Border.all(color: Palette.peepGray200),
+                            borderRadius:
+                                BorderRadius.circular(AppValues.baseRadius),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              PeepIcon(
+                                Iconsax.image,
+                                size: AppValues.smallIconSize,
+                                color: Palette.peepGray400,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: AppValues.horizontalMargin),
+                                child: Text(
+                                  "사진 추가",
+                                  style: PeepTextStyle.regularS(
+                                      color: Palette.peepGray400),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: AppValues.horizontalMargin),
-                                  child: Text(
-                                    "사진 추가",
-                                    style: PeepTextStyle.regularS(
-                                        color: Palette.peepGray400),
-                                  ),
-                                )
-                              ],
-                            ),
+                              )
+                            ],
                           ),
                         ),
-                        SizedBox(
-                          height: AppValues.verticalMargin,
-                        ),
-                        for (var todo in controller.checkedTodo)
-                          Padding(
-                            padding:
-                                EdgeInsets.only(bottom: AppValues.innerMargin),
-                            child: Row(
-                              children: [
-                                PeepIcon(
-                                  Iconsax.checkTrue,
-                                  size: AppValues.smallIconSize,
-                                  color: todo.color,
+                      ),
+                      SizedBox(
+                        height: AppValues.verticalMargin,
+                      ),
+                      for (var todo in controller.checkedTodo)
+                        Padding(
+                          padding:
+                              EdgeInsets.only(bottom: AppValues.innerMargin),
+                          child: Row(
+                            children: [
+                              PeepIcon(
+                                Iconsax.checkTrue,
+                                size: AppValues.smallIconSize,
+                                color: todo.color,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: AppValues.horizontalMargin),
+                                child: Text(
+                                  todo.name,
+                                  style: PeepTextStyle.regularS(
+                                      color: Palette.peepBlack),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: AppValues.horizontalMargin),
-                                  child: Text(
-                                    todo.name,
-                                    style: PeepTextStyle.regularS(
-                                        color: Palette.peepBlack),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        const Divider(
-                          color: Palette.peepGray200,
-                        ),
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: "오늘의 일기를 작성하세요!"
-                            ),
-                            maxLines: null,
+                              )
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      const Divider(
+                        color: Palette.peepGray200,
+                      ),
+                      Expanded(
+                        child: TextField(
+                          decoration:
+                              InputDecoration(hintText: "오늘의 일기를 작성하세요!"),
+                          maxLines: null,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
