@@ -44,7 +44,7 @@ class DatabaseInit {
           color TEXT,
           emoji TEXT,
           type INTEGER,
-          is_activate INTEGER,
+          is_active INTEGER,
           pos INTEGER)
       """,
     );

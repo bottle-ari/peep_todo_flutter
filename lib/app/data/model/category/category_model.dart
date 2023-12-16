@@ -28,7 +28,7 @@ class CategoryModel {
       'color': color.value.toRadixString(16).substring(2, 8).toUpperCase(),
       'emoji': emoji,
       'type': type.index,
-      'is_activate': isActive ? 1 : 0,
+      'is_active': isActive ? 1 : 0,
       'pos': pos,
     };
   }
@@ -40,7 +40,7 @@ class CategoryModel {
         color: Color(int.parse("0xFF${map['color']}")),
         emoji: map['emoji'],
         type: TodoType.values[map['type']],
-        isActive: (map['is_activate'] == 1),
+        isActive: (map['is_active'] == 1),
         pos: map['pos']);
   }
 }
