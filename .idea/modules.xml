@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/peep_todo_flutter.iml" filepath="$PROJECT_DIR$/peep_todo_flutter.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/peep_todo_flutter_android.iml" filepath="$PROJECT_DIR$/android/peep_todo_flutter_android.iml" />
     </modules>
   </component>
 </project>

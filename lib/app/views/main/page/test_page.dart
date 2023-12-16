@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:battery/battery.dart';
 import 'package:location/location.dart';
+import 'package:network_info_plus/network_info_plus.dart';
+import 'package:flutter/foundation.dart';
 
 void main() {
   runApp(MyApp());
@@ -55,6 +57,12 @@ class _TestPageState extends State<TestPage> {
               },
               child: Text('현재 위치 (위도)'),
             ),
+            ElevatedButton(
+              onPressed: () {
+                _getWifiInfo();
+              },
+              child: Text('와이파이 이름'),
+            ),
           ],
         ),
       ),
@@ -65,6 +73,17 @@ class _TestPageState extends State<TestPage> {
     final batteryLevel = await _battery.batteryLevel;
     setState(() {
       _testLabel = batteryLevel.toString();
+    });
+  }
+
+  Future<void> _getWifiInfo() async {
+    final info = NetworkInfo();
+    var wifiBSSID = await info.getWifiBSSID(); // 11:22:33:44:55:66
+    var wifiIP = await info.getWifiIP(); // 192.168.1.1
+    var wifiName = await info.getWifiName(); // FooNetwork
+    debugPrint(wifiName);
+    setState(() {
+      _testLabel = "와이파이 이름 : "+wifiName.toString();
     });
   }
 
@@ -108,5 +127,6 @@ class _TestPageState extends State<TestPage> {
       _testLabel = locationData.toString();
     });
   }
+
 
 }

@@ -27,6 +27,9 @@ dependencies:
   emoji_picker_flutter: ^1.6.3
   battery: ^2.0.3
   location: ^5.0.0
+  network_info_plus: ^4.1.0
+  google_maps_flutter: ^2.5.0
+  geolocator: ^8.0.3
 
 dev_dependencies:
   flutter_test:

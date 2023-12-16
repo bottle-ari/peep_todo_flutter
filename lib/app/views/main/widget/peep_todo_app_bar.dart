@@ -5,6 +5,7 @@ import 'package:peep_todo_flutter/app/controllers/main/main_controller.dart';
 import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_dropdown_menu.dart';
+import 'package:peep_todo_flutter/app/views/main/page/MapScreen.dart';
 import 'package:peep_todo_flutter/app/views/main/widget/peep_main_toggle_button.dart';
 import 'package:peep_todo_flutter/app/views/main/widget/peep_profile_button.dart';
 import '../../../data/model/enum/menu_state.dart';
@@ -79,6 +80,12 @@ class PeepTodoAppBar extends StatelessWidget {
                                 size: AppValues.smallIconSize,
                                 color: Palette.peepBlack),
                             '리마인더 페이지'),
+                        DropdownMenuItemData(
+                            'popup_action_6', // Todo 액션 수정
+                            PeepIcon(Iconsax.priority,
+                                size: AppValues.smallIconSize,
+                                color: Palette.peepBlack),
+                            '구글맵 테스트'),
                       ],
                       onMenuItemSelected: {
                         'popup_action_1': () {
@@ -100,6 +107,13 @@ class PeepTodoAppBar extends StatelessWidget {
                           );
                           // todo : reminder 기능 추가
                           debugPrint('5');
+                        },
+                        'popup_action_6': () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => MapScreen()),
+                          );
+                          debugPrint('6');
                         },
                       },
                     ),
