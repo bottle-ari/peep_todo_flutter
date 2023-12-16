@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:battery/battery.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:flutter/foundation.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,6 +30,9 @@ class _TestPageState extends State<TestPage> {
   Location location = Location();
   late LocationData currentLocation;
 
+  TextEditingController _latitudeController = TextEditingController();
+  TextEditingController _longtitudeController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -51,11 +56,31 @@ class _TestPageState extends State<TestPage> {
               },
               child: Text('배터리 확인'),
             ),
+            TextField(
+              controller: _latitudeController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: '위도 (ex : 37.51227)',
+              ),
+            ),
+            TextField(
+              controller: _longtitudeController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: '경도 (ex : 127.0954)',
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _getDistanceInfo();
+              },
+              child: Text('현재 위치와의 거리 차이'),
+            ),
             ElevatedButton(
               onPressed: () {
                 _getCurrentLocation();
               },
-              child: Text('현재 위치 (위도)'),
+              child: Text('현재 위치 (위도 경도)'),
             ),
             ElevatedButton(
               onPressed: () {
@@ -87,6 +112,35 @@ class _TestPageState extends State<TestPage> {
     });
   }
 
+  Future<void> _getDistanceInfo() async {
+    /**
+     * 현재 위치와 EditText사이의 거리 차이 구하기
+     */
+    var langtitude = double.parse(_latitudeController.text);
+    var longtitude = double.parse(_longtitudeController.text);
+    LocationData locationData = await getLocationData();
+    var currentLangtitude = locationData.latitude;
+    var currentLongtitude = locationData.longitude;
+
+    // final distance = await Geolocator.distanceBetween(37.51227, 127.0954, langtitude, longtitude);
+    final distance = await Geolocator.distanceBetween(currentLangtitude!, currentLongtitude!, langtitude, longtitude);
+
+    Fluttertoast.showToast(
+        msg: '거리 차이 : '+distance.toString()+'미터',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey.shade300,
+        textColor: Colors.black,
+        fontSize: 16.0
+    );
+
+    // debugPrint(distance.toString());
+    // setState(() {
+    //   _testLabel = distance.toString();
+    // });
+  }
+
   Future<void> _getCurrentLocation() async {
     // await location.requestPermission();
     // try {
@@ -97,6 +151,13 @@ class _TestPageState extends State<TestPage> {
     //   debugPrint("로케이션 오류 발생");
     // }
     // setState(() {});
+    LocationData locationData = await getLocationData();
+    setState(() {
+      _testLabel = locationData.toString();
+    });
+  }
+
+  Future<LocationData> getLocationData() async {
     Location location = Location();
 
     bool serviceEnabled;
@@ -108,7 +169,7 @@ class _TestPageState extends State<TestPage> {
     if (!serviceEnabled) {
       serviceEnabled = await location.requestService();
       if (!serviceEnabled) {
-        return;
+        return Future<LocationData>.value(null as LocationData);
       }
     }
 
@@ -117,15 +178,14 @@ class _TestPageState extends State<TestPage> {
     if (permissionGranted == PermissionStatus.denied) {
       permissionGranted = await location.requestPermission();
       if (permissionGranted != PermissionStatus.granted) {
-        return;
+        // todo : 수정 필요 (임시로 null값 리턴)
+        return Future<LocationData>.value(null as LocationData);
       }
     }
 
     locationData = await location.getLocation();
     debugPrint("로케이션 테스트 : "+locationData.toString());
-    setState(() {
-      _testLabel = locationData.toString();
-    });
+    return locationData;
   }
 
 
