@@ -6,6 +6,7 @@ import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart'
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
+import 'package:peep_todo_flutter/app/views/common/popup/peep_warning_popup.dart';
 
 import '../../../controllers/animation/peep_category_toggle_button_controller.dart';
 import '../../../data/model/category/category_model.dart';
@@ -30,9 +31,19 @@ class PeepCategoryToggleButton extends StatelessWidget {
         tag: category.id);
 
     return InkWell(
-        onTap: () {
-          controller.toggleCategoryActiveState(category.id);
-          animationController.toggleAnimation();
+        onTap: () async {
+          final isSuccess =
+              await controller.toggleCategoryActiveState(category.id);
+
+          if (isSuccess) {
+            animationController.toggleAnimation();
+          } else {
+            Get.dialog(PeepWarningPopup(
+                icon: Iconsax.emptyBox,
+                text: '적어도 한 개 이상의 카테고리가\n활성화 되어야 해요',
+                confirmText: '확인',
+                color: Palette.peepRed.withOpacity(AppValues.baseOpacity)));
+          }
         },
         child: AnimatedBuilder(
             animation: animationController.animation,
@@ -54,16 +65,17 @@ class PeepCategoryToggleButton extends StatelessWidget {
                                 BorderRadius.circular(AppValues.baseRadius),
                           ),
                         ),
-                        if(category.type == TodoType.constant)
-                        Positioned(
-                          top: (height ?? AppValues.baseIconSize) * 0.25,
-                          left: (height ?? AppValues.baseIconSize) * 0.25,
-                          child: PeepIcon(
-                            Iconsax.constantTodo,
-                            size: AppValues.baseIconSize * 0.5,
-                            color: Palette.peepWhite.withOpacity(AppValues.highOpacity),
+                        if (category.type == TodoType.constant)
+                          Positioned(
+                            top: (height ?? AppValues.baseIconSize) * 0.25,
+                            left: (height ?? AppValues.baseIconSize) * 0.25,
+                            child: PeepIcon(
+                              Iconsax.constantTodo,
+                              size: AppValues.baseIconSize * 0.5,
+                              color: Palette.peepWhite
+                                  .withOpacity(AppValues.highOpacity),
+                            ),
                           ),
-                        ),
                         Positioned(
                           top: (height ?? AppValues.baseIconSize) * 0.15,
                           left: (height ?? AppValues.baseIconSize) * 0.15 +

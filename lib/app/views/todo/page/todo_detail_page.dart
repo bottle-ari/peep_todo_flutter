@@ -17,7 +17,7 @@ import 'package:peep_todo_flutter/app/views/common/buttons/peep_category_picker_
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_half_button.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_notification_button.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_subpage_appbar.dart';
-import 'package:peep_todo_flutter/app/views/common/popup/confirm_popup.dart';
+import 'package:peep_todo_flutter/app/views/common/popup/peep_confirm_popup.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/priority_picker_modal.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_todo_detail_main_item.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_todo_detail_sub_item.dart';
@@ -81,7 +81,7 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
             buttons: [
               PeepAnimationEffect(
                 onTap: () {
-                  Get.dialog(ConfirmPopup(
+                  Get.dialog(PeepConfirmPopup(
                       icon: Iconsax.trashBold,
                       text: '삭제',
                       confirmText: '삭제',

@@ -10,7 +10,7 @@ import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/category/widget/peep_category_toggle_button.dart';
 import 'package:peep_todo_flutter/app/views/category/widget/peep_color_picker_button.dart';
 import 'package:peep_todo_flutter/app/views/category/widget/peep_emoji_picker_button.dart';
-import 'package:peep_todo_flutter/app/views/common/popup/confirm_popup.dart';
+import 'package:peep_todo_flutter/app/views/common/popup/peep_confirm_popup.dart';
 
 import '../../../controllers/data/todo_controller.dart';
 
@@ -33,7 +33,7 @@ class PeepCategoryManageListItem extends StatelessWidget {
   }) : super(key: key);
 
   void deleteCategory() {
-    Get.dialog(ConfirmPopup(
+    Get.dialog(PeepConfirmPopup(
       icon: Iconsax.trash,
       text: '삭제',
       hintText: '카테고리 내 모든 [할 일]이 삭제됩니다!',

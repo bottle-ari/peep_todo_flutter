@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -92,14 +93,20 @@ class CategoryController extends BaseController {
     loadCategoryData();
   }
 
-  void toggleCategoryActiveState(String categoryId) async {
+  Future<bool> toggleCategoryActiveState(String categoryId) async {
     CategoryModel category = categoryList.firstWhere((e) => e.id == categoryId);
+
+    if(category.isActive && categoryList.where((e) => e.isActive).length <= 1) {
+      return false;
+    }
 
     category.isActive = !category.isActive;
 
     await _service.updateCategory(category);
 
     loadCategoryData();
+
+    return true;
   }
 
   /*

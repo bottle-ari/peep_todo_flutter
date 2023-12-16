@@ -350,13 +350,16 @@ class ScheduledTodoController extends BaseController {
   void updateScheduledTodoList() async {
     addNewTodoConfirm();
 
-    List<dynamic> newScheduledTodoList =
-        List<dynamic>.from(_categoryController.categoryList);
+    List<dynamic> newScheduledTodoList = List<dynamic>.from(_categoryController
+        .categoryList
+        .where((element) => element.isActive == true));
+
     initCategoryIndexMap(newScheduledTodoList);
 
     for (var todo in _todoController.scheduledTodoList) {
-      var inx =
-          (categoryIndexMap[todo.categoryId] ?? [0, 1])[1]; // todo가 추가될 index
+      if (categoryIndexMap[todo.categoryId] == null) continue;
+
+      var inx = categoryIndexMap[todo.categoryId]![1]; // todo가 추가될 index
 
       if (inx >= newScheduledTodoList.length) {
         newScheduledTodoList.add(todo);
