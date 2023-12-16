@@ -1,1 +1,1 @@
-enum TodoType { scheduled, calendar, overdue, constant }
+enum TodoType { scheduled, constant }
