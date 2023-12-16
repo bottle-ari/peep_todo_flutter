@@ -21,6 +21,7 @@ abstract class AppValues {
   static double smallRadius = 10.r;
   static double tinyRadius = 5.r;
 
+  static double highOpacity = 0.85;
   static double baseOpacity = 0.7;
   static double halfOpacity = 0.5;
   static double shadowOpacity = 0.1;

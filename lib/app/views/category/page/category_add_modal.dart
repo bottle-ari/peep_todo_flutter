@@ -3,6 +3,7 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
+import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
@@ -13,7 +14,8 @@ import 'package:uuid/uuid.dart';
 
 class CategoryAddModalController extends GetxController {
   RxString emoji = "🤔".obs;
-  Rx<Color> color = Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0).obs;
+  Rx<Color> color =
+      Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0).obs;
   RxBool emojiShowing = false.obs;
 
   FocusNode focusNode = FocusNode();
@@ -50,6 +52,8 @@ class CategoryAddModal extends StatelessWidget {
             color: controller.color.value,
             emoji: controller.emoji.value,
             pos: categoryController.categoryList.length,
+            type: TodoType.scheduled,
+            isActive: true,
           ),
         );
 

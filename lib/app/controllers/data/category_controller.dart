@@ -92,6 +92,16 @@ class CategoryController extends BaseController {
     loadCategoryData();
   }
 
+  void toggleCategoryActiveState(String categoryId) async {
+    CategoryModel category = categoryList.firstWhere((e) => e.id == categoryId);
+
+    category.isActive = !category.isActive;
+
+    await _service.updateCategory(category);
+
+    loadCategoryData();
+  }
+
   /*
     Delete Functions
    */

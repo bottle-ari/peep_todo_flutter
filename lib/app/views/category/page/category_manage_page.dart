@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
@@ -29,7 +31,7 @@ class CategoryManagePage extends BaseView<CategoryController> {
                 Get.bottomSheet(CategoryAddModal());
               },
               child: PeepIcon(
-                Iconsax.addcircle,
+                Iconsax.addSquareOutline,
                 size: AppValues.baseIconSize,
                 color: Palette.peepGray500,
               ),
@@ -50,6 +52,23 @@ class CategoryManagePage extends BaseView<CategoryController> {
           child: CustomScrollView(
             slivers: [
               ReorderableSliverList(
+                buildDraggableFeedback: (BuildContext context,
+                    BoxConstraints constraints, Widget child) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    margin: EdgeInsets.zero,
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: ConstrainedBox(
+                        constraints: constraints,
+                        child: Transform.scale(
+                            scale: 1.05, child: child),
+                      ),
+                    ),
+                  );
+                },
                 delegate: ReorderableSliverChildListDelegate(
                   [
                     for (var category in controller.categoryList)
@@ -66,7 +85,9 @@ class CategoryManagePage extends BaseView<CategoryController> {
                                   category.id, selectedColor);
                             }));
                           },
-                          onTap: () {},
+                          onTap: () {
+                            log('clicked');
+                          },
                           onDelete: () {},
                         ),
                       )
