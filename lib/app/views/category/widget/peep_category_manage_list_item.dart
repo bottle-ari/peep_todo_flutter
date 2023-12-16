@@ -21,7 +21,6 @@ class PeepCategoryManageListItem extends StatelessWidget {
   final VoidCallback onTapEmojiPicker;
   final VoidCallback onTapColorPicker;
   final VoidCallback onTap;
-  final VoidCallback onDelete;
 
   PeepCategoryManageListItem({
     Key? key,
@@ -29,7 +28,6 @@ class PeepCategoryManageListItem extends StatelessWidget {
     required this.onTapEmojiPicker,
     required this.onTapColorPicker,
     required this.onTap,
-    required this.onDelete,
   }) : super(key: key);
 
   void deleteCategory() {

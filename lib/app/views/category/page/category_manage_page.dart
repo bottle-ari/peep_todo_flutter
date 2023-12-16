@@ -28,7 +28,8 @@ class CategoryManagePage extends BaseView<CategoryController> {
           buttons: [
             PeepAnimationEffect(
               onTap: () {
-                Get.bottomSheet(CategoryAddModal());
+                log('add category');
+                //TODO : add category;
               },
               child: PeepIcon(
                 Iconsax.addSquareOutline,
@@ -87,8 +88,8 @@ class CategoryManagePage extends BaseView<CategoryController> {
                           },
                           onTap: () {
                             log('clicked');
+                            //TODO : add category;
                           },
-                          onDelete: () {},
                         ),
                       )
                   ],
