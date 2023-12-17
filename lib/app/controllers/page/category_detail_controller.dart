@@ -38,10 +38,18 @@ class CategoryDetailController extends BaseController {
     loadCategory();
   }
 
+  /*
+    Init Functions
+   */
+
   void loadCategory() {
     category.value =
         _categoryController.getCategoryById(categoryId: categoryId);
   }
+
+  /*
+    Update Functions
+   */
 
   void toggleTodoType() {
     _categoryController.toggleTodoType(categoryId);
@@ -51,5 +59,13 @@ class CategoryDetailController extends BaseController {
   void toggleCategoryActiveState() {
     _categoryController.toggleCategoryActiveState(categoryId);
     loadCategory();
+  }
+
+  void updateEmoji(String emoji) {
+    _categoryController.updateEmoji(categoryId, emoji);
+  }
+
+  void updateColor(Color color) {
+    _categoryController.changeCategoryColor(categoryId, color);
   }
 }

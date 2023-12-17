@@ -7,7 +7,6 @@ import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
-import 'package:peep_todo_flutter/app/views/category/page/category_color_picker_modal.dart';
 import 'package:peep_todo_flutter/app/views/category/widget/peep_category_manage_list_item.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_subpage_appbar.dart';
@@ -78,14 +77,6 @@ class CategoryManagePage extends BaseView<CategoryController> {
                             vertical: AppValues.innerMargin),
                         child: PeepCategoryManageListItem(
                           category: category,
-                          onTapEmojiPicker: () {},
-                          onTapColorPicker: () {
-                            Get.bottomSheet(CategoryColorPickerModal(
-                                onColorSelected: (Color selectedColor) {
-                              controller.changeCategoryColor(
-                                  category.id, selectedColor);
-                            }));
-                          },
                           onTap: () {
                             Get.toNamed(AppPages.CATEGORY_DETAIL, arguments: {'category_id': category.id});
                           },

@@ -127,6 +127,15 @@ class CategoryController extends BaseController {
     loadCategoryData();
   }
 
+  void updateEmoji(String categoryId, String newEmoji) async {
+    CategoryModel category = categoryList.firstWhere((e) => e.id == categoryId);
+
+    category.emoji = newEmoji;
+    await _service.updateCategory(category);
+
+    loadCategoryData();
+  }
+
   /*
     Delete Functions
    */

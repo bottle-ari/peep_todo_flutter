@@ -135,12 +135,7 @@ class CategoryDetailPage extends BaseView<CategoryDetailController> {
               height: AppValues.verticalMargin,
             ),
             PeepCategoryTextfield(
-              emoji: controller.category.value.emoji,
-              color: controller.category.value.color,
-              onTapEmoji: () {},
-              onTapColor: () {},
-              textEditingController: controller.textEditingController,
-              focusNode: controller.focusNode,
+              controller: controller,
             ),
           ],
         ),

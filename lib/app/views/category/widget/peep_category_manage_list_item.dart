@@ -18,15 +18,11 @@ class PeepCategoryManageListItem extends StatelessWidget {
   final CategoryController controller = Get.find();
   final TodoController todoController = Get.find();
   final CategoryModel category;
-  final VoidCallback onTapEmojiPicker;
-  final VoidCallback onTapColorPicker;
   final VoidCallback onTap;
 
   PeepCategoryManageListItem({
     Key? key,
     required this.category,
-    required this.onTapEmojiPicker,
-    required this.onTapColorPicker,
     required this.onTap,
   }) : super(key: key);
 
