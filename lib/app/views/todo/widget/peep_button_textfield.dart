@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -6,6 +7,7 @@ import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
+import 'package:peep_todo_flutter/app/utils/custom_color_selection_handle.dart';
 import 'package:peep_todo_flutter/app/views/category/widget/peep_color_picker_button.dart';
 import 'package:peep_todo_flutter/app/views/category/widget/peep_emoji_picker_button.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
@@ -133,16 +135,30 @@ class PeepCategoryTextfield extends StatelessWidget {
             ),
             SizedBox(
               width: 230.w,
-              child: TextField(
-                focusNode: controller.focusNode,
-                controller: controller.textEditingController,
-                autofocus: true,
-                style: PeepTextStyle.regularL(color: Palette.peepBlack),
-                cursorColor: controller.category.value.color,
-                decoration: InputDecoration(
-                  border: InputBorder.none, // 밑줄 제거
-                  hintText: '이름을 입력해 주세요',
-                  hintStyle: PeepTextStyle.regularL(color: Palette.peepGray300),
+              child: Theme(
+                data: ThemeData.light().copyWith(
+                  textSelectionTheme: TextSelectionThemeData(
+                    cursorColor: controller.category.value.color, // works on iOS
+                    selectionColor: controller.category.value.color, // works on iOS
+                    selectionHandleColor: controller.category.value.color, // not working on iOS
+                  ),
+                  cupertinoOverrideTheme: CupertinoThemeData(
+                    primaryColor: controller.category.value.color, // alternative on iOS for "selectionHandleColor"
+                  ),
+                ),
+                child: TextField(
+                  focusNode: controller.focusNode,
+                  controller: controller.textEditingController,
+                  autofocus: true,
+                  selectionControls: CustomColorSelectionHandle(controller.category.value.color),
+                  onSubmitted: (String str) => controller.onEditingDone(),
+                  style: PeepTextStyle.regularL(color: Palette.peepBlack),
+                  cursorColor: controller.category.value.color,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: '이름을 입력해 주세요',
+                    hintStyle: PeepTextStyle.regularL(color: Palette.peepGray300),
+                  ),
                 ),
               ),
             ),

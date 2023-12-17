@@ -31,11 +31,20 @@ class CategoryDetailController extends BaseController {
     super.onInit();
 
     focusNode.addListener(() {
-      if (focusNode.hasFocus) {
+      if (!focusNode.hasFocus) {
+        onEditingDone();
       }
     });
 
     loadCategory();
+    textEditingController.text = category.value.name;
+  }
+
+  @override
+  void onClose() {
+    focusNode.dispose();
+    textEditingController.dispose();
+    super.onClose();
   }
 
   /*
@@ -70,6 +79,13 @@ class CategoryDetailController extends BaseController {
 
   void updateColor(Color color) {
     _categoryController.changeCategoryColor(categoryId, color);
+    loadCategory();
+  }
+
+  void onEditingDone() {
+    if(textEditingController.text != '') {
+      _categoryController.updateText(categoryId, textEditingController.text);
+    }
     loadCategory();
   }
 }

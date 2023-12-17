@@ -136,6 +136,15 @@ class CategoryController extends BaseController {
     loadCategoryData();
   }
 
+  void updateText(String categoryId, String text) async {
+    CategoryModel category = categoryList.firstWhere((e) => e.id == categoryId);
+
+    category.name = text;
+    await _service.updateCategory(category);
+
+    loadCategoryData();
+  }
+
   /*
     Delete Functions
    */
