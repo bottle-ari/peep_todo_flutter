@@ -24,7 +24,6 @@ dependencies:
   path: ^1.8.3
   uuid: ^4.2.1
   flutter_slidable: ^3.0.1
-  emoji_picker_flutter: ^1.6.3
 
 dev_dependencies:
   flutter_test:

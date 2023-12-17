@@ -5,6 +5,7 @@ import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/category/widget/peep_emoji_picker_button.dart';
+import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 
 /*
    PeepTodoTextfield
@@ -96,40 +97,29 @@ class PeepCategoryTextfield extends StatelessWidget {
   final String emoji;
   final Color color;
   final VoidCallback onTapEmoji;
-  final Function(String) onTapAddButton;
-  final VoidCallback onLongPressAddButton;
+  final VoidCallback onTapColor;
   final TextEditingController textEditingController;
   final FocusNode focusNode;
-  final VoidCallback onTapTextField;
 
   const PeepCategoryTextfield({
     Key? key,
     required this.emoji,
     required this.color,
     required this.onTapEmoji,
-    required this.onTapAddButton,
-    required this.onLongPressAddButton,
     required this.textEditingController,
     required this.focusNode,
-    required this.onTapTextField,
+    required this.onTapColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // handle submit(TextField) & onTap(AddButton) event
-    void handleAddButtonTap(String text) {
-      if (text.trim().isNotEmpty) {
-        onTapAddButton(text);
-      } else {
-        textEditingController.text = "";
-      }
-    }
 
     return Container(
       width: AppValues.screenWidth - AppValues.screenPadding * 2,
       height: AppValues.largeItemHeight,
       decoration: BoxDecoration(
-        color: Palette.peepGray50,
+        color: Palette.peepWhite,
+        border: Border.all(color: Palette.peepGray200),
         borderRadius: BorderRadius.circular(AppValues.baseRadius),
       ),
       child: Padding(
@@ -142,14 +132,11 @@ class PeepCategoryTextfield extends StatelessWidget {
               emoji: emoji,
               onTap: onTapEmoji,
             ),
-            // PeepEmojiPickerButton
             SizedBox(
               width: 230.w,
               child: TextField(
-                onTap: onTapTextField,
                 focusNode: focusNode,
                 controller: textEditingController,
-                onSubmitted: handleAddButtonTap,
                 autofocus: true,
                 style: PeepTextStyle.regularL(color: Palette.peepBlack),
                 cursorColor: color,
@@ -160,17 +147,19 @@ class PeepCategoryTextfield extends StatelessWidget {
                 ),
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                handleAddButtonTap(textEditingController.text);
-              },
-              onLongPress: onLongPressAddButton,
-              child: PeepIcon(
-                Iconsax.addSquare,
-                size: AppValues.largeIconSize,
-                color: color,
-              ),
-            ),
+            PeepAnimationEffect(
+                onTap: onTapColor,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: AppValues.innerMargin),
+                  child: Container(
+                    width: AppValues.largeIconSize,
+                    height: AppValues.largeIconSize,
+                    decoration: BoxDecoration(
+                      color: color,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                )),
             // PeepColorPickerButton
           ],
         ),

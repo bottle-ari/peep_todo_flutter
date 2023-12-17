@@ -5,7 +5,7 @@ class PeepCategoryToggleButtonController extends GetxController
     with GetSingleTickerProviderStateMixin {
   late AnimationController animationController;
   late Animation<double> animation;
-  bool isActive;
+  final bool isActive;
   final double size;
 
   PeepCategoryToggleButtonController(this.isActive, this.size);
@@ -25,12 +25,11 @@ class PeepCategoryToggleButtonController extends GetxController
   }
 
   void toggleAnimation() {
-    if (!isActive) {
+    if (!animationController.isCompleted) {
       animationController.forward();
     } else {
       animationController.reverse();
     }
-    isActive = !isActive;
   }
 
   @override

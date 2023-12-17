@@ -8,6 +8,7 @@ import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
 import 'package:peep_todo_flutter/app/data/services/category_service.dart';
 
 import '../../core/base/base_controller.dart';
+import '../../data/enums/todo_enum.dart';
 import '../../theme/app_values.dart';
 import '../../theme/icons.dart';
 import '../../theme/palette.dart';
@@ -107,6 +108,23 @@ class CategoryController extends BaseController {
     loadCategoryData();
 
     return true;
+  }
+
+  void toggleTodoType(String categoryId) async {
+    CategoryModel category = categoryList.firstWhere((e) => e.id == categoryId);
+
+    switch(category.type) {
+      case TodoType.scheduled:
+        category.type = TodoType.constant;
+        break;
+      case TodoType.constant:
+        category.type = TodoType.scheduled;
+        break;
+    }
+
+    await _service.updateCategory(category);
+
+    loadCategoryData();
   }
 
   /*

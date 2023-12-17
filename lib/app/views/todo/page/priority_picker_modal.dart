@@ -5,7 +5,7 @@ import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_priority_picker_item.dart';
 
-import '../../../controllers/data/todo_detail_controller.dart';
+import '../../../controllers/page/todo_detail_controller.dart';
 
 class PriorityPickerModal extends StatelessWidget {
   final TodoDetailController controller;

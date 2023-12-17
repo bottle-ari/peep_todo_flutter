@@ -3,6 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
+import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
+
+import '../../../theme/app_values.dart';
 
 class PeepEmojiPickerButton extends StatelessWidget {
   final String emoji;
@@ -16,18 +19,20 @@ class PeepEmojiPickerButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return PeepAnimationEffect(
       onTap: onTap,
-      highlightColor: Palette.peepGray300, // 클릭 시 배경 어둡게
       child: emoji == ""
           ? PeepIcon(
               Iconsax.emoji,
               color: Palette.peepYellow400,
               size: 30.w,
             )
-          : Text(
-              emoji,
-              style: PeepTextStyle.regularXL(color: null),
+          : Padding(
+              padding: EdgeInsets.symmetric(horizontal: AppValues.innerMargin),
+              child: Text(
+                emoji,
+                style: PeepTextStyle.regularXL(color: null),
+              ),
             ),
     );
   }

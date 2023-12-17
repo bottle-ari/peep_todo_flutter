@@ -22,7 +22,7 @@ import 'package:peep_todo_flutter/app/views/todo/page/priority_picker_modal.dart
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_todo_detail_main_item.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_todo_detail_sub_item.dart';
 
-import '../../../controllers/data/todo_detail_controller.dart';
+import '../../../controllers/page/todo_detail_controller.dart';
 import '../../../data/enums/priority.dart';
 import '../../../data/model/todo/backup_todo_model.dart';
 import '../../../data/model/todo/todo_model.dart';
