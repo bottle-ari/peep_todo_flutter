@@ -80,7 +80,7 @@ class _PeepEmojiPicker extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
                   child: Text(
                     '이모지 선택하기',
-                    style: PeepTextStyle.boldL(color: Palette.peepGray400),
+                    style: PeepTextStyle.regularL(color: Palette.peepGray400),
                   ),
                 ),
               ],

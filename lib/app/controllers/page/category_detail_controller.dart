@@ -56,16 +56,20 @@ class CategoryDetailController extends BaseController {
     loadCategory();
   }
 
-  void toggleCategoryActiveState() {
-    _categoryController.toggleCategoryActiveState(categoryId);
+  Future<bool> toggleCategoryActiveState() async {
+    var value = await _categoryController.toggleCategoryActiveState(categoryId);
     loadCategory();
+
+    return value;
   }
 
   void updateEmoji(String emoji) {
     _categoryController.updateEmoji(categoryId, emoji);
+    loadCategory();
   }
 
   void updateColor(Color color) {
     _categoryController.changeCategoryColor(categoryId, color);
+    loadCategory();
   }
 }

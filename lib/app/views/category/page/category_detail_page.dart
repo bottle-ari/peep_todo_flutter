@@ -1,8 +1,6 @@
 import 'dart:developer';
 
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/preferred_size.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/page/category_detail_controller.dart';
@@ -14,14 +12,15 @@ import 'package:peep_todo_flutter/app/views/common/buttons/peep_half_toggle_butt
 import '../../../theme/app_values.dart';
 import '../../../theme/icons.dart';
 import '../../../theme/palette.dart';
-import '../../../utils/device_util.dart';
 import '../../common/buttons/peep_animation_effect.dart';
 import '../../common/painter/bubble_painter.dart';
 import '../../common/peep_subpage_appbar.dart';
 import '../../common/popup/peep_confirm_popup.dart';
+import '../../common/popup/peep_warning_popup.dart';
 import '../../todo/widget/peep_button_textfield.dart';
 
 class CategoryDetailPage extends BaseView<CategoryDetailController> {
+
   @override
   bool? get resizeToAvoidBottomInset => false;
 
@@ -94,10 +93,21 @@ class CategoryDetailPage extends BaseView<CategoryDetailController> {
                 PeepHalfToggleButton(
                     textOn: "사용 중",
                     textOff: "사용 안함",
-                    onToggle: () => controller.toggleCategoryActiveState(),
+                    onToggle: () async {
+                      var value = await controller.toggleCategoryActiveState();
+
+                      if (!value) {
+                        Get.dialog(PeepWarningPopup(
+                            icon: Iconsax.emptyBox,
+                            text: '적어도 한 개 이상의 카테고리가\n활성화 되어야 해요',
+                            confirmText: '확인',
+                            color: Palette.peepRed
+                                .withOpacity(AppValues.baseOpacity)));
+                      }
+                    },
                     backgroundColorOn: controller.category.value.color,
                     backgroundColorOff: Palette.peepGray100,
-                    textColorOn: getTextColor(controller.category.value.color),
+                    textColorOn: getTextColorBold(controller.category.value.color),
                     textColorOff: Palette.peepGray300,
                     toggleState: controller.category.value.isActive)
               ],
