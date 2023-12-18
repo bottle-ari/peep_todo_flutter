@@ -12,6 +12,7 @@ import '../data/todo_controller.dart';
 class DiaryController extends BaseController {
   final TodoController _todoController = Get.find();
   final CategoryController _categoryController = Get.find();
+  final RxBool isOpen = false.obs;
 
   final RxList<DiaryTodoModel> checkedTodo = <DiaryTodoModel>[].obs;
 
@@ -53,5 +54,9 @@ class DiaryController extends BaseController {
 
   void onMoveToday() {
     _todoController.onMoveToday();
+  }
+
+  void toggleIsOpen() {
+    isOpen.value = !isOpen.value;
   }
 }

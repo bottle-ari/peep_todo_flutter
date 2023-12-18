@@ -114,7 +114,7 @@ class TodoController extends GetxController {
     TodoModel todo = getTodoById(todoId: todoId);
     todo.isChecked = !todo.isChecked;
 
-    DateTime? todoDate;
+    DateTime? todoDate = selectedDate.value;
     if(type == TodoType.constant) {
       if(todo.isChecked) {
         todo.date = selectedDate.value;
