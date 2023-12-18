@@ -12,6 +12,8 @@ import 'package:peep_todo_flutter/app/views/category/widget/peep_color_picker_bu
 import 'package:peep_todo_flutter/app/views/category/widget/peep_emoji_picker_button.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 
+import '../../../controllers/page/category_add_controller.dart';
+
 /*
    PeepTodoTextfield
 */
@@ -164,6 +166,92 @@ class PeepCategoryTextfield extends StatelessWidget {
             ),
             PeepColorPickerButton(
               color: controller.category.value.color,
+              onTap: () {
+                controller.focusNode.unfocus();
+              },
+              onSelected: (Color color) {
+                controller.updateColor(color);
+                Get.back();
+              },
+            ),
+            // PeepColorPickerButton
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/*
+   PeepCategoryAddTextfield
+*/
+class PeepCategoryAddTextfield extends StatelessWidget {
+  final CategoryAddController controller;
+
+  const PeepCategoryAddTextfield({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: AppValues.screenWidth - AppValues.screenPadding * 2,
+      height: AppValues.largeItemHeight,
+      decoration: BoxDecoration(
+        color: Palette.peepWhite,
+        border: Border.all(color: Palette.peepGray200),
+        borderRadius: BorderRadius.circular(AppValues.baseRadius),
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: AppValues.horizontalMargin),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Obx(
+            () => PeepEmojiPickerButton(
+                emoji: controller.emoji.value,
+                onTap: () {
+                  controller.focusNode.unfocus();
+                },
+                color: controller.color.value,
+                onSelected: (String emoji) {
+                  controller.updateEmoji(emoji);
+                  Get.back();
+                },
+              ),
+            ),
+            SizedBox(
+              width: 230.w,
+              child: Theme(
+                data: ThemeData.light().copyWith(
+                  textSelectionTheme: TextSelectionThemeData(
+                    cursorColor: controller.color.value, // works on iOS
+                    selectionColor: controller.color.value, // works on iOS
+                    selectionHandleColor: controller.color.value, // not working on iOS
+                  ),
+                  cupertinoOverrideTheme: CupertinoThemeData(
+                    primaryColor: controller.color.value, // alternative on iOS for "selectionHandleColor"
+                  ),
+                ),
+                child: TextField(
+                  focusNode: controller.focusNode,
+                  controller: controller.textEditingController,
+                  autofocus: true,
+                  selectionControls: CustomColorSelectionHandle(controller.color.value),
+                  style: PeepTextStyle.regularL(color: Palette.peepBlack),
+                  cursorColor: controller.color.value,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: '이름을 입력해 주세요',
+                    hintStyle: PeepTextStyle.regularL(color: Palette.peepGray300),
+                  ),
+                ),
+              ),
+            ),
+            PeepColorPickerButton(
+              color: controller.color.value,
               onTap: () {
                 controller.focusNode.unfocus();
               },

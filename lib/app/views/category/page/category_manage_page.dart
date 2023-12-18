@@ -27,8 +27,7 @@ class CategoryManagePage extends BaseView<CategoryController> {
           buttons: [
             PeepAnimationEffect(
               onTap: () {
-                log('add category');
-                //TODO : add category;
+                Get.toNamed(AppPages.CATEGORY_ADD, arguments: {'lastPos': controller.categoryList.length});
               },
               child: PeepIcon(
                 Iconsax.addSquareOutline,

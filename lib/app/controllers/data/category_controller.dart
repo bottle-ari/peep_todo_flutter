@@ -9,10 +9,6 @@ import 'package:peep_todo_flutter/app/data/services/category_service.dart';
 
 import '../../core/base/base_controller.dart';
 import '../../data/enums/todo_enum.dart';
-import '../../theme/app_values.dart';
-import '../../theme/icons.dart';
-import '../../theme/palette.dart';
-import '../../views/common/peep_rollback_snackbar.dart';
 
 class CategoryController extends BaseController {
   final CategoryService _service = CategoryService();
