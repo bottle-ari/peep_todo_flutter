@@ -43,6 +43,8 @@ class DatabaseInit {
           name TEXT,
           color TEXT,
           emoji TEXT,
+          type INTEGER,
+          is_active INTEGER,
           pos INTEGER)
       """,
     );
@@ -100,7 +102,14 @@ class DatabaseInit {
     var uuid = const Uuid();
     String newUuid = uuid.v4();
 
-    await db.insert('category',
-        {'id': newUuid, 'name': '할 일', 'color': 'FF968A', 'emoji': '🤔', 'pos': 0});
+    await db.insert('category', {
+      'id': newUuid,
+      'name': '할 일',
+      'color': 'FF968A',
+      'emoji': '🤔',
+      'type': 0,
+      'is_active': true,
+      'pos': 0
+    });
   }
 }

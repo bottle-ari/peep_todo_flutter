@@ -1,11 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
+import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
-import 'package:peep_todo_flutter/app/views/category/page/category_add_modal.dart';
-import 'package:peep_todo_flutter/app/views/category/page/category_color_picker_modal.dart';
 import 'package:peep_todo_flutter/app/views/category/widget/peep_category_manage_list_item.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_subpage_appbar.dart';
@@ -26,10 +27,10 @@ class CategoryManagePage extends BaseView<CategoryController> {
           buttons: [
             PeepAnimationEffect(
               onTap: () {
-                Get.bottomSheet(CategoryAddModal());
+                Get.toNamed(AppPages.CATEGORY_ADD, arguments: {'lastPos': controller.categoryList.length});
               },
               child: PeepIcon(
-                Iconsax.addcircle,
+                Iconsax.addSquareOutline,
                 size: AppValues.baseIconSize,
                 color: Palette.peepGray500,
               ),
@@ -50,6 +51,23 @@ class CategoryManagePage extends BaseView<CategoryController> {
           child: CustomScrollView(
             slivers: [
               ReorderableSliverList(
+                buildDraggableFeedback: (BuildContext context,
+                    BoxConstraints constraints, Widget child) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    margin: EdgeInsets.zero,
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: ConstrainedBox(
+                        constraints: constraints,
+                        child: Transform.scale(
+                            scale: 1.05, child: child),
+                      ),
+                    ),
+                  );
+                },
                 delegate: ReorderableSliverChildListDelegate(
                   [
                     for (var category in controller.categoryList)
@@ -58,16 +76,9 @@ class CategoryManagePage extends BaseView<CategoryController> {
                             vertical: AppValues.innerMargin),
                         child: PeepCategoryManageListItem(
                           category: category,
-                          onTapEmojiPicker: () {},
-                          onTapColorPicker: () {
-                            Get.bottomSheet(CategoryColorPickerModal(
-                                onColorSelected: (Color selectedColor) {
-                              controller.changeCategoryColor(
-                                  category.id, selectedColor);
-                            }));
+                          onTap: () {
+                            Get.toNamed(AppPages.CATEGORY_DETAIL, arguments: {'category_id': category.id});
                           },
-                          onTap: () {},
-                          onDelete: () {},
                         ),
                       )
                   ],

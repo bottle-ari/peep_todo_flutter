@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/main/main_controller.dart';
 import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
@@ -14,8 +15,9 @@ import '../../../theme/palette.dart';
 
 class PeepTodoAppBar extends StatelessWidget {
   final MainController controller;
+  final CategoryController categoryController = Get.find();
 
-  const PeepTodoAppBar({super.key, required this.controller});
+  PeepTodoAppBar({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +77,7 @@ class PeepTodoAppBar extends StatelessWidget {
                       ],
                       onMenuItemSelected: {
                         'popup_action_1': () {
-                          debugPrint('1');
+                          Get.toNamed(AppPages.CATEGORY_ADD, arguments: {'lastPos': categoryController.categoryList.length});
                         },
                         'popup_action_2': () {
                           Get.toNamed(Routes.CATEGORY_MANAGE_PAGE);

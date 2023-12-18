@@ -36,3 +36,16 @@ Color getTextColor(Color color) {
     return Palette.peepWhite;
   }
 }
+
+Color getTextColorBold(Color color) {
+  double luminance = color.computeLuminance();
+  final hslColor = HSLColor.fromColor(color);
+
+  if (luminance > 0.5) {
+    final newLightness = (hslColor.lightness - 0.4).clamp(0.0, 1.0);
+    final newSaturation = (hslColor.saturation + 0.2).clamp(0.0, 1.0);
+    return hslColor.withLightness(newLightness).withSaturation(newSaturation).toColor();
+  } else {
+    return Palette.peepWhite;
+  }
+}

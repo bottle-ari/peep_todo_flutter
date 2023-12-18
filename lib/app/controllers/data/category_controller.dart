@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -7,10 +8,7 @@ import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
 import 'package:peep_todo_flutter/app/data/services/category_service.dart';
 
 import '../../core/base/base_controller.dart';
-import '../../theme/app_values.dart';
-import '../../theme/icons.dart';
-import '../../theme/palette.dart';
-import '../../views/common/peep_rollback_snackbar.dart';
+import '../../data/enums/todo_enum.dart';
 
 class CategoryController extends BaseController {
   final CategoryService _service = CategoryService();
@@ -87,6 +85,57 @@ class CategoryController extends BaseController {
 
     category.color = newColor;
 
+    await _service.updateCategory(category);
+
+    loadCategoryData();
+  }
+
+  Future<bool> toggleCategoryActiveState(String categoryId) async {
+    CategoryModel category = categoryList.firstWhere((e) => e.id == categoryId);
+
+    if(category.isActive && categoryList.where((e) => e.isActive).length <= 1) {
+      return false;
+    }
+
+    category.isActive = !category.isActive;
+
+    await _service.updateCategory(category);
+
+    loadCategoryData();
+
+    return true;
+  }
+
+  void toggleTodoType(String categoryId) async {
+    CategoryModel category = categoryList.firstWhere((e) => e.id == categoryId);
+
+    switch(category.type) {
+      case TodoType.scheduled:
+        category.type = TodoType.constant;
+        break;
+      case TodoType.constant:
+        category.type = TodoType.scheduled;
+        break;
+    }
+
+    await _service.updateCategory(category);
+
+    loadCategoryData();
+  }
+
+  void updateEmoji(String categoryId, String newEmoji) async {
+    CategoryModel category = categoryList.firstWhere((e) => e.id == categoryId);
+
+    category.emoji = newEmoji;
+    await _service.updateCategory(category);
+
+    loadCategoryData();
+  }
+
+  void updateText(String categoryId, String text) async {
+    CategoryModel category = categoryList.firstWhere((e) => e.id == categoryId);
+
+    category.name = text;
     await _service.updateCategory(category);
 
     loadCategoryData();

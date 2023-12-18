@@ -1,10 +1,14 @@
 import 'dart:ui';
 
+import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
+
 class CategoryModel {
   final String id;
   String name;
   Color color;
   String emoji;
+  TodoType type;
+  bool isActive;
   int pos;
 
   CategoryModel({
@@ -12,6 +16,8 @@ class CategoryModel {
     required this.name,
     required this.color,
     required this.emoji,
+    required this.type,
+    required this.isActive,
     required this.pos,
   });
 
@@ -21,6 +27,8 @@ class CategoryModel {
       'name': name,
       'color': color.value.toRadixString(16).substring(2, 8).toUpperCase(),
       'emoji': emoji,
+      'type': type.index,
+      'is_active': isActive ? 1 : 0,
       'pos': pos,
     };
   }
@@ -31,6 +39,8 @@ class CategoryModel {
         name: map['name'],
         color: Color(int.parse("0xFF${map['color']}")),
         emoji: map['emoji'],
+        type: TodoType.values[map['type']],
+        isActive: (map['is_active'] == 1),
         pos: map['pos']);
   }
 }

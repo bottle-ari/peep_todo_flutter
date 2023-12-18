@@ -138,52 +138,46 @@ class PeepTodoItem extends StatelessWidget {
                   child: Padding(
                     padding:
                         EdgeInsets.symmetric(horizontal: AppValues.innerMargin),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Row(
-                          children: [
-                            SizedBox(width: AppValues.textMargin),
-                            InkWell(
-                              onTap: () {
-                                scheduledTodoController.addNewTodoConfirm();
+                    child: Row(
+                      children: [
+                        SizedBox(width: AppValues.textMargin),
+                        InkWell(
+                          onTap: () {
+                            scheduledTodoController.addNewTodoConfirm();
 
-                                Get.toNamed(Routes.TODO_DETAIL_PAGE,
-                                    arguments: {'todo': todo, 'color': color});
-                              },
-                              child: SizedBox(
-                                width: 230.w,
-                                child: Text(
-                                  todo.name,
-                                  style: PeepTextStyle.regularM(
-                                      color: todo.isChecked
-                                          ? Palette.peepGray400
-                                          : Palette.peepBlack),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 3,
-                                ),
-                              ),
+                            Get.toNamed(Routes.TODO_DETAIL_PAGE,
+                                arguments: {'todo': todo, 'color': color});
+                          },
+                          child: SizedBox(
+                            width: 230.w,
+                            child: Text(
+                              todo.name,
+                              style: PeepTextStyle.regularM(
+                                  color: todo.isChecked
+                                      ? Palette.peepGray400
+                                      : Palette.peepBlack),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
                             ),
-                            Flexible(
+                          ),
+                        ),
+                        Flexible(
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: AppValues.innerMargin),
                               child: Align(
                                 alignment: Alignment.centerRight,
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: AppValues.innerMargin),
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: PeepCheckButton(
-                                      color: color,
-                                      controller: controller,
-                                      todoType: todoType,
-                                      todoId: todoId,
-                                    ),
-                                  ),
+                                child: PeepCheckButton(
+                                  color: color,
+                                  controller: controller,
+                                  todoType: todoType,
+                                  todoId: todoId,
                                 ),
                               ),
                             ),
-                          ],
+                          ),
                         ),
                       ],
                     ),

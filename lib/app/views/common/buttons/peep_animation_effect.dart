@@ -6,12 +6,14 @@ class PeepAnimationEffect extends StatelessWidget {
   final Widget child;
   final double scale;
   final Function? onTap;
+  final Function? onLongPress;
 
   const PeepAnimationEffect({
     super.key,
     required this.child,
     this.onTap,
     this.scale = 0.9,
+    this.onLongPress,
   });
 
   @override
@@ -26,8 +28,11 @@ class PeepAnimationEffect extends StatelessWidget {
           if (onTap != null) onTap!();
           controller.isPressed.value = false;
         },
+        onLongPress: () {
+          if (onLongPress != null) onLongPress!();
+        },
         child: Obx(
-              () => AnimatedScale(
+          () => AnimatedScale(
             scale: controller.isPressed.value ? scale : 1.0,
             duration: const Duration(milliseconds: 50),
             child: child,
@@ -37,4 +42,3 @@ class PeepAnimationEffect extends StatelessWidget {
     );
   }
 }
-

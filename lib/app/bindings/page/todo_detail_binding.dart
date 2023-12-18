@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../controllers/data/todo_detail_controller.dart';
+import '../../controllers/page/todo_detail_controller.dart';
 
 
 class TodoDetailBinding implements Bindings {

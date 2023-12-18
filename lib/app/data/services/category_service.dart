@@ -37,13 +37,13 @@ class CategoryService extends GetxService {
   Future<void> updateCategory(CategoryModel category) async {
     var row = await _provider.updateCategory(category.toMap());
 
-    log("delete $row rows.");
+    log("update $row rows.");
   }
 
   Future<void> updateCategories(List<CategoryModel> categoryList) async {
     var row = await _provider.updateCategories(categoryList.map((e) => e.toMap()).toList());
 
-    log("delete $row rows.");
+    log("update $row rows.");
   }
 
   /*
