@@ -19,7 +19,7 @@ class DiaryController extends BaseController {
   void onInit() {
     super.onInit();
 
-    ever(_todoController.diaryTodoList, (callback) {
+    ever(_todoController.selectedTodoList, (callback) {
       updateCheckedTodoList();
     });
 
@@ -32,12 +32,14 @@ class DiaryController extends BaseController {
 
     log('start');
 
-    for (var todo in _todoController.diaryTodoList) {
-      newCheckTodo.add(DiaryTodoModel(
-          name: todo.name,
-          color: _categoryController
-              .getCategoryById(categoryId: todo.categoryId)
-              .color));
+    for (var todo in _todoController.selectedTodoList) {
+      if(todo.isChecked) {
+        newCheckTodo.add(DiaryTodoModel(
+            name: todo.name,
+            color: _categoryController
+                .getCategoryById(categoryId: todo.categoryId)
+                .color));
+      }
     }
 
     log('${newCheckTodo.length}');

@@ -32,7 +32,7 @@ class TodoDetailController extends BaseController {
         pos: todo.value.pos,
         checkTime: todo.value.checkTime);
 
-    todoController.updateTodos(type: TodoType.scheduled, todoList: [newTodo]);
+    todoController.updateTodos(todoList: [newTodo]);
 
     todo.value = newTodo;
   }

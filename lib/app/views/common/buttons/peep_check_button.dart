@@ -7,7 +7,6 @@ import 'package:peep_todo_flutter/app/theme/palette.dart';
 
 import '../../../controllers/data/todo_controller.dart';
 import '../../../theme/icons.dart';
-import '../../test.dart';
 
 class PeepCheckButton extends StatelessWidget {
   final TodoController controller;
@@ -39,7 +38,7 @@ class PeepCheckButton extends StatelessWidget {
                         horizontal: AppValues.innerMargin,
                         vertical: AppValues.verticalMargin),
                     child: controller
-                        .getTodoById(type: todoType, todoId: todoId)
+                        .getTodoById(todoId: todoId)
                         .isChecked
                         ? PeepIcon(Iconsax.checkTrue, color: color, size: 24.w)
                         : PeepIcon(Iconsax.checkFalse,

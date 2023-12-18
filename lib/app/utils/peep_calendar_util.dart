@@ -42,3 +42,23 @@ class DateUtils {
     return DateTime(year, month + 1, 0).day;
   }
 }
+
+/*
+  선택된 날의 이전 달 마지막 날 구하기
+ */
+DateTime getPreviousMonthEnd(DateTime selectedDate) {
+  int year = selectedDate.month == 1 ? selectedDate.year - 1 : selectedDate.year;
+  int month = selectedDate.month == 1 ? 12 : selectedDate.month - 1;
+
+  return DateTime(year, month + 1, 0);
+}
+
+/*
+  선택된 날의 다음 달 첫째 날 구하기
+ */
+DateTime getNextMonthStart(DateTime selectedDate) {
+  int year = selectedDate.month == 12 ? selectedDate.year + 1 : selectedDate.year;
+  int month = selectedDate.month == 12 ? 1 : selectedDate.month + 1;
+
+  return DateTime(year, month, 1);
+}
