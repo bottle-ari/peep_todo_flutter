@@ -2,16 +2,18 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/controllers/animation/peep_category_toggle_button_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 
 import '../../data/model/category/category_model.dart';
-import '../../utils/device_util.dart';
 
 class CategoryDetailController extends BaseController {
   final CategoryController _categoryController = Get.find();
+  final PeepCategoryToggleButtonController _animationController =
+      Get.find(tag: Get.arguments['category_id']);
   final String categoryId = Get.arguments['category_id'];
   final Rx<CategoryModel> category = CategoryModel(
           id: 'default',
@@ -69,6 +71,10 @@ class CategoryDetailController extends BaseController {
     var value = await _categoryController.toggleCategoryActiveState(categoryId);
     loadCategory();
 
+    if (value) {
+      _animationController.toggleAnimation();
+    }
+
     return value;
   }
 
@@ -83,7 +89,7 @@ class CategoryDetailController extends BaseController {
   }
 
   void onEditingDone() {
-    if(textEditingController.text != '') {
+    if (textEditingController.text != '') {
       _categoryController.updateText(categoryId, textEditingController.text);
     }
     loadCategory();
