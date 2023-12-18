@@ -6,6 +6,7 @@ import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_dropdown_menu.dart';
 import 'package:peep_todo_flutter/app/views/main/page/MapScreen.dart';
+import 'package:peep_todo_flutter/app/views/main/page/reminder_page.dart';
 import 'package:peep_todo_flutter/app/views/main/widget/peep_main_toggle_button.dart';
 import 'package:peep_todo_flutter/app/views/main/widget/peep_profile_button.dart';
 import '../../../data/model/enum/menu_state.dart';
@@ -79,13 +80,19 @@ class PeepTodoAppBar extends StatelessWidget {
                             PeepIcon(Iconsax.emoji,
                                 size: AppValues.smallIconSize,
                                 color: Palette.peepBlack),
-                            '리마인더 페이지'),
+                            '테스트 통합 페이지'),
                         DropdownMenuItemData(
                             'popup_action_6', // Todo 액션 수정
                             PeepIcon(Iconsax.priority,
                                 size: AppValues.smallIconSize,
                                 color: Palette.peepBlack),
                             '구글맵 테스트'),
+                        DropdownMenuItemData(
+                            'popup_action_7', // Todo 액션 수정
+                            PeepIcon(Iconsax.reminder,
+                                size: AppValues.smallIconSize,
+                                color: Palette.peepBlack),
+                            '리마인더 관리'),
                       ],
                       onMenuItemSelected: {
                         'popup_action_1': () {
@@ -114,6 +121,13 @@ class PeepTodoAppBar extends StatelessWidget {
                             MaterialPageRoute(builder: (context) => MapScreen()),
                           );
                           debugPrint('6');
+                        },
+                        'popup_action_7': () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ReminderPage()),
+                          );
+                          debugPrint('7');
                         },
                       },
                     ),

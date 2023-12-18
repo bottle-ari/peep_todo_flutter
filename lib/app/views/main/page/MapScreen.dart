@@ -8,7 +8,6 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  GoogleMapController? _controller;
 
   // final LatLng _targetPoint = LatLng(YourLatitude, YourLongitude); // Replace with your target point coordinates
   // 잠실 : 37.51227, 127.0954
@@ -31,12 +30,14 @@ class _MapScreenState extends State<MapScreen> {
             _controller = controller;
           });
         },
-        onTap: _onMapTapped, // Add this line
-      ),
+        onTap: (LatLng position) {
+          _onMapTapped(context, position);
+        },
+    ),
     );
-  }
+    }
 
-  void _onMapTapped(LatLng tappedPoint) {
+  void _onMapTapped(BuildContext  context, LatLng tappedPoint) {
     double latitude = tappedPoint.latitude;
     double longitude = tappedPoint.longitude;
     print('Tapped Coordinate : ($latitude, $longitude)');
@@ -49,8 +50,11 @@ class _MapScreenState extends State<MapScreen> {
         textColor: Colors.black,
         fontSize: 16.0
     );
+    Navigator.pop(context, [latitude, longitude]);
   }
-}
+  }
+
+
 //
 // class YesNoDialog extends StatelessWidget {
 //   final String title;

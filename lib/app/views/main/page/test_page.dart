@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:battery/battery.dart';
+import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
-import 'package:network_info_plus/network_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:peep_todo_flutter/app/utils/reminder_utils/location/location_reminder.dart';
+import 'package:uuid/uuid.dart';
+import 'package:peep_todo_flutter/app/controllers/data/reminder_controller.dart';
+import 'package:peep_todo_flutter/app/data/model/reminder/reminder_model.dart';
+
+import '../../../utils/reminder_utils/wifi/wifi_info.dart';
 
 void main() {
   runApp(MyApp());
@@ -43,7 +49,7 @@ class _TestPageState extends State<TestPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Battery Info'),
+        title: Text('테스트 페이지'),
       ),
       body: Center(
         child: Column(
@@ -74,7 +80,7 @@ class _TestPageState extends State<TestPage> {
               onPressed: () {
                 _getDistanceInfo();
               },
-              child: Text('현재 위치와의 거리 차이'),
+              child: Text('현재 위치와의 거리 차이 / insert'),
             ),
             ElevatedButton(
               onPressed: () {
@@ -102,10 +108,10 @@ class _TestPageState extends State<TestPage> {
   }
 
   Future<void> _getWifiInfo() async {
-    final info = NetworkInfo();
-    var wifiBSSID = await info.getWifiBSSID(); // 11:22:33:44:55:66
-    var wifiIP = await info.getWifiIP(); // 192.168.1.1
-    var wifiName = await info.getWifiName(); // FooNetwork
+    final info = await WifiInfo.getCurrentWifiInfo();
+    var wifiBSSID = info.bssid; // 11:22:33:44:55:66
+    var wifiIP = info.ip; // 192.168.1.1
+    var wifiName = info.wifiName; // FooNetwork
     debugPrint(wifiName);
     setState(() {
       _testLabel = "와이파이 이름 : "+wifiName.toString();
@@ -116,9 +122,10 @@ class _TestPageState extends State<TestPage> {
     /**
      * 현재 위치와 EditText사이의 거리 차이 구하기
      */
+    // todo : 숫자 키보드만 되게
     var langtitude = double.parse(_latitudeController.text);
     var longtitude = double.parse(_longtitudeController.text);
-    LocationData locationData = await getLocationData();
+    LocationData locationData = await _getCurrentLocation();
     var currentLangtitude = locationData.latitude;
     var currentLongtitude = locationData.longitude;
 
@@ -135,13 +142,28 @@ class _TestPageState extends State<TestPage> {
         fontSize: 16.0
     );
 
-    // debugPrint(distance.toString());
+    // DB를 불러오기
+    // 디버그를 위해서 컨트롤러를 여기서 불러오게 임시로 해놓음
+    final ReminderController reminderController = Get.put(ReminderController(), permanent: true);
+    var uuid = const Uuid();
+    String newUuid = uuid.v4();
+    reminderController.addReminder(
+      reminder: ReminderModel(
+        id: newUuid,
+        name: "테스트_리마인더_23.12.18",
+        icon: "",
+        ifCondition: "{\"pos\": {\"langtitude\" : \"$langtitude\",\"longtitude\":\"$longtitude\"}}", // todo : JSON 등의 형식 하나 정해서 해놓기
+        notifyCondition: "", // todo : JSON 등의 형식 하나 정해서 해놓기
+        pos: reminderController.reminderList.length,
+      ),
+    );
+    debugPrint(distance.toString()); // todo : insert된건지 확인
     // setState(() {
     //   _testLabel = distance.toString();
     // });
   }
 
-  Future<void> _getCurrentLocation() async {
+  Future<LocationData> _getCurrentLocation() async {
     // await location.requestPermission();
     // try {
     //   currentLocation = await location.getLocation();
@@ -151,42 +173,13 @@ class _TestPageState extends State<TestPage> {
     //   debugPrint("로케이션 오류 발생");
     // }
     // setState(() {});
-    LocationData locationData = await getLocationData();
+    LocationData locationData = await LocationReminder.getCurrentLocationData();
     setState(() {
       _testLabel = locationData.toString();
     });
-  }
-
-  Future<LocationData> getLocationData() async {
-    Location location = Location();
-
-    bool serviceEnabled;
-    PermissionStatus permissionGranted;
-    LocationData locationData;
-
-    // 서비스가 가능한지 확인하는 코드
-    serviceEnabled = await location.serviceEnabled();
-    if (!serviceEnabled) {
-      serviceEnabled = await location.requestService();
-      if (!serviceEnabled) {
-        return Future<LocationData>.value(null as LocationData);
-      }
-    }
-
-    // 사용자의 허락이 떨어졌는지 확인하는 코드
-    permissionGranted = await location.hasPermission();
-    if (permissionGranted == PermissionStatus.denied) {
-      permissionGranted = await location.requestPermission();
-      if (permissionGranted != PermissionStatus.granted) {
-        // todo : 수정 필요 (임시로 null값 리턴)
-        return Future<LocationData>.value(null as LocationData);
-      }
-    }
-
-    locationData = await location.getLocation();
-    debugPrint("로케이션 테스트 : "+locationData.toString());
     return locationData;
   }
+
 
 
 }

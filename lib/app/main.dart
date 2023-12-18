@@ -6,7 +6,14 @@ import 'package:peep_todo_flutter/app/theme/app_theme.dart';
 
 import 'package:intl/date_symbol_data_local.dart';
 
+// 23.12.18
+// import 'dart:async';
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+
+
 import 'bindings/initial_binding.dart';
+import 'notification_home.dart';
 
 void main() async {
   //WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +38,9 @@ class MyApp extends StatelessWidget {
         initialBinding: InitialBinding(),
         defaultTransition: Transition.fade,
         scrollBehavior: PeepScrollBehavior(),
+        home: MyHomePage(), // 23.12.18
       ),
     );
   }
 }
+
