@@ -41,10 +41,12 @@ class CategoryDetailPage extends BaseView<CategoryDetailController> {
                       icon: Iconsax.trashBold,
                       text: '삭제',
                       confirmText: '삭제',
+                      hintText: '카테고리 내 모든 [할 일]이 삭제됩니다!',
+                      hintColor: Palette.peepRed,
                       color: Palette.peepRed,
                       func: () {
                         Get.back();
-                        //TODO : 카테고리 삭제 기능 넣기
+                        controller.deleteCategory();
                       }));
                 },
                 child: PeepIcon(
