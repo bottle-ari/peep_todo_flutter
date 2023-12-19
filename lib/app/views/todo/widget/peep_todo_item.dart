@@ -18,15 +18,16 @@ import 'package:peep_todo_flutter/app/views/common/peep_rollback_snackbar.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../controllers/data/todo_controller.dart';
+import '../../../utils/priority_util.dart';
 
 class PeepTodoItem extends StatelessWidget {
   final Color color;
   final TodoType todoType;
-  final String todoId;
+  final TodoModel todo;
 
   const PeepTodoItem(
       {super.key,
-      required this.todoId,
+      required this.todo,
       required this.color,
       required this.todoType});
 
@@ -34,7 +35,6 @@ class PeepTodoItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final TodoController controller = Get.find();
     final ScheduledTodoController scheduledTodoController = Get.find();
-    TodoModel todo = controller.getTodoById(todoId: todoId);
 
     void deleteTodo() {
       if (Get.isSnackbarOpen) {
@@ -125,61 +125,78 @@ class PeepTodoItem extends StatelessWidget {
                 ),
               ],
             ),
-            child: SizedBox(
-              width: AppValues.screenWidth - AppValues.screenPadding * 2,
-              child: ConstrainedBox(
-                constraints:
-                    BoxConstraints(minHeight: AppValues.baseItemHeight),
-                child: Container(
-                  color:
-                      todo.isChecked ? Palette.peepGray50 : Palette.peepWhite,
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: AppValues.innerMargin),
-                    child: Row(
-                      children: [
-                        SizedBox(width: AppValues.textMargin),
-                        InkWell(
-                          onTap: () {
-                            if(!scheduledTodoController.isInputMode.value) {
-                              Get.toNamed(Routes.TODO_DETAIL_PAGE,
-                                  arguments: {'todo': todo, 'color': color});
-                            }
+            child: InkWell(
+              onTap: () {
+                if (!scheduledTodoController.isInputMode.value) {
+                  Get.toNamed(Routes.TODO_DETAIL_PAGE,
+                      arguments: {'todo': todo, 'color': color});
+                }
 
-                            scheduledTodoController.addNewTodoConfirm();
-                          },
-                          child: SizedBox(
-                            width: 230.w,
-                            child: Text(
-                              todo.name,
-                              style: PeepTextStyle.regularM(
-                                  color: todo.isChecked
-                                      ? Palette.peepGray400
-                                      : Palette.peepBlack),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 3,
+                scheduledTodoController.addNewTodoConfirm();
+              },
+              child: SizedBox(
+                width: AppValues.screenWidth - AppValues.screenPadding * 2,
+                child: ConstrainedBox(
+                  constraints:
+                      BoxConstraints(minHeight: AppValues.baseItemHeight),
+                  child: Container(
+                    color:
+                        todo.isChecked ? Palette.peepGray50 : Palette.peepWhite,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: AppValues.innerMargin),
+                      child: Row(
+                        children: [
+                          SizedBox(width: AppValues.textMargin),
+                          SizedBox(
+                            width: 280.w,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: AppValues.verticalMargin),
+                              child: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                        text: todo.name.length > 55 ? '${todo.name.substring(0, 54)}...' : todo.name,
+                                        style: PeepTextStyle.regularM(
+                                            color: todo.isChecked
+                                                ? Palette.peepGray400
+                                                : Palette.peepBlack)
+                                    ),
+                                    if (todo.priority != 0)
+                                      WidgetSpan(
+                                          child: PeepIcon(
+                                        Iconsax.priority,
+                                        size: AppValues.miniIconSize,
+                                        color: PriorityUtil.getPriority(
+                                                todo.priority)
+                                            .PriorityColor,
+                                      )),
+                                  ],
+                                ),
+                                maxLines: 3,
+                              ),
                             ),
                           ),
-                        ),
-                        Flexible(
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: AppValues.innerMargin),
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: PeepCheckButton(
-                                  color: color,
-                                  controller: controller,
-                                  todoType: todoType,
-                                  todoId: todoId,
+                          Flexible(
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: AppValues.innerMargin),
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: PeepCheckButton(
+                                    color: color,
+                                    controller: controller,
+                                    todoType: todoType,
+                                    todoId: todo.id,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

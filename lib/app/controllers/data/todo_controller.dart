@@ -159,6 +159,7 @@ class TodoController extends GetxController {
   void updateTodos(
       {required List<TodoModel> todoList}) async {
     await _service.updateTodos(todoList);
+    loadSelectedData();
   }
 
   /*

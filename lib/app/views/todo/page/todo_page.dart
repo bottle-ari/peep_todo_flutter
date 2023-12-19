@@ -106,7 +106,7 @@ class TodoPage extends BaseView<ScheduledTodoController> {
                                               vertical:
                                                   AppValues.innerMargin),
                                           child: PeepTodoItem(
-                                            todoId: item.id,
+                                            todo: item,
                                             color: controller.getColor(
                                                 todoId: item.id),
                                             todoType: controller.getTodoTypeByCategory(item: item),
