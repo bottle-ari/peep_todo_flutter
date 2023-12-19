@@ -141,10 +141,12 @@ class PeepTodoItem extends StatelessWidget {
                         SizedBox(width: AppValues.textMargin),
                         InkWell(
                           onTap: () {
-                            scheduledTodoController.addNewTodoConfirm();
+                            if(!scheduledTodoController.isInputMode.value) {
+                              Get.toNamed(Routes.TODO_DETAIL_PAGE,
+                                  arguments: {'todo': todo, 'color': color});
+                            }
 
-                            Get.toNamed(Routes.TODO_DETAIL_PAGE,
-                                arguments: {'todo': todo, 'color': color});
+                            scheduledTodoController.addNewTodoConfirm();
                           },
                           child: SizedBox(
                             width: 230.w,

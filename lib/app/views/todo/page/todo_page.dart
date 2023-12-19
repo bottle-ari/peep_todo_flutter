@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:peep_todo_flutter/app/controllers/data/peep_calendar_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/main/main_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
-import 'package:peep_todo_flutter/app/data/model/enum/menu_state.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
@@ -30,9 +27,6 @@ class TodoPage extends BaseView<ScheduledTodoController> {
 
   @override
   Widget body(BuildContext context) {
-    final PeepMainToggleButtonController mainToggleButtonController =
-        Get.find();
-    final MainController mainController = Get.find();
 
     return GestureDetector(
       onTap: () {
@@ -101,7 +95,7 @@ class TodoPage extends BaseView<ScheduledTodoController> {
                                                 controller.getColorByCategory(
                                                     item: item),
                                             todoType: TodoType.scheduled,
-                                            focusNode: controller.focusNode,
+                                            focusNode: controller.focusNode.value,
                                             textEditingController: controller
                                                 .textFieldController,
                                             categoryId: item.categoryId,

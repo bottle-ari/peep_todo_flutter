@@ -27,8 +27,6 @@ class PeepCategoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ScheduledTodoController scheduledTodoController = Get.find();
-
     return InkWell(
       onLongPress: () {},
       child: SizedBox(

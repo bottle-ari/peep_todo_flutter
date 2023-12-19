@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/page/scheduled_todo_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
-import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
