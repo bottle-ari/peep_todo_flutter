@@ -115,7 +115,7 @@ class TodoPage extends BaseView<ScheduledTodoController> {
                                             todoId: item.id,
                                             color: controller.getColor(
                                                 todoId: item.id),
-                                            todoType: TodoType.scheduled,
+                                            todoType: controller.getTodoTypeByCategory(item: item),
                                           ))
                                   else
                                     const SizedBox.shrink()

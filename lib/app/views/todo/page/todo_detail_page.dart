@@ -46,8 +46,7 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
           backupDate: todo.date,
           backupType: TodoType.scheduled);
 
-      controller.todoController
-          .deleteTodo(todo: todo, type: TodoType.scheduled);
+      controller.todoController.deleteTodo(todo: todo);
 
       Get.snackbar('', '',
           snackPosition: SnackPosition.BOTTOM,

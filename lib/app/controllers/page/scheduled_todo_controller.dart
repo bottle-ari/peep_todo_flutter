@@ -310,8 +310,6 @@ class ScheduledTodoController extends BaseController {
 
   // Data
   final RxList<dynamic> scheduledTodoList = <dynamic>[].obs;
-  final RxMap<String, List<double>> calendarItemCounts =
-      <String, List<double>>{}.obs;
 
   // Variables
   Map<String, List<int>> categoryIndexMap = <String, List<int>>{};
@@ -334,7 +332,7 @@ class ScheduledTodoController extends BaseController {
       }
     });
 
-    ever(_todoController.scheduledTodoList, (callback) {
+    ever(_todoController.selectedTodoList, (callback) {
       updateScheduledTodoList();
     });
 
@@ -356,7 +354,7 @@ class ScheduledTodoController extends BaseController {
 
     initCategoryIndexMap(newScheduledTodoList);
 
-    for (var todo in _todoController.scheduledTodoList) {
+    for (var todo in _todoController.selectedTodoList) {
       if (categoryIndexMap[todo.categoryId] == null) continue;
 
       var inx = categoryIndexMap[todo.categoryId]![1]; // todo가 추가될 index
@@ -445,7 +443,6 @@ class ScheduledTodoController extends BaseController {
   /*
     Create Function
    */
-  // TODO : add NEW TODO
   void addNewTodo({required String categoryId}) {
     if (newTodoCategoryId != null) {
       if (newTodoCategoryId == categoryId) {
@@ -494,21 +491,39 @@ class ScheduledTodoController extends BaseController {
         scheduledTodoList.firstWhere((element) => element.id == newTodoId);
 
     if (textFieldController.text != '') {
-      final newTodo = TodoModel(
-          id: todo.id,
-          categoryId: todo.categoryId,
-          reminderId: null,
-          name: textFieldController.text,
-          date: todo.date,
-          priority: 0,
-          memo: '',
-          isChecked: false,
-          checkTime: null,
-          pos: todo.pos);
-
-      _todoController.addTodo(
-        todo: newTodo,
-      );
+      final bool isScheduledTodoType = _categoryController
+              .getCategoryById(categoryId: todo.categoryId)
+              .type ==
+          TodoType.scheduled;
+      if (isScheduledTodoType) {
+        _todoController.addTodo(
+          todo: TodoModel(
+              id: todo.id,
+              categoryId: todo.categoryId,
+              reminderId: null,
+              name: textFieldController.text,
+              date: todo.date,
+              priority: 0,
+              memo: '',
+              isChecked: false,
+              checkTime: null,
+              pos: todo.pos),
+        );
+      } else {
+        _todoController.addTodo(
+          todo: TodoModel(
+              id: todo.id,
+              categoryId: todo.categoryId,
+              reminderId: null,
+              name: textFieldController.text,
+              date: null,
+              priority: 0,
+              memo: '',
+              isChecked: false,
+              checkTime: null,
+              pos: todo.pos),
+        );
+      }
 
       textFieldController.clear();
     }
@@ -526,7 +541,7 @@ class ScheduledTodoController extends BaseController {
     Read Function
    */
   Color getColor({required String todoId}) {
-    var categoryId = _todoController.scheduledTodoList
+    var categoryId = _todoController.selectedTodoList
         .firstWhere((e) => e.id == todoId)
         .categoryId;
 
@@ -544,6 +559,13 @@ class ScheduledTodoController extends BaseController {
 
   DateTime getSelectedDate() {
     return _todoController.selectedDate.value;
+  }
+
+  TodoType getTodoTypeByCategory({required TodoModel item}) {
+    CategoryModel category =
+        _categoryController.getCategoryById(categoryId: item.categoryId);
+
+    return category.type;
   }
 
   /*
@@ -605,7 +627,6 @@ class ScheduledTodoController extends BaseController {
     }
 
     _todoController.updateTodos(
-        type: TodoType.scheduled,
         todoList: scheduledTodoList.sublist(first + 1, last).cast<TodoModel>());
 
     // newCategory pos 변경 후 저장
@@ -620,7 +641,6 @@ class ScheduledTodoController extends BaseController {
       }
 
       _todoController.updateTodos(
-          type: TodoType.scheduled,
           todoList:
               scheduledTodoList.sublist(first + 1, last).cast<TodoModel>());
     }

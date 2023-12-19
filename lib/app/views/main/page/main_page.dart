@@ -7,6 +7,7 @@ import 'package:peep_todo_flutter/app/views/todo/page/todo_page.dart';
 
 import '../../../data/model/enum/menu_state.dart';
 import '../../../theme/app_values.dart';
+import '../widget/peep_diary_app_bar.dart';
 import '../widget/peep_todo_app_bar.dart';
 
 class MainPage extends BaseView<MainController> {
@@ -32,7 +33,7 @@ class MainPage extends BaseView<MainController> {
       case MenuState.TODO:
         return PeepTodoAppBar(controller: controller,);
       case MenuState.DAIRY:
-        return PeepTodoAppBar(controller: controller,);
+        return PeepDiaryAppBar(controller: controller,);
       default:
         // return LoginPage();
         return Container();

@@ -1,24 +1,22 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/services/todo_service.dart';
+import 'package:peep_todo_flutter/app/utils/peep_calendar_util.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../data/model/todo/backup_todo_model.dart';
-import '../../data/model/todo/sub_todo_model.dart';
 import '../../data/model/todo/todo_model.dart';
 
 class TodoController extends GetxController {
-  final TodoService _service = TodoService();
+  final TodoService _service = Get.put(TodoService());
 
   // Data
-  final RxList<TodoModel> scheduledTodoList = <TodoModel>[].obs;
+  final RxList<TodoModel> selectedTodoList = <TodoModel>[].obs;
   final RxMap<String, List<TodoModel>> calendarTodoList =
       <String, List<TodoModel>>{}.obs;
-  final RxList<TodoModel> diaryTodoList = <TodoModel>[].obs;
 
   final RxMap<String, Map<String, double>> calendarItemCounts =
       <String, Map<String, double>>{}.obs;
@@ -35,8 +33,7 @@ class TodoController extends GetxController {
   void onInit() {
     super.onInit();
 
-    ever(selectedDate, (callback) => loadScheduledData());
-    ever(selectedDate, (callback) => loadDiaryData());
+    ever(selectedDate, (callback) => loadSelectedData());
 
     loadAllData();
   }
@@ -45,48 +42,30 @@ class TodoController extends GetxController {
     Init Functions
    */
   void loadAllData() {
-    loadScheduledData();
+    loadSelectedData();
     loadCalendarData();
-    loadDiaryData();
   }
 
-  void loadData(TodoType type) {
-    switch (type) {
-      case TodoType.scheduled:
-        loadScheduledData();
-        loadDiaryData();
-        break;
-      default:
-        break;
-    }
-  }
-
-  void loadScheduledData() async {
+  Future<void> loadSelectedData() async {
     final DateTime startDate = DateTime(selectedDate.value.year,
         selectedDate.value.month, selectedDate.value.day);
     final DateTime endDate = startDate.add(const Duration(days: 1));
 
-    var data = await _service.getScheduledTodoByDate(
-        startDate: startDate, endDate: endDate);
-    scheduledTodoList.value = data;
-  }
-
-  void loadDiaryData() async {
-    final DateTime startDate = DateTime(selectedDate.value.year,
-        selectedDate.value.month, selectedDate.value.day);
-    final DateTime endDate = startDate.add(const Duration(days: 1));
-
-    var data = await _service.getCheckedTodoByDate(
+    final scheduledData = await _service.getScheduledTodoByDate(
         startDate: startDate, endDate: endDate);
 
-    diaryTodoList.value = data;
+    final constantData = await _service.getConstantTodo();
+
+    var data = [...constantData, ...scheduledData];
+
+    selectedTodoList.value = data;
   }
 
-  void loadCalendarData() async {
-    final DateTime startDate =
-        selectedCalendarDate.value.subtract(const Duration(days: 60));
-    final DateTime endDate =
-        selectedCalendarDate.value.add(const Duration(days: 60));
+  Future<void> loadCalendarData() async {
+    final DateTime startDate = getPreviousMonthEnd(selectedCalendarDate.value)
+        .subtract(const Duration(days: 7));
+    final DateTime endDate = getNextMonthStart(selectedCalendarDate.value)
+        .add(const Duration(days: 7));
 
     var data = await _service.getScheduledTodoByDate(
         startDate: startDate, endDate: endDate);
@@ -102,9 +81,8 @@ class TodoController extends GetxController {
   void addTodo({required TodoModel todo}) async {
     await _service.insertTodo(todo: todo);
 
+    loadSelectedData();
     if (todo.date != null) {
-      loadData(TodoType.scheduled);
-
       updateCalendarItemCounts(todo.date);
     }
   }
@@ -114,7 +92,7 @@ class TodoController extends GetxController {
 
     await _service.insertTodo(todo: backup!.backupTodoItem);
 
-    loadData(backup!.backupType);
+    loadSelectedData();
 
     if (backup!.backupTodoItem.date != null) {
       updateCalendarItemCounts(backup!.backupTodoItem.date);
@@ -124,13 +102,8 @@ class TodoController extends GetxController {
   /*
     READ Functions
    */
-  TodoModel getTodoById({required TodoType type, required String todoId}) {
-    switch (type) {
-      case TodoType.scheduled:
-        return scheduledTodoList.firstWhere((e) => e.id == todoId);
-      default:
-        throw Exception('An unexpected error occurred at getTodoById');
-    }
+  TodoModel getTodoById({required String todoId}) {
+    return selectedTodoList.firstWhere((e) => e.id == todoId);
   }
 
   /*
@@ -138,8 +111,20 @@ class TodoController extends GetxController {
    */
   void toggleMainTodoChecked(
       {required TodoType type, required String todoId}) async {
-    TodoModel todo = getTodoById(todoId: todoId, type: type);
+    TodoModel todo = getTodoById(todoId: todoId);
     todo.isChecked = !todo.isChecked;
+
+    DateTime? todoDate = selectedDate.value;
+    if(type == TodoType.constant) {
+      if(todo.isChecked) {
+        todo.date = selectedDate.value;
+        todoDate = todo.date;
+      } else {
+        todoDate = todo.date;
+        todo.date = null;
+      }
+    }
+
     if (todo.checkTime == null) {
       todo.checkTime = DateTime.now();
     } else {
@@ -148,12 +133,31 @@ class TodoController extends GetxController {
 
     await _service.updateTodo(todo);
 
-    updateCalendarItemCounts(todo.date);
-    loadData(type);
+    updateCalendarItemCounts(todoDate);
+    loadSelectedData();
+  }
+
+  void toggleTodoType({required String categoryId}) async {
+    List<TodoModel> todoList = await _service.getUncheckedTodo(categoryId: categoryId);
+
+    List<TodoModel> newTodoList = [];
+    for(var todo in todoList) {
+      if(todo.date == null) {
+        todo.date = DateTime.now();
+        newTodoList.add(todo);
+      } else {
+        todo.date = null;
+        newTodoList.add(todo);
+      }
+      updateCalendarItemCounts(todo.date);
+    }
+
+    await _service.updateTodos(newTodoList);
+    loadSelectedData();
   }
 
   void updateTodos(
-      {required TodoType type, required List<TodoModel> todoList}) async {
+      {required List<TodoModel> todoList}) async {
     await _service.updateTodos(todoList);
   }
 
@@ -161,14 +165,11 @@ class TodoController extends GetxController {
     Delete Functions
    */
   Future<void> deleteTodo(
-      {required TodoType type, required TodoModel todo}) async {
+      {required TodoModel todo}) async {
     await _service.deleteTodo(todo.id);
 
-    loadData(type);
-
-    if (todo.date != null) {
-      updateCalendarItemCounts(todo.date);
-    }
+    loadSelectedData();
+    updateCalendarItemCounts(todo.date);
   }
 
   /*
@@ -267,15 +268,17 @@ class TodoController extends GetxController {
     }
   }
 
-  void updateCalendarItemCounts(DateTime? dateTime) {
+  void updateCalendarItemCounts(DateTime? dateTime) async {
     if (dateTime == null) return;
 
-    loadCalendarData();
+    await loadCalendarData();
 
     String date = DateFormat('yyyyMMdd').format(dateTime);
+    calendarItemCounts[date] = {};
+
     if (calendarTodoList[date] == null) return;
 
-    calendarItemCounts[date] = {};
+    log(calendarTodoList[date].toString());
 
     int sum = 0;
     for (int i = 0; i < calendarTodoList[date]!.length; i++) {
@@ -300,8 +303,8 @@ class TodoController extends GetxController {
       }
     }
 
-    for (var values in calendarItemCounts[date]!.values) {
-      log(values.toString());
+    for (var keys in calendarItemCounts[date]!.keys) {
+      log("$keys ${calendarItemCounts[date]![keys]}");
     }
   }
 }

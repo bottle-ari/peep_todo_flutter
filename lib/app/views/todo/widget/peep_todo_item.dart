@@ -7,14 +7,12 @@ import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/page/scheduled_todo_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/backup_todo_model.dart';
-import 'package:peep_todo_flutter/app/data/model/todo/sub_todo_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
-import 'package:peep_todo_flutter/app/utils/priority_util.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_check_button.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_rollback_snackbar.dart';
 import 'package:uuid/uuid.dart';
@@ -36,7 +34,7 @@ class PeepTodoItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final TodoController controller = Get.find();
     final ScheduledTodoController scheduledTodoController = Get.find();
-    TodoModel todo = controller.getTodoById(type: todoType, todoId: todoId);
+    TodoModel todo = controller.getTodoById(todoId: todoId);
 
     void deleteTodo() {
       if (Get.isSnackbarOpen) {
@@ -49,7 +47,7 @@ class PeepTodoItem extends StatelessWidget {
           backupDate: todo.date,
           backupType: todoType);
 
-      controller.deleteTodo(todo: todo, type: todoType);
+      controller.deleteTodo(todo: todo);
 
       Get.snackbar('', '',
           snackPosition: SnackPosition.BOTTOM,
