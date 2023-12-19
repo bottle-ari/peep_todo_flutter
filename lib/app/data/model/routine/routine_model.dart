@@ -36,7 +36,7 @@ class RoutineModel {
       id: map['id'],
       categoryId: map['category_id'],
       name: map['name'],
-      isActive: map['is_active'],
+      isActive: (map['is_active'] == 1),
       priority: map['priority'],
       repeatCondition: map['repeat_condition'],
       pos: map['pos'],

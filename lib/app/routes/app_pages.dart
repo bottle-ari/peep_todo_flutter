@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/bindings/page/category_detail_binding.dart';
 import 'package:peep_todo_flutter/app/bindings/page/overdue_todo_binding.dart';
+import 'package:peep_todo_flutter/app/bindings/page/routine_manage_binding.dart';
 import 'package:peep_todo_flutter/app/bindings/page/todo_detail_binding.dart';
 import 'package:peep_todo_flutter/app/bindings/page/todo_memo_binding.dart';
 import 'package:peep_todo_flutter/app/views/category/page/category_detail_page.dart';
+import 'package:peep_todo_flutter/app/views/routine/page/routine_manage_page.dart';
 import 'package:peep_todo_flutter/app/views/test.dart';
 import 'package:peep_todo_flutter/app/views/category/page/category_manage_page.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/todo_detail_page.dart';
@@ -65,6 +67,12 @@ class AppPages {
       name: _Paths.TODO_MEMO_PAGE,
       page: () => TodoMemoPage(),
       binding: TodoMemoBinding(),
+    ),
+    GetPage(
+      name: _Paths.ROUTINE_MANAGE_PAGE,
+      page: () => RoutineManagePage(),
+      binding: RoutineManageBinding(),
+      transition: Transition.rightToLeft,
     ),
   ];
 }

@@ -84,10 +84,6 @@ class RoutineController extends BaseController {
   Future<bool> toggleActiveState(String routineId) async {
     RoutineModel routine = routineList.firstWhere((e) => e.id == routineId);
 
-    if(routine.isActive && routineList.where((e) => e.isActive).length <= 1) {
-      return false;
-    }
-
     routine.isActive = !routine.isActive;
     await _service.updateRoutine(routine);
 
