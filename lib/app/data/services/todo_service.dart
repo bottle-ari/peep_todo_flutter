@@ -1,8 +1,7 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/data/model/todo/sub_todo_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:peep_todo_flutter/app/data/provider/database/todo_provider.dart';
 
@@ -44,13 +43,23 @@ class TodoService extends GetxService {
     return todoList;
   }
 
-  Future<List<TodoModel>> getCheckedTodoByDate(
-      {required DateTime startDate, required DateTime endDate}) async {
+  Future<List<TodoModel>> getConstantTodo() async {
     final List<Map<String, dynamic>> todoMaps =
-    await _provider.getCheckedTodoByDate(
-        startDate.millisecondsSinceEpoch, endDate.millisecondsSinceEpoch);
+    await _provider.getConstantTodo();
 
-    log('todoMaps : ${todoMaps.length}');
+    List<TodoModel> todoList = [];
+
+    for (var todoMap in todoMaps) {
+      TodoModel todo = TodoModel.fromMap(todoMap);
+      todoList.add(todo);
+    }
+
+    return todoList;
+  }
+
+  Future<List<TodoModel>> getUncheckedTodo({required String categoryId}) async {
+    final List<Map<String, dynamic>> todoMaps =
+    await _provider.getUncheckedTodoByDate(categoryId: categoryId);
 
     List<TodoModel> todoList = [];
 

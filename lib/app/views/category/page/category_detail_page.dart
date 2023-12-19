@@ -79,7 +79,7 @@ class CategoryDetailPage extends BaseView<CategoryDetailController> {
                     backgroundColorOff: Palette.peepWhite,
                     textColorOn: Palette.peepGray500,
                     textColorOff: Palette.peepGray500,
-                    icon: controller.category.value.type == TodoType.scheduled
+                    icon: controller.todoType.value == TodoType.scheduled
                         ? PeepIcon(
                             Iconsax.calendar,
                             size: AppValues.baseIconSize,
@@ -91,7 +91,7 @@ class CategoryDetailPage extends BaseView<CategoryDetailController> {
                             color: Palette.peepGray500,
                           ),
                     toggleState:
-                        controller.category.value.type == TodoType.scheduled),
+                        controller.todoType.value == TodoType.scheduled),
                 PeepHalfToggleButton(
                     textOn: "사용 중",
                     textOff: "사용 안함",
@@ -133,7 +133,7 @@ class CategoryDetailPage extends BaseView<CategoryDetailController> {
                         right: AppValues.screenPadding,
                       ),
                       child: Text(
-                        controller.category.value.type == TodoType.scheduled
+                        controller.todoType.value == TodoType.scheduled
                             ? "날짜 지정 카테고리는 할 일을 추가할 때\n꼭 날짜 정보를 포함해야 해요"
                             : "상시 보이기 카테고리는 할 일을 완료했을 때\n완료한 날짜를 기준으로 날짜 정보를 추가해요",
                         style:

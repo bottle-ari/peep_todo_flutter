@@ -34,12 +34,20 @@ class TodoProvider extends GetxService {
     return result;
   }
 
-  Future<List<Map<String, Object?>>> getCheckedTodoByDate(
-      int startDate, int endDate) async {
+  Future<List<Map<String, Object?>>> getConstantTodo() async {
     final db = await DatabaseInit().database;
 
     final List<Map<String, dynamic>> result = await db.rawQuery(
-        "SELECT * FROM todo WHERE check_time >= $startDate AND check_time < $endDate ORDER BY pos ASC, date ASC");
+        "SELECT * FROM todo WHERE date is NULL ORDER BY pos ASC");
+
+    return result;
+  }
+
+  Future<List<Map<String, Object?>>> getUncheckedTodoByDate({required String categoryId}) async {
+    final db = await DatabaseInit().database;
+
+    final List<Map<String, dynamic>> result = await db.rawQuery(
+        "SELECT * FROM todo WHERE is_checked == 0 AND category_id == '$categoryId' ORDER BY pos ASC, date ASC");
 
     return result;
   }

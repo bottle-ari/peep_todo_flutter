@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/animation/peep_category_toggle_button_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/data/todo_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
@@ -12,6 +13,7 @@ import '../../data/model/category/category_model.dart';
 
 class CategoryDetailController extends BaseController {
   final CategoryController _categoryController = Get.find();
+  final TodoController _todoController = Get.find();
   final PeepCategoryToggleButtonController _animationController =
       Get.find(tag: Get.arguments['category_id']);
   final String categoryId = Get.arguments['category_id'];
@@ -24,6 +26,9 @@ class CategoryDetailController extends BaseController {
           isActive: true,
           pos: -1)
       .obs;
+
+  final Rx<TodoType> todoType = TodoType.scheduled.obs;
+  final RxBool isTypeChanged = false.obs;
 
   final TextEditingController textEditingController = TextEditingController();
   final FocusNode focusNode = FocusNode();
@@ -39,11 +44,13 @@ class CategoryDetailController extends BaseController {
     });
 
     loadCategory();
+    todoType.value = category.value.type;
     textEditingController.text = category.value.name;
   }
 
   @override
   void onClose() {
+    confirmToggleTodoType();
     focusNode.dispose();
     textEditingController.dispose();
     super.onClose();
@@ -63,8 +70,24 @@ class CategoryDetailController extends BaseController {
    */
 
   void toggleTodoType() {
-    _categoryController.toggleTodoType(categoryId);
-    loadCategory();
+    isTypeChanged.value = !isTypeChanged.value;
+
+    switch(todoType.value) {
+      case TodoType.scheduled:
+        todoType.value = TodoType.constant;
+        break;
+      case TodoType.constant:
+        todoType.value = TodoType.scheduled;
+        break;
+    }
+  }
+
+  void confirmToggleTodoType() {
+    if(isTypeChanged.value) {
+      _categoryController.toggleTodoType(categoryId);
+      loadCategory();
+      _todoController.toggleTodoType(categoryId: categoryId);
+    }
   }
 
   Future<bool> toggleCategoryActiveState() async {
