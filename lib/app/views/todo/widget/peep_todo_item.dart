@@ -44,8 +44,7 @@ class PeepTodoItem extends StatelessWidget {
       controller.backup = BackupTodoModel(
           backupTodoItem: todo,
           backupIndex: todo.pos,
-          backupDate: todo.date,
-          backupType: todoType);
+          backupDate: todo.date);
 
       controller.deleteTodo(todo: todo);
 

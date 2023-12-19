@@ -19,6 +19,7 @@ import 'package:peep_todo_flutter/app/views/common/popup/peep_confirm_popup.dart
 import 'package:peep_todo_flutter/app/views/todo/page/priority_picker_modal.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_todo_detail_main_item.dart';
 
+import '../../../controllers/data/todo_controller.dart';
 import '../../../controllers/page/todo_detail_controller.dart';
 import '../../../data/enums/priority.dart';
 import '../../../data/model/todo/backup_todo_model.dart';
@@ -31,19 +32,19 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
     TodoModel todo = Get.arguments['todo'];
+    final TodoController todoController = Get.find();
 
     void deleteTodo() {
       if (Get.isSnackbarOpen) {
         Get.back();
       }
 
-      controller.todoController.backup = BackupTodoModel(
+      todoController.backup = BackupTodoModel(
           backupTodoItem: todo,
           backupIndex: todo.pos,
-          backupDate: todo.date,
-          backupType: TodoType.scheduled);
+          backupDate: todo.date,);
 
-      controller.todoController.deleteTodo(todo: todo);
+      todoController.deleteTodo(todo: todo);
 
       Get.snackbar('', '',
           snackPosition: SnackPosition.BOTTOM,
@@ -61,7 +62,7 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
               boldText: todo.name,
               regularText: '삭제!',
               onTapRollback: () {
-                controller.todoController.rollbackTodo();
+                todoController.rollbackTodo();
                 Get.back();
               }));
     }
