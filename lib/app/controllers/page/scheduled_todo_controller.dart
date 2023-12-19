@@ -333,7 +333,7 @@ class ScheduledTodoController extends BaseController {
     });
 
     ever(_categoryController.categoryList,
-            (callback) => updateScheduledTodoList());
+        (callback) => updateScheduledTodoList());
 
     updateScheduledTodoList();
   }
@@ -398,7 +398,7 @@ class ScheduledTodoController extends BaseController {
       Map<String, dynamic> tempMap = jsonDecode(prefController.data[key]!);
 
       Map<String, bool> storedCategoryFoldMap =
-      tempMap.map((key, value) => MapEntry(key, value as bool));
+          tempMap.map((key, value) => MapEntry(key, value as bool));
 
       for (var category in _categoryController.categoryList) {
         categoryFoldMap[category.id] =
@@ -499,12 +499,12 @@ class ScheduledTodoController extends BaseController {
     if (!isInputMode.value) return;
 
     TodoModel todo =
-    scheduledTodoList.firstWhere((element) => element.id == newTodoId);
+        scheduledTodoList.firstWhere((element) => element.id == newTodoId);
 
     if (textFieldController.text != '') {
       final bool isScheduledTodoType = _categoryController
-          .getCategoryById(categoryId: todo.categoryId)
-          .type ==
+              .getCategoryById(categoryId: todo.categoryId)
+              .type ==
           TodoType.scheduled;
       if (isScheduledTodoType) {
         _todoController.addTodo(
@@ -564,7 +564,7 @@ class ScheduledTodoController extends BaseController {
 
   Color getColorByCategory({required TodoModel item}) {
     CategoryModel category =
-    _categoryController.getCategoryById(categoryId: item.categoryId);
+        _categoryController.getCategoryById(categoryId: item.categoryId);
 
     return category.color;
   }
@@ -575,7 +575,7 @@ class ScheduledTodoController extends BaseController {
 
   TodoType getTodoTypeByCategory({required TodoModel item}) {
     CategoryModel category =
-    _categoryController.getCategoryById(categoryId: item.categoryId);
+        _categoryController.getCategoryById(categoryId: item.categoryId);
 
     return category.type;
   }
@@ -614,7 +614,21 @@ class ScheduledTodoController extends BaseController {
       }
     }
 
+    final todoType = _categoryController
+        .getCategoryById(categoryId: todoItem.categoryId)
+        .type;
+    final newTodoType =
+        _categoryController.getCategoryById(categoryId: newCategoryId).type;
     todoItem.categoryId = newCategoryId;
+    if (todoType != newTodoType) {
+      if (!todoItem.isChecked) {
+        if (newTodoType == TodoType.constant) {
+          todoItem.date = null;
+        } else {
+          todoItem.date = _todoController.selectedDate.value;
+        }
+      }
+    }
 
     list.insert(newIndex, todoItem);
     scheduledTodoList.value = List.from(list);
@@ -626,8 +640,8 @@ class ScheduledTodoController extends BaseController {
     update();
   }
 
-  void _reorderAndSaveTodoList(String oldCategoryId, String newCategoryId,
-      int newIndex) {
+  void _reorderAndSaveTodoList(
+      String oldCategoryId, String newCategoryId, int newIndex) {
     // 2. oldCategory pos 변경 후 저장
     var first = categoryIndexMap[oldCategoryId]![0];
     var last = categoryIndexMap[oldCategoryId]![1];
@@ -654,7 +668,7 @@ class ScheduledTodoController extends BaseController {
 
       _todoController.updateTodos(
           todoList:
-          scheduledTodoList.sublist(first + 1, last).cast<TodoModel>());
+              scheduledTodoList.sublist(first + 1, last).cast<TodoModel>());
     }
   }
 
