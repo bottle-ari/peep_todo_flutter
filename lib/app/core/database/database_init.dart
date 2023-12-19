@@ -73,8 +73,7 @@ class DatabaseInit {
           priority INTEGER,
           repeat_condition TEXT,
           pos INTEGER,
-          FOREIGN KEY (category_id) REFERENCES category(id),
-          FOREIGN KEY (reminder_id) REFERENCES reminder(id))
+          FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE CASCADE)
       """,
     );
 
