@@ -164,7 +164,6 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
                         ),
                       ),
                       PeepHalfButton(
-                        // overdue -> color change 수정 필요
                         color: controller.isOverdue()
                             ? Palette.peepRed
                             : Palette.peepWhite,

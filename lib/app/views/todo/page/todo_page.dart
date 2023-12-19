@@ -118,9 +118,7 @@ class TodoPage extends BaseView<ScheduledTodoController> {
                                     padding: EdgeInsets.symmetric(
                                         vertical: AppValues.innerMargin),
                                     child: PeepCategoryItem(
-                                        color: item.color,
-                                        name: item.name,
-                                        emoji: item.emoji,
+                                        category: item,
                                         onTapAddButton: () {
                                           if (controller
                                                   .categoryFoldMap[item.id] ??
