@@ -127,8 +127,6 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
 
   @override
   Widget body(BuildContext context) {
-    Color color = Get.arguments['color'];
-
     return SizedBox(
       height: double.infinity,
       child: Padding(
@@ -160,7 +158,7 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
                                     controller.todo.value.priority)
                                 .PriorityColor,
                         icon: PeepIcon(
-                          Iconsax.eggCracked,
+                          Iconsax.priority,
                           size: AppValues.smallIconSize,
                           color: PriorityUtil.getPriority(
                                   controller.todo.value.priority)
@@ -208,7 +206,7 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
                       vertical: AppValues.innerMargin,
                     ),
                     child: PeepTodoDetailMainItem(
-                      color: color,
+                      color: controller.getColor(),
                       onTap: () => print('detail main item tap'),
                       text: controller.todo.value.name,
                     ),

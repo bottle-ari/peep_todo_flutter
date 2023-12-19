@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
@@ -10,8 +11,7 @@ import '../../../controllers/page/todo_detail_controller.dart';
 class PriorityPickerModal extends StatelessWidget {
   final TodoDetailController controller;
 
-  const PriorityPickerModal(
-      {super.key, required this.controller});
+  const PriorityPickerModal({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class PriorityPickerModal extends StatelessWidget {
               style: PeepTextStyle.boldL(color: Palette.peepGray400),
             ),
           ),
-          for (int i = 4; i >= 0; i--)
+          for (int i = 3; i >= 0; i--)
             Padding(
               padding:
                   EdgeInsets.symmetric(horizontal: AppValues.screenPadding / 2),
@@ -56,7 +56,7 @@ class PriorityPickerModal extends StatelessWidget {
               ),
             ),
           SizedBox(
-            height: AppValues.verticalMargin,
+            height: 20.h,
           ),
         ],
       ),

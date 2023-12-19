@@ -43,7 +43,7 @@ class PeepHalfButton extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.only(left: 1.5 * AppValues.horizontalMargin),
+                padding: EdgeInsets.only(left: AppValues.horizontalMargin),
                     child:
                         Text(text, style: PeepTextStyle.regularM(color: textColor))
               ),

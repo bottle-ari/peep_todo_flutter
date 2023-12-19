@@ -19,13 +19,12 @@ class PeepPriorityPickerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return InkWell(
       onTap: onTap,
       child: Container(
         width: AppValues.screenWidth - AppValues.screenPadding,
         decoration: BoxDecoration(
-          color: currentPriority ? Palette.peepButton200 : Palette.peepWhite,
+          color: Palette.peepWhite,
           borderRadius: BorderRadius.all(
             Radius.circular(AppValues.baseRadius),
           ),
@@ -40,7 +39,7 @@ class PeepPriorityPickerItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               PeepIcon(
-                Iconsax.eggCracked,
+                Iconsax.priority,
                 size: AppValues.smallIconSize,
                 color: PriorityUtil.getPriority(priority).PriorityColor,
               ),
@@ -49,8 +48,18 @@ class PeepPriorityPickerItem extends StatelessWidget {
               ),
               Text(
                 PriorityUtil.getPriority(priority).PriorityString,
-                style: PeepTextStyle.regularM(color: PriorityUtil.getPriority(priority).PriorityColor),
+                style: PeepTextStyle.regularM(
+                    color: PriorityUtil.getPriority(priority).PriorityColor),
               ),
+              if (currentPriority)
+                Padding(
+                  padding: EdgeInsets.only(left: AppValues.horizontalMargin),
+                  child: PeepIcon(
+                    Iconsax.checkBold,
+                    size: AppValues.smallIconSize,
+                    color: PriorityUtil.getPriority(priority).PriorityColor,
+                  ),
+                ),
             ],
           ),
         ),
