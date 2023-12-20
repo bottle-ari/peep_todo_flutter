@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
@@ -18,6 +19,9 @@ class TodoDetailController extends BaseController {
   late final Rx<TodoType> todoType;
   late final Rx<CategoryModel> category;
 
+  final TextEditingController textEditingController = TextEditingController();
+  final FocusNode focusNode = FocusNode();
+
   TodoDetailController() {
     TodoModel todoModel = Get.arguments['todo'] as TodoModel;
     todo = todoModel.obs;
@@ -26,6 +30,26 @@ class TodoDetailController extends BaseController {
     category = categoryController
         .getCategoryById(categoryId: todo.value.categoryId)
         .obs;
+  }
+
+  @override
+  void onInit() {
+    textEditingController.text = todo.value.name;
+
+    focusNode.addListener(() {
+      if (!focusNode.hasFocus) {
+        onEditingDone();
+      }
+    });
+
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    textEditingController.dispose();
+    focusNode.dispose();
+    super.onClose();
   }
 
   void updatePriority(int index) {
@@ -136,6 +160,26 @@ class TodoDetailController extends BaseController {
       } else {
         return DateFormat('MM월 dd일').format(todo.value.date!);
       }
+    }
+  }
+
+  void onEditingDone() {
+    if (textEditingController.text != '') {
+      TodoModel newTodo = TodoModel(
+          id: todo.value.id,
+          categoryId: todo.value.categoryId,
+          reminderId: todo.value.reminderId,
+          name: textEditingController.text,
+          date: todo.value.date,
+          priority: todo.value.priority,
+          memo: todo.value.memo,
+          isChecked: todo.value.isChecked,
+          pos: todo.value.pos,
+          checkTime: todo.value.checkTime);
+
+      todoController.updateTodos(todoList: [newTodo]);
+
+      todo.value = newTodo;
     }
   }
 }

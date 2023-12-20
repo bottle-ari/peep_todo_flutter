@@ -209,15 +209,11 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: AppValues.innerMargin,
-                    ),
-                    child: PeepTodoDetailMainItem(
-                      color: controller.category.value.color,
-                      onTap: () => print('detail main item tap'),
-                      text: controller.todo.value.name,
-                    ),
-                  ),
+                      padding: EdgeInsets.symmetric(
+                        vertical: AppValues.innerMargin,
+                      ),
+                      child: PeepTodoDetailMainItem(
+                          controller: controller,)),
                   Padding(
                     padding: EdgeInsets.symmetric(
                       vertical: AppValues.verticalMargin,

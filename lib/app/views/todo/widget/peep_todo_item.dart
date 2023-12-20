@@ -19,6 +19,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../../controllers/data/todo_controller.dart';
 import '../../../utils/priority_util.dart';
+import '../../common/buttons/peep_animation_effect.dart';
 
 class PeepTodoItem extends StatelessWidget {
   final Color color;
@@ -184,11 +185,13 @@ class PeepTodoItem extends StatelessWidget {
                                     horizontal: AppValues.innerMargin),
                                 child: Align(
                                   alignment: Alignment.centerRight,
-                                  child: PeepCheckButton(
-                                    color: color,
-                                    controller: controller,
-                                    todoType: todoType,
-                                    todoId: todo.id,
+                                  child: PeepAnimationEffect(
+                                    child: PeepCheckButton(
+                                      color: color,
+                                      controller: controller,
+                                      todoType: todoType,
+                                      todoId: todo.id,
+                                    ),
                                   ),
                                 ),
                               ),
