@@ -23,6 +23,7 @@ import 'package:peep_todo_flutter/app/views/todo/widget/peep_todo_detail_main_it
 import '../../../controllers/data/todo_controller.dart';
 import '../../../controllers/page/todo_detail_controller.dart';
 import '../../../data/enums/priority.dart';
+import '../../../data/model/category/category_model.dart';
 import '../../../data/model/todo/backup_todo_model.dart';
 import '../../../data/model/todo/todo_model.dart';
 import '../../../theme/app_values.dart';
@@ -170,10 +171,10 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
                             ? Palette.peepRed
                             : Palette.peepWhite,
                         onTap: () {
-                          if (Get.arguments['type'] == TodoType.scheduled) {
+                          if (controller.todoType.value == TodoType.scheduled) {
                             Get.bottomSheet(PeepDatePicker(
                               date: controller.todo.value.date!,
-                              color: controller.getColor(),
+                              color: controller.category.value.color,
                               onConfirm: (DateTime date) {
                                 controller.updateDate(date);
                               },
@@ -201,10 +202,10 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
                       vertical: AppValues.verticalMargin,
                     ),
                     child: PeepCategoryPickerButton(
-                      onTap: () {
-                        log('category button clicked');
+                      onConfirm: (CategoryModel category) {
+                        controller.updateCategory(category);
                       },
-                      categoryModel: controller.getCategory(),
+                      categoryModel: controller.category.value,
                     ),
                   ),
                   Padding(
@@ -212,7 +213,7 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
                       vertical: AppValues.innerMargin,
                     ),
                     child: PeepTodoDetailMainItem(
-                      color: controller.getColor(),
+                      color: controller.category.value.color,
                       onTap: () => print('detail main item tap'),
                       text: controller.todo.value.name,
                     ),

@@ -15,10 +15,17 @@ class TodoDetailController extends BaseController {
   final CategoryController categoryController = Get.find();
 
   late final Rx<TodoModel> todo;
+  late final Rx<TodoType> todoType;
+  late final Rx<CategoryModel> category;
 
   TodoDetailController() {
     TodoModel todoModel = Get.arguments['todo'] as TodoModel;
     todo = todoModel.obs;
+    TodoType todoTypeData = Get.arguments['type'] as TodoType;
+    todoType = todoTypeData.obs;
+    category = categoryController
+        .getCategoryById(categoryId: todo.value.categoryId)
+        .obs;
   }
 
   void updatePriority(int index) {
@@ -58,35 +65,76 @@ class TodoDetailController extends BaseController {
     todo.value = newTodo;
   }
 
+  void updateCategory(CategoryModel newCategory) {
+    TodoModel newTodo;
+    if (newCategory.type != todoType.value) {
+      if(newCategory.type == TodoType.scheduled) {
+        newTodo = TodoModel(
+            id: todo.value.id,
+            categoryId: newCategory.id,
+            reminderId: todo.value.reminderId,
+            name: todo.value.name,
+            date: DateTime.now(),
+            priority: todo.value.priority,
+            memo: todo.value.memo,
+            isChecked: todo.value.isChecked,
+            pos: 0,
+            checkTime: todo.value.checkTime);
+
+        todoType.value = TodoType.scheduled;
+      } else {
+        newTodo = TodoModel(
+            id: todo.value.id,
+            categoryId: newCategory.id,
+            reminderId: todo.value.reminderId,
+            name: todo.value.name,
+            date: null,
+            priority: todo.value.priority,
+            memo: todo.value.memo,
+            isChecked: todo.value.isChecked,
+            pos: 0,
+            checkTime: todo.value.checkTime);
+
+        todoType.value = TodoType.constant;
+      }
+    } else {
+      newTodo = TodoModel(
+          id: todo.value.id,
+          categoryId: newCategory.id,
+          reminderId: todo.value.reminderId,
+          name: todo.value.name,
+          date: todo.value.date,
+          priority: todo.value.priority,
+          memo: todo.value.memo,
+          isChecked: todo.value.isChecked,
+          pos: 0,
+          checkTime: todo.value.checkTime);
+    }
+
+    todoController.updateTodos(todoList: [newTodo]);
+    todo.value = newTodo;
+    loadCategory();
+  }
+
   bool isOverdue() {
     final now = DateTime.now();
     return todo.value.date?.isBefore(DateTime(now.year, now.month, now.day)) ??
         false;
   }
 
-  CategoryModel getCategory() {
-    return categoryController.getCategoryById(
-        categoryId: todo.value.categoryId);
-  }
-
-  Color getColor() {
-    var category = categoryController.getCategoryById(categoryId: todo.value.categoryId);
-
-    return category.color;
+  void loadCategory() {
+    category.value =
+        categoryController.getCategoryById(categoryId: todo.value.categoryId);
   }
 
   String getDateString() {
-    if(Get.arguments['type'] == TodoType.constant) {
+    if (todoType.value == TodoType.constant) {
       return '상시 Todo';
     } else {
-      if(todo.value.date!.year != DateTime
-          .now()
-          .year) {
-        return DateFormat('yyyy년 MM월 dd일')
-            .format(todo.value.date!);
+      if (todo.value.date!.year != DateTime.now().year) {
+        return DateFormat('yyyy년 MM월 dd일').format(todo.value.date!);
       } else {
-        return DateFormat('MM월 dd일')
-            .format(todo.value.date!);
+        return DateFormat('MM월 dd일').format(todo.value.date!);
       }
     }
   }
