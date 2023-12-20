@@ -22,7 +22,6 @@ class PeepPriorityPickerItem extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        width: AppValues.screenWidth - AppValues.screenPadding,
         decoration: BoxDecoration(
           color: Palette.peepWhite,
           borderRadius: BorderRadius.all(

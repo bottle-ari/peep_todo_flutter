@@ -159,7 +159,7 @@ class TodoController extends GetxController {
   void updateTodos(
       {required List<TodoModel> todoList}) async {
     await _service.updateTodos(todoList);
-    loadSelectedData();
+    loadAllData();
   }
 
   /*
@@ -237,6 +237,14 @@ class TodoController extends GetxController {
     update();
   }
 
+  // TODO : 추후 ringPainter 변경과 함께 바꿔야 함.
+  void loadOldDates({required List<DateTime> dateList}) {
+    for(var date in dateList) {
+      calendarItemCounts[ DateFormat('yyyyMMdd').format(date)] = {};
+    }
+  }
+
+  // TODO : 코드 성능 안좋음, 추후 수정 필요
   void initCalendarItemCounts() {
     for (var date in calendarTodoList.keys) {
       if (calendarTodoList[date] == null) continue;

@@ -14,9 +14,10 @@ import 'package:peep_todo_flutter/app/utils/priority_util.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_category_picker_button.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_half_button.dart';
+import 'package:peep_todo_flutter/app/views/common/peep_date_picker.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_subpage_appbar.dart';
 import 'package:peep_todo_flutter/app/views/common/popup/peep_confirm_popup.dart';
-import 'package:peep_todo_flutter/app/views/todo/page/priority_picker_modal.dart';
+import 'package:peep_todo_flutter/app/views/todo/widget/priority_picker_modal.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_todo_detail_main_item.dart';
 
 import '../../../controllers/data/todo_controller.dart';
@@ -40,9 +41,10 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
       }
 
       todoController.backup = BackupTodoModel(
-          backupTodoItem: todo,
-          backupIndex: todo.pos,
-          backupDate: todo.date,);
+        backupTodoItem: todo,
+        backupIndex: todo.pos,
+        backupDate: todo.date,
+      );
 
       todoController.deleteTodo(todo: todo);
 
@@ -167,11 +169,18 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
                         color: controller.isOverdue()
                             ? Palette.peepRed
                             : Palette.peepWhite,
-                        onTap: () => {print('on tap')},
-                        text: controller.todo.value.date == null
-                            ? '상시 Todo'
-                            : DateFormat('MM월 dd일')
-                                .format(controller.todo.value.date!),
+                        onTap: () {
+                          if (Get.arguments['type'] == TodoType.scheduled) {
+                            Get.bottomSheet(PeepDatePicker(
+                              date: controller.todo.value.date!,
+                              color: controller.getColor(),
+                              onConfirm: (DateTime date) {
+                                controller.updateDate(date);
+                              },
+                            ));
+                          }
+                        },
+                        text: controller.getDateString(),
                         textColor: controller.isOverdue()
                             ? Palette.peepWhite
                             : Palette.peepGray500,
@@ -206,72 +215,6 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
                       color: controller.getColor(),
                       onTap: () => print('detail main item tap'),
                       text: controller.todo.value.name,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: AppValues.verticalMargin,
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: AppValues.horizontalMargin,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          PeepIcon(
-                            Iconsax.notification,
-                            color: Palette.peepGray500,
-                            size: AppValues.baseIconSize,
-                          ),
-                          SizedBox(
-                            width: AppValues.horizontalMargin,
-                          ),
-                          Text(
-                            '리마인더',
-                            style: PeepTextStyle.regularM(
-                                color: Palette.peepGray500),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: AppValues.verticalMargin,
-                    ),
-                    child: PeepAnimationEffect(
-                      onTap: () => {log("onTap add reminder")},
-                      child: Container(
-                        width: double.infinity,
-                        height: 48.h,
-                        decoration: BoxDecoration(
-                          color: Palette.peepGray50,
-                          border: Border.all(color: Palette.peepGray200),
-                          borderRadius:
-                              BorderRadius.circular(AppValues.baseRadius),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            PeepIcon(
-                              Iconsax.addSquare,
-                              size: AppValues.baseIconSize,
-                              color: Palette.peepGray400,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: AppValues.horizontalMargin),
-                              child: Text(
-                                "리마인더 추가",
-                                style: PeepTextStyle.regularM(
-                                    color: Palette.peepGray400),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                     ),
                   ),
                   Padding(

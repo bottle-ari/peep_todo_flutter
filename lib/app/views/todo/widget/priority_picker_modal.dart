@@ -37,7 +37,7 @@ class PriorityPickerModal extends StatelessWidget {
             ),
             child: Text(
               '우선순위 설정',
-              style: PeepTextStyle.boldL(color: Palette.peepGray400),
+              style: PeepTextStyle.boldL(color: Palette.peepGray500),
             ),
           ),
           for (int i = 3; i >= 0; i--)

@@ -128,7 +128,7 @@ class PeepTodoItem extends StatelessWidget {
               onTap: () {
                 if (!scheduledTodoController.isInputMode.value) {
                   Get.toNamed(Routes.TODO_DETAIL_PAGE,
-                      arguments: {'todo': todo, 'color': color});
+                      arguments: {'todo': todo, 'color': color, 'type': todoType});
                 }
 
                 scheduledTodoController.addNewTodoConfirm();
