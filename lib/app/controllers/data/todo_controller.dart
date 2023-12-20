@@ -102,8 +102,8 @@ class TodoController extends GetxController {
   /*
     READ Functions
    */
-  TodoModel getTodoById({required String todoId}) {
-    return selectedTodoList.firstWhere((e) => e.id == todoId);
+  Future<TodoModel> getTodoById({required String todoId}) {
+    return _service.getTodo(todoId: todoId);
   }
 
   /*
@@ -111,7 +111,7 @@ class TodoController extends GetxController {
    */
   void toggleMainTodoChecked(
       {required TodoType type, required String todoId}) async {
-    TodoModel todo = getTodoById(todoId: todoId);
+    TodoModel todo = await getTodoById(todoId: todoId);
     todo.isChecked = !todo.isChecked;
 
     DateTime? todoDate = selectedDate.value;

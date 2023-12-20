@@ -18,7 +18,7 @@ class TodoProvider extends GetxService {
   /*
     READ DATA
    */
-  Future<Map<String, Object?>> getTodo({required int todoId}) async {
+  Future<Map<String, Object?>> getTodo({required String todoId}) async {
     final db = await DatabaseInit().database;
 
     return (await db.query('todo', where: 'id = ?', whereArgs: [todoId])).first;

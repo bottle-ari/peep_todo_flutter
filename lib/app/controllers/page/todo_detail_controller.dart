@@ -140,6 +140,25 @@ class TodoDetailController extends BaseController {
     loadCategory();
   }
 
+  void toggleMainTodoChecked({required TodoType type, required String todoId}) {
+    todoController.toggleMainTodoChecked(type: type, todoId: todoId);
+
+    TodoModel newTodo = TodoModel(
+        id: todo.value.id,
+        categoryId: todo.value.categoryId,
+        reminderId: todo.value.reminderId,
+        name: todo.value.name,
+        date: todo.value.date,
+        priority: todo.value.priority,
+        memo: todo.value.memo,
+        isChecked: !todo.value.isChecked,
+        pos: todo.value.pos,
+        checkTime: todo.value.checkTime);
+
+    todo.value = newTodo;
+
+  }
+
   bool isOverdue() {
     final now = DateTime.now();
     return todo.value.date?.isBefore(DateTime(now.year, now.month, now.day)) ??

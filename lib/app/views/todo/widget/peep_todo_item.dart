@@ -190,7 +190,7 @@ class PeepTodoItem extends StatelessWidget {
                                       color: color,
                                       controller: controller,
                                       todoType: todoType,
-                                      todoId: todo.id,
+                                      todo: todo,
                                     ),
                                   ),
                                 ),
