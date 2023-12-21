@@ -133,92 +133,94 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
         child: Obx(
-          () => Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(bottom: AppValues.verticalMargin),
-                child: SizedBox(
-                  height: 48.h,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      PeepHalfButton(
-                        color: Palette.peepWhite,
-                        onTap: () {
-                          Get.bottomSheet(
-                              PriorityPickerModal(controller: controller));
-                        },
-                        text: PriorityUtil.getPriority(
-                                controller.todo.value.priority)
-                            .PriorityString,
-                        textColor: PriorityUtil.getPriority(
-                                    controller.todo.value.priority) ==
-                                Priority.unspecified
-                            ? Palette.peepGray400
-                            : PriorityUtil.getPriority(
+          () => SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(bottom: AppValues.verticalMargin),
+                  child: SizedBox(
+                    height: 48.h,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        PeepHalfButton(
+                          color: Palette.peepWhite,
+                          onTap: () {
+                            Get.bottomSheet(
+                                PriorityPickerModal(controller: controller));
+                          },
+                          text: PriorityUtil.getPriority(
+                                  controller.todo.value.priority)
+                              .PriorityString,
+                          textColor: PriorityUtil.getPriority(
+                                      controller.todo.value.priority) ==
+                                  Priority.unspecified
+                              ? Palette.peepGray400
+                              : PriorityUtil.getPriority(
+                                      controller.todo.value.priority)
+                                  .PriorityColor,
+                          icon: PeepIcon(
+                            Iconsax.priority,
+                            size: AppValues.smallIconSize,
+                            color: PriorityUtil.getPriority(
                                     controller.todo.value.priority)
                                 .PriorityColor,
-                        icon: PeepIcon(
-                          Iconsax.priority,
-                          size: AppValues.smallIconSize,
-                          color: PriorityUtil.getPriority(
-                                  controller.todo.value.priority)
-                              .PriorityColor,
+                          ),
                         ),
-                      ),
-                      PeepHalfButton(
-                        color: controller.isOverdue()
-                            ? Palette.peepRed
-                            : Palette.peepWhite,
-                        onTap: () {
-                          if (controller.todoType.value == TodoType.scheduled) {
-                            Get.bottomSheet(PeepDatePicker(
-                              date: controller.todo.value.date!,
-                              color: controller.category.value.color,
-                              onConfirm: (DateTime date) {
-                                controller.updateDate(date);
-                              },
-                            ));
-                          }
-                        },
-                        text: controller.getDateString(),
-                        textColor: controller.isOverdue()
-                            ? Palette.peepWhite
-                            : Palette.peepGray500,
-                        icon: PeepIcon(Iconsax.calendar,
-                            size: AppValues.smallIconSize,
-                            color: controller.isOverdue()
-                                ? Palette.peepWhite
-                                : Palette.peepGray500),
-                      ),
-                    ],
+                        PeepHalfButton(
+                          color: controller.isOverdue()
+                              ? Palette.peepRed
+                              : Palette.peepWhite,
+                          onTap: () {
+                            if (controller.todoType.value ==
+                                TodoType.scheduled) {
+                              Get.bottomSheet(PeepDatePicker(
+                                date: controller.todo.value.date!,
+                                color: controller.category.value.color,
+                                onConfirm: (DateTime date) {
+                                  controller.updateDate(date);
+                                },
+                              ));
+                            }
+                          },
+                          text: controller.getDateString(),
+                          textColor: controller.isOverdue()
+                              ? Palette.peepWhite
+                              : Palette.peepGray500,
+                          icon: PeepIcon(Iconsax.calendar,
+                              size: AppValues.smallIconSize,
+                              color: controller.isOverdue()
+                                  ? Palette.peepWhite
+                                  : Palette.peepGray500),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: AppValues.verticalMargin,
-                    ),
-                    child: PeepCategoryPickerButton(
-                      onConfirm: (CategoryModel category) {
-                        controller.updateCategory(category);
-                      },
-                      categoryModel: controller.category.value,
-                    ),
-                  ),
-                  Padding(
+                Column(
+                  children: [
+                    Padding(
                       padding: EdgeInsets.symmetric(
-                        vertical: AppValues.innerMargin,
+                        vertical: AppValues.verticalMargin,
                       ),
-                      child: PeepTodoDetailMainItem(
-                          controller: controller,)),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: AppValues.verticalMargin,
+                      child: PeepCategoryPickerButton(
+                        onConfirm: (CategoryModel category) {
+                          controller.updateCategory(category);
+                        },
+                        categoryModel: controller.category.value,
+                      ),
                     ),
-                    child: SizedBox(
+                    Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: AppValues.innerMargin,
+                        ),
+                        child: PeepTodoDetailMainItem(
+                          controller: controller,
+                        )),
+                    SizedBox(
+                      height: AppValues.verticalMargin * 2,
+                    ),
+                    SizedBox(
                       width:
                           AppValues.screenWidth - AppValues.screenPadding * 2,
                       child: Padding(
@@ -227,66 +229,79 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
                         child: Column(
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                PeepIcon(
-                                  Iconsax.memo,
-                                  color: Palette.peepGray500,
-                                  size: AppValues.baseIconSize,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    PeepIcon(
+                                      Iconsax.memo,
+                                      color: Palette.peepGray500,
+                                      size: AppValues.baseIconSize,
+                                    ),
+                                    SizedBox(
+                                      width: AppValues.horizontalMargin,
+                                    ),
+                                    Text(
+                                      '메모',
+                                      style: PeepTextStyle.regularM(
+                                          color: Palette.peepGray500),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(
-                                  width: AppValues.horizontalMargin,
-                                ),
-                                Text(
-                                  '메모',
-                                  style: PeepTextStyle.regularM(
-                                      color: Palette.peepGray500),
-                                ),
+                                PeepAnimationEffect(
+                                    onTap: () {
+                                      log("페이지 이동");
+                                      Get.toNamed(AppPages.TODOMEMO,
+                                          arguments: {
+                                            'text': controller.todo.value.memo,
+                                            'color':
+                                                controller.category.value.color,
+                                          });
+                                    },
+                                    child: Text(
+                                      '메모입력',
+                                      style: PeepTextStyle.boldM(
+                                        color: controller.category.value.color,
+                                      ),
+                                    )),
                               ],
                             ),
                           ],
                         ),
                       ),
                     ),
-                  ),
-                  Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: AppValues.verticalMargin,
-                      ),
-                      child: PeepAnimationEffect(
-                          onTap: () {
-                            log("페이지 이동");
-                            Get.toNamed(AppPages.TODOMEMO, arguments: {
-                              'text': controller.todo.value.memo,
-                              'name': controller.todo.value.name,
-                            });
-                          },
-                          child: Container(
-                              width: double.infinity,
-                              height: 64.h,
-                              decoration: BoxDecoration(
-                                color: Palette.peepWhite,
-                                border: Border.all(color: Palette.peepGray200),
-                                borderRadius:
-                                    BorderRadius.circular(AppValues.baseRadius),
-                              ),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: AppValues.screenPadding,
-                                          bottom: AppValues.verticalMargin),
-                                      child: Text(
-                                        controller.todo.value.memo ?? '',
-                                        style: PeepTextStyle.regularM(
-                                            color: Palette.peepGray400),
-                                      ),
-                                    )
-                                  ]))))
-                ],
-              ),
-            ],
+                    SizedBox(
+                      height: AppValues.verticalMargin * 1.5,
+                    ),
+                    Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Palette.peepWhite,
+                          border: Border.all(color: Palette.peepGray200),
+                          borderRadius:
+                              BorderRadius.circular(AppValues.baseRadius),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: AppValues.screenPadding,
+                              vertical: AppValues.verticalMargin * 1.5),
+                          child: Text(
+                            (controller.todo.value.memo?.isNotEmpty ?? false)
+                                ? controller.todo.value.memo!
+                                : '메모를 입력하세요!',
+                            style: PeepTextStyle.regularM(
+                                color:
+                                    (controller.todo.value.memo?.isNotEmpty ??
+                                            false)
+                                        ? Palette.peepBlack
+                                        : Palette.peepGray400),
+                          ),
+                        ))
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

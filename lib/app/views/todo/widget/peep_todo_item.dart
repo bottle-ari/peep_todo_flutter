@@ -43,9 +43,7 @@ class PeepTodoItem extends StatelessWidget {
       }
 
       controller.backup = BackupTodoModel(
-          backupTodoItem: todo,
-          backupIndex: todo.pos,
-          backupDate: todo.date);
+          backupTodoItem: todo, backupIndex: todo.pos, backupDate: todo.date);
 
       controller.deleteTodo(todo: todo);
 
@@ -128,8 +126,11 @@ class PeepTodoItem extends StatelessWidget {
             child: InkWell(
               onTap: () {
                 if (!scheduledTodoController.isInputMode.value) {
-                  Get.toNamed(Routes.TODO_DETAIL_PAGE,
-                      arguments: {'todo': todo, 'color': color, 'type': todoType});
+                  Get.toNamed(Routes.TODO_DETAIL_PAGE, arguments: {
+                    'todo': todo,
+                    'color': color,
+                    'type': todoType
+                  });
                 }
 
                 scheduledTodoController.addNewTodoConfirm();
@@ -151,25 +152,38 @@ class PeepTodoItem extends StatelessWidget {
                           SizedBox(
                             width: 280.w,
                             child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: AppValues.verticalMargin),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: AppValues.verticalMargin),
                               child: RichText(
                                 text: TextSpan(
                                   children: [
                                     TextSpan(
-                                        text: todo.name.length > 55 ? '${todo.name.substring(0, 54)}...' : todo.name,
+                                        text: todo.name.length > 55
+                                            ? '${todo.name.substring(0, 54)}...'
+                                            : todo.name,
                                         style: PeepTextStyle.regularM(
                                             color: todo.isChecked
                                                 ? Palette.peepGray400
-                                                : Palette.peepBlack)
-                                    ),
+                                                : Palette.peepBlack)),
+                                    if (todo.memo?.isNotEmpty ?? false)
+                                    WidgetSpan(
+                                        child: Padding(
+                                      padding: EdgeInsets.only(left: 5.w),
+                                      child: PeepIcon(Iconsax.document,
+                                          size: AppValues.miniIconSize,
+                                          color: Palette.peepGray300),
+                                    )),
                                     if (todo.priority != 0)
                                       WidgetSpan(
-                                          child: PeepIcon(
-                                        Iconsax.priority,
-                                        size: AppValues.miniIconSize,
-                                        color: PriorityUtil.getPriority(
-                                                todo.priority)
-                                            .PriorityColor,
+                                          child: Padding(
+                                        padding: EdgeInsets.only(left: 5.w),
+                                        child: PeepIcon(
+                                          Iconsax.priority,
+                                          size: AppValues.miniIconSize,
+                                          color: PriorityUtil.getPriority(
+                                                  todo.priority)
+                                              .PriorityColor,
+                                        ),
                                       )),
                                   ],
                                 ),

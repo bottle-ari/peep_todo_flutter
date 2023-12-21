@@ -7,6 +7,8 @@ import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 
 import '../../../controllers/widget/peep_category_picker_controller.dart';
+import '../../../data/enums/todo_enum.dart';
+import '../../../theme/icons.dart';
 import '../../../theme/palette.dart';
 
 class PeepCategoryPickerButton extends StatelessWidget {
@@ -122,6 +124,15 @@ class _CategoryPickerPopup extends StatelessWidget {
                                   style: PeepTextStyle.boldL(
                                       color: category.color),
                                 ),
+                                if (category.type == TodoType.constant)
+                                  Padding(
+                                    padding: EdgeInsets.only(left: AppValues.innerMargin),
+                                    child: PeepIcon(
+                                      Iconsax.constantTodo,
+                                      size: AppValues.smallIconSize,
+                                      color: category.color.withOpacity(AppValues.baseOpacity),
+                                    ),
+                                  ),
                               ],
                             ),
                           ),

@@ -156,7 +156,6 @@ class TodoDetailController extends BaseController {
         checkTime: todo.value.checkTime);
 
     todo.value = newTodo;
-
   }
 
   bool isOverdue() {
@@ -200,5 +199,23 @@ class TodoDetailController extends BaseController {
 
       todo.value = newTodo;
     }
+  }
+
+  void updateMemo(String memo) {
+    TodoModel newTodo = TodoModel(
+        id: todo.value.id,
+        categoryId: todo.value.categoryId,
+        reminderId: todo.value.reminderId,
+        name: todo.value.name,
+        date: todo.value.date,
+        priority: todo.value.priority,
+        memo: memo,
+        isChecked: todo.value.isChecked,
+        pos: todo.value.pos,
+        checkTime: todo.value.checkTime);
+
+    todoController.updateTodos(todoList: [newTodo]);
+
+    todo.value = newTodo;
   }
 }
