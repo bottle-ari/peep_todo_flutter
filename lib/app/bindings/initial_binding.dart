@@ -8,8 +8,8 @@ import '../controllers/data/todo_controller.dart';
 class InitialBinding implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<CategoryController>(() => CategoryController());
-    Get.lazyPut<TodoController>(() => TodoController());
-    Get.lazyPut<PrefController>(() => PrefController());
+    Get.lazyPut<CategoryController>(() => CategoryController(), fenix: true);
+    Get.lazyPut<TodoController>(() => TodoController(), fenix: true);
+    Get.lazyPut<PrefController>(() => PrefController(), fenix: true);
   }
 }

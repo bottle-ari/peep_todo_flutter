@@ -322,6 +322,8 @@ class ScheduledTodoController extends BaseController {
   final Rx<FocusNode> focusNode = FocusNode().obs;
   final RxBool isInputMode = false.obs;
 
+  final isFirstTimeAccess = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -336,6 +338,7 @@ class ScheduledTodoController extends BaseController {
         (callback) => updateScheduledTodoList());
 
     updateScheduledTodoList();
+    loadIsFirstTimeAccess();
   }
 
   @override
@@ -355,6 +358,23 @@ class ScheduledTodoController extends BaseController {
   /*
     Init Functions
    */
+  void loadIsFirstTimeAccess() async {
+    var key = 'isFirstTimeAccess';
+
+    await prefController.updateData(key);
+
+    log(prefController.data[key] ?? '?');
+
+    if(prefController.data[key] == null) {
+      prefController.saveData(key, 'true');
+      isFirstTimeAccess.value = true;
+    } else if(prefController.data[key] == 'true') {
+      isFirstTimeAccess.value = true;
+    } else {
+      isFirstTimeAccess.value = false;
+    }
+  }
+
   void updateScheduledTodoList() async {
     addNewTodoConfirm();
 
@@ -454,6 +474,11 @@ class ScheduledTodoController extends BaseController {
     Create Function
    */
   void addNewTodo({required String categoryId}) {
+    if(isFirstTimeAccess.value) {
+      prefController.saveData('isFirstTimeAccess', 'false');
+      isFirstTimeAccess.value = false;
+    }
+
     if (isInputMode.value) {
       if (newTodoCategoryId == categoryId) {
         return;
@@ -543,6 +568,7 @@ class ScheduledTodoController extends BaseController {
     newTodoId = null;
     newTodoCategoryId = null;
     isInputMode.value = false;
+
     updateScheduledTodoList();
     _todoController.updateCalendarItemCounts(todo.date);
 
