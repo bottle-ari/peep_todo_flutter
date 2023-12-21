@@ -89,7 +89,15 @@ class RoutineManagePage extends BaseView<RoutineManageController> {
                               name: item.name,
                               emoji: item.emoji,
                               onTapAddButton: () {
-                                controller.addNewRoutine(categoryId: item.id);
+                                // Routine Add Page로 넘어가기
+                                Get.toNamed(
+                                  Routes.ROUTINE_ADD_PAGE,
+                                  arguments: {
+                                    'category_id': item.id,
+                                    'last_pos':
+                                        controller.categoryIndexMap[item.id]![1],
+                                  },
+                                );
                               },
                               onTapArrowButton: () {},
                               isFolded: false),
