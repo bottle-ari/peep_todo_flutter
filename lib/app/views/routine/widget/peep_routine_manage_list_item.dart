@@ -8,6 +8,7 @@ import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
+import 'package:peep_todo_flutter/app/utils/routine_util.dart';
 import 'package:peep_todo_flutter/app/views/common/popup/peep_confirm_popup.dart';
 import 'peep_routine_toggle_button.dart';
 
@@ -101,7 +102,7 @@ class PeepRoutineManageListItem extends StatelessWidget {
                                     children: [
                                       PeepIcon(Iconsax.routineOutline, size: 14.w, color: Palette.peepBlack,),
                                       SizedBox(width: AppValues.innerMargin),
-                                      Text(routine.repeatCondition,
+                                      Text(repeatConditionToDescription(routine.repeatCondition),
                                         style: PeepTextStyle.regularXS(color: Palette.peepBlack),
                                       ),
                                     ],
@@ -136,7 +137,7 @@ class PeepRoutineManageListItem extends StatelessWidget {
                                       children: [
                                         PeepIcon(Iconsax.routineOutline, size: 14.w, color: Palette.peepBlack,),
                                         SizedBox(width: AppValues.innerMargin),
-                                        Text(routine.repeatCondition,
+                                        Text(repeatConditionToDescription(routine.repeatCondition),
                                           style: PeepTextStyle.regularXS(color: Palette.peepBlack),
                                         ),
                                       ],

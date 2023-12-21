@@ -44,7 +44,8 @@ class RoutineAddPage extends BaseView<RoutineAddController> {
                   }
                 },
                 child: Obx(() {
-                  final hslColor = HSLColor.fromColor(controller.category.value.color);
+                  final hslColor =
+                      HSLColor.fromColor(controller.category.value.color);
 
                   final newLightness =
                       (hslColor.lightness - 0.3).clamp(0.0, 1.0);
@@ -105,7 +106,8 @@ class RoutineAddPage extends BaseView<RoutineAddController> {
                   },
                   backgroundColorOn: controller.category.value.color,
                   backgroundColorOff: Palette.peepGray100,
-                  textColorOn: getTextColorBold(controller.category.value.color),
+                  textColorOn:
+                      getTextColorBold(controller.category.value.color),
                   textColorOff: Palette.peepGray300,
                   toggleState: controller.isActive.value,
                 ),
@@ -117,7 +119,8 @@ class RoutineAddPage extends BaseView<RoutineAddController> {
                   },
                   backgroundColorOn: controller.category.value.color,
                   backgroundColorOff: Palette.peepGray100,
-                  textColorOn: getTextColorBold(controller.category.value.color),
+                  textColorOn:
+                      getTextColorBold(controller.category.value.color),
                   textColorOff: Palette.peepGray300,
                   toggleState: controller.isActive.value,
                 ),
@@ -126,7 +129,9 @@ class RoutineAddPage extends BaseView<RoutineAddController> {
             SizedBox(
               height: AppValues.verticalMargin,
             ),
-            PeepCategoryTag(color: controller.category.value.color, name: controller.category.value.name),
+            PeepCategoryTag(
+                color: controller.category.value.color,
+                name: controller.category.value.name),
             SizedBox(
               height: AppValues.verticalMargin,
             ),
@@ -136,7 +141,10 @@ class RoutineAddPage extends BaseView<RoutineAddController> {
             SizedBox(
               height: AppValues.verticalMargin,
             ),
-            PeepRepeatConditionPicker(),
+            PeepRepeatConditionPicker(
+              color: controller.category.value.color,
+              controller: controller.peepRepeatConditionPickerController,
+            ),
           ],
         ),
       ),
