@@ -365,10 +365,10 @@ class ScheduledTodoController extends BaseController {
 
     log(prefController.data[key] ?? '?');
 
-    if(prefController.data[key] == null) {
+    if (prefController.data[key]?.isEmpty ?? true) {
       prefController.saveData(key, 'true');
       isFirstTimeAccess.value = true;
-    } else if(prefController.data[key] == 'true') {
+    } else if (prefController.data[key] == 'true') {
       isFirstTimeAccess.value = true;
     } else {
       isFirstTimeAccess.value = false;
@@ -474,7 +474,7 @@ class ScheduledTodoController extends BaseController {
     Create Function
    */
   void addNewTodo({required String categoryId}) {
-    if(isFirstTimeAccess.value) {
+    if (isFirstTimeAccess.value) {
       prefController.saveData('isFirstTimeAccess', 'false');
       isFirstTimeAccess.value = false;
     }
