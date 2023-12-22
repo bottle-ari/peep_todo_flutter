@@ -41,7 +41,9 @@ class PeepTodoAppBar extends StatelessWidget {
                 Row(
                   children: [
                     PeepAnimationEffect(
-                      onTap: () {},
+                      onTap: () {
+                        Get.toNamed(AppPages.SEARCH);
+                      },
                       child: PeepIcon(
                         Iconsax.calendarSearch,
                         size: AppValues.baseIconSize,
