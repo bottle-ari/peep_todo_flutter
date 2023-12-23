@@ -114,8 +114,7 @@ bool isMatchToRepeatCondition(DateTime specificDate, String repeatCondition) {
   DateTime startDate = convertToDateTime(splitConditions[1]);
 
   // endDate가 존재하면, specificDate와 비교
-  bool endIsChecked = splitConditions.length == 3;
-  if(endIsChecked){
+  if(splitConditions[2].isNotEmpty){
     DateTime endDate = convertToDateTime(splitConditions[2]);
     // specificDate 가 endDate 이후라면 false
     if(specificDate.isAfter(endDate)){
@@ -136,7 +135,7 @@ bool isMatchToRepeatCondition(DateTime specificDate, String repeatCondition) {
         if(isSameDay(routineDate, specificDate)){
           return true;
         }
-        routineDate.add(Duration(days: dayInterval));
+        routineDate = routineDate.add(Duration(days: dayInterval));
       }
       break;
 
@@ -147,17 +146,8 @@ bool isMatchToRepeatCondition(DateTime specificDate, String repeatCondition) {
 
       for (int i = 0; i < splitSubConditions[1].length; i++) {
         int weekDayValue = int.parse(splitSubConditions[1][i]) + 1;
-        if(weekDayValue > (startDate.weekday)){
-          int duration = weekDayValue - (startDate.weekday);
-          routineDateList.add(startDate.add(Duration(days: duration)));
-        }
-        else if(weekDayValue > (startDate.weekday)){
-          int duration = 7 - (startDate.weekday) + weekDayValue;
-          routineDateList.add(startDate.add(Duration(days: duration)));
-        }
-        else{
-          routineDateList.add(startDate);
-        }
+        int duration = weekDayValue - (startDate.weekday);
+        routineDateList.add(startDate.add(Duration(days: duration)));
       }
 
       while(routineDateList[0].isBefore(specificDate)){
@@ -168,7 +158,7 @@ bool isMatchToRepeatCondition(DateTime specificDate, String repeatCondition) {
         }
 
         for(int i=0;i<routineDateList.length;i++){
-          routineDateList[i].add(Duration(days: 7*weekInterval));
+          routineDateList[i] = routineDateList[i].add(Duration(days: 7*weekInterval));
         }
       }
       break;

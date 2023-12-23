@@ -2,9 +2,11 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:peep_todo_flutter/app/controllers/data/routine_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/services/todo_service.dart';
 import 'package:peep_todo_flutter/app/utils/peep_calendar_util.dart';
+import 'package:peep_todo_flutter/app/utils/routine_util.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../data/model/todo/backup_todo_model.dart';
@@ -12,6 +14,7 @@ import '../../data/model/todo/todo_model.dart';
 
 class TodoController extends GetxController {
   final TodoService _service = Get.put(TodoService());
+  final RoutineController _routineController = Get.find();
 
   // Data
   final RxList<TodoModel> selectedTodoList = <TodoModel>[].obs;
@@ -215,6 +218,18 @@ class TodoController extends GetxController {
       selectedDate.value = selectedDay;
       focusedDate.value = focusedDay;
     }
+
+    print("------------------ routineMatchTest start ------------------");
+    var routineList = _routineController.routineList;
+    for(int i=0;i<routineList.length;i++){
+      print("index : $i");
+      print("name : ${routineList[i].name}");
+      print("repeatCondition : ${routineList[i].repeatCondition}");
+
+      bool matched = isMatchToRepeatCondition(selectedDay, routineList[i].repeatCondition);
+      print("matched : $matched");
+    }
+    print("------------------ routineMatchTest end ------------------");
   }
 
   void onMoveToday() {

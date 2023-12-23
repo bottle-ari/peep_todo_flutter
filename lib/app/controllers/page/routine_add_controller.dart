@@ -78,7 +78,7 @@ class RoutineAddController extends BaseController {
     // repeatCondition 가져오기 from peepRepeatConditionPickerController
     String subRepeatCondition =
         peepRepeatConditionPickerController.subRepeatCondition.value;
-    String startDate = DateFormat("yyyy/mm/dd").format(DateTime.now());
+    String startDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     String endDate = "";
     if (peepRepeatConditionPickerController.endIsChecked.value) {
       endDate = peepRepeatConditionPickerController.endDate.value;

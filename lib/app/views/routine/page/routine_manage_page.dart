@@ -1,25 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
-import 'package:peep_todo_flutter/app/controllers/data/routine_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/page/routine_manage_controller.dart';
-import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
 import 'package:peep_todo_flutter/app/data/model/routine/routine_model.dart';
-import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
-import 'package:peep_todo_flutter/app/theme/icons.dart';
-import 'package:peep_todo_flutter/app/theme/palette.dart';
-import 'package:peep_todo_flutter/app/views/category/widget/peep_category_manage_list_item.dart';
-import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_subpage_appbar.dart';
+import 'package:peep_todo_flutter/app/views/routine/widget/peep_routine_manage_category_item.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/peep_routine_manage_list_item.dart';
-import 'package:peep_todo_flutter/app/views/todo/widget/peep_category_item.dart';
-import 'package:peep_todo_flutter/app/views/todo/widget/peep_todo_input_item.dart';
-import 'package:peep_todo_flutter/app/views/todo/widget/peep_todo_item.dart';
 import 'package:reorderables/reorderables.dart';
 import '../../../core/base/base_view.dart';
 
@@ -84,23 +72,21 @@ class RoutineManagePage extends BaseView<RoutineManageController> {
                         Padding(
                           padding: EdgeInsets.symmetric(
                               vertical: AppValues.innerMargin),
-                          child: PeepCategoryItem(
-                              color: item.color,
-                              name: item.name,
-                              emoji: item.emoji,
-                              onTapAddButton: () {
-                                // Routine Add Page로 넘어가기
-                                Get.toNamed(
-                                  Routes.ROUTINE_ADD_PAGE,
-                                  arguments: {
-                                    'category_id': item.id,
-                                    'last_pos':
-                                        controller.categoryIndexMap[item.id]![1],
-                                  },
-                                );
-                              },
-                              onTapArrowButton: () {},
-                              isFolded: false),
+                          child: PeepRoutineManageCategoryItem(
+                            category: item,
+                            onTapAddButton: () {
+                              // Routine Add Page로 넘어가기
+                              Get.toNamed(
+                                Routes.ROUTINE_ADD_PAGE,
+                                arguments: {
+                                  'category_id': item.id,
+                                  'last_pos':
+                                      controller.categoryIndexMap[item.id]![1],
+                                },
+                              );
+                            },
+                            isFolded: false,
+                          ),
                         )
                   ],
                 ),
