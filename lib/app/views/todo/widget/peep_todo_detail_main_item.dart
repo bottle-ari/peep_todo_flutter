@@ -1,71 +1,82 @@
-import 'dart:ffi';
+import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:peep_todo_flutter/app/controllers/page/todo_detail_controller.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
-import 'package:peep_todo_flutter/app/theme/text_style.dart';
+import 'package:peep_todo_flutter/app/views/common/base/peep_text_field.dart';
+import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_check_button.dart';
+import 'package:peep_todo_flutter/app/views/todo/widget/peep_todo_detail_check_button.dart';
 
 class PeepTodoDetailMainItem extends StatelessWidget {
-  final Color color;
-  final VoidCallback onTap;
-  final String text;
+  final TodoDetailController controller;
 
-  const PeepTodoDetailMainItem({
-    Key? key,
-    required this.color,
-    required this.onTap,
-    required this.text,
-  }) : super(key: key);
+  const PeepTodoDetailMainItem({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    // define TextEditingController
-    TextEditingController controller = TextEditingController();
-
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: color),
-        borderRadius: BorderRadius.circular(AppValues.baseRadius),
-      ),
-      child: Padding(
-        padding:
-            EdgeInsets.symmetric(horizontal: AppValues.horizontalMargin),
-        child: TextField(
-          controller: TextEditingController(text: text),
-          maxLines: 1,
-          decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Palette.peepWhite),
-              borderRadius: BorderRadius.circular(AppValues.baseRadius),
-            ),
-            border: InputBorder.none,
-            // hint text 고정
-            contentPadding: EdgeInsets.fromLTRB(
-              AppValues.horizontalMargin, // 왼쪽
-              2 * AppValues.verticalMargin, // 위쪽
-              AppValues.horizontalMargin, // 오른쪽
-              2 * AppValues.verticalMargin, // 아래쪽
-            ),
-            suffixIcon: GestureDetector(
-              onTap: onTap,
-              child: Padding(
-                padding:
-                    EdgeInsets.only(right: AppValues.horizontalMargin),
-                child: Transform.scale(
-                  scale: 1.0,
-                  child: PeepIcon(Iconsax.checkFalse,
-                      color: Palette.peepGray400,
-                      size: AppValues.baseIconSize),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(AppValues.baseRadius),
+      child: Container(
+        width: AppValues.screenWidth - AppValues.screenPadding * 2,
+        decoration: BoxDecoration(
+          border: Border.all(color: controller.category.value.color),
+          borderRadius: BorderRadius.circular(AppValues.baseRadius),
+          color: Palette.peepWhite,
+        ),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: AppValues.baseItemHeight),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: AppValues.innerMargin),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Row(
+                  children: [
+                    SizedBox(width: AppValues.textMargin),
+                    SizedBox(
+                      width: 280.w,
+                      child: PeepTextField(
+                        hintText: controller.todo.value.name,
+                        controller: controller.textEditingController,
+                        inputType: TextInputType.text,
+                        autoFocus: false,
+                        color: controller.category.value.color,
+                        focusNode: controller.focusNode,
+                        func: (String str) {},
+                      ),
+                    ),
+                    Flexible(
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: AppValues.innerMargin),
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: PeepAnimationEffect(
+                            child: PeepTodoDetailCheckButton(
+                                color: controller.category.value.color,
+                                controller: controller,
+                                todoType: controller.todoType.value,
+                                todo: controller.todo.value),
+                                                          ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
+              ],
             ),
-            hintText: '할 일을 입력해주세요!',
-            hintStyle: PeepTextStyle.boldL(color: Palette.peepGray300),
           ),
-          style: PeepTextStyle.boldL(color: Palette.peepBlack),
         ),
       ),
     );

@@ -319,18 +319,16 @@ class ScheduledTodoController extends BaseController {
   String? newTodoCategoryId;
 
   final TextEditingController textFieldController = TextEditingController();
-  final FocusNode focusNode = FocusNode();
+  final Rx<FocusNode> focusNode = FocusNode().obs;
+  final RxBool isInputMode = false.obs;
+
+  final isFirstTimeAccess = false.obs;
 
   @override
   void onInit() {
     super.onInit();
 
-    focusNode.addListener(() {
-      if (!focusNode.hasFocus) {
-        addNewTodoConfirm();
-        log('focus off');
-      }
-    });
+    focusNode.value.addListener(_focusNodeListener);
 
     ever(_todoController.selectedTodoList, (callback) {
       updateScheduledTodoList();
@@ -340,11 +338,43 @@ class ScheduledTodoController extends BaseController {
         (callback) => updateScheduledTodoList());
 
     updateScheduledTodoList();
+    loadIsFirstTimeAccess();
+  }
+
+  @override
+  void onClose() {
+    focusNode.value.removeListener(_focusNodeListener);
+    focusNode.value.dispose();
+    super.onClose();
+  }
+
+  void _focusNodeListener() {
+    if (!focusNode.value.hasFocus) {
+      addNewTodoConfirm();
+      log('focus off');
+    }
   }
 
   /*
     Init Functions
    */
+  void loadIsFirstTimeAccess() async {
+    var key = 'isFirstTimeAccess';
+
+    await prefController.updateData(key);
+
+    log(prefController.data[key] ?? '?');
+
+    if (prefController.data[key]?.isEmpty ?? true) {
+      prefController.saveData(key, 'true');
+      isFirstTimeAccess.value = true;
+    } else if (prefController.data[key] == 'true') {
+      isFirstTimeAccess.value = true;
+    } else {
+      isFirstTimeAccess.value = false;
+    }
+  }
+
   void updateScheduledTodoList() async {
     addNewTodoConfirm();
 
@@ -444,15 +474,21 @@ class ScheduledTodoController extends BaseController {
     Create Function
    */
   void addNewTodo({required String categoryId}) {
-    if (newTodoCategoryId != null) {
+    if (isFirstTimeAccess.value) {
+      prefController.saveData('isFirstTimeAccess', 'false');
+      isFirstTimeAccess.value = false;
+    }
+
+    if (isInputMode.value) {
       if (newTodoCategoryId == categoryId) {
         return;
       } else {
         addNewTodoConfirm();
       }
     }
-    focusNode.requestFocus();
+    focusNode.value = FocusNode();
     newTodoCategoryId = categoryId;
+    isInputMode.value = true;
 
     final newTodoPos = categoryIndexMap[categoryId]![1];
     log(newTodoPos.toString());
@@ -485,7 +521,7 @@ class ScheduledTodoController extends BaseController {
   }
 
   void addNewTodoConfirm({bool isContinued = false}) {
-    if (newTodoId == null) return;
+    if (!isInputMode.value) return;
 
     TodoModel todo =
         scheduledTodoList.firstWhere((element) => element.id == newTodoId);
@@ -528,9 +564,11 @@ class ScheduledTodoController extends BaseController {
       textFieldController.clear();
     }
 
-    focusNode.unfocus();
+    focusNode.value.unfocus();
     newTodoId = null;
     newTodoCategoryId = null;
+    isInputMode.value = false;
+
     updateScheduledTodoList();
     _todoController.updateCalendarItemCounts(todo.date);
 
@@ -602,7 +640,21 @@ class ScheduledTodoController extends BaseController {
       }
     }
 
+    final todoType = _categoryController
+        .getCategoryById(categoryId: todoItem.categoryId)
+        .type;
+    final newTodoType =
+        _categoryController.getCategoryById(categoryId: newCategoryId).type;
     todoItem.categoryId = newCategoryId;
+    if (todoType != newTodoType) {
+      if (!todoItem.isChecked) {
+        if (newTodoType == TodoType.constant) {
+          todoItem.date = null;
+        } else {
+          todoItem.date = _todoController.selectedDate.value;
+        }
+      }
+    }
 
     list.insert(newIndex, todoItem);
     scheduledTodoList.value = List.from(list);

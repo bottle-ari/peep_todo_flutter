@@ -11,8 +11,6 @@ class PriorityUtil {
         return Priority.medium;
       case 3:
         return Priority.high;
-      case 4:
-        return Priority.show;
       default:
         return Priority.unspecified;
     }

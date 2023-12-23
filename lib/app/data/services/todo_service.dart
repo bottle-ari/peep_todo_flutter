@@ -20,7 +20,7 @@ class TodoService extends GetxService {
   /*
     READ DATA
    */
-  Future<TodoModel> getTodo({required int todoId}) async {
+  Future<TodoModel> getTodo({required String todoId}) async {
     Map<String, dynamic> todoMap = await _provider.getTodo(todoId: todoId);
     TodoModel todo = TodoModel.fromMap(todoMap);
 

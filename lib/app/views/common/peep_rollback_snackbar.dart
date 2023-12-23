@@ -41,8 +41,8 @@ class PeepRollbackSnackbar extends StatelessWidget {
                   width: AppValues.horizontalMargin,
                 ),
                 Text(
-                  boldText.length > 10
-                      ? "${boldText.substring(0, 10)}..."
+                  boldText.length > 8
+                      ? "${boldText.substring(0, 8)}..."
                       : boldText,
                   style: PeepTextStyle.boldL(color: Palette.peepWhite),
                 ),
