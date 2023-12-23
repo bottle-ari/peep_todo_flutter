@@ -137,9 +137,9 @@ class PeepRepeatConditionPickerController extends GetxController {
     weekly
    */
   final RxBool weeklyDayRepeatIsChecked = true.obs;
-  // [일, 월, 화, 수, 목, 금 ,토] 선택되었는지 유무
+  // [월, 화, 수, 목, 금 ,토, 일] 선택되었는지 유무
   final RxList<bool> weeklyDayRepeatValue =
-      [false, false, false, true, false, false, false].obs;
+      [false, false, true, false, false, false, false].obs;
   final RxBool weeklyDetailRepeatIsChecked = true.obs;
   final RxInt weeklyDetailRepeatValue = 1.obs;
 
@@ -148,9 +148,9 @@ class PeepRepeatConditionPickerController extends GetxController {
    */
   final RxBool monthlyDayRepeatIsChecked = true.obs;
 
-  // [일, 월, 화, 수, 목, 금 ,토] 선택되었는지 유무
+  // [월, 화, 수, 목, 금 ,토, 일] 선택되었는지 유무
   final RxList<bool> monthlyDayRepeatValue =
-      [false, false, false, true, false, false, false].obs;
+      [false, false, true, false, false, false, false].obs;
 
   // 몇 째주
   final RxInt monthlyDayRepeatOrdinalValue = 1.obs;

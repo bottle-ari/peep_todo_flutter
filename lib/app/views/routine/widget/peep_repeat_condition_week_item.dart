@@ -156,16 +156,26 @@ class PeepRepeatConditionWeekItem extends StatelessWidget {
                 children: [
                   PeepWeekDayPickerItem(
                     dayText: '일',
+                    dayInt: 6,
+                    onTap: onDayPicked,
+                    dayPicked: isMonthly
+                        ? controller.monthlyDayRepeatValue[6]
+                        : controller.weeklyDayRepeatValue[6],
+                    color: color,
+                    textColor: Palette.peepRed,
+                  ),
+                  PeepWeekDayPickerItem(
+                    dayText: '월',
                     dayInt: 0,
                     onTap: onDayPicked,
                     dayPicked: isMonthly
                         ? controller.monthlyDayRepeatValue[0]
                         : controller.weeklyDayRepeatValue[0],
                     color: color,
-                    textColor: Palette.peepRed,
+                    textColor: Palette.peepGray500,
                   ),
                   PeepWeekDayPickerItem(
-                    dayText: '월',
+                    dayText: '화',
                     dayInt: 1,
                     onTap: onDayPicked,
                     dayPicked: isMonthly
@@ -175,7 +185,7 @@ class PeepRepeatConditionWeekItem extends StatelessWidget {
                     textColor: Palette.peepGray500,
                   ),
                   PeepWeekDayPickerItem(
-                    dayText: '화',
+                    dayText: '수',
                     dayInt: 2,
                     onTap: onDayPicked,
                     dayPicked: isMonthly
@@ -185,7 +195,7 @@ class PeepRepeatConditionWeekItem extends StatelessWidget {
                     textColor: Palette.peepGray500,
                   ),
                   PeepWeekDayPickerItem(
-                    dayText: '수',
+                    dayText: '목',
                     dayInt: 3,
                     onTap: onDayPicked,
                     dayPicked: isMonthly
@@ -195,7 +205,7 @@ class PeepRepeatConditionWeekItem extends StatelessWidget {
                     textColor: Palette.peepGray500,
                   ),
                   PeepWeekDayPickerItem(
-                    dayText: '목',
+                    dayText: '금',
                     dayInt: 4,
                     onTap: onDayPicked,
                     dayPicked: isMonthly
@@ -205,22 +215,12 @@ class PeepRepeatConditionWeekItem extends StatelessWidget {
                     textColor: Palette.peepGray500,
                   ),
                   PeepWeekDayPickerItem(
-                    dayText: '금',
+                    dayText: '토',
                     dayInt: 5,
                     onTap: onDayPicked,
                     dayPicked: isMonthly
                         ? controller.monthlyDayRepeatValue[5]
                         : controller.weeklyDayRepeatValue[5],
-                    color: color,
-                    textColor: Palette.peepGray500,
-                  ),
-                  PeepWeekDayPickerItem(
-                    dayText: '토',
-                    dayInt: 6,
-                    onTap: onDayPicked,
-                    dayPicked: isMonthly
-                        ? controller.monthlyDayRepeatValue[6]
-                        : controller.weeklyDayRepeatValue[6],
                     color: color,
                     textColor: Palette.peepBlue,
                   ),
