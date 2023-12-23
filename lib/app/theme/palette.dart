@@ -24,6 +24,10 @@ class Palette {
   static const Color peepBlue = Color(0xFF4685FF);
   static const Color peepPurple = Color(0xFFBD00FF);
 
+  static const Color peepPriorityHigh = Color(0xFFFF7676);
+  static const Color peepPriorityMedium = Color(0xFFFAC26F);
+  static const Color peepPriorityLow = Color(0xFF6AC1D4);
+
   static const Color peepBackground = peepWhite;
 }
 

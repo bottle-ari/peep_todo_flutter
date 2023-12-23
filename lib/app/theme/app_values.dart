@@ -24,6 +24,7 @@ abstract class AppValues {
   static double highOpacity = 0.85;
   static double baseOpacity = 0.7;
   static double halfOpacity = 0.5;
+  static double quarterOpacity = 0.25;
   static double shadowOpacity = 0.1;
 
   static double tinyIconSize = 12.w;

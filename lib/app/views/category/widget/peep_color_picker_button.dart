@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -75,7 +73,7 @@ class _PeepColorPicker extends StatelessWidget {
               children: [
                 Text(
                   '색 선택하기',
-                  style: PeepTextStyle.regularL(color: Palette.peepGray400),
+                  style: PeepTextStyle.boldL(color: Palette.peepGray500),
                 ),
                 PeepAnimationEffect(
                   //TODO : 테마 넣기
