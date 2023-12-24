@@ -71,6 +71,23 @@ class TodoService extends GetxService {
     return todoList;
   }
 
+  Future<List<TodoModel>> getTodoWithSearch({required String inputString}) async{
+    final List<Map<String, dynamic>> todoMaps =
+    await _provider.getTodoWithSearch(
+        inputString);
+
+    log('todoMaps_searched : ${todoMaps.length}');
+
+    List<TodoModel> todoList = [];
+
+    for (var todoMap in todoMaps) {
+      TodoModel todo = TodoModel.fromMap(todoMap);
+      todoList.add(todo);
+    }
+
+      return todoList;
+  }
+
   /*
     UPDATE DATA
    */

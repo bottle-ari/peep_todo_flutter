@@ -83,6 +83,7 @@ flutter:
     - assets/image/icon/trash_bold.svg
     - assets/image/icon/image.svg
     - assets/image/icon/empty_box.svg
+    - assets/image/icon/export.svg
     - assets/image/icon/document.svg
 
 
