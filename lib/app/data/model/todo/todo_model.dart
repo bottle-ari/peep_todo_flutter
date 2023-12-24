@@ -1,5 +1,3 @@
-import 'package:peep_todo_flutter/app/data/model/todo/sub_todo_model.dart';
-
 class TodoModel {
   final String id;
   String categoryId;
@@ -46,7 +44,7 @@ class TodoModel {
       categoryId: map['category_id'],
       reminderId: map['reminder_id'],
       name: map['name'],
-      date: DateTime.fromMillisecondsSinceEpoch(map['date']),
+      date: map['date'] == null ? null : DateTime.fromMillisecondsSinceEpoch(map['date']),
       priority: map['priority'],
       memo: map['memo'],
       isChecked: (map['is_checked'] == 1),

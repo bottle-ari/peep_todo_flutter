@@ -2,24 +2,22 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/page/scheduled_todo_controller.dart';
+import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
+import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 
 class PeepCategoryItem extends StatelessWidget {
-  final Color color;
-  final String name;
-  final String emoji;
+  final CategoryModel category;
   final bool isFolded;
   final VoidCallback onTapAddButton;
   final VoidCallback onTapArrowButton;
 
   const PeepCategoryItem({
     Key? key,
-    required this.color,
-    required this.name,
-    required this.emoji,
+    required this.category,
     required this.onTapAddButton,
     required this.onTapArrowButton,
     required this.isFolded,
@@ -27,8 +25,6 @@ class PeepCategoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ScheduledTodoController scheduledTodoController = Get.find();
-
     return InkWell(
       onLongPress: () {},
       child: SizedBox(
@@ -45,25 +41,34 @@ class PeepCategoryItem extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          emoji,
+                          category.emoji,
                           style: PeepTextStyle.boldL(),
                         ),
                         SizedBox(
                           width: AppValues.horizontalMargin,
                         ),
                         Text(
-                          name.length > 10
-                              ? "${name.substring(0, 10)}..."
-                              : name,
-                          style: PeepTextStyle.boldL(color: color),
+                          category.name.length > 10
+                              ? "${category.name.substring(0, 10)}..."
+                              : category.name,
+                          style: PeepTextStyle.boldL(color: category.color),
                         ),
+                        if (category.type == TodoType.constant)
+                          Padding(
+                            padding: EdgeInsets.only(left: AppValues.innerMargin),
+                            child: PeepIcon(
+                              Iconsax.constantTodo,
+                              size: AppValues.smallIconSize,
+                              color: category.color.withOpacity(AppValues.baseOpacity),
+                            ),
+                          ),
                         SizedBox(
                           width: AppValues.horizontalMargin,
                         ),
                         PeepIcon(
                           Iconsax.addSquare,
                           size: AppValues.baseIconSize,
-                          color: color,
+                          color: category.color,
                         ),
                       ],
                     ),
@@ -74,7 +79,9 @@ class PeepCategoryItem extends StatelessWidget {
                 onTap: onTapArrowButton,
                 child: Row(
                   children: [
-                    SizedBox(width: AppValues.horizontalMargin,),
+                    SizedBox(
+                      width: AppValues.horizontalMargin,
+                    ),
                     TweenAnimationBuilder(
                       tween: Tween(
                         begin: isFolded ? 0.0 : 1.0,
@@ -90,10 +97,12 @@ class PeepCategoryItem extends StatelessWidget {
                       child: PeepIcon(
                         Iconsax.arrowDown,
                         size: AppValues.smallIconSize,
-                        color: color,
+                        color: category.color,
                       ),
                     ),
-                    SizedBox(width: AppValues.horizontalMargin,)
+                    SizedBox(
+                      width: AppValues.horizontalMargin,
+                    )
                   ],
                 ),
               ),

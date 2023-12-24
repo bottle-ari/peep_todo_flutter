@@ -72,4 +72,5 @@ class Iconsax {
   static const image = 'assets/image/icon/image.svg';
   static const emptyBox = 'assets/image/icon/empty_box.svg';
   static const export = 'assets/image/icon/export.svg';
+  static const document = 'assets/image/icon/document.svg';
 }

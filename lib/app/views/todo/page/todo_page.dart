@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:peep_todo_flutter/app/controllers/data/peep_calendar_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/main/main_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
-import 'package:peep_todo_flutter/app/data/model/enum/menu_state.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
@@ -19,6 +17,7 @@ import 'package:reorderables/reorderables.dart';
 import '../../../controllers/main/peep_main_toggle_button_controller.dart';
 import '../../../controllers/page/scheduled_todo_controller.dart';
 import '../../../core/base/base_view.dart';
+import '../../common/painter/bubble_painter.dart';
 import '../widget/peep_todo_input_item.dart';
 import '../widget/peep_todo_item.dart';
 
@@ -30,9 +29,6 @@ class TodoPage extends BaseView<ScheduledTodoController> {
 
   @override
   Widget body(BuildContext context) {
-    final PeepMainToggleButtonController mainToggleButtonController =
-        Get.find();
-    final MainController mainController = Get.find();
 
     return GestureDetector(
       onTap: () {
@@ -101,7 +97,7 @@ class TodoPage extends BaseView<ScheduledTodoController> {
                                                 controller.getColorByCategory(
                                                     item: item),
                                             todoType: TodoType.scheduled,
-                                            focusNode: controller.focusNode,
+                                            focusNode: controller.focusNode.value,
                                             textEditingController: controller
                                                 .textFieldController,
                                             categoryId: item.categoryId,
@@ -112,10 +108,10 @@ class TodoPage extends BaseView<ScheduledTodoController> {
                                               vertical:
                                                   AppValues.innerMargin),
                                           child: PeepTodoItem(
-                                            todoId: item.id,
+                                            todo: item,
                                             color: controller.getColor(
                                                 todoId: item.id),
-                                            todoType: TodoType.scheduled,
+                                            todoType: controller.getTodoTypeByCategory(item: item),
                                           ))
                                   else
                                     const SizedBox.shrink()
@@ -124,9 +120,7 @@ class TodoPage extends BaseView<ScheduledTodoController> {
                                     padding: EdgeInsets.symmetric(
                                         vertical: AppValues.innerMargin),
                                     child: PeepCategoryItem(
-                                        color: item.color,
-                                        name: item.name,
-                                        emoji: item.emoji,
+                                        category: item,
                                         onTapAddButton: () {
                                           if (controller
                                                   .categoryFoldMap[item.id] ??
@@ -146,7 +140,34 @@ class TodoPage extends BaseView<ScheduledTodoController> {
                                         isFolded: controller
                                                 .categoryFoldMap[item.id] ??
                                             false),
-                                  )
+                                  ),
+                              if (controller.isFirstTimeAccess.value)
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: AppValues.innerMargin),
+                                  child: PeepAnimationEffect(
+                                    onLongPress: () {
+                                      // TODO : 힌트 메시지 가리기
+                                    },
+                                    scale: 0.95,
+                                    child: CustomPaint(
+                                      size: Size(20.w, 50.h),
+                                      painter: BubbleTopLeftPainter(
+                                          backgroundColor: Palette.peepGray100),
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                          left: AppValues.screenPadding,
+                                          top: AppValues.verticalMargin,
+                                          right: AppValues.screenPadding,
+                                        ),
+                                        child: Text(
+                                          "카테고리를 눌러 할 일을 추가할 수 있어요!",
+                                          style:
+                                          PeepTextStyle.regularS(color: Palette.peepGray400),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
                             ],
                           ),
                           onReorder: (int oldIndex, int newIndex) {

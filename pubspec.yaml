@@ -25,6 +25,10 @@ dependencies:
   uuid: ^4.2.1
   flutter_slidable: ^3.0.1
   emoji_picker_flutter: ^1.6.3
+  image_picker: ^1.0.5
+  path_provider: ^2.1.1
+  permission_handler: ^11.1.0
+  scroll_date_picker: ^3.7.3
 
 dev_dependencies:
   flutter_test:
@@ -80,6 +84,8 @@ flutter:
     - assets/image/icon/image.svg
     - assets/image/icon/empty_box.svg
     - assets/image/icon/export.svg
+    - assets/image/icon/document.svg
+
 
   uses-material-design: true
 

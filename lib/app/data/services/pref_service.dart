@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PrefService {
@@ -6,6 +8,7 @@ class PrefService {
 
   Future<void> saveData(String key, String value) async {
     final SharedPreferences prefs = await _instance;
+    log('save $key : $value');
     prefs.setString(key, value);
   }
 

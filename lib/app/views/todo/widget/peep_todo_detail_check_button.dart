@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/controllers/page/todo_detail_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
@@ -9,13 +10,13 @@ import '../../../controllers/data/todo_controller.dart';
 import '../../../data/model/todo/todo_model.dart';
 import '../../../theme/icons.dart';
 
-class PeepCheckButton extends StatelessWidget {
-  final TodoController controller;
+class PeepTodoDetailCheckButton extends StatelessWidget {
+  final TodoDetailController controller;
   final Color color;
   final TodoType todoType;
   final TodoModel todo;
 
-  const PeepCheckButton({
+  const PeepTodoDetailCheckButton({
     Key? key,
     required this.color,
     required this.controller,
@@ -39,7 +40,7 @@ class PeepCheckButton extends StatelessWidget {
               child: todo.isChecked
                   ? PeepIcon(Iconsax.checkTrue, color: color, size: 24.w)
                   : PeepIcon(Iconsax.checkFalse,
-                      color: Palette.peepGray400, size: 24.w),
+                  color: Palette.peepGray400, size: 24.w),
             )));
   }
 }

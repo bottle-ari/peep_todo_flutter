@@ -7,28 +7,28 @@ import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/page/scheduled_todo_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/backup_todo_model.dart';
-import 'package:peep_todo_flutter/app/data/model/todo/sub_todo_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
-import 'package:peep_todo_flutter/app/utils/priority_util.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_check_button.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_rollback_snackbar.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../controllers/data/todo_controller.dart';
+import '../../../utils/priority_util.dart';
+import '../../common/buttons/peep_animation_effect.dart';
 
 class PeepTodoItem extends StatelessWidget {
   final Color color;
   final TodoType todoType;
-  final String todoId;
+  final TodoModel todo;
 
   const PeepTodoItem(
       {super.key,
-      required this.todoId,
+      required this.todo,
       required this.color,
       required this.todoType});
 
@@ -36,7 +36,6 @@ class PeepTodoItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final TodoController controller = Get.find();
     final ScheduledTodoController scheduledTodoController = Get.find();
-    TodoModel todo = controller.getTodoById(type: todoType, todoId: todoId);
 
     void deleteTodo() {
       if (Get.isSnackbarOpen) {
@@ -44,12 +43,9 @@ class PeepTodoItem extends StatelessWidget {
       }
 
       controller.backup = BackupTodoModel(
-          backupTodoItem: todo,
-          backupIndex: todo.pos,
-          backupDate: todo.date,
-          backupType: todoType);
+          backupTodoItem: todo, backupIndex: todo.pos, backupDate: todo.date);
 
-      controller.deleteTodo(todo: todo, type: todoType);
+      controller.deleteTodo(todo: todo);
 
       Get.snackbar('', '',
           snackPosition: SnackPosition.BOTTOM,
@@ -127,59 +123,96 @@ class PeepTodoItem extends StatelessWidget {
                 ),
               ],
             ),
-            child: SizedBox(
-              width: AppValues.screenWidth - AppValues.screenPadding * 2,
-              child: ConstrainedBox(
-                constraints:
-                    BoxConstraints(minHeight: AppValues.baseItemHeight),
-                child: Container(
-                  color:
-                      todo.isChecked ? Palette.peepGray50 : Palette.peepWhite,
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: AppValues.innerMargin),
-                    child: Row(
-                      children: [
-                        SizedBox(width: AppValues.textMargin),
-                        InkWell(
-                          onTap: () {
-                            scheduledTodoController.addNewTodoConfirm();
+            child: InkWell(
+              onTap: () {
+                if (!scheduledTodoController.isInputMode.value) {
+                  Get.toNamed(Routes.TODO_DETAIL_PAGE, arguments: {
+                    'todo': todo,
+                    'color': color,
+                    'type': todoType
+                  });
+                }
 
-                            Get.toNamed(Routes.TODO_DETAIL_PAGE,
-                                arguments: {'todo': todo, 'color': color});
-                          },
-                          child: SizedBox(
-                            width: 230.w,
-                            child: Text(
-                              todo.name,
-                              style: PeepTextStyle.regularM(
-                                  color: todo.isChecked
-                                      ? Palette.peepGray400
-                                      : Palette.peepBlack),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 3,
-                            ),
-                          ),
-                        ),
-                        Flexible(
-                          child: Align(
-                            alignment: Alignment.centerRight,
+                scheduledTodoController.addNewTodoConfirm();
+              },
+              child: SizedBox(
+                width: AppValues.screenWidth - AppValues.screenPadding * 2,
+                child: ConstrainedBox(
+                  constraints:
+                      BoxConstraints(minHeight: AppValues.baseItemHeight),
+                  child: Container(
+                    color:
+                        todo.isChecked ? Palette.peepGray50 : Palette.peepWhite,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: AppValues.innerMargin),
+                      child: Row(
+                        children: [
+                          SizedBox(width: AppValues.textMargin),
+                          SizedBox(
+                            width: 280.w,
                             child: Padding(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: AppValues.innerMargin),
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: PeepCheckButton(
-                                  color: color,
-                                  controller: controller,
-                                  todoType: todoType,
-                                  todoId: todoId,
+                                  vertical: AppValues.verticalMargin),
+                              child: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                        text: todo.name.length > 55
+                                            ? '${todo.name.substring(0, 54)}...'
+                                            : todo.name,
+                                        style: PeepTextStyle.regularM(
+                                            color: todo.isChecked
+                                                ? Palette.peepGray400
+                                                : Palette.peepBlack)),
+                                    if (todo.memo?.isNotEmpty ?? false)
+                                    WidgetSpan(
+                                        child: Padding(
+                                      padding: EdgeInsets.only(left: 5.w),
+                                      child: PeepIcon(Iconsax.document,
+                                          size: AppValues.miniIconSize,
+                                          color: Palette.peepGray300),
+                                    )),
+                                    if (todo.priority != 0)
+                                      WidgetSpan(
+                                          child: Padding(
+                                        padding: EdgeInsets.only(left: 5.w),
+                                        child: PeepIcon(
+                                          Iconsax.priority,
+                                          size: AppValues.miniIconSize,
+                                          color: PriorityUtil.getPriority(
+                                                  todo.priority)
+                                              .PriorityColor,
+                                        ),
+                                      )),
+                                  ],
+                                ),
+                                maxLines: 3,
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: AppValues.innerMargin),
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: PeepAnimationEffect(
+                                    child: PeepCheckButton(
+                                      color: color,
+                                      controller: controller,
+                                      todoType: todoType,
+                                      todo: todo,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

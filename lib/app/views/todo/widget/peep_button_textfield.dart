@@ -141,7 +141,7 @@ class PeepCategoryTextfield extends StatelessWidget {
                 data: ThemeData.light().copyWith(
                   textSelectionTheme: TextSelectionThemeData(
                     cursorColor: controller.category.value.color, // works on iOS
-                    selectionColor: controller.category.value.color, // works on iOS
+                    selectionColor: controller.category.value.color.withOpacity(AppValues.halfOpacity), // works on iOS
                     selectionHandleColor: controller.category.value.color, // not working on iOS
                   ),
                   cupertinoOverrideTheme: CupertinoThemeData(
