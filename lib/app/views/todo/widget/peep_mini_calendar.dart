@@ -85,9 +85,6 @@ class PeepMiniCalendar extends StatelessWidget {
                         ),
                         Obx(
                           () {
-                            // dev.log(controller.calendarItemCounts[
-                            // DateFormat('yyyyMMdd').format(day)].toString());
-
                             return CustomPaint(
                               size: Size(32.w, 32.w), // CustomPaint의 크기 고정
                               painter: RingPainter(
@@ -111,6 +108,29 @@ class PeepMiniCalendar extends StatelessWidget {
                   );
                 },
                 dowBuilder: customDowBuilder,
+                todayBuilder: (context, day, focusedDay) {
+                  return Center(
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Obx(
+                          () => CustomPaint(
+                            size: Size(32.w, 32.w),
+                            // CustomPaint의 크기 고정
+                            painter: RingPainter(
+                                itemCounts: controller.calendarItemCounts[
+                                        DateFormat('yyyyMMdd').format(day)] ??
+                                    {}),
+                          ),
+                        ),
+                        Text(
+                          DateFormat.d().format(day),
+                          style: PeepTextStyle.boldXS(color: Palette.peepBlack),
+                        ),
+                      ],
+                    ),
+                  );
+                },
                 defaultBuilder: (context, day, focusedDay) {
                   return Center(
                     child: Stack(
