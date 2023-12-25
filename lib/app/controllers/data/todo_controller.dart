@@ -210,6 +210,10 @@ class TodoController extends GetxController {
   /*
     Calendar
    */
+  bool isToday() {
+    return isSameDay(selectedDate.value, DateTime.now());
+  }
+
   void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     if (!isSameDay(selectedDate.value, selectedDay)) {
       selectedDate.value = selectedDay;
