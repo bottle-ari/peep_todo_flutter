@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/peep_repeat_condition_item.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/peep_repeat_condition_picker.dart';
+
+import '../../../../utils/routine_util.dart';
+import '../../../common/peep_date_picker.dart';
 
 class PeepYearlyCondition extends StatelessWidget {
   final PeepRepeatConditionPickerController controller;
@@ -50,7 +54,16 @@ class PeepYearlyCondition extends StatelessWidget {
                     !controller.endIsChecked.value;
               },
               onBoldTextTap: () {
-                // Todo : date picker 띄우기
+                Get.bottomSheet(
+                  PeepDatePicker(
+                    date: convertToDateTime(controller.endDate.value),
+                    color: color,
+                    onConfirm: (DateTime date) {
+                      controller.endDate.value =
+                          DateFormat("yyyy/MM/dd").format(date);
+                    },
+                  ),
+                );
               },
               prefixText: '',
             ),

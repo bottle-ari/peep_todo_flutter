@@ -29,6 +29,7 @@ dependencies:
   path_provider: ^2.1.1
   permission_handler: ^11.1.0
   scroll_date_picker: ^3.7.3
+  numberpicker: ^2.1.2
 
 dev_dependencies:
   flutter_test:

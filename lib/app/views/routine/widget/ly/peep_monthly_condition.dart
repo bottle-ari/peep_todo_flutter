@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/peep_repeat_condition_item.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/peep_repeat_condition_picker.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/peep_repeat_condition_week_item.dart';
+
+import '../../../../utils/routine_util.dart';
+import '../../../common/peep_date_picker.dart';
 
 class PeepMonthlyCondition extends StatelessWidget {
   final PeepRepeatConditionPickerController controller;
@@ -33,7 +37,9 @@ class PeepMonthlyCondition extends StatelessWidget {
               },
               dayPicked: controller.monthlyDayRepeatValue,
               boldText: controller.monthlyDayRepeatOrdinalValue.toString(),
-              onBoldTextTap: () {},
+              onBoldTextTap: () {
+                // Todo : 주차 picker 띄우기, 1번째 ~ 5번째?주 + 마지막 주
+              },
               isMonthly: true,
               controller: controller,
             ),
@@ -52,7 +58,7 @@ class PeepMonthlyCondition extends StatelessWidget {
                     !controller.monthlyDayRepeatIsChecked.value;
               },
               onBoldTextTap: () {
-                // Todo : number picker 띄우기
+                // Todo : 날짜 picker 띄우기, 1일 ~ 31일 + 마지막 날
                 controller.monthlyDetailRepeatValue.value++;
               },
               prefixText: '매 월',
@@ -71,7 +77,16 @@ class PeepMonthlyCondition extends StatelessWidget {
                     !controller.endIsChecked.value;
               },
               onBoldTextTap: () {
-                // Todo : date picker 띄우기
+                Get.bottomSheet(
+                  PeepDatePicker(
+                    date: convertToDateTime(controller.endDate.value),
+                    color: color,
+                    onConfirm: (DateTime date) {
+                      controller.endDate.value =
+                          DateFormat("yyyy/MM/dd").format(date);
+                    },
+                  ),
+                );
               },
               prefixText: '',
             ),

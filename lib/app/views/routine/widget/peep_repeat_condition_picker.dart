@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
@@ -26,28 +27,33 @@ class PeepRepeatConditionPicker extends StatelessWidget {
       () => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  PeepIcon(
-                    Iconsax.routineOutline,
-                    size: AppValues.baseIconSize,
-                    color: Palette.peepGray500,
-                  ),
-                  SizedBox(width: AppValues.innerMargin),
-                  Text(
-                    "반복 조건",
-                    style: PeepTextStyle.regularM(color: Palette.peepGray500),
-                  ),
-                ],
-              ),
-              Text(
-                controller.repeatConditionDescription.value,
-                style: PeepTextStyle.boldM(color: Palette.peepGray500),
-              ),
-            ],
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: AppValues.horizontalMargin),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    PeepIcon(
+                      Iconsax.routineOutline,
+                      color: Palette.peepGray500,
+                      size: AppValues.baseIconSize,
+                    ),
+                    SizedBox(width: AppValues.horizontalMargin),
+                    Text(
+                      '반복 조건',
+                      style: PeepTextStyle.regularM(color: Palette.peepGray500),
+                    ),
+                  ],
+                ),
+                Text(
+                  controller.repeatConditionDescription.value,
+                  style: PeepTextStyle.boldM(color: Palette.peepGray500),
+                ),
+              ],
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(15),
@@ -122,7 +128,7 @@ class PeepRepeatConditionPicker extends StatelessWidget {
 class PeepRepeatConditionPickerController extends GetxController {
   // ly, 0 : daily, 1 : weekly, 2 : monthly, 3 : yearly
   final RxInt ly = 0.obs;
-  final RxString endDate = "2025/12/31".obs;
+  final RxString endDate = DateFormat("yyyy/MM/dd").format(DateTime.now()).obs;
   final RxBool endIsChecked = false.obs;
   final RxString subRepeatCondition = "".obs;
   final RxString repeatConditionDescription = "".obs;
@@ -193,7 +199,8 @@ class PeepRepeatConditionPickerController extends GetxController {
   }
 
   updateRepeatConditionDescription() {
-    repeatConditionDescription.value = subRepeatConditionToDescription(subRepeatCondition.value);
+    repeatConditionDescription.value =
+        subRepeatConditionToDescription(subRepeatCondition.value);
   }
 
   updateSubRepeatCondition() {

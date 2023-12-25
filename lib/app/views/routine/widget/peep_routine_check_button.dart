@@ -4,12 +4,12 @@ import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import '../../../theme/icons.dart';
 
-class PeepRepeatConditionCheckButton extends StatelessWidget {
+class PeepRoutineCheckButton extends StatelessWidget {
   final bool isChecked;
   final Color color;
   final Function onTap;
 
-  const PeepRepeatConditionCheckButton({
+  const PeepRoutineCheckButton({
     Key? key,
     required this.color,
     required this.isChecked,

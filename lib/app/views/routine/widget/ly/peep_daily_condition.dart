@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
+import 'package:peep_todo_flutter/app/utils/routine_util.dart';
+import 'package:peep_todo_flutter/app/views/routine/page/routine_interval_picker.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/peep_repeat_condition_item.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/peep_repeat_condition_picker.dart';
+
+import '../../../common/peep_date_picker.dart';
 
 class PeepDailyCondition extends StatelessWidget {
   final PeepRepeatConditionPickerController controller;
@@ -36,8 +41,16 @@ class PeepDailyCondition extends StatelessWidget {
                 }
               },
               onBoldTextTap: () {
-                // Todo : number picker 띄우기
-                controller.dailyDetailRepeatValue.value++;
+                Get.bottomSheet(
+                  RoutineIntervalPicker(
+                    color: color,
+                    initValue: controller.dailyDetailRepeatValue.value,
+                    onConfirm: (int selectedValue) {
+                      controller.dailyDetailRepeatValue.value = selectedValue;
+                    },
+                    postfixText: '일 간격으로',
+                  ),
+                );
               },
               prefixText: '',
             ),
@@ -51,11 +64,19 @@ class PeepDailyCondition extends StatelessWidget {
               color: color,
               isChecked: controller.endIsChecked.value,
               onCheckButtonTap: () {
-                controller.endIsChecked.value =
-                    !controller.endIsChecked.value;
+                controller.endIsChecked.value = !controller.endIsChecked.value;
               },
               onBoldTextTap: () {
-                // Todo : date picker 띄우기
+                Get.bottomSheet(
+                  PeepDatePicker(
+                    date: convertToDateTime(controller.endDate.value),
+                    color: color,
+                    onConfirm: (DateTime date) {
+                      controller.endDate.value =
+                          DateFormat("yyyy/MM/dd").format(date);
+                    },
+                  ),
+                );
               },
               prefixText: '',
             ),

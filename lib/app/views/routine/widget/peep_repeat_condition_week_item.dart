@@ -6,7 +6,7 @@ import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/common/popup/peep_warning_popup.dart';
-import 'package:peep_todo_flutter/app/views/routine/widget/peep_repeat_condition_check_button.dart';
+import 'package:peep_todo_flutter/app/views/routine/widget/peep_routine_check_button.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/peep_repeat_condition_picker.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/peep_week_day_picker_item.dart';
 
@@ -104,7 +104,7 @@ class PeepRepeatConditionWeekItem extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      PeepRepeatConditionCheckButton(
+                      PeepRoutineCheckButton(
                         color: color,
                         isChecked: isChecked,
                         onTap: onCheckButtonTap,

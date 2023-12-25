@@ -91,7 +91,6 @@ class RoutineAddController extends BaseController {
       categoryId: category.value.id,
       name: textEditingController.text,
       isActive: isActive.value,
-      // Todo : priority 데이터 받아서 넣기
       priority: priority.value,
       repeatCondition: repeatCondition,
       pos: lastPos,

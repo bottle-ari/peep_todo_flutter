@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
-import 'package:peep_todo_flutter/app/views/routine/widget/peep_repeat_condition_check_button.dart';
+import 'package:peep_todo_flutter/app/views/routine/widget/peep_routine_check_button.dart';
 
 class PeepRepeatConditionItem extends StatelessWidget {
   final String descriptionText;
@@ -43,7 +43,7 @@ class PeepRepeatConditionItem extends StatelessWidget {
           children: [
             Row(
               children: [
-                PeepRepeatConditionCheckButton(
+                PeepRoutineCheckButton(
                   color: color,
                   isChecked: isChecked,
                   onTap: onCheckButtonTap,
