@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/data/model/palette/palette_model.dart';
+import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
@@ -22,7 +25,9 @@ class DiaryPage extends BaseView<DiaryController> {
   @override
   Widget? floatingActionButton() {
     return FloatingActionButton(
-      onPressed: () {},
+      onPressed: () {
+        Get.toNamed(AppPages.DIARY_EDIT);
+      },
       shape: const CircleBorder(),
       backgroundColor: defaultPalette.primaryColor.color,
       child: PeepIcon(
@@ -39,11 +44,12 @@ class DiaryPage extends BaseView<DiaryController> {
       () {
         return SizedBox(
           height: double.infinity,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
-            child: Column(
-              children: [
-                Center(
+          child: Column(
+            children: [
+              Padding(
+                padding:
+                    EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
+                child: Center(
                     child: PeepAnimationEffect(
                   onTap: () {
                     controller.onMoveToday();
@@ -53,24 +59,36 @@ class DiaryPage extends BaseView<DiaryController> {
                     style: PeepTextStyle.boldM(color: Palette.peepGray500),
                   ),
                 )),
-                PeepMiniCalendar(),
-                Expanded(
-                  child: Column(
-                    children: [
-                      _DiaryImage(
+              ),
+              Padding(
+                padding:
+                    EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
+                child: PeepMiniCalendar(),
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    _DiaryImage(
+                      controller: controller,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: AppValues.screenPadding),
+                      child: _CheckedTodo(
                         controller: controller,
                       ),
-                      _CheckedTodo(
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: AppValues.screenPadding),
+                      child: _CheckedTodoFoldDivider(
                         controller: controller,
                       ),
-                      _CheckedTodoFoldDivider(
-                        controller: controller,
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },
@@ -87,50 +105,70 @@ class _DiaryImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Stack(children: [
-          const Positioned(
-            left: 0,
-            top: 0,
-            bottom: 0,
-            right: 0,
-            child: Center(
-              child: Divider(
-                color: Palette.peepGray200,
-              ),
-            ),
-          ),
-          Center(
-            child: PeepAnimationEffect(
-              onTap: () {},
-              child: Container(
-                color: Palette.peepWhite,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      vertical: AppValues.verticalMargin,
-                      horizontal: AppValues.horizontalMargin),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      PeepIcon(
-                        Iconsax.image,
-                        size: AppValues.miniIconSize,
-                        color: Palette.peepGray400,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: AppValues.innerMargin),
-                        child: Text(
-                          "사진 추가",
-                          style: PeepTextStyle.regularXS(
-                              color: Palette.peepGray400),
+        Obx(
+          () => controller
+                      .selectedImagePath[DateFormat('yyyyMMdd')
+                          .format(controller.getSelectedDate())]
+                      ?.isNotEmpty ??
+                  false
+              ? Padding(
+                  padding: EdgeInsets.only(bottom: AppValues.verticalMargin),
+                  child: Image.file(File(controller.selectedImagePath[
+                      DateFormat('yyyyMMdd')
+                          .format(controller.getSelectedDate())]!)),
+                )
+              : Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
+                  child: Stack(children: [
+                    const Positioned(
+                      left: 0,
+                      top: 0,
+                      bottom: 0,
+                      right: 0,
+                      child: Center(
+                        child: Divider(
+                          color: Palette.peepGray200,
                         ),
-                      )
-                    ],
-                  ),
+                      ),
+                    ),
+                    Center(
+                      child: PeepAnimationEffect(
+                        onTap: () {
+                          controller.pickImage();
+                        },
+                        child: Container(
+                          color: Palette.peepWhite,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: AppValues.verticalMargin,
+                                horizontal: AppValues.horizontalMargin),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                PeepIcon(
+                                  Iconsax.image,
+                                  size: AppValues.miniIconSize,
+                                  color: Palette.peepGray400,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      left: AppValues.innerMargin),
+                                  child: Text(
+                                    "사진 추가",
+                                    style: PeepTextStyle.regularXS(
+                                        color: Palette.peepGray400),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ]),
                 ),
-              ),
-            ),
-          ),
-        ]),
+        ),
       ],
     );
   }
