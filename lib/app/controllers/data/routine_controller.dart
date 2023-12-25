@@ -109,6 +109,12 @@ class RoutineController extends BaseController {
     loadRoutineData();
   }
 
+  void updateRoutine(RoutineModel newRoutine) async {
+    await _service.updateRoutine(newRoutine);
+
+    loadRoutineData();
+  }
+
   /*
     Delete Functions
    */

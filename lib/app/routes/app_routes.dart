@@ -13,6 +13,7 @@ abstract class Routes {
   static const TODO_MEMO_PAGE = _Paths.TODO_MEMO_PAGE;
   static const ROUTINE_MANAGE_PAGE = _Paths.ROUTINE_MANAGE_PAGE;
   static const ROUTINE_ADD_PAGE = _Paths.ROUTINE_ADD_PAGE;
+  static const ROUTINE_DETAIL_PAGE = _Paths.ROUTINE_DETAIL_PAGE;
 }
 
 abstract class _Paths {
@@ -26,4 +27,5 @@ abstract class _Paths {
   static const TODO_MEMO_PAGE = '/todo/memo';
   static const ROUTINE_MANAGE_PAGE = '/routine/manage';
   static const ROUTINE_ADD_PAGE = '/routine/add';
+  static const ROUTINE_DETAIL_PAGE = '/routine/detail';
 }

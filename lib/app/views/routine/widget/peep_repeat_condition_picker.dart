@@ -282,7 +282,80 @@ class PeepRepeatConditionPickerController extends GetxController {
     return repeatCondition;
   }
 
-  String makeRepeatConditionForUser(String cronExpression) {
-    return cronExpression;
+  // repeatCondition 을 받아서, controller의 Rx 변수의 값들 초기화하는 함수
+  void initValuesFromSubRepeatCondition(String initRepeatCondition){
+
+    // end date 초기화
+    String initEndDate = initRepeatCondition.split(' ')[2];
+    if(initEndDate.isEmpty){
+      endIsChecked.value = false;
+    }
+    else{
+      endIsChecked.value = true;
+      endDate.value = initEndDate;
+    }
+
+    // sub repeat condition 초기화
+    String initSubRepeatCondition = initRepeatCondition.split(' ')[0];
+    List<String> splitSubConditions = initSubRepeatCondition.split('-');
+
+    switch (splitSubConditions[0]) {
+      case '0':
+      // daily : "0(daily)-1(일 간격)"
+        ly.value = 0;
+        dailyDetailRepeatIsChecked.value = true;
+        dailyDetailRepeatValue.value = int.parse(splitSubConditions[1]);
+        break;
+
+      case '1':
+      // weekly : "1(매주)-02(일,화)-1(주 간격)"
+        ly.value = 1;
+        weeklyDetailRepeatIsChecked.value = true;
+        weeklyDetailRepeatValue.value = int.parse(splitSubConditions[2]);
+
+        weeklyDayRepeatIsChecked.value = true;
+        bool isWed = false;
+        for (int i = 0; i < splitSubConditions[1].length; i++) {
+          int dayIndex = int.parse(splitSubConditions[1][i]);
+          weeklyDayRepeatValue[dayIndex] = true;
+
+          if(dayIndex == 2) isWed = true;
+        }
+        if(!isWed) weeklyDayRepeatValue[2] = false;
+        break;
+
+      case '2':
+      // monthly : "2(매월)-0(요일로 반복)-1(번째주)-02(일,화)" || "2(매월)-1(상세히 반복)-10(일에)"
+        ly.value = 2;
+        // 요일로 반복
+        if (splitSubConditions[1] == '0') {
+          monthlyDayRepeatIsChecked.value = true;
+          monthlyDayRepeatOrdinalValue.value = int.parse(splitSubConditions[2]);
+
+          bool isWed = false;
+          for (int i = 0; i < splitSubConditions[3].length; i++) {
+            int dayIndex = int.parse(splitSubConditions[3][i]);
+            monthlyDayRepeatValue[dayIndex] = true;
+
+            if(dayIndex == 2) isWed = true;
+          }
+          if(!isWed) monthlyDayRepeatValue[2] = false;
+        }
+        // 상세히 반복
+        else {
+          monthlyDayRepeatIsChecked.value = false;
+          monthlyDetailRepeatValue.value = int.parse(splitSubConditions[2]);
+        }
+        break;
+
+      case '3':
+      // yearly : "3(매년)-12/21(에)"
+        ly.value = 3;
+        yearlyDetailRepeatValue.value = splitSubConditions[1];
+        break;
+
+      default:
+        break;
+    }
   }
 }

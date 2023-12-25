@@ -64,7 +64,14 @@ class RoutineManagePage extends BaseView<RoutineManageController> {
                           child: PeepRoutineManageListItem(
                             routine: item,
                             onTap: () {
-                              // Todo : routine detail 로 넘어가기
+                              // routine detail 로 넘어가기
+                              Get.toNamed(
+                                Routes.ROUTINE_DETAIL_PAGE,
+                                arguments: {
+                                  'category_id': item.categoryId,
+                                  'routine_id': item.id,
+                                },
+                              );
                             },
                           ),
                         )

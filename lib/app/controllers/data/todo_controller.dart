@@ -225,7 +225,7 @@ class TodoController extends GetxController {
       print("index : $i");
       print("name : ${routineList[i].name}");
       print("repeatCondition : ${routineList[i].repeatCondition}");
-
+      // Todo : active 상태도 확인해야
       bool matched = isMatchToRepeatCondition(selectedDay, routineList[i].repeatCondition);
       print("matched : $matched");
     }
