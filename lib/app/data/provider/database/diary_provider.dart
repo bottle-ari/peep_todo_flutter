@@ -23,6 +23,16 @@ class DiaryProvider extends GetxService {
     return result;
   }
 
+  Future<List<Map<String, Object?>>> getDiary(
+      int startDate, int endDate) async {
+    final db = await DatabaseInit().database;
+
+    final List<Map<String, dynamic>> result = await db.rawQuery(
+        "SELECT * FROM diary WHERE date >= $startDate AND date < $endDate ORDER BY date ASC");
+
+    return result;
+  }
+
   /*
     UPDATE DATA
     */

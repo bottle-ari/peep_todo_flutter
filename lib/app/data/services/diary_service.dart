@@ -24,6 +24,21 @@ class DiaryService extends GetxService {
     return diaryMaps.map((e) => DiaryModel.fromMap(e)).toList();
   }
 
+  Future<List<DiaryModel>> getDiary(
+      {required DateTime startDate, required DateTime endDate}) async {
+    final List<Map<String, dynamic>> diaryMaps = await _provider.getDiary(
+        startDate.millisecondsSinceEpoch, endDate.millisecondsSinceEpoch);
+
+    List<DiaryModel> diaryList = [];
+
+    for (var diaryMap in diaryMaps) {
+      DiaryModel diary = DiaryModel.fromMap(diaryMap);
+      diaryList.add(diary);
+    }
+
+    return diaryList;
+  }
+
   /*
     UPDATE DATA
    */

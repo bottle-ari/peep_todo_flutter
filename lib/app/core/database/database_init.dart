@@ -102,6 +102,7 @@ class DatabaseInit {
       """
       CREATE TABLE diary(
           id TEXT PRIMARY KEY,
+          date INTEGER,
           image TEXT,
           memo TEXT
       )

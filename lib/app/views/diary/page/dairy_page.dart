@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -13,10 +14,10 @@ import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_mini_calendar.dart';
 
-import '../../../controllers/page/diary_controller.dart';
+import '../../../controllers/page/diary_page_controller.dart';
 import '../../../core/base/base_view.dart';
 
-class DiaryPage extends BaseView<DiaryController> {
+class DiaryPage extends BaseView<DiaryPageController> {
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
     return null;
@@ -26,6 +27,7 @@ class DiaryPage extends BaseView<DiaryController> {
   Widget? floatingActionButton() {
     return FloatingActionButton(
       onPressed: () {
+        controller.createDiary();
         Get.toNamed(AppPages.DIARY_EDIT);
       },
       shape: const CircleBorder(),
@@ -66,26 +68,36 @@ class DiaryPage extends BaseView<DiaryController> {
                 child: PeepMiniCalendar(),
               ),
               Expanded(
-                child: Column(
-                  children: [
-                    _DiaryImage(
-                      controller: controller,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: AppValues.screenPadding),
-                      child: _CheckedTodo(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _DiaryImage(
                         controller: controller,
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: AppValues.screenPadding),
-                      child: _CheckedTodoFoldDivider(
-                        controller: controller,
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: AppValues.screenPadding),
+                        child: _CheckedTodo(
+                          controller: controller,
+                        ),
                       ),
-                    )
-                  ],
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: AppValues.screenPadding),
+                        child: _CheckedTodoFoldDivider(
+                          controller: controller,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: AppValues.screenPadding),
+                        child: _DiaryText(
+                          controller: controller,
+                        ),
+                      ),
+                      SizedBox(height: 120.h,),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -97,7 +109,7 @@ class DiaryPage extends BaseView<DiaryController> {
 }
 
 class _DiaryImage extends StatelessWidget {
-  final DiaryController controller;
+  final DiaryPageController controller;
 
   const _DiaryImage({required this.controller});
 
@@ -106,16 +118,21 @@ class _DiaryImage extends StatelessWidget {
     return Column(
       children: [
         Obx(
-          () => controller
-                      .selectedImagePath[DateFormat('yyyyMMdd')
-                          .format(controller.getSelectedDate())]
-                      ?.isNotEmpty ??
-                  false
+          () => controller.getImagePath().isNotEmpty
               ? Padding(
                   padding: EdgeInsets.only(bottom: AppValues.verticalMargin),
-                  child: Image.file(File(controller.selectedImagePath[
-                      DateFormat('yyyyMMdd')
-                          .format(controller.getSelectedDate())]!)),
+                  child: PeepAnimationEffect(
+                    onLongPress: () {
+                      controller.pickImage();
+                    },
+                    scale: 0.95,
+                    child: AspectRatio(
+                        aspectRatio: 16 / 9,
+                        child: Image.file(
+                          File(controller.getImagePath()[0]),
+                          fit: BoxFit.cover,
+                        )),
+                  ),
                 )
               : Padding(
                   padding:
@@ -175,7 +192,7 @@ class _DiaryImage extends StatelessWidget {
 }
 
 class _CheckedTodo extends StatelessWidget {
-  final DiaryController controller;
+  final DiaryPageController controller;
 
   const _CheckedTodo({required this.controller});
 
@@ -271,7 +288,7 @@ class _CheckedTodo extends StatelessWidget {
 }
 
 class _CheckedTodoFoldDivider extends StatelessWidget {
-  final DiaryController controller;
+  final DiaryPageController controller;
 
   const _CheckedTodoFoldDivider({required this.controller});
 
@@ -282,12 +299,12 @@ class _CheckedTodoFoldDivider extends StatelessWidget {
         children: [
           if (controller.checkedTodo.length > 3)
             Stack(children: [
-              const Positioned(
+              Positioned(
                 left: 0,
-                top: 0,
+                top: -1 * AppValues.verticalMargin,
                 bottom: 0,
                 right: 0,
-                child: Center(
+                child: const Center(
                   child: Divider(
                     color: Palette.peepGray200,
                   ),
@@ -301,9 +318,11 @@ class _CheckedTodoFoldDivider extends StatelessWidget {
                   child: Container(
                     color: Palette.peepWhite,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: AppValues.verticalMargin,
-                          horizontal: AppValues.horizontalMargin),
+                      padding: EdgeInsets.only(
+                        bottom: AppValues.verticalMargin,
+                        left: AppValues.horizontalMargin,
+                        right: AppValues.horizontalMargin,
+                      ),
                       child: controller.isOpen.value
                           ? PeepIcon(
                               Iconsax.arrowCircleUp,
@@ -322,7 +341,7 @@ class _CheckedTodoFoldDivider extends StatelessWidget {
             ])
           else if (controller.checkedTodo.isNotEmpty)
             Padding(
-              padding: EdgeInsets.symmetric(vertical: AppValues.verticalMargin),
+              padding: EdgeInsets.only(bottom: AppValues.verticalMargin),
               child: const Divider(
                 color: Palette.peepGray200,
               ),
@@ -330,5 +349,30 @@ class _CheckedTodoFoldDivider extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class _DiaryText extends StatelessWidget {
+  final DiaryPageController controller;
+
+  const _DiaryText({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() => controller.getMemo().isEmpty
+        ? SizedBox(
+            width: double.infinity,
+            child: Text(
+              '일기가 없어요. 일기를 작성해주세요!',
+              style: PeepTextStyle.regularM(color: Palette.peepGray400),
+            ),
+          )
+        : SizedBox(
+            width: double.infinity,
+            child: Text(
+              controller.getMemo(),
+              style: PeepTextStyle.regularM(color: Palette.peepBlack),
+            ),
+          ));
   }
 }

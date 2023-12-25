@@ -1,14 +1,12 @@
-import 'dart:ui';
-
-import 'package:peep_todo_flutter/app/data/model/diary/diary_todo_model.dart';
-
 class DiaryModel {
   final String id;
-  String image;
+  DateTime date;
+  List<String> image;
   String memo;
 
   DiaryModel({
     required this.id,
+    required this.date,
     required this.image,
     required this.memo,
   });
@@ -16,7 +14,8 @@ class DiaryModel {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'image': image,
+      'date': date.millisecondsSinceEpoch,
+      'image': image.join(','),
       'memo': memo,
     };
   }
@@ -24,7 +23,8 @@ class DiaryModel {
   factory DiaryModel.fromMap(Map<String, dynamic> map) {
     return DiaryModel(
         id: map['id'],
-        image: map['image'],
+        date: DateTime.fromMillisecondsSinceEpoch(map['date']),
+        image: map['image']?.split(',') ?? [],
         memo: map['memo']);
   }
 }
