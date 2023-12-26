@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
@@ -18,7 +19,22 @@ class RingPainter extends CustomPainter {
 
     if (itemCounts.isEmpty) return;
 
+    debugPrint("ITEM COUNTS :");
+    debugPrint(itemCounts.toString());
+
+    // 만약 체크되지 않은 투두가 존재한다면 flag = true;
+    bool flag = true;
+    Color? firstColor;
     for (var category in controller.categoryList) {
+      if(itemCounts[category.id] == null) {
+        continue;
+      } else if(itemCounts[category.id] == 0) {
+        firstColor ??= category.color;
+        continue;
+      }
+
+      flag = false;
+
       final sweepAngle =
       ((itemCounts[category.id] ?? 0) * pi * 2); // 아이템 수에 따른 각도
       final rect = Rect.fromCircle(
@@ -35,6 +51,16 @@ class RingPainter extends CustomPainter {
       canvas.drawArc(rect, currentAngle, sweepAngle, false, paint);
 
       currentAngle += sweepAngle;
+    }
+
+    if(flag) {
+      final paint = Paint()
+          ..style = PaintingStyle.fill
+          ..color = firstColor!;
+
+      final center = Offset(size.width / 2, size.height / 2 - 14.h);
+
+      canvas.drawCircle(center, 2.w, paint);
     }
   }
 

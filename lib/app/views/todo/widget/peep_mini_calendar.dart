@@ -85,15 +85,11 @@ class PeepMiniCalendar extends StatelessWidget {
                         ),
                         Obx(
                           () {
-                            // dev.log(controller.calendarItemCounts[
-                            // DateFormat('yyyyMMdd').format(day)].toString());
-
                             return CustomPaint(
                               size: Size(32.w, 32.w), // CustomPaint의 크기 고정
                               painter: RingPainter(
                                   itemCounts: controller.calendarItemCounts[
-                                          DateFormat('yyyyMMdd')
-                                              .format(day)] ??
+                                          DateFormat('yyyyMMdd').format(day)] ??
                                       {}),
                             );
                           },
@@ -101,8 +97,10 @@ class PeepMiniCalendar extends StatelessWidget {
                         Center(
                           child: Text(
                             DateFormat.d().format(selectedDay),
-                            style: PeepTextStyle.regularXS(
-                                color: Palette.peepBlack),
+                            style: controller.isToday()
+                                ? PeepTextStyle.boldXS(color: Palette.peepBlack)
+                                : PeepTextStyle.regularXS(
+                                    color: Palette.peepBlack),
                           ),
                         ),
                       ],
@@ -110,6 +108,29 @@ class PeepMiniCalendar extends StatelessWidget {
                   );
                 },
                 dowBuilder: customDowBuilder,
+                todayBuilder: (context, day, focusedDay) {
+                  return Center(
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Obx(
+                          () => CustomPaint(
+                            size: Size(32.w, 32.w),
+                            // CustomPaint의 크기 고정
+                            painter: RingPainter(
+                                itemCounts: controller.calendarItemCounts[
+                                        DateFormat('yyyyMMdd').format(day)] ??
+                                    {}),
+                          ),
+                        ),
+                        Text(
+                          DateFormat.d().format(day),
+                          style: PeepTextStyle.boldXS(color: Palette.peepBlack),
+                        ),
+                      ],
+                    ),
+                  );
+                },
                 defaultBuilder: (context, day, focusedDay) {
                   return Center(
                     child: Stack(
@@ -127,8 +148,8 @@ class PeepMiniCalendar extends StatelessWidget {
                         ),
                         Text(
                           DateFormat.d().format(day),
-                          style: PeepTextStyle.regularXS(
-                              color: Palette.peepBlack),
+                          style:
+                              PeepTextStyle.regularXS(color: Palette.peepBlack),
                         ),
                       ],
                     ),
@@ -137,15 +158,18 @@ class PeepMiniCalendar extends StatelessWidget {
               ),
               headerVisible: false,
               calendarStyle: CalendarStyle(
-                defaultTextStyle: PeepTextStyleBase.baseRegularM,
-                isTodayHighlighted: false,
-                todayTextStyle: PeepTextStyleBase.baseRegularM,
-                selectedTextStyle: PeepTextStyleBase.baseRegularM,
-                weekendTextStyle: PeepTextStyleBase.baseRegularM,
-                outsideDaysVisible: false,
-
-              ),
-
+                  defaultTextStyle:
+                      PeepTextStyle.regularXS(color: Palette.peepBlack),
+                  todayTextStyle:
+                      PeepTextStyle.boldXS(color: Palette.peepBlack),
+                  selectedTextStyle: controller.isToday()
+                      ? PeepTextStyle.boldXS(color: Palette.peepBlack)
+                      : PeepTextStyle.regularXS(color: Palette.peepBlack),
+                  weekendTextStyle:
+                      PeepTextStyle.regularXS(color: Palette.peepBlack),
+                  outsideDaysVisible: true,
+                  todayDecoration:
+                      const BoxDecoration(color: Colors.transparent)),
               daysOfWeekStyle: const DaysOfWeekStyle(
                   //weekdayStyle: TextStyle(color: P),
                   //decoration: Decoration()
@@ -172,6 +196,7 @@ class PeepMiniCalendar extends StatelessWidget {
               onPageChanged: (focusedDay) {
                 controller.onPageChanged(focusedDay);
               },
+              pageJumpingEnabled: true,
             ),
           ),
         ),
