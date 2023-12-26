@@ -1,11 +1,12 @@
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/bindings/page/category_detail_binding.dart';
-import 'package:peep_todo_flutter/app/bindings/page/overdue_todo_binding.dart';
+import 'package:peep_todo_flutter/app/bindings/page/diary_edit_binding.dart';
 import 'package:peep_todo_flutter/app/bindings/page/search_item_binding.dart';
 import 'package:peep_todo_flutter/app/bindings/page/todo_detail_binding.dart';
 import 'package:peep_todo_flutter/app/bindings/page/todo_memo_binding.dart';
 import 'package:peep_todo_flutter/app/bindings/page/my_page_binding.dart';
 import 'package:peep_todo_flutter/app/views/category/page/category_detail_page.dart';
+import 'package:peep_todo_flutter/app/views/diary/page/dairy_edit_page.dart';
 import 'package:peep_todo_flutter/app/views/test.dart';
 import 'package:peep_todo_flutter/app/views/category/page/category_manage_page.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/todo_detail_page.dart';
@@ -32,6 +33,7 @@ class AppPages {
   static const TODOMEMO = Routes.TODO_MEMO_PAGE;
   static const SEARCH = Routes.TODO_SEARCH_PAGE;
   static const MYPAGE = Routes.MY_PAGE;
+  static const DIARY_EDIT = Routes.DIARY_EDIT_PAGE;
 
   static final routes = [
     GetPage(
@@ -81,6 +83,9 @@ class AppPages {
       name: _Paths.MY_PAGE,
       page:() => PeepMyPage(),
       binding: MyPageBinding(),
+      name: _Paths.DIARY_EDIT_PAGE,
+      page: () => DiaryEditPage(),
+      binding: DiaryEditBinding(),
     ),
   ];
 }
