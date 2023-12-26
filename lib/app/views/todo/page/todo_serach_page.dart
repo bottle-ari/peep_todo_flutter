@@ -46,7 +46,7 @@ class TodoSearchPage extends BaseView<SearchItemController> {
                   PeepIcon(
                     Iconsax.calendarSearch,
                     size: AppValues.baseIconSize,
-                    color: Palette.peepPurple,
+                    color: Palette.peepGray500,
                   ),
                   SizedBox(
                     width: 300.w,

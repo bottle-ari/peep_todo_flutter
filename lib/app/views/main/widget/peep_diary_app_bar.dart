@@ -40,38 +40,38 @@ class PeepDiaryAppBar extends StatelessWidget {
                 PeepProfileButton(),
                 Row(
                   children: [
-                    PeepAnimationEffect(
-                      onTap: () {},
-                      child: PeepIcon(
-                        Iconsax.calendarSearch,
-                        size: AppValues.baseIconSize,
-                        color: Palette.peepGray500,
-                      ),
-                    ),
-                    PeepDropdownMenu(
-                      menuItems: [
-                        DropdownMenuItemData(
-                            'popup_action_1',
-                            PeepIcon(Iconsax.categoryboxAdd,
-                                size: AppValues.smallIconSize,
-                                color: Palette.peepBlack),
-                            '다이어리 어쩌구 추가'),
-                        DropdownMenuItemData(
-                            'popup_action_2',
-                            PeepIcon(Iconsax.categorybox,
-                                size: AppValues.smallIconSize,
-                                color: Palette.peepBlack),
-                            '다이어리 관리'),
-                      ],
-                      onMenuItemSelected: {
-                        'popup_action_1': () {
-                          debugPrint('1');
-                        },
-                        'popup_action_2': () {
-                          debugPrint('2');
-                        },
-                      },
-                    ),
+                    // PeepAnimationEffect(
+                    //   onTap: () {},
+                    //   child: PeepIcon(
+                    //     Iconsax.calendarSearch,
+                    //     size: AppValues.baseIconSize,
+                    //     color: Palette.peepGray500,
+                    //   ),
+                    // ),
+                    // PeepDropdownMenu(
+                    //   menuItems: [
+                    //     DropdownMenuItemData(
+                    //         'popup_action_1',
+                    //         PeepIcon(Iconsax.categoryboxAdd,
+                    //             size: AppValues.smallIconSize,
+                    //             color: Palette.peepBlack),
+                    //         '다이어리 어쩌구 추가'),
+                    //     DropdownMenuItemData(
+                    //         'popup_action_2',
+                    //         PeepIcon(Iconsax.categorybox,
+                    //             size: AppValues.smallIconSize,
+                    //             color: Palette.peepBlack),
+                    //         '다이어리 관리'),
+                    //   ],
+                    //   onMenuItemSelected: {
+                    //     'popup_action_1': () {
+                    //       debugPrint('1');
+                    //     },
+                    //     'popup_action_2': () {
+                    //       debugPrint('2');
+                    //     },
+                    //   },
+                    // ),
                   ],
                 ),
               ],
