@@ -11,12 +11,25 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  iconsax: ^0.0.8
   get: ^4.6.6
   intl: ^0.18.1
   http: ^1.1.0
   loading_animation_widget: ^1.2.0+4
   shared_preferences: ^2.2.0
+  flutter_screenutil: ^5.9.0
+  flutter_svg: ^2.0.7
+  reorderables: ^0.6.0
+  table_calendar: ^3.0.9
+  sqflite: ^2.3.0
+  path: ^1.8.3
+  uuid: ^4.2.1
+  flutter_slidable: ^3.0.1
+  emoji_picker_flutter: ^1.6.3
+  image_picker: ^1.0.5
+  path_provider: ^2.1.1
+  permission_handler: ^11.1.0
+  scroll_date_picker: ^3.7.3
+  url_launcher: ^6.2.2
 
 dev_dependencies:
   flutter_test:
@@ -25,7 +38,56 @@ dev_dependencies:
 
 flutter:
   assets:
-    - assets/image/
+    - assets/image/chick.png
+    - assets/image/default_profile.png
+    - assets/image/icon/todo.svg
+    - assets/image/icon/calendar.svg
+    - assets/image/icon/routine.svg
+    - assets/image/icon/profile.svg
+    - assets/image/icon/priority.svg
+    - assets/image/icon/arrow_circle_up.svg
+    - assets/image/icon/arrow_circle_down.svg
+    - assets/image/icon/check_false.svg
+    - assets/image/icon/check_true.svg
+    - assets/image/icon/emoji.svg
+    - assets/image/icon/clock.svg
+    - assets/image/icon/more.svg
+    - assets/image/icon/egg_top.svg
+    - assets/image/icon/egg_bottom.svg
+    - assets/image/icon/egg.svg
+    - assets/image/icon/trash.svg
+    - assets/image/icon/rollback.svg
+    - assets/image/icon/add_square.svg
+    - assets/image/icon/arrow_down.svg
+    - assets/image/icon/reminder.svg
+    - assets/image/icon/addcircle.svg
+    - assets/image/icon/categorybox.svg
+    - assets/image/icon/clipboard_check.svg
+    - assets/image/icon/clipboard_check_bold.svg
+    - assets/image/icon/clipboard_delete.svg
+    - assets/image/icon/clock_bold.svg
+    - assets/image/icon/arrow_left.svg
+    - assets/image/icon/check.svg
+    - assets/image/icon/egg_broken.svg
+    - assets/image/icon/constant_todo.svg
+    - assets/image/icon/cancel.svg
+    - assets/image/icon/calendar_search.svg
+    - assets/image/icon/notification.svg
+    - assets/image/icon/memo.svg
+    - assets/image/icon/egg_cracked.svg
+    - assets/image/icon/add_square_outline.svg
+    - assets/image/icon/categorybox_add.svg
+    - assets/image/icon/routine_outline.svg
+    - assets/image/icon/check_bold.svg
+    - assets/image/icon/diary.svg
+    - assets/image/icon/edit.svg
+    - assets/image/icon/trash_bold.svg
+    - assets/image/icon/image.svg
+    - assets/image/icon/empty_box.svg
+    - assets/image/icon/export.svg
+    - assets/image/icon/document.svg
+    - assets/image/icon/arrow_right.svg
+
   uses-material-design: true
 
 fonts:

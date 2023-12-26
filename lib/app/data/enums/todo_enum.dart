@@ -1,0 +1,1 @@
+enum TodoType { scheduled, constant }
