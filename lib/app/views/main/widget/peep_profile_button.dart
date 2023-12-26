@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 
@@ -39,7 +41,7 @@ class PeepProfileButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return PeepAnimationEffect(
       onTap: () {
-        log('pressed');
+        Get.toNamed(AppPages.MYPAGE);
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(AppValues.tinyRadius),
