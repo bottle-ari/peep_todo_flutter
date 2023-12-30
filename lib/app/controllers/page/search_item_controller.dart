@@ -2,8 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:peep_todo_flutter/app/controllers/data/peep_calendar_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/todo_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_controller.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
@@ -11,8 +9,6 @@ import 'package:peep_todo_flutter/app/data/services/todo_service.dart';
 
 class SearchItemController extends BaseController {
   final TodoService _service = TodoService();
-  final PeepCalendarController _calendarController =
-      Get.put(PeepCalendarController());
   final TodoController _todoController = Get.find();
 
   // Data
@@ -50,12 +46,12 @@ class SearchItemController extends BaseController {
     searchTodoList.value = _todoController.groupByDate(data);
     log('search : ${data.length}');
   }
+
   // 검색 기능 초기화
-  void initSearchFunction(){
+  void initSearchFunction() {
     searchFieldController.clear();
     searchTodoList.value = {};
   }
-
 
   // 검색 키워드 갱신 기능
   void searchKeywordUpdate() {
@@ -75,8 +71,7 @@ class SearchItemController extends BaseController {
 
   // 올해인지 확인하여 형태에 맞는 String 리턴하는 함수
   String checkYear(String formattedDate) {
-    if (_calendarController.today.year !=
-        int.parse(formattedDate.substring(0, 4))) {
+    if (DateTime.now().year != int.parse(formattedDate.substring(0, 4))) {
       return formattedDate.substring(0, 4) +
           "년 " +
           formattedDate.substring(4, 6) +
