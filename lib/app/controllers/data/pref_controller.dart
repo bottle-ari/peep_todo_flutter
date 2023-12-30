@@ -1,23 +1,36 @@
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../data/services/pref_service.dart';
+mixin PrefController on GetxController {
+  late SharedPreferences prefs;
 
-class PrefController extends GetxController {
-  final PrefService _service = Get.put(PrefService());
-
-  final RxMap<String, String> _data = <String, String>{}.obs;
-
-  Map<String, String> get data => _data;
-
-  void saveData(String key, String value) async {
-    await _service.saveData(key, value);
-    await updateData(key);
+  @override
+  void onInit() async {
+    super.onInit();
+    prefs = await SharedPreferences.getInstance();
   }
 
-  Future<void> updateData(String key) async {
-    var value = await _service.loadData(key) ?? '';
-    _data[key] = value;
+  Future<void> saveString(String key, String value) async {
+    await prefs.setString(key, value);
+  }
 
-    update();
+  String? getString(String key) {
+    return prefs.getString(key);
+  }
+
+  Future<void> saveInt(String key, int value) async {
+    await prefs.setInt(key, value);
+  }
+
+  int? getInt(String key) {
+    return prefs.getInt(key);
+  }
+
+  Future<void> saveBool(String key, bool value) async {
+    await prefs.setBool(key, value);
+  }
+
+  bool? getBool(String key) {
+    return prefs.getBool(key);
   }
 }

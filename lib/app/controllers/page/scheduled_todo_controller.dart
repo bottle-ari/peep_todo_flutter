@@ -303,10 +303,9 @@ import '../../core/base/base_controller.dart';
 import '../data/pref_controller.dart';
 import '../data/todo_controller.dart';
 
-class ScheduledTodoController extends BaseController {
+class ScheduledTodoController extends BaseController with PrefController {
   final CategoryController _categoryController = Get.find();
   final TodoController _todoController = Get.find();
-  final PrefController prefController = Get.find();
 
   // Data
   final RxList<dynamic> scheduledTodoList = <dynamic>[].obs;
@@ -361,14 +360,11 @@ class ScheduledTodoController extends BaseController {
   void loadIsFirstTimeAccess() async {
     var key = 'isFirstTimeAccess';
 
-    await prefController.updateData(key);
-
-    log(prefController.data[key] ?? '?');
-
-    if (prefController.data[key]?.isEmpty ?? true) {
-      prefController.saveData(key, 'true');
+    final value = getBool(key);
+    if (value == null) {
+      saveBool(key, true);
       isFirstTimeAccess.value = true;
-    } else if (prefController.data[key] == 'true') {
+    } else if (value) {
       isFirstTimeAccess.value = true;
     } else {
       isFirstTimeAccess.value = false;
@@ -408,14 +404,14 @@ class ScheduledTodoController extends BaseController {
     if (_categoryController.categoryList.isEmpty) return;
 
     var key = 'categoryFoldMap';
-    prefController.updateData(key);
 
-    if (prefController.data[key] == null) {
+    final value = getString(key);
+    if (value == null) {
       for (var category in _categoryController.categoryList) {
         categoryFoldMap[category.id] = false;
       }
     } else {
-      Map<String, dynamic> tempMap = jsonDecode(prefController.data[key]!);
+      Map<String, dynamic> tempMap = jsonDecode(value);
 
       Map<String, bool> storedCategoryFoldMap =
           tempMap.map((key, value) => MapEntry(key, value as bool));
@@ -427,7 +423,7 @@ class ScheduledTodoController extends BaseController {
     }
 
     String categoryFoldMapString = jsonEncode(categoryFoldMap);
-    prefController.saveData(key, categoryFoldMapString);
+    saveString(key, categoryFoldMapString);
   }
 
   void initCategoryIndexMap(List<dynamic>? todoList) {
@@ -475,7 +471,7 @@ class ScheduledTodoController extends BaseController {
    */
   void addNewTodo({required String categoryId}) {
     if (isFirstTimeAccess.value) {
-      prefController.saveData('isFirstTimeAccess', 'false');
+      saveBool('isFirstTimeAccess', false);
       isFirstTimeAccess.value = false;
     }
 
@@ -704,7 +700,7 @@ class ScheduledTodoController extends BaseController {
     categoryFoldMap[id] = !categoryFoldMap[id]!;
 
     String categoryFoldMapString = jsonEncode(categoryFoldMap);
-    prefController.saveData(key, categoryFoldMapString);
+    saveString(key, categoryFoldMapString);
   }
 
   void onMoveToday() {
