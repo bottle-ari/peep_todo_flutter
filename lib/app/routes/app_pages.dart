@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/bindings/page/category_detail_binding.dart';
 import 'package:peep_todo_flutter/app/bindings/page/diary_edit_binding.dart';
@@ -83,6 +85,8 @@ class AppPages {
       name: _Paths.MY_PAGE,
       page:() => PeepMyPage(),
       binding: MyPageBinding(),
+    ),
+  GetPage(
       name: _Paths.DIARY_EDIT_PAGE,
       page: () => DiaryEditPage(),
       binding: DiaryEditBinding(),
