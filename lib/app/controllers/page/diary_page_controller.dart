@@ -51,15 +51,18 @@ class DiaryPageController extends BaseController {
         in _todoController.todoMap[_todoController.getSelectedTodoKey()] ??
             []) {
       if (todo.isChecked) {
+        final category =
+            await _categoryController.getCategoryByIdAsync(categoryId: todo.categoryId);
         newCheckTodo.add(DiaryTodoModel(
             name: todo.name,
-            color: _categoryController
-                .getCategoryById(categoryId: todo.categoryId)
-                .color));
+            color: category.color,
+            categoryOrder: category.pos,
+            indexOrder: todo.pos));
       }
     }
 
-    log('${newCheckTodo.length}');
+    newCheckTodo.sort((a, b) => a.indexOrder - b.indexOrder);
+    newCheckTodo.sort((a, b) => a.categoryOrder - b.categoryOrder);
 
     checkedTodo.value = newCheckTodo;
   }

@@ -60,9 +60,9 @@ class CategoryDetailController extends BaseController {
     Init Functions
    */
 
-  void loadCategory() {
+  void loadCategory() async {
     category.value =
-        _categoryController.getCategoryById(categoryId: categoryId);
+        await _categoryController.getCategoryById(categoryId: categoryId);
   }
 
   /*
