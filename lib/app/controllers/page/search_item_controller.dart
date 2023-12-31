@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/data/todo_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/widget/peep_mini_calendar_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_controller.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:peep_todo_flutter/app/data/services/todo_service.dart';
@@ -10,6 +11,7 @@ import 'package:peep_todo_flutter/app/data/services/todo_service.dart';
 class SearchItemController extends BaseController {
   final TodoService _service = TodoService();
   final TodoController _todoController = Get.find();
+  final PeepMiniCalendarController _peepMiniCalendarController = Get.find();
 
   // Data
   final RxMap<String, List<TodoModel>> searchTodoList =
@@ -65,7 +67,7 @@ class SearchItemController extends BaseController {
   // 검색하여 클릭한 날짜로 selected Day 변경
   void selectedDay(DateTime? newSelectedDay) {
     if (newSelectedDay == null) return;
-    _todoController.onDaySelected(newSelectedDay, newSelectedDay);
+    _peepMiniCalendarController.onDaySelected(newSelectedDay, newSelectedDay);
     log("onDaySelected:{$newSelectedDay} ");
   }
 

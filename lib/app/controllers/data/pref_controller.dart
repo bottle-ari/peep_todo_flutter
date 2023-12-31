@@ -1,14 +1,9 @@
 import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/core/database/preference_init.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-mixin PrefController on GetxController {
-  late SharedPreferences prefs;
-
-  @override
-  void onInit() async {
-    super.onInit();
-    prefs = await SharedPreferences.getInstance();
-  }
+mixin PrefController {
+  SharedPreferences get prefs => GlobalPreferences.instance;
 
   Future<void> saveString(String key, String value) async {
     await prefs.setString(key, value);
@@ -24,13 +19,5 @@ mixin PrefController on GetxController {
 
   int? getInt(String key) {
     return prefs.getInt(key);
-  }
-
-  Future<void> saveBool(String key, bool value) async {
-    await prefs.setBool(key, value);
-  }
-
-  bool? getBool(String key) {
-    return prefs.getBool(key);
   }
 }
