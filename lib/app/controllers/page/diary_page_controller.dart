@@ -38,7 +38,7 @@ class DiaryPageController extends BaseController {
 
     // 카테고리 데이터 변경 감지
     ever(_categoryController.categoryList,
-            (callback) => updateCheckedTodoList());
+        (callback) => updateCheckedTodoList());
 
     updateCheckedTodoList();
   }
@@ -48,7 +48,8 @@ class DiaryPageController extends BaseController {
     List<DiaryTodoModel> newCheckTodo = [];
 
     for (var todo
-        in _todoController.todoMap[_todoController.getSelectedTodoKey()] ?? []) {
+        in _todoController.todoMap[_todoController.getSelectedTodoKey()] ??
+            []) {
       if (todo.isChecked) {
         newCheckTodo.add(DiaryTodoModel(
             name: todo.name,

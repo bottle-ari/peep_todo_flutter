@@ -73,6 +73,7 @@ class SearchItemController extends BaseController {
 
   // 올해인지 확인하여 형태에 맞는 String 리턴하는 함수
   String checkYear(String formattedDate) {
+    if(formattedDate == 'constant') return "상시";
     if (DateTime.now().year != int.parse(formattedDate.substring(0, 4))) {
       return formattedDate.substring(0, 4) +
           "년 " +
