@@ -89,6 +89,10 @@ class TodoController extends GetxController {
           } else {
             // 옵저버 변수에 값 추가
             newTodoMap[oldFormattedDate]?.removeAt(oldIndex);
+
+            if(!newTodoMap.containsKey(newFormattedDate)) {
+              newTodoMap[newFormattedDate] = [];
+            }
             newTodoMap[newFormattedDate]?.add(newTodo);
           }
         }
