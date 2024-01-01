@@ -109,17 +109,17 @@ class PeepTodoItem extends StatelessWidget {
                   onPressed: (BuildContext context) {
                     deleteTodo();
                   },
-                  backgroundColor: Palette.peepRed,
+                  backgroundColor: Palette.peepPriorityHigh,
                   foregroundColor: Colors.white,
-                  label: '삭제',
+                  icon: PeepIconData.trash
                 ),
                 SlidableAction(
                   onPressed: (BuildContext context) {
                     copyTodo();
                   },
-                  backgroundColor: Palette.peepBlue,
+                  backgroundColor: Palette.peepPriorityLow,
                   foregroundColor: Colors.white,
-                  label: '복사',
+                    icon: PeepIconData.copy
                 ),
               ],
             ),
