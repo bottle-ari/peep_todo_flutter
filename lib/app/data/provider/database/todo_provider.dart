@@ -52,6 +52,17 @@ class TodoProvider extends GetxService {
     return result;
   }
 
+  Future<List<Map<String, Object?>>> getTodoWithSearch(
+      String inputString) async {
+    final db = await DatabaseInit().database;
+
+    final List<Map<String, dynamic>> result = await db.rawQuery(
+        "SELECT * FROM todo WHERE name LIKE ? ORDER BY date DESC",
+        ["%$inputString%"]);
+
+    return result;
+  }
+
   /*
     UPDATE DATA
    */

@@ -83,7 +83,6 @@ class TodoDetailController extends BaseController {
         pos: todo.value.pos,
         checkTime: todo.value.checkTime);
 
-    todoController.loadOldDates(dateList: [todo.value.date!]);
     todoController.updateTodos(todoList: [newTodo]);
 
     todo.value = newTodo;

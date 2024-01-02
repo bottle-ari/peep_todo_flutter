@@ -15,13 +15,13 @@ import 'package:peep_todo_flutter/app/views/todo/widget/peep_category_item.dart'
 import 'package:reorderables/reorderables.dart';
 
 import '../../../controllers/main/peep_main_toggle_button_controller.dart';
-import '../../../controllers/page/scheduled_todo_controller.dart';
+import '../../../controllers/page/selected_todo_controller.dart';
 import '../../../core/base/base_view.dart';
 import '../../common/painter/bubble_painter.dart';
 import '../widget/peep_todo_input_item.dart';
 import '../widget/peep_todo_item.dart';
 
-class TodoPage extends BaseView<ScheduledTodoController> {
+class TodoPage extends BaseView<SelectedTodoController> {
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
     return null;
@@ -81,7 +81,7 @@ class TodoPage extends BaseView<ScheduledTodoController> {
                           },
                           delegate: ReorderableSliverChildListDelegate(
                             [
-                              for (var item in controller.scheduledTodoList)
+                              for (var item in controller.selectedTodoList)
                                 if (item is TodoModel)
                                   if (!(controller
                                           .categoryFoldMap[item.categoryId] ??
@@ -109,8 +109,8 @@ class TodoPage extends BaseView<ScheduledTodoController> {
                                                   AppValues.innerMargin),
                                           child: PeepTodoItem(
                                             todo: item,
-                                            color: controller.getColor(
-                                                todoId: item.id),
+                                            color: controller.getColorByCategory(
+                                                item: item),
                                             todoType: controller.getTodoTypeByCategory(item: item),
                                           ))
                                   else

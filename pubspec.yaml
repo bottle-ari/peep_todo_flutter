@@ -30,6 +30,11 @@ dependencies:
   permission_handler: ^11.1.0
   scroll_date_picker: ^3.7.3
   numberpicker: ^2.1.2
+  url_launcher: ^6.2.2
+  flutter_keyboard_visibility: ^6.0.0
+  device_info_plus: ^9.1.1
+  super_clipboard: ^0.8.1
+  flutter_quill: ^9.2.1
 
 dev_dependencies:
   flutter_test:
@@ -84,29 +89,33 @@ flutter:
     - assets/image/icon/trash_bold.svg
     - assets/image/icon/image.svg
     - assets/image/icon/empty_box.svg
+    - assets/image/icon/export.svg
     - assets/image/icon/document.svg
-
+    - assets/image/icon/arrow_right.svg
 
   uses-material-design: true
 
-fonts:
-  - family: Pretendard
-    fonts:
-      - asset: assets/font/Pretendard-ExtraThin.otf
-        weight: 100
-      - asset: assets/font/Pretendard-Thin.otf
-        weight: 200
-      - asset: assets/font/Pretendard-Light.otf
-        weight: 300
-      - asset: assets/font/Pretendard-Regular.otf
-        weight: 400
-      - asset: assets/font/Pretendard-Medium.otf
-        weight: 500
-      - asset: assets/font/Pretendard-SemiBold.otf
-        weight: 600
-      - asset: assets/font/Pretendard-Bold.otf
-        weight: 700
-      - asset: assets/font/Pretendard-ExtraBold.otf
-        weight: 800
-      - asset: assets/font/Pretendard-Black.otf
-        weight: 900
+  fonts:
+    - family: Pretendard
+      fonts:
+        - asset: assets/font/Pretendard-ExtraLight.otf
+          weight: 100
+        - asset: assets/font/Pretendard-Thin.otf
+          weight: 200
+        - asset: assets/font/Pretendard-Light.otf
+          weight: 300
+        - asset: assets/font/Pretendard-Regular.otf
+          weight: 400
+        - asset: assets/font/Pretendard-Medium.otf
+          weight: 500
+        - asset: assets/font/Pretendard-SemiBold.otf
+          weight: 600
+        - asset: assets/font/Pretendard-Bold.otf
+          weight: 700
+        - asset: assets/font/Pretendard-ExtraBold.otf
+          weight: 800
+        - asset: assets/font/Pretendard-Black.otf
+          weight: 900
+    - family: Iconsax
+      fonts:
+        - asset: assets/font/iconsax.ttf

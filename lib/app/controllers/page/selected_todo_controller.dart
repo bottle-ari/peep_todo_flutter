@@ -292,8 +292,10 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/widget/peep_mini_calendar_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
@@ -303,13 +305,13 @@ import '../../core/base/base_controller.dart';
 import '../data/pref_controller.dart';
 import '../data/todo_controller.dart';
 
-class ScheduledTodoController extends BaseController {
+class SelectedTodoController extends BaseController with PrefController {
   final CategoryController _categoryController = Get.find();
   final TodoController _todoController = Get.find();
-  final PrefController prefController = Get.find();
+  final PeepMiniCalendarController _peepMiniCalendarController = Get.find();
 
   // Data
-  final RxList<dynamic> scheduledTodoList = <dynamic>[].obs;
+  final RxList<dynamic> selectedTodoList = <dynamic>[].obs;
 
   // Variables
   Map<String, List<int>> categoryIndexMap = <String, List<int>>{};
@@ -330,14 +332,19 @@ class ScheduledTodoController extends BaseController {
 
     focusNode.value.addListener(_focusNodeListener);
 
-    ever(_todoController.selectedTodoList, (callback) {
-      updateScheduledTodoList();
+    // 투두 데이터 변경 감지
+    ever(_todoController.todoMap, (callback) {
+      updateSelectedTodoList();
     });
 
-    ever(_categoryController.categoryList,
-        (callback) => updateScheduledTodoList());
+    // 선택된 날짜 변경 감지
+    ever(_todoController.selectedDate, (callback) => updateSelectedTodoList());
 
-    updateScheduledTodoList();
+    // 카테고리 데이터 변경 감지
+    ever(_categoryController.categoryList,
+        (callback) => updateSelectedTodoList());
+
+    updateSelectedTodoList();
     loadIsFirstTimeAccess();
   }
 
@@ -361,34 +368,47 @@ class ScheduledTodoController extends BaseController {
   void loadIsFirstTimeAccess() async {
     var key = 'isFirstTimeAccess';
 
-    await prefController.updateData(key);
-
-    log(prefController.data[key] ?? '?');
-
-    if (prefController.data[key]?.isEmpty ?? true) {
-      prefController.saveData(key, 'true');
+    final value = getInt(key);
+    if (value == null) {
+      saveInt(key, 1);
       isFirstTimeAccess.value = true;
-    } else if (prefController.data[key] == 'true') {
+    } else if (value == 1) {
       isFirstTimeAccess.value = true;
     } else {
       isFirstTimeAccess.value = false;
     }
   }
 
-  void updateScheduledTodoList() async {
+  /*
+    선택된 날짜의 todoList 업데이트
+   */
+  void updateSelectedTodoList() async {
+    // 만약 입력 중인 새로운 투두가 있다면 Confirm
     addNewTodoConfirm();
 
+    // 활성 카테고리만 가져오기
     List<dynamic> newScheduledTodoList = List<dynamic>.from(_categoryController
         .categoryList
         .where((element) => element.isActive == true));
 
+    // 카테고리 indexMap 초기 세팅
     initCategoryIndexMap(newScheduledTodoList);
 
-    for (var todo in _todoController.selectedTodoList) {
+    final constantList = _todoController.todoMap['constant'] ?? [];
+    constantList.sort((a, b) => a.pos - b.pos);
+
+    final scheduledList =
+        _todoController.todoMap[_todoController.getSelectedTodoKey()] ?? [];
+    scheduledList.sort((a, b) => a.pos - b.pos);
+
+    // Constant 투두 부터 넣기
+    for (var todo in constantList) {
       if (categoryIndexMap[todo.categoryId] == null) continue;
 
-      var inx = categoryIndexMap[todo.categoryId]![1]; // todo가 추가될 index
+      // todo가 추가될 index
+      var inx = categoryIndexMap[todo.categoryId]![1];
 
+      // 해당 위치(inx)에 투두 추가
       if (inx >= newScheduledTodoList.length) {
         newScheduledTodoList.add(todo);
       } else {
@@ -399,8 +419,26 @@ class ScheduledTodoController extends BaseController {
       categoryIndexMap[todo.categoryId]?[1]++;
     }
 
-    scheduledTodoList.value = newScheduledTodoList;
+    // Scheduled 투두 넣기
+    for (var todo in scheduledList) {
+      if (categoryIndexMap[todo.categoryId] == null) continue;
 
+      // todo가 추가될 index
+      var inx = categoryIndexMap[todo.categoryId]![1];
+
+      // 해당 위치(inx)에 투두 추가
+      if (inx >= newScheduledTodoList.length) {
+        newScheduledTodoList.add(todo);
+      } else {
+        newScheduledTodoList.insert(inx, todo);
+      }
+
+      updateCategoryIndexMap(inx);
+      categoryIndexMap[todo.categoryId]?[1]++;
+    }
+
+    // 전체 투두 리스트 저장 및 변경
+    selectedTodoList.value = newScheduledTodoList;
     initCategoryFoldMap();
   }
 
@@ -408,14 +446,14 @@ class ScheduledTodoController extends BaseController {
     if (_categoryController.categoryList.isEmpty) return;
 
     var key = 'categoryFoldMap';
-    prefController.updateData(key);
 
-    if (prefController.data[key] == null) {
+    final value = getString(key);
+    if (value == null) {
       for (var category in _categoryController.categoryList) {
         categoryFoldMap[category.id] = false;
       }
     } else {
-      Map<String, dynamic> tempMap = jsonDecode(prefController.data[key]!);
+      Map<String, dynamic> tempMap = jsonDecode(value);
 
       Map<String, bool> storedCategoryFoldMap =
           tempMap.map((key, value) => MapEntry(key, value as bool));
@@ -427,11 +465,11 @@ class ScheduledTodoController extends BaseController {
     }
 
     String categoryFoldMapString = jsonEncode(categoryFoldMap);
-    prefController.saveData(key, categoryFoldMapString);
+    saveString(key, categoryFoldMapString);
   }
 
   void initCategoryIndexMap(List<dynamic>? todoList) {
-    todoList ??= scheduledTodoList;
+    todoList ??= selectedTodoList;
 
     Map<String, List<int>> newCategoryIndexMap = {};
 
@@ -475,7 +513,7 @@ class ScheduledTodoController extends BaseController {
    */
   void addNewTodo({required String categoryId}) {
     if (isFirstTimeAccess.value) {
-      prefController.saveData('isFirstTimeAccess', 'false');
+      saveInt('isFirstTimeAccess', 0);
       isFirstTimeAccess.value = false;
     }
 
@@ -496,7 +534,7 @@ class ScheduledTodoController extends BaseController {
     var uuid = const Uuid();
     newTodoId = uuid.v4();
 
-    List<dynamic> newScheduledTodoList = List<dynamic>.from(scheduledTodoList);
+    List<dynamic> newScheduledTodoList = List<dynamic>.from(selectedTodoList);
 
     newScheduledTodoList.insert(
         newTodoPos,
@@ -513,9 +551,9 @@ class ScheduledTodoController extends BaseController {
             pos: newTodoPos));
 
     initCategoryIndexMap(newScheduledTodoList);
-    scheduledTodoList.value = newScheduledTodoList;
+    selectedTodoList.value = newScheduledTodoList;
 
-    log(scheduledTodoList.toString());
+    log(selectedTodoList.toString());
     log(categoryIndexMap.toString());
     update();
   }
@@ -524,7 +562,7 @@ class ScheduledTodoController extends BaseController {
     if (!isInputMode.value) return;
 
     TodoModel todo =
-        scheduledTodoList.firstWhere((element) => element.id == newTodoId);
+        selectedTodoList.firstWhere((element) => element.id == newTodoId);
 
     if (textFieldController.text != '') {
       final bool isScheduledTodoType = _categoryController
@@ -569,8 +607,7 @@ class ScheduledTodoController extends BaseController {
     newTodoCategoryId = null;
     isInputMode.value = false;
 
-    updateScheduledTodoList();
-    _todoController.updateCalendarItemCounts(todo.date);
+    updateSelectedTodoList();
 
     update();
   }
@@ -578,16 +615,6 @@ class ScheduledTodoController extends BaseController {
   /*
     Read Function
    */
-  Color getColor({required String todoId}) {
-    var categoryId = _todoController.selectedTodoList
-        .firstWhere((e) => e.id == todoId)
-        .categoryId;
-
-    return _categoryController.categoryList
-        .firstWhere((e) => e.id == categoryId)
-        .color;
-  }
-
   Color getColorByCategory({required TodoModel item}) {
     CategoryModel category =
         _categoryController.getCategoryById(categoryId: item.categoryId);
@@ -611,11 +638,9 @@ class ScheduledTodoController extends BaseController {
    */
   void reorderTodoList(int oldIndex, int newIndex) {
     if (newIndex == 0 || oldIndex == newIndex) return;
-    if (scheduledTodoList[oldIndex] is CategoryModel) return;
+    if (selectedTodoList[oldIndex] is CategoryModel) return;
 
-    //_reorderAndSaveTodoList(oldIndex, newIndex);
-
-    var list = scheduledTodoList;
+    var list = selectedTodoList;
     final TodoModel todoItem = list.removeAt(oldIndex);
 
     String oldCategoryId = todoItem.categoryId;
@@ -645,7 +670,11 @@ class ScheduledTodoController extends BaseController {
         .type;
     final newTodoType =
         _categoryController.getCategoryById(categoryId: newCategoryId).type;
+
+    // 카테고리 id 변경
     todoItem.categoryId = newCategoryId;
+
+    // 타입이 변했다면 date 수정
     if (todoType != newTodoType) {
       if (!todoItem.isChecked) {
         if (newTodoType == TodoType.constant) {
@@ -656,13 +685,15 @@ class ScheduledTodoController extends BaseController {
       }
     }
 
+    // 리스트 내에서 오더 변경
     list.insert(newIndex, todoItem);
-    scheduledTodoList.value = List.from(list);
+    selectedTodoList.value = List.from(list);
 
-    initCategoryIndexMap(scheduledTodoList);
+    // 카테고리 indexMap 초기화
+    initCategoryIndexMap(selectedTodoList);
+
     _reorderAndSaveTodoList(oldCategoryId, newCategoryId, newIndex);
 
-    _todoController.updateCalendarItemCounts(todoItem.date);
     update();
   }
 
@@ -674,12 +705,12 @@ class ScheduledTodoController extends BaseController {
 
     int newPos = 0;
     for (int i = first + 1; i < last; i++) {
-      scheduledTodoList[i].pos = newPos;
+      selectedTodoList[i].pos = newPos;
       newPos++;
     }
 
     _todoController.updateTodos(
-        todoList: scheduledTodoList.sublist(first + 1, last).cast<TodoModel>());
+        todoList: selectedTodoList.sublist(first + 1, last).cast<TodoModel>());
 
     // newCategory pos 변경 후 저장
     if (newCategoryId != oldCategoryId) {
@@ -688,13 +719,13 @@ class ScheduledTodoController extends BaseController {
 
       newPos = 0;
       for (int i = first + 1; i < last; i++) {
-        scheduledTodoList[i].pos = newPos;
+        selectedTodoList[i].pos = newPos;
         newPos++;
       }
 
       _todoController.updateTodos(
           todoList:
-              scheduledTodoList.sublist(first + 1, last).cast<TodoModel>());
+              selectedTodoList.sublist(first + 1, last).cast<TodoModel>());
     }
   }
 
@@ -704,10 +735,10 @@ class ScheduledTodoController extends BaseController {
     categoryFoldMap[id] = !categoryFoldMap[id]!;
 
     String categoryFoldMapString = jsonEncode(categoryFoldMap);
-    prefController.saveData(key, categoryFoldMapString);
+    saveString(key, categoryFoldMapString);
   }
 
   void onMoveToday() {
-    _todoController.onMoveToday();
+    _peepMiniCalendarController.onMoveToday();
   }
 }
