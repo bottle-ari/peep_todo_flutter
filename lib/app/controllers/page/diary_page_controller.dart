@@ -1,14 +1,18 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_quill/quill_delta.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/diary_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/widget/peep_mini_calendar_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_controller.dart';
-import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../data/model/diary/diary_model.dart';
@@ -19,17 +23,29 @@ class DiaryPageController extends BaseController {
   final TodoController _todoController = Get.find();
   final CategoryController _categoryController = Get.find();
   final DiaryController _diaryController = Get.find();
+  final PeepMiniCalendarController _peepMiniCalendarController = Get.find();
   final RxBool isOpen = false.obs;
 
   final RxList<DiaryTodoModel> checkedTodo = <DiaryTodoModel>[].obs;
+
+  // Quill
+  final Rx<QuillController> quillController = QuillController.basic().obs;
 
   @override
   void onInit() {
     super.onInit();
 
-    ever(_todoController.selectedTodoList, (callback) {
+    // 투두 체크 감지
+    ever(_todoController.todoMap, (callback) {
       updateCheckedTodoList();
     });
+
+    // 카테고리 데이터 변경 감지
+    ever(_categoryController.categoryList,
+        (callback) => updateCheckedTodoList());
+
+    // 다이어리 데이터 변경 감지
+    ever(_diaryController.diaryData, (callback) => updateCheckedTodoList());
 
     updateCheckedTodoList();
   }
@@ -38,21 +54,26 @@ class DiaryPageController extends BaseController {
   void updateCheckedTodoList() async {
     List<DiaryTodoModel> newCheckTodo = [];
 
-    log('start');
-
-    for (var todo in _todoController.selectedTodoList) {
+    for (var todo
+        in _todoController.todoMap[_todoController.getSelectedTodoKey()] ??
+            []) {
       if (todo.isChecked) {
+        final category = await _categoryController.getCategoryByIdAsync(
+            categoryId: todo.categoryId);
         newCheckTodo.add(DiaryTodoModel(
             name: todo.name,
-            color: _categoryController
-                .getCategoryById(categoryId: todo.categoryId)
-                .color));
+            color: category.color,
+            categoryOrder: category.pos,
+            indexOrder: todo.pos));
       }
     }
 
-    log('${newCheckTodo.length}');
+    newCheckTodo.sort((a, b) => a.indexOrder - b.indexOrder);
+    newCheckTodo.sort((a, b) => a.categoryOrder - b.categoryOrder);
 
     checkedTodo.value = newCheckTodo;
+
+    loadContent();
   }
 
   /*
@@ -88,15 +109,28 @@ class DiaryPageController extends BaseController {
     return imagePath;
   }
 
-  String getMemo() {
-    return _diaryController.diaryData.value.memo;
+  void loadContent() {
+    log("LOAD CONTENTS");
+    final String savedJson = _diaryController.diaryData.value.memo;
+
+    if (savedJson.isEmpty) {
+      quillController.value = QuillController.basic();
+      return;
+    }
+
+    final Delta delta = Delta.fromJson(jsonDecode(savedJson));
+
+    quillController.value = QuillController(
+      document: Document.fromDelta(delta),
+      selection: const TextSelection.collapsed(offset: 0),
+    );
   }
 
   /*
     UPDATE Functions
    */
   void onMoveToday() {
-    _todoController.onMoveToday();
+    _peepMiniCalendarController.onMoveToday();
   }
 
   void toggleIsOpen() {
@@ -124,7 +158,7 @@ class DiaryPageController extends BaseController {
       // 로컬에 저장된 이미지의 경로를 저장합니다.
       log("여기 : $diary");
 
-      if(getImagePath().isEmpty) {
+      if (getImagePath().isEmpty) {
         diary.image.add(localImage.path);
       } else {
         diary.image[0] = localImage.path;

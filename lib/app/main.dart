@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peep_todo_flutter/app/core/database/preference_init.dart';
 import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -9,7 +10,8 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'bindings/initial_binding.dart';
 
 void main() async {
-  //WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
+  await GlobalPreferences.init();
   initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
 

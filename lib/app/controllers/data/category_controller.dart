@@ -57,6 +57,10 @@ class CategoryController extends BaseController {
     return categoryList.firstWhere((element) => element.id == categoryId);
   }
 
+  Future<CategoryModel> getCategoryByIdAsync({required String categoryId}) async {
+    return await _service.getCategoryById(categoryId: categoryId);
+  }
+
   /*
     Update Functions
    */
@@ -93,7 +97,8 @@ class CategoryController extends BaseController {
   Future<bool> toggleCategoryActiveState(String categoryId) async {
     CategoryModel category = categoryList.firstWhere((e) => e.id == categoryId);
 
-    if(category.isActive && categoryList.where((e) => e.isActive).length <= 1) {
+    if (category.isActive &&
+        categoryList.where((e) => e.isActive).length <= 1) {
       return false;
     }
 
@@ -109,7 +114,7 @@ class CategoryController extends BaseController {
   void toggleTodoType(String categoryId) async {
     CategoryModel category = categoryList.firstWhere((e) => e.id == categoryId);
 
-    switch(category.type) {
+    switch (category.type) {
       case TodoType.scheduled:
         category.type = TodoType.constant;
 

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/controllers/page/scheduled_todo_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/page/selected_todo_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/backup_todo_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
@@ -35,7 +35,7 @@ class PeepTodoItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TodoController controller = Get.find();
-    final ScheduledTodoController scheduledTodoController = Get.find();
+    final SelectedTodoController scheduledTodoController = Get.find();
 
     void deleteTodo() {
       if (Get.isSnackbarOpen) {
@@ -109,17 +109,17 @@ class PeepTodoItem extends StatelessWidget {
                   onPressed: (BuildContext context) {
                     deleteTodo();
                   },
-                  backgroundColor: Palette.peepRed,
+                  backgroundColor: Palette.peepPriorityHigh,
                   foregroundColor: Colors.white,
-                  label: '삭제',
+                  icon: PeepIconData.trash
                 ),
                 SlidableAction(
                   onPressed: (BuildContext context) {
                     copyTodo();
                   },
-                  backgroundColor: Palette.peepBlue,
+                  backgroundColor: Palette.peepPriorityLow,
                   foregroundColor: Colors.white,
-                  label: '복사',
+                    icon: PeepIconData.copy
                 ),
               ],
             ),
