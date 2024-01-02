@@ -2,10 +2,10 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:peep_todo_flutter/app/data/enums/crud.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/services/todo_service.dart';
 import 'package:peep_todo_flutter/app/utils/peep_calendar_util.dart';
+import 'package:peep_todo_flutter/app/data/enums/crud.dart';
 
 import '../../data/model/todo/backup_todo_model.dart';
 import '../../data/model/todo/todo_model.dart';
@@ -19,12 +19,24 @@ class TodoController extends GetxController {
 
   // Variables
   BackupTodoModel? backup;
+  DateTime currentDate = DateTime.now();
   final Rx<DateTime> focusedDate = DateTime.now().obs;
   final Rx<DateTime> selectedDate = DateTime.now().obs;
 
   @override
   void onInit() {
     super.onInit();
+
+    // 달이 변경 될 때, 데이터 load
+    ever(selectedDate, (callback) {
+      String newDateString = DateFormat("yyyyMM").format(selectedDate.value);
+      String oldDateString =  DateFormat("yyyyMM").format(currentDate);
+      if(newDateString != oldDateString){
+        loadAllData();
+        currentDate = selectedDate.value;
+      }
+
+    });
 
     loadAllData();
   }
@@ -251,4 +263,5 @@ class TodoController extends GetxController {
 
     return dateMap;
   }
+
 }

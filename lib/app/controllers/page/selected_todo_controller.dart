@@ -295,6 +295,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/data/routine_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/widget/peep_mini_calendar_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
@@ -309,6 +310,7 @@ class SelectedTodoController extends BaseController with PrefController {
   final CategoryController _categoryController = Get.find();
   final TodoController _todoController = Get.find();
   final PeepMiniCalendarController _peepMiniCalendarController = Get.find();
+  final RoutineController _routineController = Get.find();
 
   // Data
   final RxList<dynamic> selectedTodoList = <dynamic>[].obs;
@@ -386,6 +388,18 @@ class SelectedTodoController extends BaseController with PrefController {
     // 만약 입력 중인 새로운 투두가 있다면 Confirm
     addNewTodoConfirm();
 
+    /* Todo :
+      현재시간이랑, selected 랑 비교해서, 과거 또는 오늘 이라면,
+      조건을 달성한 루틴들을, 투두로 변경 해주어야함.
+      todo로 추가 되었음을 저장해야 함.
+     */
+    // _routineController.routineList 이걸 가져와서,
+    /*
+      1. 루틴도 활성화가 있어
+      2. 해당 날짜와, 루틴의 조건이 일치하는지 확인
+      3. 해당 날짜에, 추가 되었는지 (이미 투두로 변경을 했는지)를 확인해야 한다.
+     */
+
     // 활성 카테고리만 가져오기
     List<dynamic> newScheduledTodoList = List<dynamic>.from(_categoryController
         .categoryList
@@ -436,6 +450,20 @@ class SelectedTodoController extends BaseController with PrefController {
       updateCategoryIndexMap(inx);
       categoryIndexMap[todo.categoryId]?[1]++;
     }
+
+    /* Todo :
+      루틴 아이템 추가
+     */
+    // _routineController.routineList 이걸 가져와서,
+    /*
+      1. 루틴도 활성화가 있어
+      2. 해당 날짜와, 루틴의 조건이 일치하는지 확인
+      3. 해당 날짜에, 추가 되었는지 (이미 투두로 변경을 했는지)를 확인해야 한다.
+
+      위에서 확인한 리스트로 하면 될듯?
+     */
+
+    // 나중에, 터치되었을 때, 루틴을 투두로 변경 _todoController.addTodo(todo: todo)
 
     // 전체 투두 리스트 저장 및 변경
     selectedTodoList.value = newScheduledTodoList;

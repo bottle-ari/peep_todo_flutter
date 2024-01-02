@@ -68,15 +68,12 @@ class DatabaseInit {
       CREATE TABLE routine(
           id TEXT PRIMARY KEY,
           category_id TEXT,
-          reminder_id TEXT,
           name TEXT,
           is_active INTEGER,
           priority INTEGER,
           repeat_condition TEXT,
-          subtodo TEXT,
           pos INTEGER,
-          FOREIGN KEY (category_id) REFERENCES category(id),
-          FOREIGN KEY (reminder_id) REFERENCES reminder(id))
+          FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE CASCADE)
       """,
     );
 
