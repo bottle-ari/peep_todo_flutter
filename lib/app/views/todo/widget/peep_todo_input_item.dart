@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/controllers/page/scheduled_todo_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/page/selected_todo_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
@@ -34,7 +34,7 @@ class PeepTodoInputItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ScheduledTodoController controller = Get.find();
+    final SelectedTodoController controller = Get.find();
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(AppValues.baseRadius),

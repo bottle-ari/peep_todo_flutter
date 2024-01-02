@@ -6,12 +6,14 @@ import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/common/painter/ring_painter.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../controllers/data/todo_controller.dart';
+import '../../../controllers/widget/peep_mini_calendar_controller.dart';
 import '../../../data/model/palette/palette_model.dart';
 import '../../../theme/app_values.dart';
 import '../../../theme/palette.dart';
 
 class PeepMiniCalendar extends StatelessWidget {
   final TodoController controller = Get.find();
+  final PeepMiniCalendarController peepMiniCalendarController = Get.find();
 
   PeepMiniCalendar({
     Key? key,
@@ -88,7 +90,8 @@ class PeepMiniCalendar extends StatelessWidget {
                             return CustomPaint(
                               size: Size(32.w, 32.w), // CustomPaint의 크기 고정
                               painter: RingPainter(
-                                  itemCounts: controller.calendarItemCounts[
+                                  itemCounts: peepMiniCalendarController
+                                              .calendarItemCounts[
                                           DateFormat('yyyyMMdd').format(day)] ??
                                       {}),
                             );
@@ -97,7 +100,7 @@ class PeepMiniCalendar extends StatelessWidget {
                         Center(
                           child: Text(
                             DateFormat.d().format(selectedDay),
-                            style: controller.isToday()
+                            style: peepMiniCalendarController.isToday()
                                 ? PeepTextStyle.boldXS(color: Palette.peepBlack)
                                 : PeepTextStyle.regularXS(
                                     color: Palette.peepBlack),
@@ -118,7 +121,8 @@ class PeepMiniCalendar extends StatelessWidget {
                             size: Size(32.w, 32.w),
                             // CustomPaint의 크기 고정
                             painter: RingPainter(
-                                itemCounts: controller.calendarItemCounts[
+                                itemCounts: peepMiniCalendarController
+                                            .calendarItemCounts[
                                         DateFormat('yyyyMMdd').format(day)] ??
                                     {}),
                           ),
@@ -141,7 +145,8 @@ class PeepMiniCalendar extends StatelessWidget {
                             size: Size(32.w, 32.w),
                             // CustomPaint의 크기 고정
                             painter: RingPainter(
-                                itemCounts: controller.calendarItemCounts[
+                                itemCounts: peepMiniCalendarController
+                                            .calendarItemCounts[
                                         DateFormat('yyyyMMdd').format(day)] ??
                                     {}),
                           ),
@@ -162,7 +167,7 @@ class PeepMiniCalendar extends StatelessWidget {
                       PeepTextStyle.regularXS(color: Palette.peepBlack),
                   todayTextStyle:
                       PeepTextStyle.boldXS(color: Palette.peepBlack),
-                  selectedTextStyle: controller.isToday()
+                  selectedTextStyle: peepMiniCalendarController.isToday()
                       ? PeepTextStyle.boldXS(color: Palette.peepBlack)
                       : PeepTextStyle.regularXS(color: Palette.peepBlack),
                   weekendTextStyle:
@@ -186,15 +191,16 @@ class PeepMiniCalendar extends StatelessWidget {
                 return isSameDay(controller.selectedDate.value, day);
               },
               onDaySelected: (selectedDay, focusedDay) {
-                controller.onDaySelected(selectedDay, focusedDay);
+                peepMiniCalendarController.onDaySelected(
+                    selectedDay, focusedDay);
               },
-              calendarFormat: controller.calendarFormat.value,
+              calendarFormat: peepMiniCalendarController.calendarFormat.value,
               onFormatChanged: (format) {
-                controller.calendarFormat.value = format;
+                peepMiniCalendarController.calendarFormat.value = format;
               },
               rangeSelectionMode: RangeSelectionMode.disabled,
               onPageChanged: (focusedDay) {
-                controller.onPageChanged(focusedDay);
+                peepMiniCalendarController.onPageChanged(focusedDay);
               },
               pageJumpingEnabled: true,
             ),

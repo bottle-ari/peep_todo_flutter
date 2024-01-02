@@ -1,22 +1,31 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/bindings/page/category_detail_binding.dart';
+import 'package:peep_todo_flutter/app/bindings/page/overdue_todo_binding.dart';
+import 'package:peep_todo_flutter/app/bindings/page/routine_add_binding.dart';
+import 'package:peep_todo_flutter/app/bindings/page/routine_manage_binding.dart';
 import 'package:peep_todo_flutter/app/bindings/page/diary_edit_binding.dart';
 import 'package:peep_todo_flutter/app/bindings/page/search_item_binding.dart';
 import 'package:peep_todo_flutter/app/bindings/page/todo_detail_binding.dart';
 import 'package:peep_todo_flutter/app/bindings/page/todo_memo_binding.dart';
 import 'package:peep_todo_flutter/app/bindings/page/my_page_binding.dart';
 import 'package:peep_todo_flutter/app/views/category/page/category_detail_page.dart';
+import 'package:peep_todo_flutter/app/views/routine/page/routine_add_page.dart';
+import 'package:peep_todo_flutter/app/views/routine/page/routine_detail_page.dart';
+import 'package:peep_todo_flutter/app/views/routine/page/routine_manage_page.dart';
 import 'package:peep_todo_flutter/app/views/diary/page/dairy_edit_page.dart';
 import 'package:peep_todo_flutter/app/views/test.dart';
 import 'package:peep_todo_flutter/app/views/category/page/category_manage_page.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/todo_detail_page.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/todo_memo_page.dart';
-import 'package:peep_todo_flutter/app/views/todo/page/todo_serach_page.dart';
+import 'package:peep_todo_flutter/app/views/todo/page/todo_search_page.dart';
 import 'package:peep_todo_flutter/app/views/user/page/font_setting.dart';
 import 'package:peep_todo_flutter/app/views/user/page/peep_my_page.dart';
 
 import '../bindings/main/main_binding.dart';
 import '../bindings/page/category_add_binding.dart';
+import '../bindings/page/routine_detail_binding.dart';
 import '../views/category/page/category_add_page.dart';
 import '../views/main/page/main_page.dart';
 
@@ -75,6 +84,24 @@ class AppPages {
       name: _Paths.TODO_MEMO_PAGE,
       page: () => TodoMemoPage(),
       binding: TodoMemoBinding(),
+    ),
+    GetPage(
+      name: _Paths.ROUTINE_MANAGE_PAGE,
+      page: () => RoutineManagePage(),
+      binding: RoutineManageBinding(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: _Paths.ROUTINE_ADD_PAGE,
+      page: () => RoutineAddPage(),
+      binding: RoutineAddBinding(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
+      name: _Paths.ROUTINE_DETAIL_PAGE,
+      page: () => RoutineDetailPage(),
+      binding: RoutineDetailBinding(),
+      transition: Transition.rightToLeft,
     ),
     GetPage(
       name: _Paths.TODO_SEARCH_PAGE,

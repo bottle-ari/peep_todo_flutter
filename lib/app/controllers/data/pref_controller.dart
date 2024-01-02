@@ -1,23 +1,23 @@
 import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/core/database/preference_init.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../data/services/pref_service.dart';
+mixin PrefController {
+  SharedPreferences get prefs => GlobalPreferences.instance;
 
-class PrefController extends GetxController {
-  final PrefService _service = Get.put(PrefService());
-
-  final RxMap<String, String> _data = <String, String>{}.obs;
-
-  Map<String, String> get data => _data;
-
-  void saveData(String key, String value) async {
-    await _service.saveData(key, value);
-    await updateData(key);
+  Future<void> saveString(String key, String value) async {
+    await prefs.setString(key, value);
   }
 
-  Future<void> updateData(String key) async {
-    var value = await _service.loadData(key) ?? '';
-    _data[key] = value;
+  String? getString(String key) {
+    return prefs.getString(key);
+  }
 
-    update();
+  Future<void> saveInt(String key, int value) async {
+    await prefs.setInt(key, value);
+  }
+
+  int? getInt(String key) {
+    return prefs.getInt(key);
   }
 }
