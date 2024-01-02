@@ -115,7 +115,6 @@ class AppPages {
         name: _Paths.DIARY_EDIT_PAGE,
         page: () => DiaryEditPage(),
         binding: DiaryEditBinding(),
-        >>>>>>> d10978ab750b2697a41a0f7b5b28401619185754
     ),
   ];
 }

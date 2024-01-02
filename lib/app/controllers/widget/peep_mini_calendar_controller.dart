@@ -1,15 +1,18 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/data/routine_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/todo_controller.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../utils/peep_calendar_util.dart';
+import '../../utils/routine_util.dart';
 
 class PeepMiniCalendarController extends GetxController {
   // Controllers
   final TodoController _todoController = Get.find();
   final CategoryController _categoryController = Get.find();
+  final RoutineController _routineController = Get.find();
 
   // Variables
   final RxMap<String, Map<String, double>> calendarItemCounts =
