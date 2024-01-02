@@ -90,6 +90,9 @@ class AppPages {
       name: _Paths.FONT_PAGE,
       page:() => FontSetting(),
       binding: MyPageBinding(),
+
+    ),
+    GetPage(
       name: _Paths.DIARY_EDIT_PAGE,
       page: () => DiaryEditPage(),
       binding: DiaryEditBinding(),
