@@ -2,23 +2,16 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:peep_todo_flutter/app/controllers/data/routine_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/services/todo_service.dart';
 import 'package:peep_todo_flutter/app/utils/peep_calendar_util.dart';
-import 'package:peep_todo_flutter/app/utils/routine_util.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:peep_todo_flutter/app/data/enums/crud.dart';
-import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
-import 'package:peep_todo_flutter/app/data/services/todo_service.dart';
-import 'package:peep_todo_flutter/app/utils/peep_calendar_util.dart';
 
 import '../../data/model/todo/backup_todo_model.dart';
 import '../../data/model/todo/todo_model.dart';
 
 class TodoController extends GetxController {
   final TodoService _service = Get.put(TodoService());
-  final RoutineController _routineController = Get.find();
 
   // Data
   final RxMap<String, List<TodoModel>> todoMap =
