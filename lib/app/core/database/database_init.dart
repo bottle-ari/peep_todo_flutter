@@ -98,6 +98,17 @@ class DatabaseInit {
       """,
     );
 
+    await db.execute(
+      """
+      CREATE TABLE diary(
+          id TEXT PRIMARY KEY,
+          date INTEGER,
+          image TEXT,
+          memo TEXT
+      )
+      """
+    );
+
     // 기본 category 생성
     var uuid = const Uuid();
     String newUuid = uuid.v4();
