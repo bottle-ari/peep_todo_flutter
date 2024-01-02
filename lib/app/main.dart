@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:peep_todo_flutter/app/controllers/page/my_page_controller.dart';
+import 'package:peep_todo_flutter/app/core/base/base_controller.dart';
+import 'package:peep_todo_flutter/app/data/provider/database/sharedpref_helper.dart';
 import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -9,24 +12,25 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'bindings/initial_binding.dart';
 
 void main() async {
-  //WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedPrefHelper.init();
   initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  
   @override
   Widget build(BuildContext context) {
-
     return ScreenUtilInit(
       designSize: const Size(393, 852),
       builder: (buildContext, widget) => GetMaterialApp(
         title: '삐약Todo',
         debugShowCheckedModeBanner: false,
         theme: appThemeData,
-        initialRoute: AppPages.INITIAL,
+          //Themes().NanumTheme,
+          //Themes().getThemeByFont(SharedPrefHelper.getSelectedFont()),
+        initialRoute: AppPages.TEST,
         getPages: AppPages.routes,
         initialBinding: InitialBinding(),
         defaultTransition: Transition.fade,
@@ -35,3 +39,19 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+//return ScreenUtilInit(
+//  designSize: const Size(393, 852),
+//  builder: (buildContext, widget) => FutureBuilder<ThemeData>(
+//    future: AppTheme.getAppTheme(),
+//    builder: (buildContext, widget) => GetMaterialApp(
+//      title: '삐약Todo',
+//      debugShowCheckedModeBanner: false,
+//      theme: appThemeData,
+//      initialRoute: AppPages.INITIAL,
+//      getPages: AppPages.routes,
+//      initialBinding: InitialBinding(),
+//      defaultTransition: Transition.fade,
+//      scrollBehavior: PeepScrollBehavior(),
+//    ),
+//  ),
+//);

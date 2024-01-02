@@ -11,6 +11,7 @@ import 'package:peep_todo_flutter/app/views/category/page/category_manage_page.d
 import 'package:peep_todo_flutter/app/views/todo/page/todo_detail_page.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/todo_memo_page.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/todo_serach_page.dart';
+import 'package:peep_todo_flutter/app/views/user/page/font_setting.dart';
 import 'package:peep_todo_flutter/app/views/user/page/peep_my_page.dart';
 
 import '../bindings/main/main_binding.dart';
@@ -32,6 +33,7 @@ class AppPages {
   static const TODOMEMO = Routes.TODO_MEMO_PAGE;
   static const SEARCH = Routes.TODO_SEARCH_PAGE;
   static const MYPAGE = Routes.MY_PAGE;
+  static const FONTPAGE = Routes.FONT_PAGE;
 
   static final routes = [
     GetPage(
@@ -80,6 +82,11 @@ class AppPages {
     GetPage(
       name: _Paths.MY_PAGE,
       page:() => PeepMyPage(),
+      binding: MyPageBinding(),
+    ),
+    GetPage(
+      name: _Paths.FONT_PAGE,
+      page:() => FontSetting(),
       binding: MyPageBinding(),
     ),
   ];
