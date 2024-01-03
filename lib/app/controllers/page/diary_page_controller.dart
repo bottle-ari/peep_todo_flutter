@@ -7,7 +7,6 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill/quill_delta.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/diary_controller.dart';
@@ -30,6 +29,10 @@ class DiaryPageController extends BaseController {
 
   // Quill
   final Rx<QuillController> quillController = QuillController.basic().obs;
+
+  // PageController
+  final PageController pageController = PageController(initialPage: 10000);
+  final RxInt pageIndex = 10000.obs;
 
   @override
   void onInit() {
@@ -137,6 +140,23 @@ class DiaryPageController extends BaseController {
     isOpen.value = !isOpen.value;
   }
 
+  void updateSelectedDate(int index) {
+    final diff = pageIndex.value - index;
+
+    DateTime newDate;
+    if (diff < 0) {
+      newDate = _todoController.selectedDate.value.add(const Duration(days: 1));
+    } else if (diff > 0) {
+      newDate = _todoController.selectedDate.value.subtract(const Duration(days: 1));
+    } else {
+      newDate = _todoController.selectedDate.value;
+    }
+
+    _todoController.selectedDate.value = newDate;
+    _todoController.focusedDate.value = newDate;
+    pageIndex.value = index;
+  }
+
   /*
     IMAGE functions
   */
@@ -158,12 +178,17 @@ class DiaryPageController extends BaseController {
       // 로컬에 저장된 이미지의 경로를 저장합니다.
       log("여기 : $diary");
 
-      if (getImagePath().isEmpty) {
-        diary.image.add(localImage.path);
-      } else {
-        diary.image[0] = localImage.path;
-      }
+      diary.image.add(localImage.path);
+
       _diaryController.updateDiary(diary: diary);
     }
+  }
+
+  void deleteImage(String imagePath) {
+    var diary = _diaryController.diaryData.value;
+
+    diary.image.remove(imagePath);
+
+    _diaryController.updateDiary(diary: diary);
   }
 }

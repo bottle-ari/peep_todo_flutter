@@ -168,12 +168,13 @@ class TodoPage extends BaseView<SelectedTodoController> {
                                     ),
                                   ),
                                 ),
+                              SizedBox(height: 60.h,),
                             ],
                           ),
                           onReorder: (int oldIndex, int newIndex) {
                             controller.reorderTodoList(oldIndex, newIndex);
                           },
-                          onReorderStarted: (int oldIndx) {
+                          onReorderStarted: (int oldIndex) {
                             controller.addNewTodoConfirm();
                           },
                         ),

@@ -74,6 +74,9 @@ class Iconsax {
   static const export = 'assets/image/icon/export.svg';
   static const document = 'assets/image/icon/document.svg';
   static const arrowright = 'assets/image/icon/arrow_right.svg';
+  static const add = 'assets/image/icon/add.svg';
+  static const imageAdd = 'assets/image/icon/gallery-add.svg';
+  static const close = 'assets/image/icon/close.svg';
 }
 
 class PeepIconData {

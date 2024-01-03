@@ -9,18 +9,21 @@ import 'package:peep_todo_flutter/app/core/base/base_view.dart';
 import 'package:peep_todo_flutter/app/data/enums/quill_toolbar_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/palette/palette_model.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
+import 'package:peep_todo_flutter/app/views/diary/widget/peep_image_preview.dart';
 
 import '../../../theme/app_values.dart';
 import '../../../theme/icons.dart';
 import '../../../theme/palette.dart';
 import '../../common/buttons/peep_animation_effect.dart';
 import '../../common/peep_subpage_appbar.dart';
+import '../../common/popup/peep_confirm_popup.dart';
 import '../widget/custom_checkbox_builder.dart';
 import '../widget/peep_checked_todo.dart';
 
 class DiaryEditPage extends BaseView<DiaryEditController> {
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
+
     return PreferredSize(
         preferredSize: Size.fromHeight(AppValues.appbarHeight),
         child: SafeArea(
@@ -32,7 +35,16 @@ class DiaryEditPage extends BaseView<DiaryEditController> {
             buttons: [
               PeepAnimationEffect(
                 onTap: () {
-                  controller.clearText();
+                  Get.dialog(PeepConfirmPopup(
+                      icon: Iconsax.trashBold,
+                      text: '삭제',
+                      confirmText: '확인',
+                      hintText: '일기 내용이 모두 삭제 돼요',
+                      hintColor: Palette.peepRed,
+                      color: Palette.peepRed,
+                      func: () {
+                        controller.clearText();
+                      }));
                 },
                 child: PeepIcon(
                   Iconsax.trash,
@@ -48,53 +60,55 @@ class DiaryEditPage extends BaseView<DiaryEditController> {
   @override
   Widget body(BuildContext context) {
     return Obx(
-      () => Stack(
+      () => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: AppValues.screenPadding),
-                child: PeepCheckedTodo(),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: AppValues.screenPadding),
-                child: PeepCheckedTodoFoldDivider(),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: AppValues.screenPadding,
-                      vertical: AppValues.verticalMargin),
-                  child: QuillEditor.basic(
-                    focusNode: controller.focusNode,
-                    configurations: QuillEditorConfigurations(
-                      placeholder: "${controller.date}의 일기를 입력하세요!",
-                      controller: controller.quillController,
-                      readOnly: false,
-                      autoFocus: true,
-                      customStyles: DefaultStyles(
-                          lists: DefaultListBlockStyle(
-                            PeepTextStyle.regularM(),
-                            const VerticalSpacing(0, 0),
-                            const VerticalSpacing(0, 0),
-                            const BoxDecoration(),
-                            CustomCheckboxBuilder(),
-                          ),
-                          paragraph: DefaultTextBlockStyle(
-                              PeepTextStyle.regularM(),
-                              VerticalSpacing(2.h, 2.h),
-                              VerticalSpacing(2.h, 2.h),
-                              const BoxDecoration())),
-                      sharedConfigurations: const QuillSharedConfigurations(
-                        locale: Locale('ko'),
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: AppValues.screenPadding),
+            child: PeepImagePreview(),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: AppValues.screenPadding),
+            child: PeepCheckedTodo(),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: AppValues.screenPadding),
+            child: PeepCheckedTodoFoldDivider(),
+          ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: AppValues.screenPadding,
+                  vertical: AppValues.verticalMargin),
+              child: QuillEditor.basic(
+                focusNode: controller.focusNode,
+                configurations: QuillEditorConfigurations(
+                  placeholder: "${controller.date}의 일기를 입력하세요!",
+                  controller: controller.quillController,
+                  readOnly: false,
+                  autoFocus: true,
+                  customStyles: DefaultStyles(
+                      lists: DefaultListBlockStyle(
+                        PeepTextStyle.regularM(),
+                        const VerticalSpacing(0, 0),
+                        const VerticalSpacing(0, 0),
+                        const BoxDecoration(),
+                        CustomCheckboxBuilder(),
                       ),
-                    ),
+                      paragraph: DefaultTextBlockStyle(
+                          PeepTextStyle.regularM(),
+                          VerticalSpacing(2.h, 2.h),
+                          VerticalSpacing(2.h, 2.h),
+                          const BoxDecoration())),
+                  sharedConfigurations: const QuillSharedConfigurations(
+                    locale: Locale('ko'),
                   ),
                 ),
-              )
-            ],
+              ),
+            ),
           ),
           Align(
               alignment: Alignment.bottomCenter,

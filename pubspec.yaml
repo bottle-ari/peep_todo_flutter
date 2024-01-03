@@ -35,6 +35,7 @@ dependencies:
   device_info_plus: ^9.1.1
   super_clipboard: ^0.8.1
   flutter_quill: ^9.2.1
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:
@@ -92,6 +93,9 @@ flutter:
     - assets/image/icon/export.svg
     - assets/image/icon/document.svg
     - assets/image/icon/arrow_right.svg
+    - assets/image/icon/add.svg
+    - assets/image/icon/gallery-add.svg
+    - assets/image/icon/close.svg
 
   uses-material-design: true
 

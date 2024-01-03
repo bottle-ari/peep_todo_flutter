@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
@@ -71,34 +72,42 @@ class DiaryPage extends BaseView<DiaryPageController> {
                 child: PeepMiniCalendar(),
               ),
               Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      _DiaryImage(
-                        controller: controller,
+                child: PageView.builder(
+                  controller: controller.pageController,
+                  onPageChanged: (int index) {
+                    controller.updateSelectedDate(index);
+                  },
+                  itemBuilder: (BuildContext context, int index) {
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          _DiaryImage(
+                            controller: controller,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: AppValues.screenPadding),
+                            child: PeepCheckedTodo(),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: AppValues.screenPadding),
+                            child: PeepCheckedTodoFoldDivider(),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: AppValues.screenPadding),
+                            child: _DiaryText(
+                              controller: controller,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 120.h,
+                          ),
+                        ],
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppValues.screenPadding),
-                        child: PeepCheckedTodo(),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppValues.screenPadding),
-                        child: PeepCheckedTodoFoldDivider(),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppValues.screenPadding),
-                        child: _DiaryText(
-                          controller: controller,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 120.h,
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
               ),
             ],
@@ -122,70 +131,31 @@ class _DiaryImage extends StatelessWidget {
           () => controller.getImagePath().isNotEmpty
               ? Padding(
                   padding: EdgeInsets.only(bottom: AppValues.verticalMargin),
-                  child: PeepAnimationEffect(
-                    onLongPress: () {
-                      controller.pickImage();
-                    },
-                    scale: 0.95,
-                    child: AspectRatio(
-                        aspectRatio: 16 / 9,
-                        child: Image.file(
-                          File(controller.getImagePath()[0]),
-                          fit: BoxFit.cover,
-                        )),
+                  child: CarouselSlider(
+                    items: [
+                      for (var imagePath in controller.getImagePath())
+                        AspectRatio(
+                            aspectRatio: 16 / 9,
+                            child: Image.file(
+                              File(imagePath),
+                              fit: BoxFit.cover,
+                            ))
+                    ],
+                    options: CarouselOptions(
+                      aspectRatio: 16 / 9,
+                      viewportFraction: 1,
+                      initialPage: 0,
+                      enableInfiniteScroll: false,
+                      reverse: false,
+                      enlargeCenterPage: true,
+                      enlargeFactor: 0.25,
+                      onPageChanged:
+                          (int page, CarouselPageChangedReason reason) {},
+                      scrollDirection: Axis.horizontal,
+                    ),
                   ),
                 )
-              : Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
-                  child: Stack(children: [
-                    const Positioned(
-                      left: 0,
-                      top: 0,
-                      bottom: 0,
-                      right: 0,
-                      child: Center(
-                        child: Divider(
-                          color: Palette.peepGray200,
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: PeepAnimationEffect(
-                        onTap: () {
-                          controller.pickImage();
-                        },
-                        child: Container(
-                          color: Palette.peepWhite,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: AppValues.verticalMargin,
-                                horizontal: AppValues.horizontalMargin),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                PeepIcon(
-                                  Iconsax.image,
-                                  size: AppValues.miniIconSize,
-                                  color: Palette.peepGray400,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: AppValues.innerMargin),
-                                  child: Text(
-                                    "사진 추가",
-                                    style: PeepTextStyle.regularXS(
-                                        color: Palette.peepGray400),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ]),
-                ),
+              : SizedBox(height: AppValues.verticalMargin,),
         ),
       ],
     );
