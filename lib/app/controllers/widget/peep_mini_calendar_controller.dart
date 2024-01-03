@@ -50,18 +50,6 @@ class PeepMiniCalendarController extends GetxController {
       _todoController.selectedDate.value = selectedDay;
       _todoController.focusedDate.value = focusedDay;
     }
-
-    print("------------------ routineMatchTest start ------------------");
-    var routineList = _routineController.routineList;
-    for(int i=0;i<routineList.length;i++){
-      print("index : $i");
-      print("name : ${routineList[i].name}");
-      print("repeatCondition : ${routineList[i].repeatCondition}");
-      // Todo : active 상태도 확인해야
-      bool matched = isMatchToRepeatCondition(selectedDay, routineList[i].repeatCondition);
-      print("matched : $matched");
-    }
-    print("------------------ routineMatchTest end ------------------");
   }
 
   void onMoveToday() {

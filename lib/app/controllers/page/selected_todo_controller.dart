@@ -294,15 +294,18 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/routine_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/widget/peep_mini_calendar_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
+import 'package:peep_todo_flutter/app/data/model/routine/routine_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../core/base/base_controller.dart';
+import '../../utils/routine_util.dart';
 import '../data/pref_controller.dart';
 import '../data/todo_controller.dart';
 
@@ -346,6 +349,10 @@ class SelectedTodoController extends BaseController with PrefController {
     ever(_categoryController.categoryList,
         (callback) => updateSelectedTodoList());
 
+    // 루틴 데이터 변경 감지
+    ever(
+        _routineController.routineList, (callback) => updateSelectedTodoList());
+
     updateSelectedTodoList();
     loadIsFirstTimeAccess();
   }
@@ -388,18 +395,6 @@ class SelectedTodoController extends BaseController with PrefController {
     // 만약 입력 중인 새로운 투두가 있다면 Confirm
     addNewTodoConfirm();
 
-    /* Todo :
-      현재시간이랑, selected 랑 비교해서, 과거 또는 오늘 이라면,
-      조건을 달성한 루틴들을, 투두로 변경 해주어야함.
-      todo로 추가 되었음을 저장해야 함.
-     */
-    // _routineController.routineList 이걸 가져와서,
-    /*
-      1. 루틴도 활성화가 있어
-      2. 해당 날짜와, 루틴의 조건이 일치하는지 확인
-      3. 해당 날짜에, 추가 되었는지 (이미 투두로 변경을 했는지)를 확인해야 한다.
-     */
-
     // 활성 카테고리만 가져오기
     List<dynamic> newScheduledTodoList = List<dynamic>.from(_categoryController
         .categoryList
@@ -407,6 +402,41 @@ class SelectedTodoController extends BaseController with PrefController {
 
     // 카테고리 indexMap 초기 세팅
     initCategoryIndexMap(newScheduledTodoList);
+
+    // matchedRoutineList 구성
+    List<RoutineModel> matchedRoutineList = [];
+    var routineList = _routineController.routineList;
+    for (var routine in routineList) {
+      // 1. 루틴이 속한 카테고리가 활성화 되어있는지 확인
+      if (categoryIndexMap[routine.categoryId] == null) continue;
+
+      // 2. 루틴 활성화 여부 확인
+      if (routine.isActive == false) continue;
+
+      // 3. 해당 날짜와, 루틴의 조건이 일치하는지 확인
+      bool matched = isMatchToRepeatCondition(
+          _todoController.selectedDate.value, routine.repeatCondition);
+      if (matched == false) continue;
+
+      // 4. 해당 루틴이, 해당 날짜에 이미 todo로 변경되었는지 확인 from pref
+      if (isRoutineConverted(_todoController.selectedDate.value, routine.id)) {
+        continue;
+      }
+
+      matchedRoutineList.add(routine);
+    }
+
+    // selectedDate 와 현재 날짜를 비교하여, 과거 또는 오늘 이라면,
+    if (_todoController.selectedDate.value.isBefore(DateTime.now()) ||
+        _todoController.selectedDate.value.isAtSameMomentAs(DateTime.now())) {
+      for (var matchedRoutine in matchedRoutineList) {
+        // 조건을 달성한 루틴들을, todo로 변경
+        convertRoutineToTodo(matchedRoutine);
+        // 해당 루틴이, 해당 날짜에 todo로 변경되었음을 pref에 저장
+        saveRoutineConverted(
+            _todoController.selectedDate.value, matchedRoutine.id);
+      }
+    }
 
     final constantList = _todoController.todoMap['constant'] ?? [];
     constantList.sort((a, b) => a.pos - b.pos);
@@ -451,19 +481,23 @@ class SelectedTodoController extends BaseController with PrefController {
       categoryIndexMap[todo.categoryId]?[1]++;
     }
 
-    /* Todo :
-      루틴 아이템 추가
-     */
-    // _routineController.routineList 이걸 가져와서,
-    /*
-      1. 루틴도 활성화가 있어
-      2. 해당 날짜와, 루틴의 조건이 일치하는지 확인
-      3. 해당 날짜에, 추가 되었는지 (이미 투두로 변경을 했는지)를 확인해야 한다.
+    // Matched Routine 넣기
+    for (var matchedRoutine in matchedRoutineList) {
+      if (categoryIndexMap[matchedRoutine.categoryId] == null) continue;
 
-      위에서 확인한 리스트로 하면 될듯?
-     */
+      // routine가 추가될 index
+      var inx = categoryIndexMap[matchedRoutine.categoryId]![1];
 
-    // 나중에, 터치되었을 때, 루틴을 투두로 변경 _todoController.addTodo(todo: todo)
+      // 해당 위치(inx)에 투두 추가
+      if (inx >= newScheduledTodoList.length) {
+        newScheduledTodoList.add(matchedRoutine);
+      } else {
+        newScheduledTodoList.insert(inx, matchedRoutine);
+      }
+
+      updateCategoryIndexMap(inx);
+      categoryIndexMap[matchedRoutine.categoryId]?[1]++;
+    }
 
     // 전체 투두 리스트 저장 및 변경
     selectedTodoList.value = newScheduledTodoList;
@@ -643,9 +677,9 @@ class SelectedTodoController extends BaseController with PrefController {
   /*
     Read Function
    */
-  Color getColorByCategory({required TodoModel item}) {
+  Color getColorByCategory({required String categoryId}) {
     CategoryModel category =
-        _categoryController.getCategoryById(categoryId: item.categoryId);
+        _categoryController.getCategoryById(categoryId: categoryId);
 
     return category.color;
   }
@@ -768,5 +802,69 @@ class SelectedTodoController extends BaseController with PrefController {
 
   void onMoveToday() {
     _peepMiniCalendarController.onMoveToday();
+  }
+
+  /*
+    특정 날짜에, 특정 루틴이 투두로 변경되었는지 확인하는 함수
+  */
+  bool isRoutineConverted(DateTime selectedDate, String routineId) {
+    String selectedDateString = DateFormat('yyyyMMdd').format(selectedDate);
+    String? convertedRoutineListString =
+        getString("converted_routine_list_$selectedDateString");
+
+    if (convertedRoutineListString != null) {
+      List<String> convertedRoutineList = convertedRoutineListString.split(' ');
+
+      for (String convertedRoutineId in convertedRoutineList) {
+        if (routineId == convertedRoutineId) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /*
+    해당 루틴이, 해당 날짜에 todo로 변경되었음을 pref에 저장하는 함수
+  */
+  // Todo 문제점 : 이 정보가 계속 쌓이기만 하고, 지워지는 일이 없음..? 언제 어떻게 지워야 하지?
+  void saveRoutineConverted(DateTime selectedDate, String routineId) {
+    String selectedDateString = DateFormat('yyyyMMdd').format(selectedDate);
+    String? convertedRoutineListString =
+        getString("converted_routine_list_$selectedDateString");
+
+    if (convertedRoutineListString != null) {
+      saveString("converted_routine_list_$selectedDateString",
+          "$convertedRoutineListString $routineId");
+    } else {
+      saveString("converted_routine_list_$selectedDateString", routineId);
+    }
+  }
+
+  /*
+    routine 을 통해 todo를 생성하는 함수
+   */
+  void convertRoutineToTodo(RoutineModel routine) {
+    var uuid = const Uuid();
+    newTodoId = uuid.v4();
+
+    final newTodoPos = categoryIndexMap[routine.categoryId]![1];
+
+    TodoModel newTodo = TodoModel(
+        id: newTodoId!,
+        categoryId: routine.categoryId,
+        reminderId: routine.reminderId,
+        name: routine.name,
+        date: _todoController.selectedDate.value,
+        priority: routine.priority,
+        memo: '',
+        isChecked: false,
+        checkTime: null,
+        pos: newTodoPos);
+
+    List<dynamic> newScheduledTodoList = List<dynamic>.from(selectedTodoList);
+    newScheduledTodoList.insert(newTodoPos, newTodo);
+    _todoController.addTodo(todo: newTodo);
   }
 }

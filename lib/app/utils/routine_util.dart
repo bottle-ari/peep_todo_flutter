@@ -106,7 +106,6 @@ String repeatConditionToDescription(String repeatCondition){
     repeatCondition 과 특정 날짜가 주어질 때,
     해당 날짜가 해당 repeatCondition 에 일치하는 날짜인지 확인하는 함수
  */
-
 bool isMatchToRepeatCondition(DateTime specificDate, String repeatCondition) {
   List<String> splitConditions =  repeatCondition.split(' ');
 
