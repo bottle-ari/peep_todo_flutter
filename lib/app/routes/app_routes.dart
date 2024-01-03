@@ -17,6 +17,7 @@ abstract class Routes {
   static const TODO_SEARCH_PAGE = _Paths.TODO_SEARCH_PAGE;
   static const MY_PAGE = _Paths.MY_PAGE;
   static const DIARY_EDIT_PAGE = _Paths.DIARY_EDIT_PAGE;
+  static const ROUTINE_MANUAL_ADD_PAGE = _Paths.ROUTINE_MANUAL_ADD_PAGE;
 }
 
 abstract class _Paths {
@@ -34,4 +35,5 @@ abstract class _Paths {
   static const TODO_SEARCH_PAGE = '/todo/search';
   static const MY_PAGE = '/mypage';
   static const DIARY_EDIT_PAGE = '/diary/edit';
+  static const ROUTINE_MANUAL_ADD_PAGE = '/routine/manual_add';
 }

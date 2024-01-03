@@ -6,10 +6,12 @@ import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
 import 'package:peep_todo_flutter/app/data/model/routine/routine_model.dart';
 import 'package:uuid/uuid.dart';
 import '../../core/base/base_controller.dart';
+import 'selected_todo_controller.dart';
 
 class RoutineManageController extends BaseController {
   final CategoryController _categoryController = Get.find();
   final RoutineController _routineController = Get.find();
+  final SelectedTodoController selectedTodoController = Get.find();
 
   // Data
   final RxList<dynamic> routineList = <dynamic>[].obs;
