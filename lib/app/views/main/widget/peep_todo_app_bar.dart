@@ -85,7 +85,7 @@ class PeepTodoAppBar extends StatelessWidget {
                           Get.toNamed(Routes.CATEGORY_MANAGE_PAGE);
                         },
                         'popup_action_3': () {
-                          debugPrint('3');
+                          Get.toNamed(Routes.ROUTINE_MANUAL_ADD_PAGE);
                         },
                         'popup_action_4': () {
                           Get.toNamed(Routes.ROUTINE_MANAGE_PAGE);
