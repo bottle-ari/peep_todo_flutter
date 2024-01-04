@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:peep_todo_flutter/app/controllers/data/pref_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/page/my_page_controller.dart';
 import 'package:peep_todo_flutter/app/core/database/preference_init.dart';
 import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,22 +20,23 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  
   @override
   Widget build(BuildContext context) {
-
     return ScreenUtilInit(
       designSize: const Size(393, 852),
-      builder: (buildContext, widget) => GetMaterialApp(
-        title: '삐약Todo',
-        debugShowCheckedModeBanner: false,
-        theme: appThemeData,
-        initialRoute: AppPages.INITIAL,
-        getPages: AppPages.routes,
-        initialBinding: InitialBinding(),
-        defaultTransition: Transition.fade,
-        scrollBehavior: PeepScrollBehavior(),
-      ),
+      builder: (buildContext, widget) {
+        return GetMaterialApp(
+          title: '삐약Todo',
+          debugShowCheckedModeBanner: false,
+          theme: Themes().getThemeByFont(null),
+          themeMode: ThemeMode.light,
+          initialRoute: AppPages.INITIAL,
+          getPages: AppPages.routes,
+          initialBinding: InitialBinding(),
+          defaultTransition: Transition.fade,
+          scrollBehavior: PeepScrollBehavior(),
+        );
+      },
     );
   }
 }
