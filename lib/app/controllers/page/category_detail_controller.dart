@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/animation/peep_category_toggle_button_controller.dart';
@@ -34,7 +32,7 @@ class CategoryDetailController extends BaseController {
   final FocusNode focusNode = FocusNode();
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
 
     focusNode.addListener(() {
@@ -43,7 +41,7 @@ class CategoryDetailController extends BaseController {
       }
     });
 
-    loadCategory();
+    await loadCategory();
     todoType.value = category.value.type;
     textEditingController.text = category.value.name;
   }
@@ -60,9 +58,9 @@ class CategoryDetailController extends BaseController {
     Init Functions
    */
 
-  void loadCategory() async {
+  Future<void> loadCategory() async {
     category.value =
-        await _categoryController.getCategoryById(categoryId: categoryId);
+        _categoryController.getCategoryById(categoryId: categoryId);
   }
 
   /*
@@ -72,7 +70,7 @@ class CategoryDetailController extends BaseController {
   void toggleTodoType() {
     isTypeChanged.value = !isTypeChanged.value;
 
-    switch(todoType.value) {
+    switch (todoType.value) {
       case TodoType.scheduled:
         todoType.value = TodoType.constant;
         break;
@@ -83,7 +81,7 @@ class CategoryDetailController extends BaseController {
   }
 
   void confirmToggleTodoType() {
-    if(isTypeChanged.value) {
+    if (isTypeChanged.value) {
       _categoryController.toggleTodoType(categoryId);
       loadCategory();
       _todoController.toggleTodoType(categoryId: categoryId);
