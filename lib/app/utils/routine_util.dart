@@ -81,7 +81,13 @@ String subRepeatConditionToDescription(String subRepeatCondition) {
       }
       // 상세히 반복
       else {
-        description = "$description ${splitSubConditions[2]}일에";
+        if(splitSubConditions[2] != '32'){
+          description = "$description ${splitSubConditions[2]}일에";
+        }
+        else{
+          description = "$description 마지막 일에";
+        }
+
       }
       break;
 
@@ -185,6 +191,17 @@ bool isMatchToRepeatCondition(DateTime specificDate, String repeatCondition) {
       // 상세히 반복
       else {
         int repeatDay = int.parse(splitSubConditions[2]);
+
+        if(repeatDay == 32){
+          // 다음 달의 첫 번째 날을 계산
+          DateTime nextMonthFirstDay = DateTime(specificDate.year, specificDate.month + 1, 1);
+
+          // 현재 날짜가 다음 달의 첫 번째 날에서 하루를 빼면 해당 월의 마지막 날이 됩니다.
+          DateTime lastDayOfMonth = nextMonthFirstDay.subtract(Duration(days: 1));
+
+          // 주어진 날짜가 해당 월의 마지막 날인지 확인
+          return specificDate.day == lastDayOfMonth.day;
+        }
 
         if (specificDate.day == repeatDay) {
           return true;
