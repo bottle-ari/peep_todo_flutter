@@ -16,7 +16,10 @@ abstract class Routes {
   static const ROUTINE_DETAIL_PAGE = _Paths.ROUTINE_DETAIL_PAGE;
   static const TODO_SEARCH_PAGE = _Paths.TODO_SEARCH_PAGE;
   static const MY_PAGE = _Paths.MY_PAGE;
+  static const FONT_PAGE = _Paths.FONT_PAGE;
   static const DIARY_EDIT_PAGE = _Paths.DIARY_EDIT_PAGE;
+  static const ROUTINE_MANUAL_ADD_PAGE = _Paths.ROUTINE_MANUAL_ADD_PAGE;
+  static const FEEDBACK_PAGE = _Paths.FEEDBACK_PAGE;
 }
 
 abstract class _Paths {
@@ -33,5 +36,8 @@ abstract class _Paths {
   static const ROUTINE_DETAIL_PAGE = '/routine/detail';
   static const TODO_SEARCH_PAGE = '/todo/search';
   static const MY_PAGE = '/mypage';
+  static const FONT_PAGE = '/mypage/font';
   static const DIARY_EDIT_PAGE = '/diary/edit';
+  static const ROUTINE_MANUAL_ADD_PAGE = '/routine/manual_add';
+  static const FEEDBACK_PAGE = '/mypage/feedback';
 }

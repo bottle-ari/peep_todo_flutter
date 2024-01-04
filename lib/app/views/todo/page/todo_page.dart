@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/controllers/main/main_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
+import 'package:peep_todo_flutter/app/data/model/routine/routine_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
@@ -12,6 +13,7 @@ import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_mini_calendar.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_category_item.dart';
+import 'package:peep_todo_flutter/app/views/todo/widget/peep_routine_item.dart';
 import 'package:reorderables/reorderables.dart';
 
 import '../../../controllers/main/peep_main_toggle_button_controller.dart';
@@ -29,7 +31,6 @@ class TodoPage extends BaseView<SelectedTodoController> {
 
   @override
   Widget body(BuildContext context) {
-
     return GestureDetector(
       onTap: () {
         controller.addNewTodoConfirm();
@@ -89,29 +90,34 @@ class TodoPage extends BaseView<SelectedTodoController> {
                                     if (item.name == '')
                                       Padding(
                                           padding: EdgeInsets.symmetric(
-                                              vertical:
-                                                  AppValues.innerMargin),
+                                              vertical: AppValues.innerMargin),
                                           child: PeepTodoInputItem(
                                             todoId: item.id,
                                             color:
                                                 controller.getColorByCategory(
-                                                    item: item),
+                                                    categoryId:
+                                                        item.categoryId),
                                             todoType: TodoType.scheduled,
-                                            focusNode: controller.focusNode.value,
-                                            textEditingController: controller
-                                                .textFieldController,
+                                            focusNode:
+                                                controller.focusNode.value,
+                                            textEditingController:
+                                                controller.textFieldController,
                                             categoryId: item.categoryId,
                                           ))
                                     else
                                       Padding(
                                           padding: EdgeInsets.symmetric(
-                                              vertical:
-                                                  AppValues.innerMargin),
+                                              vertical: AppValues.innerMargin),
                                           child: PeepTodoItem(
                                             todo: item,
-                                            color: controller.getColorByCategory(
-                                                item: item),
-                                            todoType: controller.getTodoTypeByCategory(item: item),
+                                            color:
+                                                controller.getColorByCategory(
+                                                    categoryId:
+                                                        item.categoryId),
+                                            todoType: controller
+                                                .getTodoTypeByCategory(
+                                                    categoryId:
+                                                        item.categoryId),
                                           ))
                                   else
                                     const SizedBox.shrink()
@@ -125,8 +131,7 @@ class TodoPage extends BaseView<SelectedTodoController> {
                                           if (controller
                                                   .categoryFoldMap[item.id] ??
                                               false) {
-                                            controller
-                                                .isCategoryFold(item.id);
+                                            controller.isCategoryFold(item.id);
                                           }
 
                                           controller.addNewTodo(
@@ -140,10 +145,30 @@ class TodoPage extends BaseView<SelectedTodoController> {
                                         isFolded: controller
                                                 .categoryFoldMap[item.id] ??
                                             false),
+                                  )
+                                else if (item is RoutineModel)
+                                    if (!(controller
+                                        .categoryFoldMap[item.categoryId] ??
+                                        false))
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: AppValues.innerMargin),
+                                    child: PeepRoutineItem(
+                                      color: controller.getColorByCategory(
+                                          categoryId: item.categoryId),
+                                      routine: item,
+                                      onTapRoutineButton: () {
+                                        controller.convertRoutineToTodo(item);
+                                        controller.saveRoutineConverted(
+                                            controller.getSelectedDate(),
+                                            item.id);
+                                      },
+                                    ),
                                   ),
                               if (controller.isFirstTimeAccess.value)
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: AppValues.innerMargin),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: AppValues.innerMargin),
                                   child: PeepAnimationEffect(
                                     onLongPress: () {
                                       // TODO : 힌트 메시지 가리기
@@ -161,8 +186,8 @@ class TodoPage extends BaseView<SelectedTodoController> {
                                         ),
                                         child: Text(
                                           "카테고리를 눌러 할 일을 추가할 수 있어요!",
-                                          style:
-                                          PeepTextStyle.regularS(color: Palette.peepGray400),
+                                          style: PeepTextStyle.regularS(
+                                              color: Palette.peepGray400),
                                         ),
                                       ),
                                     ),

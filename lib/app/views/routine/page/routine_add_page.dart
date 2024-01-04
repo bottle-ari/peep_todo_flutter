@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/page/routine_add_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_view.dart';
-import 'package:peep_todo_flutter/app/data/enums/priority.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/utils/priority_util.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_half_button.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_half_toggle_button.dart';
-import 'package:peep_todo_flutter/app/views/common/peep_category_tag.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/peep_repeat_condition_picker.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/peep_routine_text_field.dart';
 import '../../../data/model/category/category_model.dart';
@@ -15,9 +13,9 @@ import '../../../theme/app_values.dart';
 import '../../../theme/icons.dart';
 import '../../../theme/palette.dart';
 import '../../common/buttons/peep_animation_effect.dart';
-import '../../common/buttons/peep_category_picker_button.dart';
 import '../../common/peep_subpage_appbar.dart';
 import '../../common/popup/peep_warning_popup.dart';
+import '../widget/peep_routine_category_picker_button.dart';
 import 'routine_priority_picker_modal.dart';
 
 class RoutineAddPage extends BaseView<RoutineAddController> {
@@ -147,7 +145,7 @@ class RoutineAddPage extends BaseView<RoutineAddController> {
               padding: EdgeInsets.symmetric(
                 vertical: AppValues.verticalMargin,
               ),
-              child: PeepCategoryPickerButton(
+              child: PeepRoutineCategoryPickerButton(
                 onConfirm: (CategoryModel category) {
                   controller.category.value = category;
                 },

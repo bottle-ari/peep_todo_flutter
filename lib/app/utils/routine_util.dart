@@ -65,7 +65,11 @@ String subRepeatConditionToDescription(String subRepeatCondition) {
       description = "매월";
       // 요일로 반복
       if (splitSubConditions[1] == '0') {
-        description = "$description ${splitSubConditions[2]}번째";
+        if (splitSubConditions[2] != '6') {
+          description = "$description ${splitSubConditions[2]}번째";
+        } else {
+          description = "$description 마지막";
+        }
 
         String weekDays = getWeekDayString(int.parse(splitSubConditions[3][0]));
         for (int i = 1; i < splitSubConditions[3].length; i++) {
@@ -77,7 +81,13 @@ String subRepeatConditionToDescription(String subRepeatCondition) {
       }
       // 상세히 반복
       else {
-        description = "$description ${splitSubConditions[2]}일에";
+        if(splitSubConditions[2] != '32'){
+          description = "$description ${splitSubConditions[2]}일에";
+        }
+        else{
+          description = "$description 마지막 일에";
+        }
+
       }
       break;
 
@@ -97,7 +107,7 @@ String subRepeatConditionToDescription(String subRepeatCondition) {
 /*
     repeatCondition to description
  */
-String repeatConditionToDescription(String repeatCondition){
+String repeatConditionToDescription(String repeatCondition) {
   String subRepeatCondition = repeatCondition.split(' ')[0];
   return subRepeatConditionToDescription(subRepeatCondition);
 }
@@ -106,18 +116,17 @@ String repeatConditionToDescription(String repeatCondition){
     repeatCondition 과 특정 날짜가 주어질 때,
     해당 날짜가 해당 repeatCondition 에 일치하는 날짜인지 확인하는 함수
  */
-
 bool isMatchToRepeatCondition(DateTime specificDate, String repeatCondition) {
-  List<String> splitConditions =  repeatCondition.split(' ');
+  List<String> splitConditions = repeatCondition.split(' ');
 
   String subRepeatCondition = splitConditions[0];
   DateTime startDate = convertToDateTime(splitConditions[1]);
 
   // endDate가 존재하면, specificDate와 비교
-  if(splitConditions[2].isNotEmpty){
+  if (splitConditions[2].isNotEmpty) {
     DateTime endDate = convertToDateTime(splitConditions[2]);
     // specificDate 가 endDate 이후라면 false
-    if(specificDate.isAfter(endDate)){
+    if (specificDate.isAfter(endDate)) {
       return false;
     }
   }
@@ -127,12 +136,12 @@ bool isMatchToRepeatCondition(DateTime specificDate, String repeatCondition) {
 
   switch (splitSubConditions[0]) {
     case '0':
-    // daily : "0(daily)-1(일 간격)"
+      // daily : "0(daily)-1(일 간격)"
       DateTime routineDate = startDate;
       int dayInterval = int.parse(splitSubConditions[1]);
 
-      while(routineDate.isBefore(specificDate)){
-        if(isSameDay(routineDate, specificDate)){
+      while (routineDate.isBefore(specificDate)) {
+        if (isSameDay(routineDate, specificDate)) {
           return true;
         }
         routineDate = routineDate.add(Duration(days: dayInterval));
@@ -140,7 +149,7 @@ bool isMatchToRepeatCondition(DateTime specificDate, String repeatCondition) {
       break;
 
     case '1':
-    // weekly : "1(매주)-02(일,화)-1(주 간격)"
+      // weekly : "1(매주)-02(일,화)-1(주 간격)"
       List<DateTime> routineDateList = [];
       int weekInterval = int.parse(splitSubConditions[2]);
 
@@ -150,21 +159,22 @@ bool isMatchToRepeatCondition(DateTime specificDate, String repeatCondition) {
         routineDateList.add(startDate.add(Duration(days: duration)));
       }
 
-      while(routineDateList[0].isBefore(specificDate)){
-        for(int i=0;i<routineDateList.length;i++){
-          if(isSameDay(routineDateList[i], specificDate)){
+      while (routineDateList[0].isBefore(specificDate)) {
+        for (int i = 0; i < routineDateList.length; i++) {
+          if (isSameDay(routineDateList[i], specificDate)) {
             return true;
           }
         }
 
-        for(int i=0;i<routineDateList.length;i++){
-          routineDateList[i] = routineDateList[i].add(Duration(days: 7*weekInterval));
+        for (int i = 0; i < routineDateList.length; i++) {
+          routineDateList[i] =
+              routineDateList[i].add(Duration(days: 7 * weekInterval));
         }
       }
       break;
 
     case '2':
-    // monthly : "2(매월)-0(요일로 반복)-1(번째주)-02(일,화)" || "2(매월)-1(상세히 반복)-10(일에)"
+      // monthly : "2(매월)-0(요일로 반복)-1(번째주)-02(일,화)" || "2(매월)-1(상세히 반복)-10(일에)"
 
       // 요일로 반복
       if (splitSubConditions[1] == '0') {
@@ -173,7 +183,7 @@ bool isMatchToRepeatCondition(DateTime specificDate, String repeatCondition) {
         for (int i = 0; i < splitSubConditions[3].length; i++) {
           int yWeekday = int.parse(splitSubConditions[3][i]) + 1;
 
-          if(isSpecificDateInWeekday(xWeek, yWeekday, specificDate)){
+          if (isSpecificDateInWeekday(xWeek, yWeekday, specificDate)) {
             return true;
           }
         }
@@ -182,18 +192,29 @@ bool isMatchToRepeatCondition(DateTime specificDate, String repeatCondition) {
       else {
         int repeatDay = int.parse(splitSubConditions[2]);
 
-        if(specificDate.day == repeatDay){
+        if(repeatDay == 32){
+          // 다음 달의 첫 번째 날을 계산
+          DateTime nextMonthFirstDay = DateTime(specificDate.year, specificDate.month + 1, 1);
+
+          // 현재 날짜가 다음 달의 첫 번째 날에서 하루를 빼면 해당 월의 마지막 날이 됩니다.
+          DateTime lastDayOfMonth = nextMonthFirstDay.subtract(Duration(days: 1));
+
+          // 주어진 날짜가 해당 월의 마지막 날인지 확인
+          return specificDate.day == lastDayOfMonth.day;
+        }
+
+        if (specificDate.day == repeatDay) {
           return true;
         }
       }
       break;
 
     case '3':
-    // yearly : "3(매년)-12/21(에)"
+      // yearly : "3(매년)-12/21(에)"
       List<String> parts = splitSubConditions[1].split('/');
       int repeatMonth = int.parse(parts[0]);
       int repeatDay = int.parse(parts[1]);
-      if(specificDate.month == repeatMonth && specificDate.day == repeatDay){
+      if (specificDate.month == repeatMonth && specificDate.day == repeatDay) {
         return true;
       }
       break;
@@ -210,7 +231,7 @@ bool isMatchToRepeatCondition(DateTime specificDate, String repeatCondition) {
  */
 bool isSpecificDateInWeekday(int xWeek, int yWeekday, DateTime specificDate) {
   // Ensure xWeek is a valid week number (1 to 5)
-  if (xWeek < 1 || xWeek > 5) {
+  if (xWeek < 1 || xWeek > 6) {
     throw ArgumentError('Invalid week number. Should be between 1 and 5.');
   }
 
@@ -219,16 +240,30 @@ bool isSpecificDateInWeekday(int xWeek, int yWeekday, DateTime specificDate) {
     throw ArgumentError('Invalid weekday number. Should be between 1 and 7.');
   }
 
+  if(xWeek == 6){
+    // 주어진 날짜의 년, 월 정보를 얻습니다.
+    int year = specificDate.year;
+    int month = specificDate.month;
+
+    // 다음 달의 첫 번째 날을 얻습니다.
+    DateTime nextMonthFirstDay = DateTime(year, month + 1, 1);
+
+    // 다음 달의 첫 번째 날에서 하루 전인 마지막 날을 얻습니다.
+    DateTime lastDayOfCurrentMonth = nextMonthFirstDay.subtract(Duration(days: 1));
+
+    // 주어진 날짜가 해당 월의 마지막 주에 속하는지 확인합니다.
+    return specificDate.weekday == yWeekday && specificDate.isAfter(lastDayOfCurrentMonth.subtract(Duration(days: 6)));
+  }
+
   // Check if the specificDate matches the criteria
   return specificDate.weekday == yWeekday &&
       (specificDate.day - 1) ~/ 7 + 1 == xWeek;
 }
 
-
 /*
     "yyyy/mm/dd" 형식의 문자열을 DateTime으로 변환
  */
-DateTime convertToDateTime(String dateString){
+DateTime convertToDateTime(String dateString) {
   List<String> parts = dateString.split('/');
   int year = int.parse(parts[0]);
   int month = int.parse(parts[1]);
