@@ -13,7 +13,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: ^4.6.6
   intl: ^0.18.1
-  http: ^1.1.0
+  http: ^1.1.2
   loading_animation_widget: ^1.2.0+4
   shared_preferences: ^2.2.0
   flutter_screenutil: ^5.9.0
@@ -116,6 +116,25 @@ flutter:
           weight: 800
         - asset: assets/font/Pretendard-Black.otf
           weight: 900
+    - family: LeeSeoyun
+      fonts:
+        - asset: assets/font/LeeSeoyun.otf
+    - family: KoPub
+      fonts:
+        - asset: assets/font/KoPubWorld Batang_Pro Light.otf
+          weight: 300
+        - asset: assets/font/KoPubWorld Batang_Pro Medium.otf
+          weight: 500
+        - asset: assets/font/KoPubWorld Batang_Pro Bold.otf
+          weight: 700
+    - family: NanumMyeongjo
+      fonts:
+        - asset: assets/font/NanumMyeongjo.otf
+          weight: 400
+        - asset: assets/font/NanumMyeongjoBold.otf
+          weight: 700
+        - asset: assets/font/NanumMyeongjoExtraBold.otf
+          weight: 800
     - family: Iconsax
       fonts:
         - asset: assets/font/iconsax.ttf

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_mini_calendar.dart';
@@ -24,6 +25,44 @@ class Test extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Padding(
+      padding: const EdgeInsets.all(100.0),
+      child: Column(
+        children: [
+          Text(
+            "가나다라마바사",
+            style: TextStyle(
+              fontFamily: 'NanumMyeongjo',
+              fontSize: 25,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          Text(
+            "가나다라마바사",
+            style: TextStyle(
+              fontFamily: 'KoPub',
+              fontSize: 25,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          Text(
+            "가나다라마바사",
+            style: TextStyle(
+              fontFamily: 'Pretendard',
+              fontSize: 25,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          Text(
+            "가나다라마바사",
+            style: TextStyle(
+              fontFamily: 'LeeSeoyun',
+              fontSize: 25,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
