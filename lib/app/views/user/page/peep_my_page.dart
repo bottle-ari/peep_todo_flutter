@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/page/my_page_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_view.dart';
 import 'package:peep_todo_flutter/app/data/model/palette/palette_model.dart';
+import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
@@ -15,16 +16,16 @@ import 'package:url_launcher/url_launcher.dart';
 
 class PeepMyPage extends BaseView<MyPageController> {
   final Map<String, List<String>> myItemList = {
-    '일반': ['주 시작 설정', '언어 설정'],
-    '테마': ['테마 색상 변경', '폰트 설정'],
-    '보안': ['앱 잠금'],
-    '기타': ['유저 가이드', '개인정보 보호 정책', '오픈소스 사용 정보', '스크롤 테스트 용'],
+    '일반': ['주 시작 설정'], //, '언어 설정'
+    '테마': ['메인 색상 변경', '폰트 설정'],
+    //'보안': ['앱 잠금'],
+    '기타': ['유저 가이드', '개인정보 보호 정책', '오픈소스 사용 정보'],
   };
 
   final Map<String, List<String>> myItemSubList = {
-      '일반': ['달력의 시작 요일을 지정합니다', '앱 내에서 사용할 언어를 설정합니다'],
-      '테마': ['테마 색상과 팔레트 테마를 변경합니다', '앱 내 글자 폰트를 변경합니다'],
-      '보안': ['비밀번호를 설정합니다'],
+    '일반': ['달력의 시작 요일을 지정합니다', '앱 내에서 사용할 언어를 설정합니다'],
+    '테마': ['테마 색상과 팔레트 테마를 변경합니다', '앱 내 글자 폰트를 변경합니다'],
+    '보안': ['비밀번호를 설정합니다'],
   };
 
   @override
@@ -49,8 +50,9 @@ class PeepMyPage extends BaseView<MyPageController> {
         child: Column(
           children: [
             PeepAnimationEffect(
+              scale: 0.95,
               onTap: () {
-                _launchUrl();
+                Get.toNamed(AppPages.FEEDBACKPAGE);
               },
               child: Container(
                 width: AppValues.screenWidth - AppValues.screenPadding * 2,
@@ -61,9 +63,9 @@ class PeepMyPage extends BaseView<MyPageController> {
                   borderRadius: BorderRadius.circular(AppValues.baseRadius),
                   border: Border.all(color: defaultPalette.primaryColor.color),
                 ),
-
                 child: Padding(
-                  padding:  EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -71,13 +73,22 @@ class PeepMyPage extends BaseView<MyPageController> {
                         "피드백 및 버그 리포트",
                         style: PeepTextStyle.boldM(color: Palette.peepBlack),
                       ),
-                      PeepIcon(Iconsax.arrowright, size: AppValues.smallIconSize, color: Palette.peepBlack),
+                      PeepIcon(Iconsax.arrowright,
+                          size: AppValues.smallIconSize,
+                          color: Palette.peepBlack),
                     ],
                   ),
                 ),
               ),
             ),
-            Expanded(child: UserSettingItem(itemList: myItemList, itemSubList: myItemSubList,)),
+            Expanded(
+                child: UserSettingItem(
+              itemList: myItemList,
+              itemSubList: myItemSubList,
+            )),
+            SizedBox(
+              height: 60.h,
+            ),
           ],
         ),
       ),

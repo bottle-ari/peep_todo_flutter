@@ -7,14 +7,13 @@ import 'package:peep_todo_flutter/app/core/base/base_view.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_subpage_appbar.dart';
 
-class FontSetting extends BaseView<MyPageController>{
-
+class FontSetting extends BaseView<MyPageController> {
   // 사용 가능한 폰트 리스트
   static const List<String> availableFonts = [
     'Pretendard',
     'LeeSeoyun',
     'KoPub',
-    'Nanum'
+    'NanumMyeongjo'
   ];
 
   @override
@@ -31,24 +30,19 @@ class FontSetting extends BaseView<MyPageController>{
   }
 
   @override
-  Widget body(BuildContext context){
+  Widget body(BuildContext context) {
     return ListView.builder(
       itemCount: availableFonts.length,
       itemBuilder: (context, index) {
         String font = availableFonts[index];
-        String savedFont = "";
         return ListTile(
-          title: Text(font),
+          title: Text(font, style: TextStyle(fontFamily: font)),
           onTap: () {
-            log("font setting {$font}"  );
+            log("font setting {$font}");
             controller.setSelectedFont(font);
-            savedFont = MyPageController.getSelectedFont();
-            log("saved font setting {$savedFont}"  );
-
           },
         );
       },
     );
   }
 }
-

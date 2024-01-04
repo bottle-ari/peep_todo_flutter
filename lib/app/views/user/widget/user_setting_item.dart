@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/data/provider/database/sharedpref_helper.dart';
 import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
@@ -46,19 +45,37 @@ class UserSettingItem extends StatelessWidget {
                     itemSubList[group.key]!.isNotEmpty) {
                   subItem = itemSubList[group.key]![itemIndex];
                 }
-
+                //'일반': ['주 시작 설정'], //, '언어 설정'
+                //'테마': ['메인 색상 변경', '폰트 설정'],
+                ////'보안': ['앱 잠금'],
+                //'기타': ['유저 가이드', '개인정보 보호 정책', '오픈소스 사용 정보'],
                 return PeepAnimationEffect(
+                  scale: 0.95,
                   onTap: () {
-                    Get.toNamed(AppPages.FONTPAGE);
-                    },
+                    if (item == "주 시작 설정") {
+                      log("주 시작 설정");
+                    } else if (item == "메인 색상 변경") {
+                      log("메인 색상 변경");
+                    } else if (item == "폰트 설정") {
+                      Get.toNamed(AppPages.FONTPAGE);
+                    } else if (item == "유저 가이드") {
+                      log("유저 가이드");
+                    } else if (item == "개인정보 보호 정책") {
+                      log("개인정보 보호 정책");
+                    } else if (item == "오픈소스 사용 정보") {
+                      log("오픈소스 사용 정보");
+                    }
+                  },
                   child: Padding(
                     padding: EdgeInsets.all(0.5 * AppValues.horizontalMargin),
                     child: Container(
-                      width: AppValues.screenWidth - AppValues.screenPadding * 2,
+                      width:
+                          AppValues.screenWidth - AppValues.screenPadding * 2,
                       height: AppValues.largeItemHeight,
                       decoration: BoxDecoration(
                         color: Palette.peepGray50,
-                        borderRadius: BorderRadius.circular(AppValues.baseRadius),
+                        borderRadius:
+                            BorderRadius.circular(AppValues.baseRadius),
                         border: Border.all(color: Palette.peepGray100),
                       ),
                       child: Padding(

@@ -1,5 +1,8 @@
 // 앱 내 테마 정의하는 공간. 색/폰트/텍스트 스타일은 여기 정의해주세요
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:peep_todo_flutter/app/controllers/data/pref_controller.dart';
 import 'package:peep_todo_flutter/app/data/model/palette/palette_model.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/views/user/page/font_setting.dart';
@@ -29,81 +32,37 @@ final ThemeData appThemeData = ThemeData(
     ),
   ),
 );
+//
 
-class Themes {
-  final ThemeData defaultTheme = ThemeData(
-    primaryColor: Palette.peepYellow300,
-    highlightColor: Colors.transparent,
-    fontFamily: "pretender",
-    splashColor: Colors.transparent,
-    hoverColor: Colors.transparent,
-    textTheme: const TextTheme(
-      displayLarge: TextStyle(
-        fontSize: 30,
-        fontWeight: FontWeight.bold,
-        color: Palette.peepBlack,
-      ),
-    ),
-  );
-
-  final ThemeData KoPubTheme = ThemeData(
-    primaryColor: Palette.peepYellow300,
-    highlightColor: Colors.transparent,
-    fontFamily: "KoPub",
-    splashColor: Colors.transparent,
-    hoverColor: Colors.transparent,
-    textTheme: const TextTheme(
-      displayLarge: TextStyle(
-        fontSize: 30,
-        fontWeight: FontWeight.bold,
-        color: Palette.peepBlack,
-      ),
-    ),
-  );
-
-  final ThemeData LeeSeoyunTheme = ThemeData(
-    primaryColor: Palette.peepYellow300,
-    highlightColor: Colors.transparent,
-    fontFamily: "LeeSeoyun",
-    splashColor: Colors.transparent,
-    hoverColor: Colors.transparent,
-    textTheme: const TextTheme(
-      displayLarge: TextStyle(
-        fontSize: 30,
-        fontWeight: FontWeight.bold,
-        color: Palette.peepBlack,
-      ),
-    ),
-  );
-
-  final ThemeData NanumTheme = ThemeData(
-    primaryColor: Palette.peepYellow300,
-    highlightColor: Colors.transparent,
-    fontFamily: "Nanum,",
-    splashColor: Colors.transparent,
-    hoverColor: Colors.transparent,
-    textTheme: const TextTheme(
-      displayLarge: TextStyle(
-        fontSize: 30,
-        fontWeight: FontWeight.bold,
-        color: Palette.peepBlack,
-      ),
-    ),
-  );
-
-  ThemeData getThemeByFont(String font) {
-    switch (font) {
-      case 'KoPub':
-        return KoPubTheme;
-      case 'Nanum':
-        return NanumTheme;
-      case 'LeeSeoyun':
-        return LeeSeoyunTheme;
-      default:
-        return defaultTheme;
-    }
+class Themes with PrefController {
+  final keySelectedFont = 'selectedFont';
+  ThemeData getThemeByFont(String? font) {
+    font ??= getString(keySelectedFont) ?? "Pretendard";
+    log("Themes font{$font}");
+    return ThemeData(
+      colorScheme: ColorScheme(
+        brightness: Brightness.light,
+        primary: defaultPalette.primaryColor.color,
+        onPrimary: Palette.peepWhite,
+        secondary: defaultPalette.primaryColor.color,
+        onSecondary: Palette.peepWhite,
+        error: Palette.peepRed,
+        onError: Palette.peepRed,
+        background: Palette.peepWhite,
+        onBackground: Palette.peepGray500,
+        surface: Palette.peepGray100,
+        onSurface: Palette.peepBlack,),
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      hoverColor: Colors.transparent,
+      fontFamily: font,
+    );
   }
 }
+
+//TextTheme pretendardFontTextTheme = ThemeData.light().textTheme.copywith(
+//
+//)
 
 class PeepScrollBehavior extends MaterialScrollBehavior {
   @override
