@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
+import 'package:peep_todo_flutter/app/views/routine/page/week_of_month_picker_modal.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/peep_repeat_condition_item.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/peep_repeat_condition_picker.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/peep_repeat_condition_week_item.dart';
@@ -36,9 +37,19 @@ class PeepMonthlyCondition extends StatelessWidget {
                     !controller.monthlyDayRepeatIsChecked.value;
               },
               dayPicked: controller.monthlyDayRepeatValue,
-              boldText: controller.monthlyDayRepeatOrdinalValue.toString(),
+              boldText: controller.monthlyDayRepeatOrdinalValue.value != 6
+                  ? controller.monthlyDayRepeatOrdinalValue.toString()
+                  : '마지막',
               onBoldTextTap: () {
-                // Todo : 주차 picker 띄우기, 1번째 ~ 5번째?주 + 마지막 주
+                Get.bottomSheet(
+                  WeekOfMonthPickerModal(
+                    onWeekPicked: (int weekValue) {
+                      controller.monthlyDayRepeatOrdinalValue.value = weekValue;
+                    },
+                    currentWeekValue:
+                        controller.monthlyDayRepeatOrdinalValue.value,
+                  ),
+                );
               },
               isMonthly: true,
               controller: controller,
@@ -73,8 +84,7 @@ class PeepMonthlyCondition extends StatelessWidget {
               color: color,
               isChecked: controller.endIsChecked.value,
               onCheckButtonTap: () {
-                controller.endIsChecked.value =
-                    !controller.endIsChecked.value;
+                controller.endIsChecked.value = !controller.endIsChecked.value;
               },
               onBoldTextTap: () {
                 Get.bottomSheet(
