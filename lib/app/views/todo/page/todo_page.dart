@@ -116,7 +116,8 @@ class TodoPage extends BaseView<SelectedTodoController> {
                                                         item.categoryId),
                                             todoType: controller
                                                 .getTodoTypeByCategory(
-                                                    item: item),
+                                                    categoryId:
+                                                        item.categoryId),
                                           ))
                                   else
                                     const SizedBox.shrink()
@@ -146,6 +147,9 @@ class TodoPage extends BaseView<SelectedTodoController> {
                                             false),
                                   )
                                 else if (item is RoutineModel)
+                                    if (!(controller
+                                        .categoryFoldMap[item.categoryId] ??
+                                        false))
                                   Padding(
                                     padding: EdgeInsets.symmetric(
                                         vertical: AppValues.innerMargin),
@@ -155,7 +159,9 @@ class TodoPage extends BaseView<SelectedTodoController> {
                                       routine: item,
                                       onTapRoutineButton: () {
                                         controller.convertRoutineToTodo(item);
-                                        controller.saveRoutineConverted(controller.getSelectedDate(), item.id);
+                                        controller.saveRoutineConverted(
+                                            controller.getSelectedDate(),
+                                            item.id);
                                       },
                                     ),
                                   ),

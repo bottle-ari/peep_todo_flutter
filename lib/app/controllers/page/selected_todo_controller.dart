@@ -407,6 +407,12 @@ class SelectedTodoController extends BaseController with PrefController {
     List<RoutineModel> matchedRoutineList = [];
     var routineList = _routineController.routineList;
     for (var routine in routineList) {
+      // 0. 루틴이 속한 카테고리가 scheduled 인지 확인
+      if (getTodoTypeByCategory(categoryId: routine.categoryId) ==
+          TodoType.constant) {
+        continue;
+      }
+
       // 1. 루틴이 속한 카테고리가 활성화 되어있는지 확인
       if (categoryIndexMap[routine.categoryId] == null) continue;
 
@@ -688,9 +694,9 @@ class SelectedTodoController extends BaseController with PrefController {
     return _todoController.selectedDate.value;
   }
 
-  TodoType getTodoTypeByCategory({required TodoModel item}) {
+  TodoType getTodoTypeByCategory({required String categoryId}) {
     CategoryModel category =
-        _categoryController.getCategoryById(categoryId: item.categoryId);
+        _categoryController.getCategoryById(categoryId: categoryId);
 
     return category.type;
   }

@@ -12,10 +12,10 @@ import '../../../theme/app_values.dart';
 import '../../../theme/icons.dart';
 import '../../../theme/palette.dart';
 import '../../common/buttons/peep_animation_effect.dart';
-import '../../common/buttons/peep_category_picker_button.dart';
 import '../../common/peep_dropdown_menu.dart';
 import '../../common/peep_subpage_appbar.dart';
 import '../../common/popup/peep_confirm_popup.dart';
+import '../widget/peep_routine_category_picker_button.dart';
 import 'routine_priority_picker_modal.dart';
 
 class RoutineDetailPage extends BaseView<RoutineDetailController> {
@@ -134,7 +134,7 @@ class RoutineDetailPage extends BaseView<RoutineDetailController> {
               padding: EdgeInsets.symmetric(
                 vertical: AppValues.verticalMargin,
               ),
-              child: PeepCategoryPickerButton(
+              child: PeepRoutineCategoryPickerButton(
                 onConfirm: (CategoryModel category) {
                   controller.category.value = category;
                 },
