@@ -77,15 +77,17 @@ class PeepMiniCalendar extends StatelessWidget {
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        Container(
-                          width: 20.w, // Container의 너비
-                          height: 20.w, // Container의 높이
-                          decoration: BoxDecoration(
-                            color: paletteController
-                                .getPriorityColor()
-                                .withOpacity(AppValues.halfOpacity),
-                            borderRadius:
-                                BorderRadius.circular(AppValues.baseRadius),
+                        Obx(
+                          () => Container(
+                            width: 20.w, // Container의 너비
+                            height: 20.w, // Container의 높이
+                            decoration: BoxDecoration(
+                              color: paletteController
+                                  .getPriorityColor()
+                                  .withOpacity(AppValues.halfOpacity),
+                              borderRadius:
+                                  BorderRadius.circular(AppValues.baseRadius),
+                            ),
                           ),
                         ),
                         Obx(

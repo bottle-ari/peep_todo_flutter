@@ -36,24 +36,21 @@ class DatabaseInit {
 
   static Future _onCreate(Database db, int version) async {
     // palette table 생성
-    await db.execute(
-        """
+    await db.execute("""
       CREATE TABLE palette(
           id TEXT PRIMARY KEY,
+          name TEXT,
           primary_color INTEGER)
-      """
-    );
+      """);
 
     // color table 생성
-    await db.execute(
-        """
+    await db.execute("""
       CREATE TABLE color(
           id TEXT PRIMARY KEY,
           palette_id TEXT,
           color TEXT,
           FOREIGN KEY (palette_id) REFERENCES palette(id) ON DELETE CASCADE)
-      """
-    );
+      """);
 
     // category table 생성
     await db.execute(
@@ -116,16 +113,14 @@ class DatabaseInit {
     );
 
     // diary table 생성
-    await db.execute(
-      """
+    await db.execute("""
       CREATE TABLE diary(
           id TEXT PRIMARY KEY,
           date INTEGER,
           image TEXT,
           memo TEXT
       )
-      """
-    );
+      """);
 
     // 기본 category 생성
     var uuid = const Uuid();
@@ -146,6 +141,7 @@ class DatabaseInit {
 
     await db.insert('palette', {
       'id': newPaletteUuid,
+      'name': 'sweet_spring_day',
       'primary_color': 0,
     });
 
@@ -218,6 +214,166 @@ class DatabaseInit {
       'id': newColorId9,
       'palette_id': newPaletteUuid,
       'color': 'BF9663',
+    });
+
+    // palette2 생성
+    String newPaletteUuid2 = uuid.v4();
+
+    await db.insert('palette', {
+      'id': newPaletteUuid2,
+      'name': 'city_light',
+      'primary_color': 0,
+    });
+
+    String newColorId10 = uuid.v4();
+    String newColorId11 = uuid.v4();
+    String newColorId12 = uuid.v4();
+    String newColorId13 = uuid.v4();
+    String newColorId14 = uuid.v4();
+    String newColorId15 = uuid.v4();
+    String newColorId16 = uuid.v4();
+    String newColorId17 = uuid.v4();
+    String newColorId18 = uuid.v4();
+    String newColorId19 = uuid.v4();
+
+    await db.insert('color', {
+      'id': newColorId10,
+      'palette_id': newPaletteUuid2,
+      'color': 'E91E63',
+    });
+
+    await db.insert('color', {
+      'id': newColorId11,
+      'palette_id': newPaletteUuid2,
+      'color': '9C27B0',
+    });
+
+    await db.insert('color', {
+      'id': newColorId12,
+      'palette_id': newPaletteUuid2,
+      'color': '3F51B5',
+    });
+
+    await db.insert('color', {
+      'id': newColorId13,
+      'palette_id': newPaletteUuid2,
+      'color': '03A9F4',
+    });
+
+    await db.insert('color', {
+      'id': newColorId14,
+      'palette_id': newPaletteUuid2,
+      'color': '009688',
+    });
+
+    await db.insert('color', {
+      'id': newColorId15,
+      'palette_id': newPaletteUuid2,
+      'color': '8BC34A',
+    });
+
+    await db.insert('color', {
+      'id': newColorId16,
+      'palette_id': newPaletteUuid2,
+      'color': 'E7D112',
+    });
+
+    await db.insert('color', {
+      'id': newColorId17,
+      'palette_id': newPaletteUuid2,
+      'color': 'FF9800',
+    });
+
+    await db.insert('color', {
+      'id': newColorId18,
+      'palette_id': newPaletteUuid2,
+      'color': '795548',
+    });
+
+    await db.insert('color', {
+      'id': newColorId19,
+      'palette_id': newPaletteUuid2,
+      'color': '9E9E9E',
+    });
+
+    // palette3 생성
+    String newPaletteUuid3 = uuid.v4();
+
+    await db.insert('palette', {
+      'id': newPaletteUuid3,
+      'name': 'summer_ocean',
+      'primary_color': 0,
+    });
+
+    String newColorId20 = uuid.v4();
+    String newColorId21 = uuid.v4();
+    String newColorId22 = uuid.v4();
+    String newColorId23 = uuid.v4();
+    String newColorId24 = uuid.v4();
+    String newColorId25 = uuid.v4();
+    String newColorId26 = uuid.v4();
+    String newColorId27 = uuid.v4();
+    String newColorId28 = uuid.v4();
+    String newColorId29 = uuid.v4();
+
+    await db.insert('color', {
+      'id': newColorId20,
+      'palette_id': newPaletteUuid3,
+      'color': '07B2D9',
+    });
+
+    await db.insert('color', {
+      'id': newColorId21,
+      'palette_id': newPaletteUuid3,
+      'color': '79D3E7',
+    });
+
+    await db.insert('color', {
+      'id': newColorId22,
+      'palette_id': newPaletteUuid3,
+      'color': '04C4D9',
+    });
+
+    await db.insert('color', {
+      'id': newColorId23,
+      'palette_id': newPaletteUuid3,
+      'color': '04D9D9',
+    });
+
+    await db.insert('color', {
+      'id': newColorId24,
+      'palette_id': newPaletteUuid3,
+      'color': '3C8FDD',
+    });
+
+    await db.insert('color', {
+      'id': newColorId25,
+      'palette_id': newPaletteUuid3,
+      'color': '6FBEEE',
+    });
+
+    await db.insert('color', {
+      'id': newColorId26,
+      'palette_id': newPaletteUuid3,
+      'color': '688FAB',
+    });
+
+    await db.insert('color', {
+      'id': newColorId27,
+      'palette_id': newPaletteUuid3,
+      'color': 'B9BC88',
+    });
+
+    await db.insert('color', {
+      'id': newColorId28,
+      'palette_id': newPaletteUuid3,
+      'color': 'D8C5A5',
+    });
+
+    await db.insert('color', {
+      'id': newColorId29,
+      'palette_id': newPaletteUuid3,
+      'color': '98B9C5',
     });
   }
 }

@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           title: '삐약Todo',
           debugShowCheckedModeBanner: false,
-          theme: Themes().getThemeByFont(null),
+          theme: Themes().getThemeByFont(),
           themeMode: ThemeMode.light,
           initialRoute: AppPages.INITIAL,
           getPages: AppPages.routes,

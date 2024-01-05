@@ -13,11 +13,11 @@ class Themes with PrefController {
   final keySelectedFont = 'selectedFont';
   final initColor = 'initPriorityColor';
 
-  ThemeData getThemeByFont(String? font) {
+  ThemeData getThemeByFont({String? font, Color? color}) {
     font ??= getString(keySelectedFont) ?? "Pretendard";
     final hexColor = getString(initColor);
 
-    Color color = hexColor == null
+    color ??= hexColor == null
         ? const Color(0xFFFF6D79)
         : Color(int.parse("0xFF$hexColor"));
 

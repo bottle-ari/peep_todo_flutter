@@ -12,10 +12,19 @@ import '../../data/services/palette_service.dart';
 
 class PaletteController extends BaseController with PrefController {
   final PaletteService _service = Get.put(PaletteService());
+  final keySelectedPaletteInx = 'selectedPaletteIndex';
+  final keySelectedColorInx = 'selectedPrimaryColorIndex';
 
   // Data
   final RxList<PaletteModel> paletteData = <PaletteModel>[].obs;
-  final RxInt selectedPalette = 0.obs; // TODO : Pref에 저장하고 값 초기화 필요
+  late final RxString selectedPalette;
+  late final RxInt selectedPrimaryColor;
+
+  PaletteController() {
+    selectedPalette =
+        (getString(keySelectedPaletteInx) ?? 'sweet_spring_day').obs;
+    selectedPrimaryColor = (getInt(keySelectedColorInx) ?? 0).obs;
+  }
 
   @override
   void onInit() {
@@ -34,6 +43,16 @@ class PaletteController extends BaseController with PrefController {
   /*
     Read Functions
    */
+  PaletteModel getSelectedPalette() {
+    return paletteData
+        .firstWhere((element) => element.name == selectedPalette.value);
+  }
+
+  int getSelectedPaletteIndex() {
+    return paletteData
+        .indexWhere((element) => element.name == selectedPalette.value);
+  }
+
   List<ColorModel> getDefaultPalette() {
     if (paletteData.isEmpty) {
       return [
@@ -42,7 +61,7 @@ class PaletteController extends BaseController with PrefController {
       ];
     }
 
-    List<ColorModel> defaultPalette = paletteData[selectedPalette.value].colors;
+    List<ColorModel> defaultPalette = getSelectedPalette().colors;
 
     return defaultPalette;
   }
@@ -60,8 +79,8 @@ class PaletteController extends BaseController with PrefController {
         return Color(int.parse("0xFF$hexColor"));
       }
     } else {
-      return paletteData[selectedPalette.value]
-          .colors[paletteData[selectedPalette.value].primaryColor]
+      return getSelectedPalette()
+          .colors[getSelectedPalette().primaryColor]
           .color;
     }
   }
@@ -69,15 +88,40 @@ class PaletteController extends BaseController with PrefController {
   /*
     Update Funtions
    */
-  void updateDefaultColor(int index) async {
+  Future<void> updatePriorityColor(int index) async {
     List<PaletteModel> newPaletteData = List.from(paletteData);
 
-    newPaletteData[selectedPalette.value].primaryColor = index;
+    var newSelectedPalette = newPaletteData
+        .firstWhere((element) => element.name == selectedPalette.value);
+
+    newSelectedPalette.primaryColor = index;
 
     // 옵저버 데이터 변경
     paletteData.value = newPaletteData;
+    selectedPrimaryColor.value = index;
 
     // DB 저장
-    await _service.updatePalette(newPaletteData[selectedPalette.value]);
+    saveInt(keySelectedColorInx, index);
+    await _service.updatePalette(newSelectedPalette);
+  }
+
+  Future<void> updatePalette(String name) async {
+    // 옵저버 데이터 변경
+    selectedPalette.value = name;
+
+    // DB 저장
+    saveString(keySelectedPaletteInx, name);
   }
 }
+
+// List<PaletteModel> newPaletteData = List.from(paletteData);
+//
+// newPaletteData[selectedPalette.value].primaryColor = index;
+//
+// // 옵저버 데이터 변경
+// paletteData.value = newPaletteData;
+// selectedPalette.value = index;
+//
+// // DB 저장
+// saveInt(keySelectedColorInx, index);
+// await _service.updatePalette(newPaletteData[selectedPalette.value]);

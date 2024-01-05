@@ -84,3 +84,41 @@ class RingPainter extends CustomPainter {
     return true;
   }
 }
+
+class RingPainterForPalette extends CustomPainter {
+  final int paletteIndex;
+  final PaletteController paletteController = Get.find();
+
+  RingPainterForPalette(this.paletteIndex);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    const double startAngle = -pi / 2;
+    const double strokeWidth = 8.0;
+
+    double currentAngle = startAngle;
+
+    for (int i = 0; i < 10; i++) {
+      const sweepAngle = (2 * pi) / 10; // 아이템 수에 따른 각도
+      final rect = Rect.fromCircle(
+        center: Offset(size.width / 2, size.height / 2),
+        radius: size.width / 2 - (strokeWidth / 2),
+      );
+
+      final paint = Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = strokeWidth
+        ..color = paletteController.paletteData[paletteIndex].colors[i].color
+            .withOpacity(AppValues.baseOpacity); // 아이템 순위에 해당하는 색상 사용
+
+      canvas.drawArc(rect, currentAngle, sweepAngle, false, paint);
+
+      currentAngle += sweepAngle;
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
+  }
+}

@@ -49,6 +49,10 @@ class DiaryPageController extends BaseController {
   void onInit() {
     super.onInit();
 
+    // 팔레트 체크 감지
+    ever(paletteController.selectedPalette,
+        (callback) => updateCheckedTodoList());
+
     // 투두 체크 감지
     ever(_todoController.todoMap, (callback) {
       updateCheckedTodoList();
@@ -86,7 +90,8 @@ class DiaryPageController extends BaseController {
 
           newCheckTodo[date]!.add(DiaryTodoModel(
               name: todo.name,
-              color: paletteController.getDefaultPalette()[category.color].color,
+              color:
+                  paletteController.getDefaultPalette()[category.color].color,
               categoryOrder: category.pos,
               indexOrder: todo.pos));
         }

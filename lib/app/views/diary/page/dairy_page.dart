@@ -30,17 +30,19 @@ class DiaryPage extends BaseView<DiaryPageController> {
 
   @override
   Widget? floatingActionButton() {
-    return FloatingActionButton(
-      onPressed: () {
-        controller.createDiary();
-        Get.toNamed(AppPages.DIARY_EDIT);
-      },
-      shape: const CircleBorder(),
-      backgroundColor: controller.paletteController.getPriorityColor(),
-      child: PeepIcon(
-        Iconsax.edit,
-        size: AppValues.baseIconSize,
-        color: Palette.peepWhite,
+    return Obx(
+      () => FloatingActionButton(
+        onPressed: () {
+          controller.createDiary();
+          Get.toNamed(AppPages.DIARY_EDIT);
+        },
+        shape: const CircleBorder(),
+        backgroundColor: controller.paletteController.getPriorityColor(),
+        child: PeepIcon(
+          Iconsax.edit,
+          size: AppValues.baseIconSize,
+          color: Palette.peepWhite,
+        ),
       ),
     );
   }
