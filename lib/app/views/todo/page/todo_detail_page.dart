@@ -255,7 +255,7 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
                                           arguments: {
                                             'text': controller.todo.value.memo,
                                             'color':
-                                                controller.category.value.color,
+                                                controller.getColor(),
                                           });
                                     },
                                     child: Text(
