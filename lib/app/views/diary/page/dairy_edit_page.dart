@@ -23,7 +23,6 @@ import '../widget/peep_checked_todo.dart';
 class DiaryEditPage extends BaseView<DiaryEditController> {
   @override
   PreferredSizeWidget? appBar(BuildContext context) {
-
     return PreferredSize(
         preferredSize: Size.fromHeight(AppValues.appbarHeight),
         child: SafeArea(
@@ -64,19 +63,22 @@ class DiaryEditPage extends BaseView<DiaryEditController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: AppValues.screenPadding),
-            child: PeepImagePreview(),
+            padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
+            child: PeepImagePreview(
+              selectedDate: controller.getSelectedDate(),
+            ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: AppValues.screenPadding),
-            child: PeepCheckedTodo(),
+            padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
+            child: PeepCheckedTodo(
+              selectedDate: controller.getSelectedDate(),
+            ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: AppValues.screenPadding),
-            child: PeepCheckedTodoFoldDivider(),
+            padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
+            child: PeepCheckedTodoFoldDivider(
+              selectedDate: controller.getSelectedDate(),
+            ),
           ),
           Expanded(
             child: Padding(

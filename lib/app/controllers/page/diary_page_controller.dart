@@ -7,6 +7,7 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill/quill_delta.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/diary_controller.dart';
@@ -16,6 +17,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../data/model/diary/diary_model.dart';
 import '../../data/model/diary/diary_todo_model.dart';
+import '../../utils/peep_calendar_util.dart';
 import '../data/todo_controller.dart';
 
 class DiaryPageController extends BaseController {
@@ -23,16 +25,23 @@ class DiaryPageController extends BaseController {
   final CategoryController _categoryController = Get.find();
   final DiaryController _diaryController = Get.find();
   final PeepMiniCalendarController _peepMiniCalendarController = Get.find();
-  final RxBool isOpen = false.obs;
 
-  final RxList<DiaryTodoModel> checkedTodo = <DiaryTodoModel>[].obs;
+  final RxMap<String, bool> isOpen = <String, bool>{}.obs;
+  final RxMap<String, List<DiaryTodoModel>> checkedTodo =
+      <String, List<DiaryTodoModel>>{}.obs;
+
+  //PageController
+  late final PageController pageController;
+  bool isPageMove = false;
 
   // Quill
-  final Rx<QuillController> quillController = QuillController.basic().obs;
+  final RxMap<String, QuillController> quillController =
+      <String, QuillController>{}.obs;
 
-  // PageController
-  final PageController pageController = PageController(initialPage: 10000);
-  final RxInt pageIndex = 10000.obs;
+  DiaryPageController() {
+    pageController = PageController(
+        initialPage: calculatePageIndex(_todoController.selectedDate.value));
+  }
 
   @override
   void onInit() {
@@ -50,29 +59,39 @@ class DiaryPageController extends BaseController {
     // 다이어리 데이터 변경 감지
     ever(_diaryController.diaryData, (callback) => updateCheckedTodoList());
 
+    // 선택된 날짜 변경 감지
+    ever(_todoController.selectedDate, (callback) {
+      updateCheckedTodoList();
+      onDateChange(_todoController.selectedDate.value);
+    });
+
     updateCheckedTodoList();
   }
 
   /* Init Functions */
   void updateCheckedTodoList() async {
-    List<DiaryTodoModel> newCheckTodo = [];
+    Map<String, List<DiaryTodoModel>> newCheckTodo = {};
 
-    for (var todo
-        in _todoController.todoMap[_todoController.getSelectedTodoKey()] ??
-            []) {
-      if (todo.isChecked) {
-        final category = await _categoryController.getCategoryByIdAsync(
-            categoryId: todo.categoryId);
-        newCheckTodo.add(DiaryTodoModel(
-            name: todo.name,
-            color: category.color,
-            categoryOrder: category.pos,
-            indexOrder: todo.pos));
+    for (var date in _todoController.todoMap.keys) {
+      for (var todo in _todoController.todoMap[date] ?? []) {
+        if (todo.isChecked) {
+          final category = await _categoryController.getCategoryByIdAsync(
+              categoryId: todo.categoryId);
+
+          if (newCheckTodo[date] == null) {
+            newCheckTodo[date] = [];
+          }
+
+          newCheckTodo[date]!.add(DiaryTodoModel(
+              name: todo.name,
+              color: category.color,
+              categoryOrder: category.pos,
+              indexOrder: todo.pos));
+        }
       }
+      newCheckTodo[date]?.sort((a, b) => a.indexOrder - b.indexOrder);
+      newCheckTodo[date]?.sort((a, b) => a.categoryOrder - b.categoryOrder);
     }
-
-    newCheckTodo.sort((a, b) => a.indexOrder - b.indexOrder);
-    newCheckTodo.sort((a, b) => a.categoryOrder - b.categoryOrder);
 
     checkedTodo.value = newCheckTodo;
 
@@ -83,7 +102,9 @@ class DiaryPageController extends BaseController {
     CREATE Functions
    */
   Future<void> createDiary() async {
-    if (_diaryController.diaryData.value.id.isEmpty) {
+    if (_diaryController
+            .diaryData[_todoController.getSelectedTodoKey()]?.id.isEmpty ??
+        false) {
       var uuid = const Uuid();
       String newUuid = uuid.v4();
 
@@ -103,9 +124,11 @@ class DiaryPageController extends BaseController {
     return _todoController.selectedDate.value;
   }
 
-  List<String> getImagePath() {
+  List<String> getImagePath(DateTime date) {
     List<String> imagePath = [];
-    for (var image in _diaryController.diaryData.value.image) {
+    for (var image in _diaryController
+            .diaryData[DateFormat("yyyyMMdd").format(date)]?.image ??
+        []) {
       if (image != '') imagePath.add(image);
     }
     log(imagePath.toString());
@@ -114,19 +137,26 @@ class DiaryPageController extends BaseController {
 
   void loadContent() {
     log("LOAD CONTENTS");
-    final String savedJson = _diaryController.diaryData.value.memo;
+    Map<String, QuillController> quillControllerMap = Map.from(quillController);
 
-    if (savedJson.isEmpty) {
-      quillController.value = QuillController.basic();
-      return;
+    for (var date in _diaryController.diaryData.keys) {
+      if (quillControllerMap[date] == null) {
+        quillController[date] = QuillController.basic();
+      }
+
+      final String savedJson = _diaryController.diaryData[date]?.memo ?? '';
+
+      if (savedJson.isNotEmpty) {
+        final Delta delta = Delta.fromJson(jsonDecode(savedJson));
+
+        quillControllerMap[date] = QuillController(
+          document: Document.fromDelta(delta),
+          selection: const TextSelection.collapsed(offset: 0),
+        );
+      }
     }
 
-    final Delta delta = Delta.fromJson(jsonDecode(savedJson));
-
-    quillController.value = QuillController(
-      document: Document.fromDelta(delta),
-      selection: const TextSelection.collapsed(offset: 0),
-    );
+    quillController.value = quillControllerMap;
   }
 
   /*
@@ -136,25 +166,34 @@ class DiaryPageController extends BaseController {
     _peepMiniCalendarController.onMoveToday();
   }
 
-  void toggleIsOpen() {
-    isOpen.value = !isOpen.value;
+  void onPageChange(DateTime date) {
+    isPageMove = true;
+
+    _todoController.selectedDate.value = date;
+    _todoController.focusedDate.value = date;
+
+    isPageMove = false;
   }
 
-  void updateSelectedDate(int index) {
-    final diff = pageIndex.value - index;
+  void onDateChange(DateTime date) {
+    if (!isPageMove) {
+      var index = calculatePageIndex(date);
+      log("onDateChange : $index");
+      pageController.jumpToPage(index);
+    }
+  }
 
-    DateTime newDate;
-    if (diff < 0) {
-      newDate = _todoController.selectedDate.value.add(const Duration(days: 1));
-    } else if (diff > 0) {
-      newDate = _todoController.selectedDate.value.subtract(const Duration(days: 1));
+  void toggleIsOpen(DateTime date) {
+    Map<String, bool> isOpenMap = Map.from(isOpen);
+    bool? isOpenVal = isOpenMap[DateFormat('yyyyMMdd').format(date)];
+
+    if (isOpenVal == null) {
+      isOpenMap[DateFormat('yyyyMMdd').format(date)] = false;
     } else {
-      newDate = _todoController.selectedDate.value;
+      isOpenMap[DateFormat('yyyyMMdd').format(date)] = !isOpenVal;
     }
 
-    _todoController.selectedDate.value = newDate;
-    _todoController.focusedDate.value = newDate;
-    pageIndex.value = index;
+    isOpen.value = isOpenMap;
   }
 
   /*
@@ -162,7 +201,10 @@ class DiaryPageController extends BaseController {
   */
   Future<void> pickImage() async {
     await createDiary();
-    var diary = _diaryController.diaryData.value;
+    var diary =
+        _diaryController.diaryData[_todoController.getSelectedTodoKey()];
+
+    if (diary == null) return;
 
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
@@ -185,7 +227,10 @@ class DiaryPageController extends BaseController {
   }
 
   void deleteImage(String imagePath) {
-    var diary = _diaryController.diaryData.value;
+    var diary =
+        _diaryController.diaryData[_todoController.getSelectedTodoKey()];
+
+    if (diary == null) return;
 
     diary.image.remove(imagePath);
 

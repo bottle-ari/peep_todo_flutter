@@ -13,8 +13,9 @@ import '../../../theme/palette.dart';
 
 class PeepImagePreview extends StatelessWidget {
   final DiaryPageController controller = Get.find();
+  final DateTime selectedDate;
 
-  PeepImagePreview({super.key});
+  PeepImagePreview({super.key, required this.selectedDate});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class PeepImagePreview extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              for (var imagePath in controller.getImagePath())
+              for (var imagePath in controller.getImagePath(selectedDate))
                 Padding(
                   padding: EdgeInsets.only(right: AppValues.horizontalMargin),
                   child: PeepAnimationEffect(
@@ -60,7 +61,7 @@ class PeepImagePreview extends StatelessWidget {
                     ),
                   ),
                 ),
-              if (controller.getImagePath().length <= 4)
+              if (controller.getImagePath(selectedDate).length <= 4)
                 PeepAnimationEffect(
                   onTap: () {
                     controller.pickImage();

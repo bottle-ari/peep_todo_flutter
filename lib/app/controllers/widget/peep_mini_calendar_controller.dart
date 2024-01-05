@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
@@ -27,8 +29,9 @@ class PeepMiniCalendarController extends GetxController {
     });
 
     // 선택된 날짜 변경 감지
-    ever(
-        _todoController.selectedDate, (callback) => updateCalendarItemCounts());
+    ever(_todoController.selectedDate, (callback) {
+      updateCalendarItemCounts();
+    });
 
     // 카테고리 데이터 변경 감지
     ever(_categoryController.categoryList,
@@ -66,8 +69,6 @@ class PeepMiniCalendarController extends GetxController {
   void onPageChanged(DateTime newFocusedDay) {
     _todoController.focusedDate.value = newFocusedDay;
     _todoController.selectedDate.value = newFocusedDay;
-
-    update();
   }
 
   // 캘린더 링 그래프 계산 함수 (선택된 달 기준)

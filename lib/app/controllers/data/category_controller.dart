@@ -151,7 +151,6 @@ class CategoryController extends BaseController {
     Delete Functions
    */
   Future<void> deleteCategory({required CategoryModel category}) async {
-    //TODO : 모든 todo를 함께 삭제해야 합니다.
     await _service.deleteCategory(category.id);
 
     backup = BackupCategoryModel(

@@ -18,6 +18,7 @@ import 'package:peep_todo_flutter/app/views/todo/widget/peep_mini_calendar.dart'
 
 import '../../../controllers/page/diary_page_controller.dart';
 import '../../../core/base/base_view.dart';
+import '../../../utils/peep_calendar_util.dart';
 import '../widget/custom_checkbox_builder.dart';
 import '../widget/peep_checked_todo.dart';
 
@@ -73,36 +74,44 @@ class DiaryPage extends BaseView<DiaryPageController> {
               ),
               Expanded(
                 child: PageView.builder(
+                  itemCount: calendarEndDate.difference(calendarStartDate).inDays,
                   controller: controller.pageController,
                   onPageChanged: (int index) {
-                    controller.updateSelectedDate(index);
+                    controller.onPageChange(getDateFromPageIndex(index));
                   },
                   itemBuilder: (BuildContext context, int index) {
+                    DateTime currentDate = getDateFromPageIndex(index);
                     return SingleChildScrollView(
                       child: Column(
                         children: [
                           _DiaryImage(
                             controller: controller,
+                            selectedDate: currentDate,
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: AppValues.screenPadding),
-                            child: PeepCheckedTodo(),
+                            child: PeepCheckedTodo(
+                              selectedDate: currentDate,
+                            ),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: AppValues.screenPadding),
-                            child: PeepCheckedTodoFoldDivider(),
+                            child: PeepCheckedTodoFoldDivider(
+                              selectedDate: currentDate,
+                            ),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: AppValues.screenPadding),
                             child: _DiaryText(
                               controller: controller,
+                              selectedDate: currentDate,
                             ),
                           ),
                           SizedBox(
-                            height: 120.h,
+                            height: 60.h,
                           ),
                         ],
                       ),
@@ -120,20 +129,22 @@ class DiaryPage extends BaseView<DiaryPageController> {
 
 class _DiaryImage extends StatelessWidget {
   final DiaryPageController controller;
+  final DateTime selectedDate;
 
-  const _DiaryImage({required this.controller});
+  const _DiaryImage({required this.controller, required this.selectedDate});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Obx(
-          () => controller.getImagePath().isNotEmpty
+          () => controller.getImagePath(selectedDate).isNotEmpty
               ? Padding(
                   padding: EdgeInsets.only(bottom: AppValues.verticalMargin),
                   child: CarouselSlider(
                     items: [
-                      for (var imagePath in controller.getImagePath())
+                      for (var imagePath
+                          in controller.getImagePath(selectedDate))
                         AspectRatio(
                             aspectRatio: 16 / 9,
                             child: Image.file(
@@ -155,7 +166,9 @@ class _DiaryImage extends StatelessWidget {
                     ),
                   ),
                 )
-              : SizedBox(height: AppValues.verticalMargin,),
+              : SizedBox(
+                  height: AppValues.verticalMargin,
+                ),
         ),
       ],
     );
@@ -164,8 +177,9 @@ class _DiaryImage extends StatelessWidget {
 
 class _DiaryText extends StatelessWidget {
   final DiaryPageController controller;
+  final DateTime selectedDate;
 
-  const _DiaryText({required this.controller});
+  const _DiaryText({required this.controller, required this.selectedDate});
 
   @override
   Widget build(BuildContext context) {
@@ -175,7 +189,9 @@ class _DiaryText extends StatelessWidget {
         child: QuillEditor.basic(
           configurations: QuillEditorConfigurations(
             placeholder: "일기가 없어요. 일기를 작성해주세요!",
-            controller: controller.quillController.value,
+            controller: controller.quillController[
+                    DateFormat('yyyyMMdd').format(selectedDate)] ??
+                QuillController.basic(),
             readOnly: true,
             autoFocus: false,
             showCursor: false,

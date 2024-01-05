@@ -56,7 +56,9 @@ class DiaryEditController extends BaseController {
   }
 
   void clearText() {
-    var diary = _controller.diaryData.value;
+    var diary = _controller.diaryData[_todoController.getSelectedTodoKey()];
+
+    if(diary == null) return;
 
     diary.memo = '';
 
@@ -69,8 +71,12 @@ class DiaryEditController extends BaseController {
         selection: const TextSelection.collapsed(offset: 0));
   }
 
+  DateTime getSelectedDate() {
+    return _todoController.selectedDate.value;
+  }
+
   void loadContent() {
-    final String savedJson = _controller.diaryData.value.memo;
+    final String savedJson = _controller.diaryData[_todoController.getSelectedTodoKey()]?.memo ?? '';
 
     if(savedJson.isEmpty) return;
 
@@ -83,7 +89,9 @@ class DiaryEditController extends BaseController {
   }
 
   void onEditingDone() {
-    var diary = _controller.diaryData.value;
+    var diary = _controller.diaryData[_todoController.getSelectedTodoKey()];
+
+    if(diary == null) return;
 
     final Delta delta = quillController.document.toDelta();
     final String json = jsonEncode(delta.toJson());

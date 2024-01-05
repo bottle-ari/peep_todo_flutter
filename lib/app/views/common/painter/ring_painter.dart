@@ -19,9 +19,6 @@ class RingPainter extends CustomPainter {
 
     if (itemCounts.isEmpty) return;
 
-    debugPrint("ITEM COUNTS :");
-    debugPrint(itemCounts.toString());
-
     // 만약 체크되지 않은 투두가 존재한다면 flag = true;
     bool flag = true;
     Color? firstColor;
