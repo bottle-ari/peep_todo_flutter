@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/data/palette_controller.dart';
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
@@ -15,6 +16,7 @@ import 'package:peep_todo_flutter/app/views/common/popup/peep_confirm_popup.dart
 import '../../../controllers/data/todo_controller.dart';
 
 class PeepCategoryManageListItem extends StatelessWidget {
+  final PaletteController paletteController = Get.find();
   final CategoryController controller = Get.find();
   final TodoController todoController = Get.find();
   final CategoryModel category;
@@ -112,7 +114,7 @@ class PeepCategoryManageListItem extends StatelessWidget {
                             category.name.length > 9
                                 ? "${category.name.substring(0, 9)}..."
                                 : category.name,
-                            style: PeepTextStyle.boldL(color: category.color),
+                            style: PeepTextStyle.boldL(color: paletteController.getDefaultPalette()[category.color].color),
                           )
                         else
                           ColorFiltered(
@@ -126,7 +128,7 @@ class PeepCategoryManageListItem extends StatelessWidget {
                               category.name.length > 9
                                   ? "${category.name.substring(0, 9)}..."
                                   : category.name,
-                              style: PeepTextStyle.boldL(color: category.color),
+                              style: PeepTextStyle.boldL(color: paletteController.getDefaultPalette()[category.color].color),
                             ),
                           ),
                       ],

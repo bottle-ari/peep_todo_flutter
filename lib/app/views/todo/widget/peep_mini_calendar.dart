@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/common/painter/ring_painter.dart';
 import 'package:table_calendar/table_calendar.dart';
+import '../../../controllers/data/palette_controller.dart';
 import '../../../controllers/data/todo_controller.dart';
 import '../../../controllers/widget/peep_mini_calendar_controller.dart';
 import '../../../data/model/palette/palette_model.dart';
@@ -12,6 +13,7 @@ import '../../../theme/app_values.dart';
 import '../../../theme/palette.dart';
 
 class PeepMiniCalendar extends StatelessWidget {
+  final PaletteController paletteController = Get.find();
   final TodoController controller = Get.find();
   final PeepMiniCalendarController peepMiniCalendarController = Get.find();
 
@@ -79,7 +81,8 @@ class PeepMiniCalendar extends StatelessWidget {
                           width: 20.w, // Container의 너비
                           height: 20.w, // Container의 높이
                           decoration: BoxDecoration(
-                            color: defaultPalette.primaryColor.color
+                            color: paletteController
+                                .getPriorityColor()
                                 .withOpacity(AppValues.halfOpacity),
                             borderRadius:
                                 BorderRadius.circular(AppValues.baseRadius),

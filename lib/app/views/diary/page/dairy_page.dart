@@ -36,7 +36,7 @@ class DiaryPage extends BaseView<DiaryPageController> {
         Get.toNamed(AppPages.DIARY_EDIT);
       },
       shape: const CircleBorder(),
-      backgroundColor: defaultPalette.primaryColor.color,
+      backgroundColor: controller.paletteController.getPriorityColor(),
       child: PeepIcon(
         Iconsax.edit,
         size: AppValues.baseIconSize,
@@ -74,7 +74,8 @@ class DiaryPage extends BaseView<DiaryPageController> {
               ),
               Expanded(
                 child: PageView.builder(
-                  itemCount: calendarEndDate.difference(calendarStartDate).inDays,
+                  itemCount:
+                      calendarEndDate.difference(calendarStartDate).inDays,
                   controller: controller.pageController,
                   onPageChanged: (int index) {
                     controller.onPageChange(getDateFromPageIndex(index));
@@ -196,19 +197,34 @@ class _DiaryText extends StatelessWidget {
             autoFocus: false,
             showCursor: false,
             customStyles: DefaultStyles(
-                lists: DefaultListBlockStyle(
-                  PeepTextStyle.regularM(),
-                  const VerticalSpacing(0, 0),
-                  const VerticalSpacing(0, 0),
-                  const BoxDecoration(),
-                  CustomCheckboxBuilder(),
-                ),
-                color: Palette.peepBlack,
-                paragraph: DefaultTextBlockStyle(
-                    PeepTextStyle.regularM(),
-                    VerticalSpacing(2.h, 2.h),
-                    VerticalSpacing(2.h, 2.h),
-                    const BoxDecoration())),
+              lists: DefaultListBlockStyle(
+                PeepTextStyle.regularM().copyWith(
+                    fontFamily:
+                        Get.textTheme.bodyMedium?.fontFamily ?? "Pretendard"),
+                VerticalSpacing(4.h, 4.h),
+                VerticalSpacing(4.h, 4.h),
+                const BoxDecoration(),
+                CustomCheckboxBuilder(),
+              ),
+              paragraph: DefaultTextBlockStyle(
+                  PeepTextStyle.regularM().copyWith(
+                      fontFamily:
+                          Get.textTheme.bodyMedium?.fontFamily ?? "Pretendard"),
+                  VerticalSpacing(2.h, 2.h),
+                  VerticalSpacing(2.h, 2.h),
+                  const BoxDecoration()),
+              code: DefaultTextBlockStyle(
+                  PeepTextStyle.regularM(color: Palette.peepPriorityLow)
+                      .copyWith(
+                          fontFamily: Get.textTheme.bodyMedium?.fontFamily ??
+                              "Pretendard"),
+                  VerticalSpacing(2.h, 2.h),
+                  VerticalSpacing(2.h, 2.h),
+                  BoxDecoration(
+                      color: Palette.peepGray100,
+                      borderRadius:
+                          BorderRadius.circular(AppValues.smallRadius))),
+            ),
             sharedConfigurations: const QuillSharedConfigurations(
               locale: Locale('ko'),
             ),

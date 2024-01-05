@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -21,18 +23,20 @@ class PeepCheckedTodo extends StatelessWidget {
     return Obx(
       () => GestureDetector(
         onVerticalDragUpdate: (details) {
-          if (controller.checkedTodo.length <= 3) return;
+          if ((controller
+                      .checkedTodo[DateFormat('yyyyMMdd').format(selectedDate)]
+                      ?.length ??
+                  0) <=
+              3) return;
 
           // 위로 스와이프
           if (details.delta.dy < 0) {
-            controller.isOpen[DateFormat('yyyyMMdd').format(selectedDate)] =
-                false;
+            controller.isOpenValue(selectedDate, false);
           }
 
           // 아래로 스와이프
           if (details.delta.dy > 0) {
-            controller.isOpen[DateFormat('yyyyMMdd').format(selectedDate)] =
-                true;
+            controller.isOpenValue(selectedDate, true);
           }
         },
         child: Container(
@@ -47,7 +51,7 @@ class PeepCheckedTodo extends StatelessWidget {
                       3 &&
                   !(controller.isOpen[
                           DateFormat('yyyyMMdd').format(selectedDate)] ??
-                      true))
+                      false))
                 for (int i = 0; i < 3; i++)
                   Padding(
                     padding: EdgeInsets.only(bottom: AppValues.innerMargin),
@@ -140,7 +144,8 @@ class PeepCheckedTodoFoldDivider extends StatelessWidget {
           if ((controller
                       .checkedTodo[DateFormat('yyyyMMdd').format(selectedDate)]
                       ?.length ??
-                  0) > 3)
+                  0) >
+              3)
             Stack(children: [
               Positioned(
                 left: 0,
@@ -168,7 +173,7 @@ class PeepCheckedTodoFoldDivider extends StatelessWidget {
                       ),
                       child: controller.isOpen[DateFormat('yyyyMMdd')
                                   .format(selectedDate)] ??
-                              true
+                              false
                           ? PeepIcon(
                               Iconsax.arrowCircleUp,
                               size: AppValues.miniIconSize,
@@ -184,7 +189,10 @@ class PeepCheckedTodoFoldDivider extends StatelessWidget {
                 ),
               ),
             ])
-          else if (controller.checkedTodo.isNotEmpty)
+          else if (controller
+                  .checkedTodo[DateFormat('yyyyMMdd').format(selectedDate)]
+                  ?.isNotEmpty ??
+              false)
             Padding(
               padding: EdgeInsets.only(bottom: AppValues.verticalMargin),
               child: const Divider(

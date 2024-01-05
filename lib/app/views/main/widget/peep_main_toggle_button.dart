@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/controllers/data/palette_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/main/peep_main_toggle_button_controller.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/views/common/base/loading.dart';
 import '../../../data/model/enum/menu_state.dart';
-import '../../../data/model/palette/palette_model.dart';
 
 class PeepMainToggleButton extends StatelessWidget {
   final Function(MenuState menuState) onNewMenuSelected;
@@ -15,6 +15,7 @@ class PeepMainToggleButton extends StatelessWidget {
   PeepMainToggleButton({super.key, required this.onNewMenuSelected});
 
   final PeepMainToggleButtonController controller = Get.find();
+  final PaletteController paletteController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +75,7 @@ class PeepMainToggleButton extends StatelessWidget {
                             Iconsax.checkBold,
                             size: AppValues.smallIconSize,
                             color: controller.selectedIndex.value == 0
-                                ? defaultPalette.primaryColor.color
+                                ? paletteController.getPriorityColor()
                                 : Palette.peepGray300,
                           ),
                         ),
@@ -96,7 +97,7 @@ class PeepMainToggleButton extends StatelessWidget {
                             Iconsax.diary,
                             size: AppValues.smallIconSize,
                             color: controller.selectedIndex.value == 1
-                                ? defaultPalette.primaryColor.color
+                                ? paletteController.getPriorityColor()
                                 : Palette.peepGray300,
                           ),
                         ),

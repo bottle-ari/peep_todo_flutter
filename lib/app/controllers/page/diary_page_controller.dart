@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/diary_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/data/palette_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/widget/peep_mini_calendar_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_controller.dart';
 import 'package:uuid/uuid.dart';
@@ -21,6 +22,7 @@ import '../../utils/peep_calendar_util.dart';
 import '../data/todo_controller.dart';
 
 class DiaryPageController extends BaseController {
+  final PaletteController paletteController = Get.find();
   final TodoController _todoController = Get.find();
   final CategoryController _categoryController = Get.find();
   final DiaryController _diaryController = Get.find();
@@ -84,7 +86,7 @@ class DiaryPageController extends BaseController {
 
           newCheckTodo[date]!.add(DiaryTodoModel(
               name: todo.name,
-              color: category.color,
+              color: paletteController.getDefaultPalette()[category.color].color,
               categoryOrder: category.pos,
               indexOrder: todo.pos));
         }
@@ -104,7 +106,7 @@ class DiaryPageController extends BaseController {
   Future<void> createDiary() async {
     if (_diaryController
             .diaryData[_todoController.getSelectedTodoKey()]?.id.isEmpty ??
-        false) {
+        true) {
       var uuid = const Uuid();
       String newUuid = uuid.v4();
 
@@ -188,10 +190,17 @@ class DiaryPageController extends BaseController {
     bool? isOpenVal = isOpenMap[DateFormat('yyyyMMdd').format(date)];
 
     if (isOpenVal == null) {
-      isOpenMap[DateFormat('yyyyMMdd').format(date)] = false;
+      isOpenMap[DateFormat('yyyyMMdd').format(date)] = true;
     } else {
       isOpenMap[DateFormat('yyyyMMdd').format(date)] = !isOpenVal;
     }
+
+    isOpen.value = isOpenMap;
+  }
+
+  void isOpenValue(DateTime date, bool value) {
+    Map<String, bool> isOpenMap = Map.from(isOpen);
+    isOpenMap[DateFormat('yyyyMMdd').format(date)] = value;
 
     isOpen.value = isOpenMap;
   }

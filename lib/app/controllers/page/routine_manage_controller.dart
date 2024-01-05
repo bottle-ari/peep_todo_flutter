@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/data/palette_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/routine_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
@@ -10,6 +11,7 @@ import '../../core/base/base_controller.dart';
 import 'selected_todo_controller.dart';
 
 class RoutineManageController extends BaseController {
+  final PaletteController _paletteController = Get.find();
   final CategoryController _categoryController = Get.find();
   final RoutineController _routineController = Get.find();
   final SelectedTodoController selectedTodoController = Get.find();
@@ -137,16 +139,18 @@ class RoutineManageController extends BaseController {
         .firstWhere((e) => e.id == todoId)
         .categoryId;
 
-    return _categoryController.categoryList
+    var colorInx = _categoryController.categoryList
         .firstWhere((e) => e.id == categoryId)
         .color;
+
+    return _paletteController.getDefaultPalette()[colorInx].color;
   }
 
   Color getColorByCategory({required RoutineModel item}) {
     CategoryModel category =
         _categoryController.getCategoryById(categoryId: item.categoryId);
 
-    return category.color;
+    return _paletteController.getDefaultPalette()[category.color].color;
   }
 
 /*

@@ -58,10 +58,11 @@ class PeepMyPage extends BaseView<MyPageController> {
                 width: AppValues.screenWidth - AppValues.screenPadding * 2,
                 height: AppValues.largeItemHeight,
                 decoration: BoxDecoration(
-                  color: defaultPalette.primaryColor.color
+                  color: controller
+                      .getPriorityColor()
                       .withOpacity(AppValues.quarterOpacity),
                   borderRadius: BorderRadius.circular(AppValues.baseRadius),
-                  border: Border.all(color: defaultPalette.primaryColor.color),
+                  border: Border.all(color: controller.getPriorityColor()),
                 ),
                 child: Padding(
                   padding:

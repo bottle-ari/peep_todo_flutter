@@ -56,6 +56,17 @@ class PeepImagePreview extends StatelessWidget {
                             child: Image.file(
                               File(imagePath),
                               fit: BoxFit.cover,
+                              frameBuilder: (BuildContext context, Widget child,
+                                  int? frame, bool wasSynchronouslyLoaded) {
+                                if (wasSynchronouslyLoaded) {
+                                  return child;
+                                }
+                                return frame == null
+                                    ? Container(
+                                        color: Palette.peepGray200,
+                                      )
+                                    : child; // 이미지 로드 완료, 이미지 표시
+                              },
                             )),
                       ),
                     ),

@@ -82,19 +82,21 @@ class Iconsax {
 class PeepIconData {
   static const IconData arrowLeft = IconData(0xe800, fontFamily: 'Iconsax');
   static const IconData arrowRight = IconData(0xe801, fontFamily: 'Iconsax');
-  static const IconData code = IconData(0xe802, fontFamily: 'Iconsax');
-  static const IconData codeBlock = IconData(0xe803, fontFamily: 'Iconsax');
+  static const IconData brush = IconData(0xe802, fontFamily: 'Iconsax');
+  static const IconData code = IconData(0xe803, fontFamily: 'Iconsax');
+  static const IconData codeBlock = IconData(0xe804, fontFamily: 'Iconsax');
   static const IconData copy = IconData(0xe805, fontFamily: 'Iconsax');
-  static const IconData image = IconData(0xe806, fontFamily: 'Iconsax');
-  static const IconData quote = IconData(0xe807, fontFamily: 'Iconsax');
-  static const IconData redo = IconData(0xe808, fontFamily: 'Iconsax');
-  static const IconData task = IconData(0xe809, fontFamily: 'Iconsax');
-  static const IconData taskNum = IconData(0xe80a, fontFamily: 'Iconsax');
-  static const IconData textClear = IconData(0xe80b, fontFamily: 'Iconsax');
-  static const IconData textBold = IconData(0xe80c, fontFamily: 'Iconsax');
-  static const IconData textItalic = IconData(0xe80d, fontFamily: 'Iconsax');
-  static const IconData checkBox = IconData(0xe80e, fontFamily: 'Iconsax');
-  static const IconData trash = IconData(0xe80f, fontFamily: 'Iconsax');
-  static const IconData undo = IconData(0xe810, fontFamily: 'Iconsax');
-  static const IconData colorBox = IconData(0xe811, fontFamily: 'Iconsax');
+  static const IconData erase = IconData(0xe806, fontFamily: 'Iconsax');
+  static const IconData image = IconData(0xe807, fontFamily: 'Iconsax');
+  static const IconData pen = IconData(0xe808, fontFamily: 'Iconsax');
+  static const IconData quote = IconData(0xe809, fontFamily: 'Iconsax');
+  static const IconData redo = IconData(0xe80a, fontFamily: 'Iconsax');
+  static const IconData list = IconData(0xe80b, fontFamily: 'Iconsax');
+  static const IconData listNum = IconData(0xe80c, fontFamily: 'Iconsax');
+  static const IconData text = IconData(0xe80d, fontFamily: 'Iconsax');
+  static const IconData textBold = IconData(0xe80e, fontFamily: 'Iconsax');
+  static const IconData textItalic = IconData(0xe80f, fontFamily: 'Iconsax');
+  static const IconData checkBox = IconData(0xe810, fontFamily: 'Iconsax');
+  static const IconData trash = IconData(0xe811, fontFamily: 'Iconsax');
+  static const IconData undo = IconData(0xe812, fontFamily: 'Iconsax');
 }

@@ -2,12 +2,14 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/controllers/data/palette_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/pref_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_controller.dart';
 import 'package:peep_todo_flutter/app/theme/app_theme.dart';
 import 'package:http/http.dart' as http;
 
 class MyPageController extends BaseController with PrefController {
+  final PaletteController paletteController = Get.find();
   final keySelectedFont = 'selectedFont';
 
   // 기본 폰트
@@ -32,6 +34,10 @@ class MyPageController extends BaseController with PrefController {
     ever(selectedFont, (String font) {
       Get.changeTheme(Themes().getThemeByFont(font));
     });
+  }
+
+  Color getPriorityColor() {
+    return paletteController.getPriorityColor();
   }
 
   String getFont() {

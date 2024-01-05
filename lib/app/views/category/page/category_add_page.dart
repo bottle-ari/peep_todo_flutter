@@ -49,7 +49,7 @@ class CategoryAddPage extends BaseView<CategoryAddController> {
                   }
                 },
                 child: Obx(() {
-                  final hslColor = HSLColor.fromColor(controller.color.value);
+                  final hslColor = HSLColor.fromColor(controller.getColor());
 
                   final newLightness = (hslColor.lightness - 0.3).clamp(0.0, 1.0);
                   final Color modulatedColor = hslColor.withLightness(newLightness).toColor();
@@ -128,9 +128,9 @@ class CategoryAddPage extends BaseView<CategoryAddController> {
                     onToggle: () async {
                       controller.toggleCategoryActiveState();
                     },
-                    backgroundColorOn: controller.color.value,
+                    backgroundColorOn: controller.getColor(),
                     backgroundColorOff: Palette.peepGray100,
-                    textColorOn: getTextColorBold(controller.color.value),
+                    textColorOn: getTextColorBold(controller.getColor()),
                     textColorOff: Palette.peepGray300,
                     toggleState: controller.isActive.value)
               ],

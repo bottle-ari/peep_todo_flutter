@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/animation/peep_category_toggle_button_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/data/palette_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/todo_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
@@ -10,6 +11,7 @@ import 'package:peep_todo_flutter/app/theme/palette.dart';
 import '../../data/model/category/category_model.dart';
 
 class CategoryDetailController extends BaseController {
+  final PaletteController _paletteController = Get.find();
   final CategoryController _categoryController = Get.find();
   final TodoController _todoController = Get.find();
   final PeepCategoryToggleButtonController _animationController =
@@ -18,7 +20,7 @@ class CategoryDetailController extends BaseController {
   final Rx<CategoryModel> category = CategoryModel(
           id: 'default',
           name: '',
-          color: Palette.peepBlack,
+          color: 0,
           emoji: '',
           type: TodoType.scheduled,
           isActive: true,
@@ -64,6 +66,13 @@ class CategoryDetailController extends BaseController {
   }
 
   /*
+    Read Functions
+   */
+  Color getColor() {
+    return _paletteController.getDefaultPalette()[category.value.color].color;
+  }
+
+  /*
     Update Functions
    */
 
@@ -104,7 +113,7 @@ class CategoryDetailController extends BaseController {
     loadCategory();
   }
 
-  void updateColor(Color color) {
+  void updateColor(int color) {
     _categoryController.changeCategoryColor(categoryId, color);
     loadCategory();
   }

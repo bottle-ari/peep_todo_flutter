@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/data/palette_controller.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 
 class RingPainter extends CustomPainter {
   final Map<String, double> itemCounts;
+  final PaletteController paletteController = Get.find();
   final CategoryController controller = Get.find();
 
   RingPainter({required this.itemCounts});
@@ -23,17 +25,18 @@ class RingPainter extends CustomPainter {
     bool flag = true;
     Color? firstColor;
     for (var category in controller.categoryList) {
-      if(itemCounts[category.id] == null) {
+      if (itemCounts[category.id] == null) {
         continue;
-      } else if(itemCounts[category.id] == 0) {
-        firstColor ??= category.color;
+      } else if (itemCounts[category.id] == 0) {
+        firstColor ??=
+            paletteController.getDefaultPalette()[category.color].color;
         continue;
       }
 
       flag = false;
 
       final sweepAngle =
-      ((itemCounts[category.id] ?? 0) * pi * 2); // 아이템 수에 따른 각도
+          ((itemCounts[category.id] ?? 0) * pi * 2); // 아이템 수에 따른 각도
       final rect = Rect.fromCircle(
         center: Offset(size.width / 2, size.height / 2),
         radius: size.width / 2,
@@ -42,7 +45,9 @@ class RingPainter extends CustomPainter {
       final paint = Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = 5.0
-        ..color = category.color
+        ..color = paletteController
+            .getDefaultPalette()[category.color]
+            .color
             .withOpacity(AppValues.baseOpacity); // 아이템 순위에 해당하는 색상 사용
 
       canvas.drawArc(rect, currentAngle, sweepAngle, false, paint);
@@ -50,10 +55,10 @@ class RingPainter extends CustomPainter {
       currentAngle += sweepAngle;
     }
 
-    if(flag) {
+    if (flag) {
       final paint = Paint()
-          ..style = PaintingStyle.fill
-          ..color = firstColor!;
+        ..style = PaintingStyle.fill
+        ..color = firstColor!;
 
       final center = Offset(size.width / 2, size.height / 2 - 14.h);
 

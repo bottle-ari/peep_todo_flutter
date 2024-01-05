@@ -129,7 +129,7 @@ class PeepCategoryTextfield extends StatelessWidget {
               onTap: () {
                 controller.focusNode.unfocus();
               },
-              color: controller.category.value.color,
+              color: controller.getColor(),
               onSelected: (String emoji) {
                 controller.updateEmoji(emoji);
                 Get.back();
@@ -140,22 +140,22 @@ class PeepCategoryTextfield extends StatelessWidget {
               child: Theme(
                 data: ThemeData.light().copyWith(
                   textSelectionTheme: TextSelectionThemeData(
-                    cursorColor: controller.category.value.color, // works on iOS
-                    selectionColor: controller.category.value.color.withOpacity(AppValues.halfOpacity), // works on iOS
-                    selectionHandleColor: controller.category.value.color, // not working on iOS
+                    cursorColor: controller.getColor(), // works on iOS
+                    selectionColor: controller.getColor().withOpacity(AppValues.halfOpacity), // works on iOS
+                    selectionHandleColor: controller.getColor(), // not working on iOS
                   ),
                   cupertinoOverrideTheme: CupertinoThemeData(
-                    primaryColor: controller.category.value.color, // alternative on iOS for "selectionHandleColor"
+                    primaryColor: controller.getColor(), // alternative on iOS for "selectionHandleColor"
                   ),
                 ),
                 child: TextField(
                   focusNode: controller.focusNode,
                   controller: controller.textEditingController,
                   autofocus: true,
-                  selectionControls: CustomColorSelectionHandle(controller.category.value.color),
+                  selectionControls: CustomColorSelectionHandle(controller.getColor()),
                   onSubmitted: (String str) => controller.onEditingDone(),
                   style: PeepTextStyle.regularL(color: Palette.peepBlack),
-                  cursorColor: controller.category.value.color,
+                  cursorColor: controller.getColor(),
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: '이름을 입력해 주세요',
@@ -165,11 +165,11 @@ class PeepCategoryTextfield extends StatelessWidget {
               ),
             ),
             PeepColorPickerButton(
-              color: controller.category.value.color,
+              color: controller.getColor(),
               onTap: () {
                 controller.focusNode.unfocus();
               },
-              onSelected: (Color color) {
+              onSelected: (int color) {
                 controller.updateColor(color);
                 Get.back();
               },
@@ -215,7 +215,7 @@ class PeepCategoryAddTextfield extends StatelessWidget {
                 onTap: () {
                   controller.focusNode.unfocus();
                 },
-                color: controller.color.value,
+                color: controller.getColor(),
                 onSelected: (String emoji) {
                   controller.updateEmoji(emoji);
                   Get.back();
@@ -227,21 +227,21 @@ class PeepCategoryAddTextfield extends StatelessWidget {
               child: Theme(
                 data: ThemeData.light().copyWith(
                   textSelectionTheme: TextSelectionThemeData(
-                    cursorColor: controller.color.value, // works on iOS
-                    selectionColor: controller.color.value, // works on iOS
-                    selectionHandleColor: controller.color.value, // not working on iOS
+                    cursorColor: controller.getColor(), // works on iOS
+                    selectionColor: controller.getColor(), // works on iOS
+                    selectionHandleColor: controller.getColor(), // not working on iOS
                   ),
                   cupertinoOverrideTheme: CupertinoThemeData(
-                    primaryColor: controller.color.value, // alternative on iOS for "selectionHandleColor"
+                    primaryColor: controller.getColor(), // alternative on iOS for "selectionHandleColor"
                   ),
                 ),
                 child: TextField(
                   focusNode: controller.focusNode,
                   controller: controller.textEditingController,
                   autofocus: true,
-                  selectionControls: CustomColorSelectionHandle(controller.color.value),
+                  selectionControls: CustomColorSelectionHandle(controller.getColor()),
                   style: PeepTextStyle.regularL(color: Palette.peepBlack),
-                  cursorColor: controller.color.value,
+                  cursorColor: controller.getColor(),
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: '이름을 입력해 주세요',
@@ -251,11 +251,11 @@ class PeepCategoryAddTextfield extends StatelessWidget {
               ),
             ),
             PeepColorPickerButton(
-              color: controller.color.value,
+              color: controller.getColor(),
               onTap: () {
                 controller.focusNode.unfocus();
               },
-              onSelected: (Color color) {
+              onSelected: (int color) {
                 controller.updateColor(color);
                 Get.back();
               },

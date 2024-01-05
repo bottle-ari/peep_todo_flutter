@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/data/palette_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/routine_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
@@ -10,6 +11,7 @@ import '../../data/model/category/category_model.dart';
 import '../animation/peep_category_toggle_button_controller.dart';
 
 class RoutineDetailController extends BaseController {
+  final PaletteController paletteController = Get.find();
   final RoutineController _routineController = Get.find();
   final CategoryController _categoryController = Get.find();
   final PeepCategoryToggleButtonController _animationController =
@@ -27,7 +29,7 @@ class RoutineDetailController extends BaseController {
   final Rx<CategoryModel> category = CategoryModel(
     id: 'default',
     name: '',
-    color: Colors.black,
+    color: 0,
     emoji: '',
     type: TodoType.scheduled,
     isActive: true,
@@ -80,6 +82,13 @@ class RoutineDetailController extends BaseController {
     // routine 의 repeatCondition 파싱하여, peepRepeatConditionPickerController 변수들 init
     peepRepeatConditionPickerController
         .initValuesFromSubRepeatCondition(routine.value.repeatCondition);
+  }
+
+  /*
+    Read Functions
+   */
+  Color getColor() {
+    return paletteController.getDefaultPalette()[category.value.color].color;
   }
 
   /*

@@ -2,56 +2,40 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/controllers/data/palette_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/pref_controller.dart';
 import 'package:peep_todo_flutter/app/data/model/palette/palette_model.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/views/user/page/font_setting.dart';
 
-final ThemeData appThemeData = ThemeData(
-  colorScheme: ColorScheme(
-      brightness: Brightness.light,
-      primary: defaultPalette.primaryColor.color,
-      onPrimary: Palette.peepWhite,
-      secondary: defaultPalette.primaryColor.color,
-      onSecondary: Palette.peepWhite,
-      error: Palette.peepRed,
-      onError: Palette.peepRed,
-      background: Palette.peepWhite,
-      onBackground: Palette.peepGray500,
-      surface: Palette.peepGray100,
-      onSurface: Palette.peepBlack,),
-  highlightColor: Colors.transparent,
-  fontFamily: "KoPub",
-  splashColor: Colors.transparent,
-  hoverColor: Colors.transparent,
-  textTheme: const TextTheme(
-    displayLarge: TextStyle(
-      fontSize: 30,
-      fontWeight: FontWeight.bold,
-      color: Palette.peepBlack,
-    ),
-  ),
-);
-//
-
 class Themes with PrefController {
   final keySelectedFont = 'selectedFont';
+  final initColor = 'initPriorityColor';
+
   ThemeData getThemeByFont(String? font) {
     font ??= getString(keySelectedFont) ?? "Pretendard";
+    final hexColor = getString(initColor);
+
+    Color color = hexColor == null
+        ? const Color(0xFFFF6D79)
+        : Color(int.parse("0xFF$hexColor"));
+
     log("Themes font{$font}");
     return ThemeData(
       colorScheme: ColorScheme(
         brightness: Brightness.light,
-        primary: defaultPalette.primaryColor.color,
+        primary: color,
         onPrimary: Palette.peepWhite,
-        secondary: defaultPalette.primaryColor.color,
+        secondary: color,
         onSecondary: Palette.peepWhite,
         error: Palette.peepRed,
         onError: Palette.peepRed,
         background: Palette.peepWhite,
         onBackground: Palette.peepGray500,
         surface: Palette.peepGray100,
-        onSurface: Palette.peepBlack,),
+        onSurface: Palette.peepBlack,
+      ),
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       hoverColor: Colors.transparent,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -7,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/page/dairy_edit_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_view.dart';
 import 'package:peep_todo_flutter/app/data/enums/quill_toolbar_enum.dart';
-import 'package:peep_todo_flutter/app/data/model/palette/palette_model.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/diary/widget/peep_image_preview.dart';
 
@@ -93,18 +94,35 @@ class DiaryEditPage extends BaseView<DiaryEditController> {
                   readOnly: false,
                   autoFocus: true,
                   customStyles: DefaultStyles(
-                      lists: DefaultListBlockStyle(
-                        PeepTextStyle.regularM(),
-                        const VerticalSpacing(0, 0),
-                        const VerticalSpacing(0, 0),
-                        const BoxDecoration(),
-                        CustomCheckboxBuilder(),
-                      ),
-                      paragraph: DefaultTextBlockStyle(
-                          PeepTextStyle.regularM(),
-                          VerticalSpacing(2.h, 2.h),
-                          VerticalSpacing(2.h, 2.h),
-                          const BoxDecoration())),
+                    lists: DefaultListBlockStyle(
+                      PeepTextStyle.regularM().copyWith(
+                          fontFamily: Get.textTheme.bodyMedium?.fontFamily ??
+                              "Pretendard"),
+                      VerticalSpacing(4.h, 4.h),
+                      VerticalSpacing(4.h, 4.h),
+                      const BoxDecoration(),
+                      CustomCheckboxBuilder(),
+                    ),
+                    paragraph: DefaultTextBlockStyle(
+                        PeepTextStyle.regularM().copyWith(
+                            fontFamily: Get.textTheme.bodyMedium?.fontFamily ??
+                                "Pretendard"),
+                        VerticalSpacing(2.h, 2.h),
+                        VerticalSpacing(2.h, 2.h),
+                        const BoxDecoration()),
+                    code: DefaultTextBlockStyle(
+                        PeepTextStyle.regularM(color: Palette.peepPriorityLow)
+                            .copyWith(
+                                fontFamily:
+                                    Get.textTheme.bodyMedium?.fontFamily ??
+                                        "Pretendard"),
+                        VerticalSpacing(2.h, 2.h),
+                        VerticalSpacing(2.h, 2.h),
+                        BoxDecoration(
+                            color: Palette.peepGray100,
+                            borderRadius:
+                                BorderRadius.circular(AppValues.smallRadius))),
+                  ),
                   sharedConfigurations: const QuillSharedConfigurations(
                     locale: Locale('ko'),
                   ),
@@ -158,7 +176,7 @@ class _QuillToolBar extends StatelessWidget {
                 height: AppValues.innerMargin,
               ),
               SizedBox(
-                height: 38.h,
+                height: 40.h,
                 child: QuillToolbar(
                   configurations: const QuillToolbarConfigurations(
                       sharedConfigurations: QuillSharedConfigurations(
@@ -169,12 +187,21 @@ class _QuillToolBar extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
+                        QuillToolbarClearFormatButton(
+                          controller: controller.quillController,
+                          options: const QuillToolbarBaseButtonOptions(
+                            iconData: PeepIconData.erase,
+                          ),
+                        ),
+                        const VerticalDivider(
+                          color: Palette.peepGray200,
+                        ),
                         QuillToolbarCustomButton(
                           controller: controller.quillController,
                           options: QuillToolbarCustomButtonOptions(
                               icon: Row(
                                 children: [
-                                  const Icon(PeepIconData.textClear),
+                                  const Icon(PeepIconData.text),
                                   SizedBox(
                                     width: AppValues.innerMargin,
                                   ),
@@ -188,11 +215,24 @@ class _QuillToolBar extends StatelessWidget {
                           controller: controller.quillController,
                           options: QuillToolbarCustomButtonOptions(
                               icon: Icon(
-                                PeepIconData.colorBox,
+                                PeepIconData.pen,
                                 color: controller.fontColor.value,
                               ),
                               onPressed: () =>
                                   controller.onTapFontColorButton()),
+                        ),
+                        QuillToolbarCustomButton(
+                          controller: controller.quillController,
+                          options: QuillToolbarCustomButtonOptions(
+                              icon: Icon(
+                                PeepIconData.brush,
+                                color: controller.fontBackgroundColor.value ==
+                                        Palette.peepWhite
+                                    ? Palette.peepBlack
+                                    : controller.fontBackgroundColor.value,
+                              ),
+                              onPressed: () =>
+                                  controller.onTapFontBackgroundColorButton()),
                         ),
                         QuillToolbarToggleStyleButton(
                           controller: controller.quillController,
@@ -208,6 +248,21 @@ class _QuillToolBar extends StatelessWidget {
                         const VerticalDivider(
                           color: Palette.peepGray200,
                         ),
+                        QuillToolbarToggleStyleButton(
+                            controller: controller.quillController,
+                            attribute: Attribute.unchecked,
+                            options: const QuillToolbarToggleStyleButtonOptions(
+                                iconData: PeepIconData.checkBox)),
+                        QuillToolbarToggleStyleButton(
+                            controller: controller.quillController,
+                            attribute: Attribute.ul,
+                            options: const QuillToolbarToggleStyleButtonOptions(
+                                iconData: PeepIconData.list)),
+                        QuillToolbarToggleStyleButton(
+                            controller: controller.quillController,
+                            attribute: Attribute.ol,
+                            options: const QuillToolbarToggleStyleButtonOptions(
+                                iconData: PeepIconData.listNum)),
                         QuillToolbarIndentButton(
                           controller: controller.quillController,
                           isIncrease: true,
@@ -222,21 +277,6 @@ class _QuillToolBar extends StatelessWidget {
                         ),
                         QuillToolbarToggleStyleButton(
                             controller: controller.quillController,
-                            attribute: Attribute.ul,
-                            options: const QuillToolbarToggleStyleButtonOptions(
-                                iconData: PeepIconData.task)),
-                        QuillToolbarToggleStyleButton(
-                            controller: controller.quillController,
-                            attribute: Attribute.ol,
-                            options: const QuillToolbarToggleStyleButtonOptions(
-                                iconData: PeepIconData.taskNum)),
-                        QuillToolbarToggleStyleButton(
-                            controller: controller.quillController,
-                            attribute: Attribute.inlineCode,
-                            options: const QuillToolbarToggleStyleButtonOptions(
-                                iconData: PeepIconData.code)),
-                        QuillToolbarToggleStyleButton(
-                            controller: controller.quillController,
                             attribute: Attribute.codeBlock,
                             options: const QuillToolbarToggleStyleButtonOptions(
                                 iconData: PeepIconData.codeBlock)),
@@ -245,11 +285,6 @@ class _QuillToolBar extends StatelessWidget {
                             attribute: Attribute.blockQuote,
                             options: const QuillToolbarToggleStyleButtonOptions(
                                 iconData: PeepIconData.quote)),
-                        QuillToolbarToggleStyleButton(
-                            controller: controller.quillController,
-                            attribute: Attribute.unchecked,
-                            options: const QuillToolbarToggleStyleButtonOptions(
-                                iconData: PeepIconData.checkBox)),
                         const VerticalDivider(
                           color: Palette.peepGray200,
                         ),
@@ -273,10 +308,6 @@ class _QuillToolBar extends StatelessWidget {
               SizedBox(
                 height: AppValues.innerMargin,
               ),
-              Divider(
-                color: Palette.peepGray200,
-                height: 1.h,
-              ),
               if (controller.quillToolbarState.value == QuillToolbarEnum.size)
                 _QuillFontSizeSelector(
                   controller: controller,
@@ -284,6 +315,11 @@ class _QuillToolBar extends StatelessWidget {
               else if (controller.quillToolbarState.value ==
                   QuillToolbarEnum.color)
                 _QuillFontColorSelector(
+                  controller: controller,
+                )
+              else if (controller.quillToolbarState.value ==
+                  QuillToolbarEnum.background)
+                _QuillFontBackgroundColorSelector(
                   controller: controller,
                 )
             ],
@@ -302,40 +338,80 @@ class _QuillFontSizeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => SizedBox(
-        height: 48.h,
-        child: Row(
+      () => Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(AppValues.smallRadius),
+            color: Palette.peepGray100),
+        child: Column(
           children: [
-            TextButton(
-                onPressed: () {
-                  controller.updateFontSizeText(12);
-                },
-                child: Text(
-                  '작게',
-                  style: controller.fontSizeText.value == "작게"
-                      ? PeepTextStyle.boldXS(color: Palette.peepBlack)
-                      : PeepTextStyle.regularXS(color: Palette.peepBlack),
-                )),
-            TextButton(
-                onPressed: () {
-                  controller.updateFontSizeText(16);
-                },
-                child: Text(
-                  '보통',
-                  style: controller.fontSizeText.value == "보통"
-                      ? PeepTextStyle.boldM(color: Palette.peepBlack)
-                      : PeepTextStyle.regularM(color: Palette.peepBlack),
-                )),
-            TextButton(
-                onPressed: () {
-                  controller.updateFontSizeText(20);
-                },
-                child: Text(
-                  '크게',
-                  style: controller.fontSizeText.value == "크게"
-                      ? PeepTextStyle.boldL(color: Palette.peepBlack)
-                      : PeepTextStyle.regularL(color: Palette.peepBlack),
-                )),
+            Row(
+              children: [
+                TextButton(
+                    onPressed: () {
+                      controller.updateFontSizeText(-1);
+                    },
+                    child: Text(
+                      'h1',
+                      style: controller.fontSizeText.value == "h1"
+                          ? PeepTextStyle.boldM(color: Palette.peepBlack)
+                          : PeepTextStyle.regularM(color: Palette.peepBlack),
+                    )),
+                TextButton(
+                    onPressed: () {
+                      controller.updateFontSizeText(-2);
+                    },
+                    child: Text(
+                      'h2',
+                      style: controller.fontSizeText.value == "h2"
+                          ? PeepTextStyle.boldM(color: Palette.peepBlack)
+                          : PeepTextStyle.regularM(color: Palette.peepBlack),
+                    )),
+                TextButton(
+                    onPressed: () {
+                      controller.updateFontSizeText(-3);
+                    },
+                    child: Text(
+                      'h3',
+                      style: controller.fontSizeText.value == "h3"
+                          ? PeepTextStyle.boldM(color: Palette.peepBlack)
+                          : PeepTextStyle.regularM(color: Palette.peepBlack),
+                    )),
+              ],
+            ),
+            Row(
+              children: [
+                TextButton(
+                    onPressed: () {
+                      controller.updateFontSizeText(12);
+                    },
+                    child: Text(
+                      '작게',
+                      style: controller.fontSizeText.value == "작게"
+                          ? PeepTextStyle.boldXS(color: Palette.peepBlack)
+                          : PeepTextStyle.regularXS(color: Palette.peepBlack),
+                    )),
+                TextButton(
+                    onPressed: () {
+                      controller.updateFontSizeText(16);
+                    },
+                    child: Text(
+                      '보통',
+                      style: controller.fontSizeText.value == "보통"
+                          ? PeepTextStyle.boldM(color: Palette.peepBlack)
+                          : PeepTextStyle.regularM(color: Palette.peepBlack),
+                    )),
+                TextButton(
+                    onPressed: () {
+                      controller.updateFontSizeText(20);
+                    },
+                    child: Text(
+                      '크게',
+                      style: controller.fontSizeText.value == "크게"
+                          ? PeepTextStyle.boldL(color: Palette.peepBlack)
+                          : PeepTextStyle.regularL(color: Palette.peepBlack),
+                    )),
+              ],
+            ),
           ],
         ),
       ),
@@ -352,49 +428,71 @@ class _QuillFontColorSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () => SizedBox(
-        height: 48.h,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        height: 90.h,
+        child: GridView.count(
+          crossAxisCount: 6,
+          childAspectRatio: 4 / 3,
           children: [
-            _PeepColorPickerItem(
-              color: Palette.peepBlack,
-              selected: Palette.peepBlack == controller.fontColor.value,
-              onTap: () {
-                controller.updateFontColor(null);
-              },
-            ),
-            for (var item in defaultPalette.colors)
-              _PeepColorPickerItem(
-                color: item.color,
-                selected: item.color == controller.fontColor.value,
+            Center(
+              child: _PeepColorPickerItem(
+                color: Palette.peepBlack,
+                selected: Palette.peepBlack == controller.fontColor.value,
                 onTap: () {
-                  controller.updateFontColor(item.color);
+                  controller.updateFontColor(null);
                 },
               ),
-            PeepAnimationEffect(
-              //TODO : 테마 넣기
-              onTap: () {},
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppValues.horizontalMargin,
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Palette.peepGray500),
-                    borderRadius: BorderRadius.circular(AppValues.tinyRadius),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: AppValues.horizontalMargin,
-                        vertical: AppValues.innerMargin),
-                    child: Text(
-                      '테마 변경',
-                      style: PeepTextStyle.boldXS(color: Palette.peepGray500),
-                    ),
-                  ),
+            ),
+            for (var item in controller.paletteController.getDefaultPalette())
+              Center(
+                child: _PeepColorPickerItem(
+                  color: item.color,
+                  selected: item.color == controller.fontColor.value,
+                  onTap: () {
+                    controller.updateFontColor(item.color);
+                  },
                 ),
               ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _QuillFontBackgroundColorSelector extends StatelessWidget {
+  final DiaryEditController controller;
+
+  const _QuillFontBackgroundColorSelector({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => SizedBox(
+        height: 90.h,
+        child: GridView.count(
+          crossAxisCount: 6,
+          childAspectRatio: 4 / 3,
+          children: [
+            Center(
+              child: _PeepColorPickerItem(
+                color: Palette.peepWhite,
+                selected:
+                    Palette.peepWhite == controller.fontBackgroundColor.value,
+                onTap: () {
+                  controller.updateFontBackgroundColor(null);
+                },
+              ),
             ),
+            for (var item in controller.paletteController.getDefaultPalette())
+              Center(
+                child: _PeepColorPickerItem(
+                  color: item.color,
+                  selected: item.color == controller.fontBackgroundColor.value,
+                  onTap: () {
+                    controller.updateFontBackgroundColor(item.color);
+                  },
+                ),
+              ),
           ],
         ),
       ),
@@ -419,6 +517,10 @@ class _PeepColorPickerItem extends StatelessWidget {
         height: AppValues.largeIconSize,
         decoration: BoxDecoration(
           color: color,
+          border: Border.all(
+              color: color == Palette.peepWhite
+                  ? Palette.peepGray300
+                  : Colors.transparent),
           shape: BoxShape.circle,
         ),
         child: Column(
@@ -428,7 +530,9 @@ class _PeepColorPickerItem extends StatelessWidget {
               PeepIcon(
                 Iconsax.check,
                 size: AppValues.smallIconSize,
-                color: Palette.peepWhite,
+                color: color == Palette.peepWhite
+                    ? Palette.peepGray400
+                    : Palette.peepWhite,
               ),
           ],
         ),
