@@ -23,6 +23,7 @@ import 'package:peep_todo_flutter/app/views/todo/page/todo_memo_page.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/todo_search_page.dart';
 import 'package:peep_todo_flutter/app/views/user/page/feedback_page.dart';
 import 'package:peep_todo_flutter/app/views/user/page/font_setting.dart';
+import 'package:peep_todo_flutter/app/views/user/page/palette_setting_page.dart';
 import 'package:peep_todo_flutter/app/views/user/page/peep_my_page.dart';
 
 import '../bindings/main/main_binding.dart';
@@ -48,6 +49,7 @@ class AppPages {
   static const FONTPAGE = Routes.FONT_PAGE;
   static const DIARY_EDIT = Routes.DIARY_EDIT_PAGE;
   static const FEEDBACKPAGE = Routes.FEEDBACK_PAGE;
+  static const PALETTE_SETTING_PAGE = Routes.PALETTE_SETTING_PAGE;
 
   static final routes = [
     GetPage(
@@ -136,6 +138,10 @@ class AppPages {
     GetPage(
       name: _Paths.FEEDBACK_PAGE,
       page: () => FeedbackPage(),
+      binding: MyPageBinding(),
+    ),GetPage(
+      name: _Paths.PALETTE_SETTING_PAGE,
+      page: () => PaletteSettingPage(),
       binding: MyPageBinding(),
     ),
   ];

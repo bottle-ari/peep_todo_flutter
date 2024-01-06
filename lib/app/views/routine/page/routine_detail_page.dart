@@ -121,10 +121,10 @@ class RoutineDetailPage extends BaseView<RoutineDetailController> {
                   onToggle: () async {
                     controller.toggleActiveState();
                   },
-                  backgroundColorOn: controller.category.value.color,
+                  backgroundColorOn: controller.getColor(),
                   backgroundColorOff: Palette.peepGray100,
                   textColorOn:
-                  getTextColorBold(controller.category.value.color),
+                  getTextColorBold(controller.getColor()),
                   textColorOff: Palette.peepGray300,
                   toggleState: controller.isActive.value,
                 ),
@@ -146,7 +146,7 @@ class RoutineDetailPage extends BaseView<RoutineDetailController> {
                 vertical: AppValues.innerMargin,
               ),
               child: PeepRoutineTextField(
-                color: controller.category.value.color,
+                color: controller.getColor(),
                 textEditingController: controller.textEditingController,
                 focusNode: controller.focusNode,
               ),
@@ -155,7 +155,7 @@ class RoutineDetailPage extends BaseView<RoutineDetailController> {
               height: AppValues.verticalMargin * 2,
             ),
             PeepRepeatConditionPicker(
-              color: controller.category.value.color,
+              color: controller.getColor(),
               controller: controller.peepRepeatConditionPickerController,
             ),
           ],

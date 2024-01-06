@@ -1,8 +1,6 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
-import 'package:sqflite/sqflite.dart';
 
 import '../../../core/database/database_init.dart';
 

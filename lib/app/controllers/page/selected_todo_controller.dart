@@ -296,10 +296,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/data/palette_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/routine_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/widget/peep_mini_calendar_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
+import 'package:peep_todo_flutter/app/data/model/enum/page_state.dart';
 import 'package:peep_todo_flutter/app/data/model/routine/routine_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:uuid/uuid.dart';
@@ -310,6 +312,7 @@ import '../data/pref_controller.dart';
 import '../data/todo_controller.dart';
 
 class SelectedTodoController extends BaseController with PrefController {
+  final PaletteController _paletteController = Get.find();
   final CategoryController _categoryController = Get.find();
   final TodoController _todoController = Get.find();
   final PeepMiniCalendarController _peepMiniCalendarController = Get.find();
@@ -332,29 +335,42 @@ class SelectedTodoController extends BaseController with PrefController {
   final isFirstTimeAccess = false.obs;
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
 
     focusNode.value.addListener(_focusNodeListener);
 
     // 투두 데이터 변경 감지
-    ever(_todoController.todoMap, (callback) {
-      updateSelectedTodoList();
+    ever(_todoController.todoMap, (callback) async {
+      updatePageState(PageState.LOADING);
+      await updateSelectedTodoList();
+      updatePageState(PageState.SUCCESS);
     });
 
     // 선택된 날짜 변경 감지
-    ever(_todoController.selectedDate, (callback) => updateSelectedTodoList());
+    ever(_todoController.selectedDate, (callback) async {
+      updatePageState(PageState.LOADING);
+      await updateSelectedTodoList();
+      updatePageState(PageState.SUCCESS);
+    });
 
     // 카테고리 데이터 변경 감지
-    ever(_categoryController.categoryList,
-        (callback) => updateSelectedTodoList());
+    ever(_categoryController.categoryList, (callback) async {
+      updatePageState(PageState.LOADING);
+      await updateSelectedTodoList();
+      updatePageState(PageState.SUCCESS);
+    });
 
     // 루틴 데이터 변경 감지
-    ever(
-        _routineController.routineList, (callback) => updateSelectedTodoList());
+    ever(_routineController.routineList, (callback) async {
+      updatePageState(PageState.LOADING);
+      await updateSelectedTodoList();
+      updatePageState(PageState.SUCCESS);
+    });
 
-    updateSelectedTodoList();
+    await updateSelectedTodoList();
     loadIsFirstTimeAccess();
+    updatePageState(PageState.SUCCESS);
   }
 
   @override
@@ -391,7 +407,7 @@ class SelectedTodoController extends BaseController with PrefController {
   /*
     선택된 날짜의 todoList 업데이트
    */
-  void updateSelectedTodoList() async {
+  Future<void> updateSelectedTodoList() async {
     // 만약 입력 중인 새로운 투두가 있다면 Confirm
     addNewTodoConfirm();
 
@@ -687,7 +703,7 @@ class SelectedTodoController extends BaseController with PrefController {
     CategoryModel category =
         _categoryController.getCategoryById(categoryId: categoryId);
 
-    return category.color;
+    return _paletteController.getDefaultPalette()[category.color].color;
   }
 
   DateTime getSelectedDate() {

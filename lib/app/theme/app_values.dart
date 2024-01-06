@@ -36,5 +36,7 @@ abstract class AppValues {
   static double largeIconSize = 32.w;
   static double xlargeIconSize = 48.w;
 
+  static double imagePreviewSize = 60.h;
+
   static double listBottomEmptySpace = 200.h;
 }

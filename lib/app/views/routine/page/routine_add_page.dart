@@ -50,7 +50,7 @@ class RoutineAddPage extends BaseView<RoutineAddController> {
                 },
                 child: Obx(() {
                   final hslColor =
-                      HSLColor.fromColor(controller.category.value.color);
+                      HSLColor.fromColor(controller.getColor());
 
                   final newLightness =
                       (hslColor.lightness - 0.3).clamp(0.0, 1.0);
@@ -132,10 +132,10 @@ class RoutineAddPage extends BaseView<RoutineAddController> {
                   onToggle: () async {
                     controller.toggleActiveState();
                   },
-                  backgroundColorOn: controller.category.value.color,
+                  backgroundColorOn: controller.getColor(),
                   backgroundColorOff: Palette.peepGray100,
                   textColorOn:
-                      getTextColorBold(controller.category.value.color),
+                      getTextColorBold(controller.getColor()),
                   textColorOff: Palette.peepGray300,
                   toggleState: controller.isActive.value,
                 ),
@@ -157,7 +157,7 @@ class RoutineAddPage extends BaseView<RoutineAddController> {
                 vertical: AppValues.innerMargin,
               ),
               child: PeepRoutineTextField(
-                color: controller.category.value.color,
+                color: controller.getColor(),
                 textEditingController: controller.textEditingController,
                 focusNode: controller.focusNode,
               ),
@@ -166,7 +166,7 @@ class RoutineAddPage extends BaseView<RoutineAddController> {
               height: AppValues.verticalMargin * 2,
             ),
             PeepRepeatConditionPicker(
-              color: controller.category.value.color,
+              color: controller.getColor(),
               controller: controller.peepRepeatConditionPickerController,
             ),
           ],

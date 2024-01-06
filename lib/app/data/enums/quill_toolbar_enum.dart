@@ -1,1 +1,1 @@
-enum QuillToolbarEnum { none, size, color }
+enum QuillToolbarEnum { none, size, color, background }

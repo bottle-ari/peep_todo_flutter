@@ -17,7 +17,7 @@ import 'package:url_launcher/url_launcher.dart';
 class PeepMyPage extends BaseView<MyPageController> {
   final Map<String, List<String>> myItemList = {
     '일반': ['주 시작 설정'], //, '언어 설정'
-    '테마': ['메인 색상 변경', '폰트 설정'],
+    '테마': ['팔레트 테마 변경', '폰트 설정'],
     //'보안': ['앱 잠금'],
     '기타': ['유저 가이드', '개인정보 보호 정책', '오픈소스 사용 정보'],
   };
@@ -49,34 +49,37 @@ class PeepMyPage extends BaseView<MyPageController> {
         padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
         child: Column(
           children: [
-            PeepAnimationEffect(
-              scale: 0.95,
-              onTap: () {
-                Get.toNamed(AppPages.FEEDBACKPAGE);
-              },
-              child: Container(
-                width: AppValues.screenWidth - AppValues.screenPadding * 2,
-                height: AppValues.largeItemHeight,
-                decoration: BoxDecoration(
-                  color: defaultPalette.primaryColor.color
-                      .withOpacity(AppValues.quarterOpacity),
-                  borderRadius: BorderRadius.circular(AppValues.baseRadius),
-                  border: Border.all(color: defaultPalette.primaryColor.color),
-                ),
-                child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "피드백 및 버그 리포트",
-                        style: PeepTextStyle.boldM(color: Palette.peepBlack),
-                      ),
-                      PeepIcon(Iconsax.arrowright,
-                          size: AppValues.smallIconSize,
-                          color: Palette.peepBlack),
-                    ],
+            Obx(
+              () => PeepAnimationEffect(
+                scale: 0.95,
+                onTap: () {
+                  Get.toNamed(AppPages.FEEDBACKPAGE);
+                },
+                child: Container(
+                  width: AppValues.screenWidth - AppValues.screenPadding * 2,
+                  height: AppValues.largeItemHeight,
+                  decoration: BoxDecoration(
+                    color: controller
+                        .getPrimaryColor()
+                        .withOpacity(AppValues.quarterOpacity),
+                    borderRadius: BorderRadius.circular(AppValues.baseRadius),
+                    border: Border.all(color: controller.getPrimaryColor()),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: AppValues.screenPadding),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "피드백 및 버그 리포트",
+                          style: PeepTextStyle.boldM(color: Palette.peepBlack),
+                        ),
+                        PeepIcon(Iconsax.arrowright,
+                            size: AppValues.smallIconSize,
+                            color: Palette.peepBlack),
+                      ],
+                    ),
                   ),
                 ),
               ),

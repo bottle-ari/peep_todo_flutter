@@ -175,7 +175,7 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
                                 TodoType.scheduled) {
                               Get.bottomSheet(PeepDatePicker(
                                 date: controller.todo.value.date!,
-                                color: controller.category.value.color,
+                                color: controller.getColor(),
                                 onConfirm: (DateTime date) {
                                   controller.updateDate(date);
                                 },
@@ -255,13 +255,13 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
                                           arguments: {
                                             'text': controller.todo.value.memo,
                                             'color':
-                                                controller.category.value.color,
+                                                controller.getColor(),
                                           });
                                     },
                                     child: Text(
                                       '메모입력',
                                       style: PeepTextStyle.boldM(
-                                        color: controller.category.value.color,
+                                        color: controller.getColor(),
                                       ),
                                     )),
                               ],

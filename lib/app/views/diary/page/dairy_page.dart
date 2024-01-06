@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
@@ -17,6 +18,7 @@ import 'package:peep_todo_flutter/app/views/todo/widget/peep_mini_calendar.dart'
 
 import '../../../controllers/page/diary_page_controller.dart';
 import '../../../core/base/base_view.dart';
+import '../../../utils/peep_calendar_util.dart';
 import '../widget/custom_checkbox_builder.dart';
 import '../widget/peep_checked_todo.dart';
 
@@ -28,17 +30,19 @@ class DiaryPage extends BaseView<DiaryPageController> {
 
   @override
   Widget? floatingActionButton() {
-    return FloatingActionButton(
-      onPressed: () {
-        controller.createDiary();
-        Get.toNamed(AppPages.DIARY_EDIT);
-      },
-      shape: const CircleBorder(),
-      backgroundColor: defaultPalette.primaryColor.color,
-      child: PeepIcon(
-        Iconsax.edit,
-        size: AppValues.baseIconSize,
-        color: Palette.peepWhite,
+    return Obx(
+      () => FloatingActionButton(
+        onPressed: () {
+          controller.createDiary();
+          Get.toNamed(AppPages.DIARY_EDIT);
+        },
+        shape: const CircleBorder(),
+        backgroundColor: controller.paletteController.getPriorityColor(),
+        child: PeepIcon(
+          Iconsax.edit,
+          size: AppValues.baseIconSize,
+          color: Palette.peepWhite,
+        ),
       ),
     );
   }
@@ -71,34 +75,51 @@ class DiaryPage extends BaseView<DiaryPageController> {
                 child: PeepMiniCalendar(),
               ),
               Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      _DiaryImage(
-                        controller: controller,
+                child: PageView.builder(
+                  itemCount:
+                      calendarEndDate.difference(calendarStartDate).inDays,
+                  controller: controller.pageController,
+                  onPageChanged: (int index) {
+                    controller.onPageChange(getDateFromPageIndex(index));
+                  },
+                  itemBuilder: (BuildContext context, int index) {
+                    DateTime currentDate = getDateFromPageIndex(index);
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          _DiaryImage(
+                            controller: controller,
+                            selectedDate: currentDate,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: AppValues.screenPadding),
+                            child: PeepCheckedTodo(
+                              selectedDate: currentDate,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: AppValues.screenPadding),
+                            child: PeepCheckedTodoFoldDivider(
+                              selectedDate: currentDate,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: AppValues.screenPadding),
+                            child: _DiaryText(
+                              controller: controller,
+                              selectedDate: currentDate,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 60.h,
+                          ),
+                        ],
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppValues.screenPadding),
-                        child: PeepCheckedTodo(),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppValues.screenPadding),
-                        child: PeepCheckedTodoFoldDivider(),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppValues.screenPadding),
-                        child: _DiaryText(
-                          controller: controller,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 120.h,
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
               ),
             ],
@@ -111,80 +132,45 @@ class DiaryPage extends BaseView<DiaryPageController> {
 
 class _DiaryImage extends StatelessWidget {
   final DiaryPageController controller;
+  final DateTime selectedDate;
 
-  const _DiaryImage({required this.controller});
+  const _DiaryImage({required this.controller, required this.selectedDate});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Obx(
-          () => controller.getImagePath().isNotEmpty
+          () => controller.getImagePath(selectedDate).isNotEmpty
               ? Padding(
                   padding: EdgeInsets.only(bottom: AppValues.verticalMargin),
-                  child: PeepAnimationEffect(
-                    onLongPress: () {
-                      controller.pickImage();
-                    },
-                    scale: 0.95,
-                    child: AspectRatio(
-                        aspectRatio: 16 / 9,
-                        child: Image.file(
-                          File(controller.getImagePath()[0]),
-                          fit: BoxFit.cover,
-                        )),
+                  child: CarouselSlider(
+                    items: [
+                      for (var imagePath
+                          in controller.getImagePath(selectedDate))
+                        AspectRatio(
+                            aspectRatio: 16 / 9,
+                            child: Image.file(
+                              File(imagePath),
+                              fit: BoxFit.cover,
+                            ))
+                    ],
+                    options: CarouselOptions(
+                      aspectRatio: 16 / 9,
+                      viewportFraction: 1,
+                      initialPage: 0,
+                      enableInfiniteScroll: false,
+                      reverse: false,
+                      enlargeCenterPage: true,
+                      enlargeFactor: 0.25,
+                      onPageChanged:
+                          (int page, CarouselPageChangedReason reason) {},
+                      scrollDirection: Axis.horizontal,
+                    ),
                   ),
                 )
-              : Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
-                  child: Stack(children: [
-                    const Positioned(
-                      left: 0,
-                      top: 0,
-                      bottom: 0,
-                      right: 0,
-                      child: Center(
-                        child: Divider(
-                          color: Palette.peepGray200,
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: PeepAnimationEffect(
-                        onTap: () {
-                          controller.pickImage();
-                        },
-                        child: Container(
-                          color: Palette.peepWhite,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: AppValues.verticalMargin,
-                                horizontal: AppValues.horizontalMargin),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                PeepIcon(
-                                  Iconsax.image,
-                                  size: AppValues.miniIconSize,
-                                  color: Palette.peepGray400,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: AppValues.innerMargin),
-                                  child: Text(
-                                    "사진 추가",
-                                    style: PeepTextStyle.regularXS(
-                                        color: Palette.peepGray400),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ]),
+              : SizedBox(
+                  height: AppValues.verticalMargin,
                 ),
         ),
       ],
@@ -194,8 +180,9 @@ class _DiaryImage extends StatelessWidget {
 
 class _DiaryText extends StatelessWidget {
   final DiaryPageController controller;
+  final DateTime selectedDate;
 
-  const _DiaryText({required this.controller});
+  const _DiaryText({required this.controller, required this.selectedDate});
 
   @override
   Widget build(BuildContext context) {
@@ -205,24 +192,41 @@ class _DiaryText extends StatelessWidget {
         child: QuillEditor.basic(
           configurations: QuillEditorConfigurations(
             placeholder: "일기가 없어요. 일기를 작성해주세요!",
-            controller: controller.quillController.value,
+            controller: controller.quillController[
+                    DateFormat('yyyyMMdd').format(selectedDate)] ??
+                QuillController.basic(),
             readOnly: true,
             autoFocus: false,
             showCursor: false,
             customStyles: DefaultStyles(
-                lists: DefaultListBlockStyle(
-                  PeepTextStyle.regularM(),
-                  const VerticalSpacing(0, 0),
-                  const VerticalSpacing(0, 0),
-                  const BoxDecoration(),
-                  CustomCheckboxBuilder(),
-                ),
-                color: Palette.peepBlack,
-                paragraph: DefaultTextBlockStyle(
-                    PeepTextStyle.regularM(),
-                    VerticalSpacing(2.h, 2.h),
-                    VerticalSpacing(2.h, 2.h),
-                    const BoxDecoration())),
+              lists: DefaultListBlockStyle(
+                PeepTextStyle.regularM().copyWith(
+                    fontFamily:
+                        Get.textTheme.bodyMedium?.fontFamily ?? "Pretendard"),
+                VerticalSpacing(4.h, 4.h),
+                VerticalSpacing(4.h, 4.h),
+                const BoxDecoration(),
+                CustomCheckboxBuilder(),
+              ),
+              paragraph: DefaultTextBlockStyle(
+                  PeepTextStyle.regularM().copyWith(
+                      fontFamily:
+                          Get.textTheme.bodyMedium?.fontFamily ?? "Pretendard"),
+                  VerticalSpacing(2.h, 2.h),
+                  VerticalSpacing(2.h, 2.h),
+                  const BoxDecoration()),
+              code: DefaultTextBlockStyle(
+                  PeepTextStyle.regularM(color: Palette.peepPriorityLow)
+                      .copyWith(
+                          fontFamily: Get.textTheme.bodyMedium?.fontFamily ??
+                              "Pretendard"),
+                  VerticalSpacing(2.h, 2.h),
+                  VerticalSpacing(2.h, 2.h),
+                  BoxDecoration(
+                      color: Palette.peepGray100,
+                      borderRadius:
+                          BorderRadius.circular(AppValues.smallRadius))),
+            ),
             sharedConfigurations: const QuillSharedConfigurations(
               locale: Locale('ko'),
             ),

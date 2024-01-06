@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/controllers/data/palette_controller.dart';
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
@@ -12,10 +13,11 @@ import '../../../theme/icons.dart';
 import '../../../theme/palette.dart';
 
 class PeepCategoryPickerButton extends StatelessWidget {
+  final PaletteController paletteController = Get.find();
   final CategoryModel categoryModel;
   final Function(CategoryModel) onConfirm;
 
-  const PeepCategoryPickerButton({
+  PeepCategoryPickerButton({
     Key? key,
     required this.onConfirm,
     required this.categoryModel,
@@ -47,7 +49,10 @@ class PeepCategoryPickerButton extends StatelessWidget {
               categoryModel.name.length > 10
                   ? "${categoryModel.name.substring(0, 10)}..."
                   : categoryModel.name,
-              style: PeepTextStyle.boldL(color: categoryModel.color),
+              style: PeepTextStyle.boldL(
+                  color: paletteController
+                      .getDefaultPalette()[categoryModel.color]
+                      .color),
             ),
           ],
         ),
@@ -57,11 +62,11 @@ class PeepCategoryPickerButton extends StatelessWidget {
 }
 
 class _CategoryPickerPopup extends StatelessWidget {
+  final PaletteController paletteController = Get.find();
   final CategoryModel categoryModel;
   final Function(CategoryModel) onConfirm;
 
-  const _CategoryPickerPopup(
-      {required this.categoryModel, required this.onConfirm});
+  _CategoryPickerPopup({required this.categoryModel, required this.onConfirm});
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +98,9 @@ class _CategoryPickerPopup extends StatelessWidget {
                       Container(
                         decoration: BoxDecoration(
                           color: controller.category.value.id == category.id
-                              ? category.color
+                              ? paletteController
+                                  .getDefaultPalette()[category.color]
+                                  .color
                                   .withOpacity(AppValues.quarterOpacity)
                               : Colors.transparent,
                           borderRadius:
@@ -122,15 +129,21 @@ class _CategoryPickerPopup extends StatelessWidget {
                                 Text(
                                   category.name,
                                   style: PeepTextStyle.boldL(
-                                      color: category.color),
+                                      color: paletteController
+                                          .getDefaultPalette()[category.color]
+                                          .color),
                                 ),
                                 if (category.type == TodoType.constant)
                                   Padding(
-                                    padding: EdgeInsets.only(left: AppValues.innerMargin),
+                                    padding: EdgeInsets.only(
+                                        left: AppValues.innerMargin),
                                     child: PeepIcon(
                                       Iconsax.constantTodo,
                                       size: AppValues.smallIconSize,
-                                      color: category.color.withOpacity(AppValues.baseOpacity),
+                                      color: paletteController
+                                          .getDefaultPalette()[category.color]
+                                          .color
+                                          .withOpacity(AppValues.baseOpacity),
                                     ),
                                   ),
                               ],
