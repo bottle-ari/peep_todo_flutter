@@ -63,7 +63,7 @@ class FontSetting extends BaseView<MyPageController> {
                           Text(font,
                               style: PeepTextStyle.regularM()
                                   .copyWith(fontFamily: font)),
-                          if (font == controller.selectedFont.value)
+                          if (font == controller.mainController.selectedFont.value)
                             Expanded(
                                 child: Align(
                               alignment: Alignment.centerRight,

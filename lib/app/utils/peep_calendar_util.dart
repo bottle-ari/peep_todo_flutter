@@ -1,7 +1,41 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
+
+/*
+  date가 오늘 인지 return 하는 함수
+ */
+bool isToday(DateTime date) {
+  final now = DateTime.now();
+  return date.year == now.year && date.month == now.month && date.day == now.day;
+}
+
+DateTime? parseDate(String date) {
+  if (date == 'constant') {
+    return null;
+  } else {
+    try {
+      if (date.length != 8) {
+        return null; // 문자열 길이가 8이 아니면 null 반환
+      }
+
+      int year = int.tryParse(date.substring(0, 4)) ?? 0;
+      int month = int.tryParse(date.substring(4, 6)) ?? 0;
+      int day = int.tryParse(date.substring(6, 8)) ?? 0;
+
+      if (year == 0 || month == 0 || day == 0) {
+        return null; // 유효하지 않은 날짜일 경우 null 반환
+      }
+
+      return DateTime(year, month, day);
+    } catch (e) {
+      log('날짜 파싱 중 에러 발생: $e');
+      return null; // 형식이 잘못되었거나 날짜가 유효하지 않을 때 null 반환
+    }
+  }
+}
 
 /*
     해당 day 의 요일을 바탕으로 색을 return 하는 함수

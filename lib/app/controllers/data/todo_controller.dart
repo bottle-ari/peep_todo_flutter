@@ -23,6 +23,9 @@ class TodoController extends GetxController {
   final Rx<DateTime> focusedDate = DateTime.now().obs;
   final Rx<DateTime> selectedDate = DateTime.now().obs;
 
+  final Rx<DateTime> selectedStartDate = DateTime.now().obs;
+  final Rx<DateTime> selectedEndDate = DateTime.now().obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -32,26 +35,29 @@ class TodoController extends GetxController {
       String newDateString = DateFormat("yyyyMM").format(selectedDate.value);
       String oldDateString =  DateFormat("yyyyMM").format(currentDate);
       if(newDateString != oldDateString){
+        loadStartAndEndDate();
         loadAllData();
         currentDate = selectedDate.value;
       }
 
     });
-
+    loadStartAndEndDate();
     loadAllData();
   }
 
   /*
     Init Functions
    */
-  Future<void> loadAllData() async {
-    final DateTime startDate = getPreviousMonthEnd(selectedDate.value)
+  void loadStartAndEndDate() {
+    selectedStartDate.value = getPreviousMonthEnd(selectedDate.value)
         .subtract(const Duration(days: 7));
-    final DateTime endDate =
-        getNextMonthStart(selectedDate.value).add(const Duration(days: 7));
+    selectedEndDate.value =
+    getNextMonthStart(selectedDate.value).add(const Duration(days: 7));
+  }
 
+  Future<void> loadAllData() async {
     final scheduledData = await _service.getScheduledTodoByDate(
-        startDate: startDate, endDate: endDate);
+        startDate: selectedStartDate.value, endDate: selectedEndDate.value);
 
     final constantData = await _service.getConstantTodo();
 
@@ -178,6 +184,7 @@ class TodoController extends GetxController {
     } else {
       todo.checkTime = null;
     }
+
     // 옵저버 변수 값 변경
     _updateTodoMap(operation: CRUD.update, newTodoList: [todo]);
   }

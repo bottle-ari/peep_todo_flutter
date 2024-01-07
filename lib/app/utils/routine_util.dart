@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 /*
@@ -81,13 +84,11 @@ String subRepeatConditionToDescription(String subRepeatCondition) {
       }
       // 상세히 반복
       else {
-        if(splitSubConditions[2] != '32'){
+        if (splitSubConditions[2] != '32') {
           description = "$description ${splitSubConditions[2]}일에";
-        }
-        else{
+        } else {
           description = "$description 마지막 일에";
         }
-
       }
       break;
 
@@ -140,7 +141,8 @@ bool isMatchToRepeatCondition(DateTime specificDate, String repeatCondition) {
       DateTime routineDate = startDate;
       int dayInterval = int.parse(splitSubConditions[1]);
 
-      while (routineDate.isBefore(specificDate)) {
+      while (routineDate.isBefore(specificDate) ||
+          isSameDay(routineDate, specificDate)) {
         if (isSameDay(routineDate, specificDate)) {
           return true;
         }
@@ -159,7 +161,8 @@ bool isMatchToRepeatCondition(DateTime specificDate, String repeatCondition) {
         routineDateList.add(startDate.add(Duration(days: duration)));
       }
 
-      while (routineDateList[0].isBefore(specificDate)) {
+      while (routineDateList[0].isBefore(specificDate) ||
+          isSameDay(routineDateList[0], specificDate)) {
         for (int i = 0; i < routineDateList.length; i++) {
           if (isSameDay(routineDateList[i], specificDate)) {
             return true;
@@ -192,12 +195,14 @@ bool isMatchToRepeatCondition(DateTime specificDate, String repeatCondition) {
       else {
         int repeatDay = int.parse(splitSubConditions[2]);
 
-        if(repeatDay == 32){
+        if (repeatDay == 32) {
           // 다음 달의 첫 번째 날을 계산
-          DateTime nextMonthFirstDay = DateTime(specificDate.year, specificDate.month + 1, 1);
+          DateTime nextMonthFirstDay =
+              DateTime(specificDate.year, specificDate.month + 1, 1);
 
           // 현재 날짜가 다음 달의 첫 번째 날에서 하루를 빼면 해당 월의 마지막 날이 됩니다.
-          DateTime lastDayOfMonth = nextMonthFirstDay.subtract(Duration(days: 1));
+          DateTime lastDayOfMonth =
+              nextMonthFirstDay.subtract(Duration(days: 1));
 
           // 주어진 날짜가 해당 월의 마지막 날인지 확인
           return specificDate.day == lastDayOfMonth.day;
@@ -240,7 +245,7 @@ bool isSpecificDateInWeekday(int xWeek, int yWeekday, DateTime specificDate) {
     throw ArgumentError('Invalid weekday number. Should be between 1 and 7.');
   }
 
-  if(xWeek == 6){
+  if (xWeek == 6) {
     // 주어진 날짜의 년, 월 정보를 얻습니다.
     int year = specificDate.year;
     int month = specificDate.month;
@@ -249,10 +254,12 @@ bool isSpecificDateInWeekday(int xWeek, int yWeekday, DateTime specificDate) {
     DateTime nextMonthFirstDay = DateTime(year, month + 1, 1);
 
     // 다음 달의 첫 번째 날에서 하루 전인 마지막 날을 얻습니다.
-    DateTime lastDayOfCurrentMonth = nextMonthFirstDay.subtract(Duration(days: 1));
+    DateTime lastDayOfCurrentMonth =
+        nextMonthFirstDay.subtract(Duration(days: 1));
 
     // 주어진 날짜가 해당 월의 마지막 주에 속하는지 확인합니다.
-    return specificDate.weekday == yWeekday && specificDate.isAfter(lastDayOfCurrentMonth.subtract(Duration(days: 6)));
+    return specificDate.weekday == yWeekday &&
+        specificDate.isAfter(lastDayOfCurrentMonth.subtract(Duration(days: 6)));
   }
 
   // Check if the specificDate matches the criteria

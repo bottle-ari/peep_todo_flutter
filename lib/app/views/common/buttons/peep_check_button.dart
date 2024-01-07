@@ -29,8 +29,7 @@ class PeepCheckButton extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
             onTap: () {
-              controller.toggleMainTodoChecked(
-                  type: todoType, todoId: todo.id);
+              controller.toggleMainTodoChecked(type: todoType, todoId: todo.id);
             },
             child: Padding(
               padding: EdgeInsets.symmetric(

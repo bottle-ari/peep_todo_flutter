@@ -11,12 +11,12 @@ import '../../../controllers/widget/peep_mini_calendar_controller.dart';
 import '../../../theme/app_values.dart';
 import '../../../theme/palette.dart';
 
-class PeepMiniCalendar extends StatelessWidget {
+class PeepDiaryMiniCalendar extends StatelessWidget {
   final PaletteController paletteController = Get.find();
   final TodoController controller = Get.find();
   final PeepMiniCalendarController peepMiniCalendarController = Get.find();
 
-  PeepMiniCalendar({
+  PeepDiaryMiniCalendar({
     Key? key,
   }) : super(key: key);
 
