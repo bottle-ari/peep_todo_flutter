@@ -8,7 +8,7 @@ import 'package:peep_todo_flutter/app/views/routine/widget/peep_repeat_condition
 
 import '../../../../utils/routine_util.dart';
 import '../../../common/peep_date_picker.dart';
-import '../../page/routine_interval_picker.dart';
+import '../../page/modal/routine_interval_picker_modal.dart';
 
 class PeepWeeklyCondition extends StatelessWidget {
   final PeepRepeatConditionPickerController controller;
@@ -61,7 +61,7 @@ class PeepWeeklyCondition extends StatelessWidget {
               },
               onBoldTextTap: () {
                 Get.bottomSheet(
-                  RoutineIntervalPicker(
+                  RoutineIntervalPickerModal(
                     color: color,
                     initValue: controller.weeklyDetailRepeatValue.value,
                     onConfirm: (int selectedValue) {
