@@ -167,7 +167,7 @@ class PeepRepeatConditionPickerController extends GetxController {
    */
   final RxBool yearlyDetailRepeatIsChecked = true.obs;
   final RxString yearlyDetailRepeatValue =
-      "${DateTime.now().month}/${DateTime.now().day}".obs;
+      "${DateTime.now().month.toString().padLeft(2, '0')}/${DateTime.now().day.toString().padLeft(2, '0')}".obs;
 
   /*
     function

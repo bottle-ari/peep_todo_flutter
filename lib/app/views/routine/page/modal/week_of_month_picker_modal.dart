@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
-import '../widget/peep_week_of_month_picker_item.dart';
+import '../../widget/peep_week_of_month_picker_item.dart';
 
 class WeekOfMonthPickerModal extends StatelessWidget {
   final int currentWeekValue;

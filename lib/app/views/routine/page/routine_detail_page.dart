@@ -16,7 +16,7 @@ import '../../common/peep_dropdown_menu.dart';
 import '../../common/peep_subpage_appbar.dart';
 import '../../common/popup/peep_confirm_popup.dart';
 import '../widget/peep_routine_category_picker_button.dart';
-import 'routine_priority_picker_modal.dart';
+import 'modal/routine_priority_picker_modal.dart';
 
 class RoutineDetailPage extends BaseView<RoutineDetailController> {
   @override
