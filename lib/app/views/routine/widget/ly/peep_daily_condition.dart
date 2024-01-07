@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/utils/routine_util.dart';
-import 'package:peep_todo_flutter/app/views/routine/page/routine_interval_picker.dart';
+import 'package:peep_todo_flutter/app/views/routine/page/modal/routine_interval_picker_modal.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/peep_repeat_condition_item.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/peep_repeat_condition_picker.dart';
 
@@ -42,7 +42,7 @@ class PeepDailyCondition extends StatelessWidget {
               },
               onBoldTextTap: () {
                 Get.bottomSheet(
-                  RoutineIntervalPicker(
+                  RoutineIntervalPickerModal(
                     color: color,
                     initValue: controller.dailyDetailRepeatValue.value,
                     onConfirm: (int selectedValue) {
