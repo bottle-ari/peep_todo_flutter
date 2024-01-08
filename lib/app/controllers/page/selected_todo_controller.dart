@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
@@ -74,9 +73,8 @@ class SelectedTodoController extends BaseController with PrefController {
 
     // 선택된 날짜 변경 감지
     ever(_todoController.selectedDate, (callback) async {
-      updatePageState(PageState.LOADING);
-      onMoveDate();
-      updatePageState(PageState.SUCCESS);
+      log("selected Date Observer : ${_todoController.selectedDate.value}");
+      //onMoveDate();
     });
 
     // 카테고리 데이터 변경 감지
@@ -194,8 +192,6 @@ class SelectedTodoController extends BaseController with PrefController {
 
         matchedRoutineList.add(routine);
       }
-
-      log(matchedRoutineList.length.toString());
 
       // selectedDate 와 현재 날짜를 비교하여, 오늘 이라면,
       if (isToday(dateTime)) {
@@ -388,8 +384,6 @@ class SelectedTodoController extends BaseController with PrefController {
 
     Map<String, List<dynamic>> newScheduledTodoMap = Map.from(selectedTodoMap);
 
-    log("======= ADD =======");
-
     newScheduledTodoMap[_todoController.getSelectedTodoKey()]!
         .insert(newTodoPos, newTodo);
 
@@ -477,14 +471,22 @@ class SelectedTodoController extends BaseController with PrefController {
   void onMoveDate() {
     int newInx = calculatePageIndex(_todoController.selectedDate.value);
 
-    if (pageController.value.hasClients) {
-      if (!isPageChange) {
+    log('====================');
+    log(pageController.value.hasClients.toString());
+    log(isPageChange.toString());
+    log('date ${DateFormat('yyyyMMdd').format(_todoController.selectedDate.value)}');
+    log('newInx $newInx');
+    log('====================');
+
+    if(!isPageChange) {
+      if (pageController.value.hasClients) {
         pageController.value.jumpToPage(newInx);
+        log("Jump To Page");
       } else {
-        isPageChange = false;
+        pageController.value = PageController(initialPage: newInx);
       }
     } else {
-      pageController.value = PageController(initialPage: newInx);
+      isPageChange = false;
     }
 
     mainController.pageIndex.value =
@@ -493,6 +495,7 @@ class SelectedTodoController extends BaseController with PrefController {
 
   void onPageChange(DateTime date) {
     isPageChange = true;
+    log("PAGE : ${pageController.value.page?.round() ?? 'null'}");
     _todoController.selectedDate.value = date;
     _todoController.focusedDate.value = date;
   }

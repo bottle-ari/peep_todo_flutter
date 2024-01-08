@@ -68,7 +68,7 @@ class DiaryPageController extends BaseController {
 
     // 선택된 날짜 변경 감지
     ever(_todoController.selectedDate, (callback) {
-      updateCheckedTodoList();
+      //updateCheckedTodoList();
       onMoveDate();
       log('DIARY : ${mainController.pageIndex.value}');
     });

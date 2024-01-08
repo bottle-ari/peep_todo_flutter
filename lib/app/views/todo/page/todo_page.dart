@@ -73,11 +73,14 @@ class TodoPage extends BaseView<SelectedTodoController> {
                               .inDays,
                           controller: controller.pageController.value,
                           onPageChanged: (int index) {
+                            log("onPageChange : $index");
                             controller
                                 .onPageChange(getDateFromPageIndex(index));
                           },
                           itemBuilder: (BuildContext context, int index) {
                             DateTime currentDate = getDateFromPageIndex(index);
+                            log("itemBuilder : $index");
+                            log("itemBuilder : ${controller.mainController.pageIndex.value}");
                             return Padding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: AppValues.screenPadding),

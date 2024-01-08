@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/data/diary_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/todo_controller.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -12,6 +13,7 @@ class PeepMiniCalendarController extends GetxController {
   // Controllers
   final TodoController _todoController = Get.find();
   final CategoryController _categoryController = Get.find();
+  final DiaryController _diaryController = Get.find();
 
   // Variables
   final RxMap<String, Map<String, double>> calendarItemCounts =
@@ -36,6 +38,10 @@ class PeepMiniCalendarController extends GetxController {
     // 카테고리 데이터 변경 감지
     ever(_categoryController.categoryList,
         (callback) => updateCalendarItemCounts());
+
+    // 다이어리 데이터 변경 감지
+    ever(_diaryController.diaryData, (callback) {
+    });
   }
 
   /*
@@ -120,5 +126,9 @@ class PeepMiniCalendarController extends GetxController {
 
     // 데이터 저장 및 변경
     calendarItemCounts.value = newCalendarItemCounts;
+  }
+
+  bool isDiaryData(DateTime date) {
+    return _diaryController.diaryData[DateFormat('yyyyMMdd').format(date)] != null;
   }
 }
