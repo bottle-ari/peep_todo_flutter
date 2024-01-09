@@ -25,6 +25,19 @@ class CategoryProvider extends GetxService {
     return result;
   }
 
+    Future<Map<String, Object?>> getCategoryById({required String categoryId}) async {
+      final db = await DatabaseInit().database;
+
+      final List<Map<String, dynamic>> result = await db.query(
+        'category',
+        where: 'id = ?',
+        whereArgs: [categoryId],
+        orderBy: 'pos ASC',
+      );
+
+      return result[0];
+    }
+
   /*
     UPDATE DATA
    */

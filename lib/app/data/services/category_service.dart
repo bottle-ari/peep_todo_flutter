@@ -25,19 +25,25 @@ class CategoryService extends GetxService {
     return categoryMaps.map((e) => CategoryModel.fromMap(e)).toList();
   }
 
+  Future<CategoryModel> getCategoryById({required String categoryId}) async {
+    final Map<String, dynamic> category = await _provider.getCategoryById(categoryId: categoryId);
+
+    return CategoryModel.fromMap(category);
+  }
+
   /*
     UPDATE DATA
    */
   Future<void> updateCategory(CategoryModel category) async {
     var row = await _provider.updateCategory(category.toMap());
 
-    log("delete $row rows.");
+    log("update $row rows.");
   }
 
   Future<void> updateCategories(List<CategoryModel> categoryList) async {
     var row = await _provider.updateCategories(categoryList.map((e) => e.toMap()).toList());
 
-    log("delete $row rows.");
+    log("update $row rows.");
   }
 
   /*

@@ -1,6 +1,7 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/data/model/todo/sub_todo_model.dart';
 import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
 import 'package:peep_todo_flutter/app/data/provider/database/todo_provider.dart';
 
@@ -19,14 +20,9 @@ class TodoService extends GetxService {
   /*
     READ DATA
    */
-  Future<TodoModel> getTodo({required int todoId}) async {
+  Future<TodoModel> getTodo({required String todoId}) async {
     Map<String, dynamic> todoMap = await _provider.getTodo(todoId: todoId);
     TodoModel todo = TodoModel.fromMap(todoMap);
-
-    final List<Map<String, dynamic>> subTodoMaps =
-        await _provider.getSubTodos(todo.id);
-
-    todo.subTodo = subTodoMaps.map((e) => SubTodoModel.fromMap(e)).toList();
 
     return todo;
   }
@@ -41,14 +37,55 @@ class TodoService extends GetxService {
 
     for (var todoMap in todoMaps) {
       TodoModel todo = TodoModel.fromMap(todoMap);
-      final List<Map<String, dynamic>> subTodoMaps =
-          await _provider.getSubTodos(todo.id);
-      todo.subTodo = subTodoMaps.map((e) => SubTodoModel.fromMap(e)).toList();
-
       todoList.add(todo);
     }
 
     return todoList;
+  }
+
+  Future<List<TodoModel>> getConstantTodo() async {
+    final List<Map<String, dynamic>> todoMaps =
+    await _provider.getConstantTodo();
+
+    List<TodoModel> todoList = [];
+
+    for (var todoMap in todoMaps) {
+      TodoModel todo = TodoModel.fromMap(todoMap);
+      todoList.add(todo);
+    }
+
+    return todoList;
+  }
+
+  Future<List<TodoModel>> getUncheckedTodo({required String categoryId}) async {
+    final List<Map<String, dynamic>> todoMaps =
+    await _provider.getUncheckedTodoByDate(categoryId: categoryId);
+
+    List<TodoModel> todoList = [];
+
+    for (var todoMap in todoMaps) {
+      TodoModel todo = TodoModel.fromMap(todoMap);
+      todoList.add(todo);
+    }
+
+    return todoList;
+  }
+
+  Future<List<TodoModel>> getTodoWithSearch({required String inputString}) async{
+    final List<Map<String, dynamic>> todoMaps =
+    await _provider.getTodoWithSearch(
+        inputString);
+
+    log('todoMaps_searched : ${todoMaps.length}');
+
+    List<TodoModel> todoList = [];
+
+    for (var todoMap in todoMaps) {
+      TodoModel todo = TodoModel.fromMap(todoMap);
+      todoList.add(todo);
+    }
+
+      return todoList;
   }
 
   /*

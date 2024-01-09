@@ -24,7 +24,11 @@ class Palette {
   static const Color peepBlue = Color(0xFF4685FF);
   static const Color peepPurple = Color(0xFFBD00FF);
 
-  static const Color peepBackground = Color(0xFFF5F5F4);
+  static const Color peepPriorityHigh = Color(0xFFFF7676);
+  static const Color peepPriorityMedium = Color(0xFFFAC26F);
+  static const Color peepPriorityLow = Color(0xFF6AC1D4);
+
+  static const Color peepBackground = peepWhite;
 }
 
 Color getTextColor(Color color) {
@@ -32,6 +36,19 @@ Color getTextColor(Color color) {
 
   if (luminance > 0.5) {
     return Palette.peepBlack;
+  } else {
+    return Palette.peepWhite;
+  }
+}
+
+Color getTextColorBold(Color color) {
+  double luminance = color.computeLuminance();
+  final hslColor = HSLColor.fromColor(color);
+
+  if (luminance > 0.5) {
+    final newLightness = (hslColor.lightness - 0.4).clamp(0.0, 1.0);
+    final newSaturation = (hslColor.saturation + 0.2).clamp(0.0, 1.0);
+    return hslColor.withLightness(newLightness).withSaturation(newSaturation).toColor();
   } else {
     return Palette.peepWhite;
   }

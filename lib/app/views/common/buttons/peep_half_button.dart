@@ -4,36 +4,34 @@ import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
+import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 
 class PeepHalfButton extends StatelessWidget {
   final Color color;
   final VoidCallback onTap;
-  final VoidCallback onTapCancel;
   final String text;
   final Color textColor;
   final PeepIcon icon;
-  final bool isDate;
 
   const PeepHalfButton({
     Key? key,
     required this.color,
     required this.onTap,
-    required this.onTapCancel,
     required this.text,
     required this.textColor,
     required this.icon,
-    required this.isDate,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return PeepAnimationEffect(
       onTap: onTap,
       child: Container(
         height: AppValues.baseItemHeight,
         width: 172.w,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppValues.baseRadius), // 48.w / 2
+          border: Border.all(color: Palette.peepGray200),
+          borderRadius: BorderRadius.circular(AppValues.baseRadius),
           color: color,
         ),
         child: Row(
@@ -45,19 +43,11 @@ class PeepHalfButton extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.only(left: 2 * AppValues.horizontalMargin),
+                padding: EdgeInsets.only(left: AppValues.horizontalMargin),
                     child:
-                        Text(text, style: PeepTextStyle.boldM(color: textColor))
+                        Text(text, style: text.length > 8 ? PeepTextStyle.regularXS(color: textColor) : PeepTextStyle.regularM(color: textColor))
               ),
             ),
-            Padding(
-                padding: EdgeInsets.only(right: 1.5 * AppValues.horizontalMargin),
-                child: isDate
-                    ? GestureDetector(
-                        onTap: onTapCancel,
-                        child: PeepIcon(Iconsax.cancel,
-                            size: AppValues.smallRadius, color: Palette.peepWhite))
-                    : null),
           ],
         ),
       ),

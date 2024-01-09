@@ -1,46 +1,23 @@
-import 'dart:developer';
-
 import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/controllers/data/pref_controller.dart';
 import 'package:peep_todo_flutter/app/data/model/enum/menu_state.dart';
-
-import '../../theme/palette.dart';
 import '/app/core/base/base_controller.dart';
 
-class MainController extends BaseController {
-  final _selectedMenuStateController = MenuState.TODO.obs;
+class MainController extends BaseController with PrefController {
+  final keySelectedFont = 'selectedFont';
 
-  MenuState get selectedMenuState => _selectedMenuStateController.value;
+  final selectedMenu = MenuState.TODO.obs;
 
-  onMenuSelected(MenuState menuState) async {
-    _selectedMenuStateController(menuState);
-    getColorOnSelectedMenu(menuState);
+  // 기본 폰트
+  late final RxString selectedFont;
+
+  MainController() {
+    selectedFont = getString(keySelectedFont)?.obs ?? "Pretendard".obs;
   }
 
-  getColorOnSelectedMenu(MenuState menuState) {
-    switch (menuState) {
-      case MenuState.TODO:
-        backgroundColor.value = Palette.peepBackground;
-        break;
-      case MenuState.CONSTANT_TODO:
-        backgroundColor.value = Palette.peepBackground;
-        break;
-      case MenuState.CALENDAR:
-        backgroundColor.value = Palette.peepWhite;
-        break;
-      case MenuState.ROUTINE:
-        backgroundColor.value = Palette.peepBackground;
-        break;
-      case MenuState.MYPAGE:
-        backgroundColor.value = Palette.peepWhite;
-        break;
-      default:
-      // return LoginPage();
-        backgroundColor.value = Palette.peepBackground;
-        break;
-    }
+  MenuState get selectedMenuState => selectedMenu.value;
 
-    log(backgroundColor.value.toString());
-
-    update();
+  onMenuSelected(MenuState menuState) async {
+    selectedMenu(menuState);
   }
 }

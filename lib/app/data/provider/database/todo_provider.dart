@@ -1,8 +1,6 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/data/model/todo/todo_model.dart';
-import 'package:sqflite/sqflite.dart';
 
 import '../../../core/database/database_init.dart';
 
@@ -18,7 +16,7 @@ class TodoProvider extends GetxService {
   /*
     READ DATA
    */
-  Future<Map<String, Object?>> getTodo({required int todoId}) async {
+  Future<Map<String, Object?>> getTodo({required String todoId}) async {
     final db = await DatabaseInit().database;
 
     return (await db.query('todo', where: 'id = ?', whereArgs: [todoId])).first;
@@ -34,14 +32,33 @@ class TodoProvider extends GetxService {
     return result;
   }
 
-  Future<List<Map<String, Object?>>> getSubTodos(String todoId) async {
+  Future<List<Map<String, Object?>>> getConstantTodo() async {
     final db = await DatabaseInit().database;
 
-    return await db.query(
-      'subtodo',
-      where: 'todo_id = ?',
-      whereArgs: [todoId],
-    );
+    final List<Map<String, dynamic>> result = await db.rawQuery(
+        "SELECT * FROM todo WHERE date is NULL ORDER BY pos ASC");
+
+    return result;
+  }
+
+  Future<List<Map<String, Object?>>> getUncheckedTodoByDate({required String categoryId}) async {
+    final db = await DatabaseInit().database;
+
+    final List<Map<String, dynamic>> result = await db.rawQuery(
+        "SELECT * FROM todo WHERE is_checked == 0 AND category_id == '$categoryId' ORDER BY pos ASC, date ASC");
+
+    return result;
+  }
+
+  Future<List<Map<String, Object?>>> getTodoWithSearch(
+      String inputString) async {
+    final db = await DatabaseInit().database;
+
+    final List<Map<String, dynamic>> result = await db.rawQuery(
+        "SELECT * FROM todo WHERE name LIKE ? ORDER BY date DESC",
+        ["%$inputString%"]);
+
+    return result;
   }
 
   /*
@@ -78,5 +95,4 @@ class TodoProvider extends GetxService {
 
     return await db.delete('todo', where: 'id = ?', whereArgs: [todoId]);
   }
-
 }

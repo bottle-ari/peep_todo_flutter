@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -46,19 +48,17 @@ abstract class BaseView<Controller extends BaseController>
 
   //scaffold부분
   Widget pageScaffold(BuildContext context) {
-    return Obx(
-      ()=> Scaffold(
-        //sets ios status bar color
-        resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-        backgroundColor: controller.backgroundColor.value,
-        key: globalKey,
-        appBar: appBar(context),
-        floatingActionButton: floatingActionButton(),
-        body: pageContent(context),
-        bottomNavigationBar: bottomNavigationBar(),
-        bottomSheet: bottomSheet(),
-        drawer: drawer(),
-      ),
+    return Scaffold(
+      //sets ios status bar color
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+      backgroundColor: pageBackgroundColor(),
+      key: globalKey,
+      appBar: appBar(context),
+      floatingActionButton: floatingActionButton(),
+      body: pageContent(context),
+      bottomNavigationBar: bottomNavigationBar(),
+      bottomSheet: bottomSheet(),
+      drawer: drawer(),
     );
   }
 
@@ -100,6 +100,7 @@ abstract class BaseView<Controller extends BaseController>
 
   //로딩 화면
   Widget _showLoading() {
+    log("LOADING!");
     return const Loading();
   }
 }

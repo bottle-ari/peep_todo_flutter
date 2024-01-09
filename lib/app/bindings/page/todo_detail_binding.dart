@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/controllers/page/todo_detail_controller.dart';
+
+import '../../controllers/page/todo_detail_controller.dart';
 
 
 class TodoDetailBinding implements Bindings {

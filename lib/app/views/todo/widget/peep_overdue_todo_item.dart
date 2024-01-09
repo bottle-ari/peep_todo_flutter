@@ -1,17 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:peep_todo_flutter/app/theme/app_values.dart';
-import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
-import 'package:peep_todo_flutter/app/theme/text_style.dart';
-import 'package:peep_todo_flutter/app/views/common/buttons/peep_check_button.dart';
-import 'package:peep_todo_flutter/app/views/common/buttons/peep_priority_folding_button.dart';
-import 'package:peep_todo_flutter/app/views/common/peep_rollback_snackbar.dart';
 
-import '../../../controllers/todo_controller.dart';
+import '../../../controllers/data/todo_controller.dart';
 
 class PeepOverdueTodoItem extends StatelessWidget {
   final TodoController controller;
