@@ -53,6 +53,7 @@ class UserSettingItem extends StatelessWidget {
                   scale: 0.95,
                   onTap: () {
                     if (item == "주 시작 설정") {
+                      Get.toNamed(AppPages.CALENDARSETTINGPAGE);
                       log("주 시작 설정");
                     } else if (item == "팔레트 테마 변경") {
                       Get.toNamed(AppPages.PALETTE_SETTING_PAGE);
