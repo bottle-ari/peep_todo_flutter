@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:peep_todo_flutter/app/controllers/page/my_page_controller.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/common/painter/ring_painter.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -15,6 +16,7 @@ class PeepMiniCalendar extends StatelessWidget {
   final PaletteController paletteController = Get.find();
   final TodoController controller = Get.find();
   final PeepMiniCalendarController peepMiniCalendarController = Get.find();
+  final MyPageController myPageController = Get.find();
 
   PeepMiniCalendar({
     Key? key,
@@ -190,7 +192,7 @@ class PeepMiniCalendar extends StatelessWidget {
               firstDay: DateTime.utc(1923, 1, 1),
               lastDay: DateTime.utc(2123, 12, 31),
               focusedDay: controller.focusedDate.value,
-              startingDayOfWeek: StartingDayOfWeek.monday,
+              startingDayOfWeek: myPageController.getStartingDayOfWeek(myPageController.startingDayOfWeek.value),
               selectedDayPredicate: (day) {
                 return isSameDay(controller.selectedDate.value, day);
               },
