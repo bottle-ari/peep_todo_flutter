@@ -15,6 +15,7 @@ import 'package:peep_todo_flutter/app/views/routine/page/routine_add_page.dart';
 import 'package:peep_todo_flutter/app/views/routine/page/routine_detail_page.dart';
 import 'package:peep_todo_flutter/app/views/routine/page/routine_manage_page.dart';
 import 'package:peep_todo_flutter/app/views/diary/page/dairy_edit_page.dart';
+import 'package:peep_todo_flutter/app/views/routine/page/routine_manual_add_page.dart';
 import 'package:peep_todo_flutter/app/views/test.dart';
 import 'package:peep_todo_flutter/app/views/category/page/category_manage_page.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/todo_detail_page.dart';
@@ -23,6 +24,7 @@ import 'package:peep_todo_flutter/app/views/todo/page/todo_search_page.dart';
 import 'package:peep_todo_flutter/app/views/user/page/calendar_setting.dart';
 import 'package:peep_todo_flutter/app/views/user/page/feedback_page.dart';
 import 'package:peep_todo_flutter/app/views/user/page/font_setting.dart';
+import 'package:peep_todo_flutter/app/views/user/page/palette_setting_page.dart';
 import 'package:peep_todo_flutter/app/views/user/page/peep_my_page.dart';
 
 import '../bindings/main/main_binding.dart';
@@ -49,6 +51,7 @@ class AppPages {
   static const DIARY_EDIT = Routes.DIARY_EDIT_PAGE;
   static const FEEDBACKPAGE = Routes.FEEDBACK_PAGE;
   static const CALENDARSETTINGPAGE = Routes.CALENDAR_SETTING_PAGE;
+  static const PALETTE_SETTING_PAGE = Routes.PALETTE_SETTING_PAGE;
 
   static final routes = [
     GetPage(
@@ -102,6 +105,12 @@ class AppPages {
       transition: Transition.rightToLeft,
     ),
     GetPage(
+      name: _Paths.ROUTINE_MANUAL_ADD_PAGE,
+      page: () => RoutineManualAddPage(),
+      binding: RoutineManageBinding(),
+      transition: Transition.rightToLeft,
+    ),
+    GetPage(
       name: _Paths.ROUTINE_DETAIL_PAGE,
       page: () => RoutineDetailPage(),
       binding: RoutineDetailBinding(),
@@ -130,6 +139,10 @@ class AppPages {
     GetPage(
       name: _Paths.FEEDBACK_PAGE,
       page: () => FeedbackPage(),
+      binding: MyPageBinding(),
+    ),GetPage(
+      name: _Paths.PALETTE_SETTING_PAGE,
+      page: () => PaletteSettingPage(),
       binding: MyPageBinding(),
     ),
     GetPage(

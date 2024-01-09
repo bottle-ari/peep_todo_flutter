@@ -12,11 +12,11 @@ import '../../../theme/app_values.dart';
 import '../../../theme/icons.dart';
 import '../../../theme/palette.dart';
 import '../../common/buttons/peep_animation_effect.dart';
-import '../../common/buttons/peep_category_picker_button.dart';
 import '../../common/peep_dropdown_menu.dart';
 import '../../common/peep_subpage_appbar.dart';
 import '../../common/popup/peep_confirm_popup.dart';
-import 'routine_priority_picker_modal.dart';
+import '../widget/peep_routine_category_picker_button.dart';
+import 'modal/routine_priority_picker_modal.dart';
 
 class RoutineDetailPage extends BaseView<RoutineDetailController> {
   @override
@@ -121,10 +121,10 @@ class RoutineDetailPage extends BaseView<RoutineDetailController> {
                   onToggle: () async {
                     controller.toggleActiveState();
                   },
-                  backgroundColorOn: controller.category.value.color,
+                  backgroundColorOn: controller.getColor(),
                   backgroundColorOff: Palette.peepGray100,
                   textColorOn:
-                  getTextColorBold(controller.category.value.color),
+                  getTextColorBold(controller.getColor()),
                   textColorOff: Palette.peepGray300,
                   toggleState: controller.isActive.value,
                 ),
@@ -134,7 +134,7 @@ class RoutineDetailPage extends BaseView<RoutineDetailController> {
               padding: EdgeInsets.symmetric(
                 vertical: AppValues.verticalMargin,
               ),
-              child: PeepCategoryPickerButton(
+              child: PeepRoutineCategoryPickerButton(
                 onConfirm: (CategoryModel category) {
                   controller.category.value = category;
                 },
@@ -146,7 +146,7 @@ class RoutineDetailPage extends BaseView<RoutineDetailController> {
                 vertical: AppValues.innerMargin,
               ),
               child: PeepRoutineTextField(
-                color: controller.category.value.color,
+                color: controller.getColor(),
                 textEditingController: controller.textEditingController,
                 focusNode: controller.focusNode,
               ),
@@ -155,7 +155,7 @@ class RoutineDetailPage extends BaseView<RoutineDetailController> {
               height: AppValues.verticalMargin * 2,
             ),
             PeepRepeatConditionPicker(
-              color: controller.category.value.color,
+              color: controller.getColor(),
               controller: controller.peepRepeatConditionPickerController,
             ),
           ],

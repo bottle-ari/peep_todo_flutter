@@ -18,8 +18,10 @@ abstract class Routes {
   static const MY_PAGE = _Paths.MY_PAGE;
   static const FONT_PAGE = _Paths.FONT_PAGE;
   static const DIARY_EDIT_PAGE = _Paths.DIARY_EDIT_PAGE;
+  static const ROUTINE_MANUAL_ADD_PAGE = _Paths.ROUTINE_MANUAL_ADD_PAGE;
   static const FEEDBACK_PAGE = _Paths.FEEDBACK_PAGE;
   static const CALENDAR_SETTING_PAGE = _Paths.CALENDAR_SETTING_PAGE;
+  static const PALETTE_SETTING_PAGE = _Paths.PALETTE_SETTING_PAGE;
 }
 
 abstract class _Paths {
@@ -38,6 +40,8 @@ abstract class _Paths {
   static const MY_PAGE = '/mypage';
   static const FONT_PAGE = '/mypage/font';
   static const DIARY_EDIT_PAGE = '/diary/edit';
+  static const ROUTINE_MANUAL_ADD_PAGE = '/routine/manual_add';
   static const FEEDBACK_PAGE = '/mypage/feedback';
   static const CALENDAR_SETTING_PAGE = '/mypage/calendar_setting';
+  static const PALETTE_SETTING_PAGE = '/mypage/palette';
 }

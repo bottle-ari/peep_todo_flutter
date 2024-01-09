@@ -1,19 +1,18 @@
-import 'dart:developer';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/data/palette_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
-import 'package:peep_todo_flutter/app/data/model/palette/palette_model.dart';
-import 'package:peep_todo_flutter/app/theme/palette.dart';
+import 'package:peep_todo_flutter/app/data/model/palette/color_model.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../data/model/category/category_model.dart';
-import '../../utils/device_util.dart';
 
 class CategoryAddController extends BaseController {
+  final PaletteController _paletteController = Get.find();
   final CategoryController _categoryController = Get.find();
   final int lastPos = Get.arguments['lastPos'];
 
@@ -23,7 +22,7 @@ class CategoryAddController extends BaseController {
   final Rx<TodoType> todoType = TodoType.scheduled.obs;
   final RxBool isActive = true.obs;
   final RxString emoji = '🤔'.obs;
-  final Rx<Color> color = defaultPalette.primaryColor.color.obs;
+  late final RxInt color = 0.obs;
 
   @override
   void onInit() {
@@ -43,8 +42,15 @@ class CategoryAddController extends BaseController {
     Init Functions
    */
   void initRandomColor() {
-    color.value = defaultPalette
-        .colors[Random().nextInt(defaultPalette.colors.length)].color;
+    color.value =
+        Random().nextInt(10);
+  }
+
+  /*
+    Read Functions
+   */
+  Color getColor() {
+    return _paletteController.getDefaultPalette()[color.value].color;
   }
 
   /*
@@ -70,12 +76,12 @@ class CategoryAddController extends BaseController {
     emoji.value = newEmoji;
   }
 
-  void updateColor(Color newColor) {
+  void updateColor(int newColor) {
     color.value = newColor;
   }
 
   bool onConfirm() {
-    if(textEditingController.text == '') {
+    if (textEditingController.text == '') {
       return false;
     }
 

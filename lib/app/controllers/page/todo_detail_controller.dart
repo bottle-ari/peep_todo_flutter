@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/data/palette_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/todo_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_controller.dart';
 
@@ -12,6 +13,7 @@ import '../../data/model/category/category_model.dart';
 import '../../data/model/todo/todo_model.dart';
 
 class TodoDetailController extends BaseController {
+  final PaletteController paletteController = Get.find();
   final TodoController todoController = Get.find();
   final CategoryController categoryController = Get.find();
 
@@ -50,6 +52,10 @@ class TodoDetailController extends BaseController {
     textEditingController.dispose();
     focusNode.dispose();
     super.onClose();
+  }
+
+  Color getColor() {
+    return paletteController.getDefaultPalette()[category.value.color].color;
   }
 
   void updatePriority(int index) {

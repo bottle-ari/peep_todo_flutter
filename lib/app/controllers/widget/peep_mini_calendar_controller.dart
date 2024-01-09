@@ -1,18 +1,17 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
-import 'package:peep_todo_flutter/app/controllers/data/routine_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/todo_controller.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../utils/peep_calendar_util.dart';
-import '../../utils/routine_util.dart';
 
 class PeepMiniCalendarController extends GetxController {
   // Controllers
   final TodoController _todoController = Get.find();
   final CategoryController _categoryController = Get.find();
-  final RoutineController _routineController = Get.find();
 
   // Variables
   final RxMap<String, Map<String, double>> calendarItemCounts =
@@ -30,8 +29,9 @@ class PeepMiniCalendarController extends GetxController {
     });
 
     // 선택된 날짜 변경 감지
-    ever(
-        _todoController.selectedDate, (callback) => updateCalendarItemCounts());
+    ever(_todoController.selectedDate, (callback) {
+      updateCalendarItemCounts();
+    });
 
     // 카테고리 데이터 변경 감지
     ever(_categoryController.categoryList,
@@ -50,18 +50,6 @@ class PeepMiniCalendarController extends GetxController {
       _todoController.selectedDate.value = selectedDay;
       _todoController.focusedDate.value = focusedDay;
     }
-
-    print("------------------ routineMatchTest start ------------------");
-    var routineList = _routineController.routineList;
-    for(int i=0;i<routineList.length;i++){
-      print("index : $i");
-      print("name : ${routineList[i].name}");
-      print("repeatCondition : ${routineList[i].repeatCondition}");
-      // Todo : active 상태도 확인해야
-      bool matched = isMatchToRepeatCondition(selectedDay, routineList[i].repeatCondition);
-      print("matched : $matched");
-    }
-    print("------------------ routineMatchTest end ------------------");
   }
 
   void onMoveToday() {
@@ -81,8 +69,6 @@ class PeepMiniCalendarController extends GetxController {
   void onPageChanged(DateTime newFocusedDay) {
     _todoController.focusedDate.value = newFocusedDay;
     _todoController.selectedDate.value = newFocusedDay;
-
-    update();
   }
 
   // 캘린더 링 그래프 계산 함수 (선택된 달 기준)

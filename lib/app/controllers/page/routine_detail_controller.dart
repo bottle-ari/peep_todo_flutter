@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/data/palette_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/routine_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
@@ -11,6 +11,7 @@ import '../../data/model/category/category_model.dart';
 import '../animation/peep_category_toggle_button_controller.dart';
 
 class RoutineDetailController extends BaseController {
+  final PaletteController paletteController = Get.find();
   final RoutineController _routineController = Get.find();
   final CategoryController _categoryController = Get.find();
   final PeepCategoryToggleButtonController _animationController =
@@ -28,7 +29,7 @@ class RoutineDetailController extends BaseController {
   final Rx<CategoryModel> category = CategoryModel(
     id: 'default',
     name: '',
-    color: Colors.black,
+    color: 0,
     emoji: '',
     type: TodoType.scheduled,
     isActive: true,
@@ -57,7 +58,7 @@ class RoutineDetailController extends BaseController {
   @override
   void onClose() {
     // 변경된 루틴 정보 저장
-    onConfirm();
+    onConfirm(routine.value.repeatCondition.split(' ')[1]);
     focusNode.dispose();
     textEditingController.dispose();
     super.onClose();
@@ -84,6 +85,13 @@ class RoutineDetailController extends BaseController {
   }
 
   /*
+    Read Functions
+   */
+  Color getColor() {
+    return paletteController.getDefaultPalette()[category.value.color].color;
+  }
+
+  /*
     Update Functions
    */
 
@@ -93,7 +101,7 @@ class RoutineDetailController extends BaseController {
   }
 
   // 루틴 상세 페이지에서 나갈 시, 변경된 내용을 저장하는 함수, onClose() 내부에서 동작
-  bool onConfirm() {
+  bool onConfirm(String startDate) {
     // 루틴 name이 empty string 이라면, 변경 내용 저장되지 않음
     if (textEditingController.text == '') {
       return false;
@@ -102,7 +110,6 @@ class RoutineDetailController extends BaseController {
     // repeatCondition 가져오기 from peepRepeatConditionPickerController
     String subRepeatCondition =
         peepRepeatConditionPickerController.subRepeatCondition.value;
-    String startDate = DateFormat("yyyy/MM/dd").format(DateTime.now());
     String endDate = "";
     if (peepRepeatConditionPickerController.endIsChecked.value) {
       endDate = peepRepeatConditionPickerController.endDate.value;

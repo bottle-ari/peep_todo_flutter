@@ -104,10 +104,9 @@ class TodoSearchPage extends BaseView<SearchItemController> {
                                 borderRadius:
                                     BorderRadius.circular(AppValues.baseRadius),
                                 border: Border.all(
-                                  color: categoryController
-                                      .getCategoryById(
-                                          categoryId: item.categoryId)
-                                      .color,
+                                  color:
+                                      categoryController.getCategoryColorById(
+                                          categoryId: item.categoryId),
                                 ),
                               ),
                               child: Padding(
@@ -137,9 +136,8 @@ class TodoSearchPage extends BaseView<SearchItemController> {
                                         Iconsax.export,
                                         size: AppValues.smallIconSize,
                                         color: categoryController
-                                            .getCategoryById(
-                                                categoryId: item.categoryId)
-                                            .color,
+                                            .getCategoryColorById(
+                                                categoryId: item.categoryId),
                                       ),
                                     ],
                                   ),

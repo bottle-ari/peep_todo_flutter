@@ -55,8 +55,8 @@ class UserSettingItem extends StatelessWidget {
                     if (item == "주 시작 설정") {
                       Get.toNamed(AppPages.CALENDARSETTINGPAGE);
                       log("주 시작 설정");
-                    } else if (item == "메인 색상 변경") {
-                      log("메인 색상 변경");
+                    } else if (item == "팔레트 테마 변경") {
+                      Get.toNamed(AppPages.PALETTE_SETTING_PAGE);
                     } else if (item == "폰트 설정") {
                       Get.toNamed(AppPages.FONTPAGE);
                     } else if (item == "유저 가이드") {

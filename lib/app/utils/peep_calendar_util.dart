@@ -62,3 +62,24 @@ DateTime getNextMonthStart(DateTime selectedDate) {
 
   return DateTime(year, month, 1);
 }
+
+/*
+  선택된 날의 페이지 인덱스 구하기
+ */
+
+// 날짜 계산을 위한 시작과 끝 날짜 설정
+final DateTime calendarStartDate = DateTime(1923, 1, 1);
+final DateTime calendarEndDate = DateTime(2123, 12, 31);
+
+// 인덱스에 해당하는 날짜를 계산하는 함수
+DateTime getDateFromPageIndex(int index) {
+  return calendarStartDate.add(Duration(days: index));
+}
+
+// 선택된 날짜에 대한 페이지 인덱스를 계산하는 함수
+int calculatePageIndex(DateTime date) {
+  log(date.difference(calendarStartDate).inDays.toString());
+  return date.difference(calendarStartDate).inDays
+  ;
+}
+

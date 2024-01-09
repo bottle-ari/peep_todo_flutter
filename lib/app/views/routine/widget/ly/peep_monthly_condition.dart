@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
+import 'package:peep_todo_flutter/app/views/routine/page/modal/day_of_month_picker_modal.dart';
+import 'package:peep_todo_flutter/app/views/routine/page/modal/week_of_month_picker_modal.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/peep_repeat_condition_item.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/peep_repeat_condition_picker.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/peep_repeat_condition_week_item.dart';
@@ -36,9 +38,19 @@ class PeepMonthlyCondition extends StatelessWidget {
                     !controller.monthlyDayRepeatIsChecked.value;
               },
               dayPicked: controller.monthlyDayRepeatValue,
-              boldText: controller.monthlyDayRepeatOrdinalValue.toString(),
+              boldText: controller.monthlyDayRepeatOrdinalValue.value != 6
+                  ? controller.monthlyDayRepeatOrdinalValue.toString()
+                  : '마지막',
               onBoldTextTap: () {
-                // Todo : 주차 picker 띄우기, 1번째 ~ 5번째?주 + 마지막 주
+                Get.bottomSheet(
+                  WeekOfMonthPickerModal(
+                    onWeekPicked: (int weekValue) {
+                      controller.monthlyDayRepeatOrdinalValue.value = weekValue;
+                    },
+                    currentWeekValue:
+                        controller.monthlyDayRepeatOrdinalValue.value,
+                  ),
+                );
               },
               isMonthly: true,
               controller: controller,
@@ -48,7 +60,9 @@ class PeepMonthlyCondition extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: AppValues.innerMargin),
             child: PeepRepeatConditionItem(
               descriptionText: "상세히 반복하기",
-              boldText: controller.monthlyDetailRepeatValue.value.toString(),
+              boldText: controller.monthlyDetailRepeatValue.value != 32
+                  ? controller.monthlyDetailRepeatValue.value.toString()
+                  : '마지막',
               postfixText: "일에",
               color: color,
               isChecked: !controller.monthlyDayRepeatIsChecked.value,
@@ -59,7 +73,13 @@ class PeepMonthlyCondition extends StatelessWidget {
               },
               onBoldTextTap: () {
                 // Todo : 날짜 picker 띄우기, 1일 ~ 31일 + 마지막 날
-                controller.monthlyDetailRepeatValue.value++;
+                // controller.monthlyDetailRepeatValue.value++;
+                Get.bottomSheet(DayOfMonthPickerModal(
+                    onDayPicked: (int value) {
+                      controller.monthlyDetailRepeatValue.value = value;
+                    },
+                    currentDayValue: controller.monthlyDetailRepeatValue.value,
+                    color: color));
               },
               prefixText: '매 월',
             ),
@@ -73,8 +93,7 @@ class PeepMonthlyCondition extends StatelessWidget {
               color: color,
               isChecked: controller.endIsChecked.value,
               onCheckButtonTap: () {
-                controller.endIsChecked.value =
-                    !controller.endIsChecked.value;
+                controller.endIsChecked.value = !controller.endIsChecked.value;
               },
               onBoldTextTap: () {
                 Get.bottomSheet(

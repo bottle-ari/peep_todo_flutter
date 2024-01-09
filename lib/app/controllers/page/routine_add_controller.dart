@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/data/palette_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/routine_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
@@ -11,6 +12,7 @@ import 'package:uuid/uuid.dart';
 import '../../data/model/category/category_model.dart';
 
 class RoutineAddController extends BaseController {
+  final PaletteController paletteController = Get.find();
   final RoutineController _routineController = Get.find();
   final CategoryController _categoryController = Get.find();
 
@@ -26,7 +28,7 @@ class RoutineAddController extends BaseController {
   final Rx<CategoryModel> category = CategoryModel(
     id: 'default',
     name: '',
-    color: Colors.black,
+    color: 0,
     emoji: '',
     type: TodoType.scheduled,
     isActive: true,
@@ -54,6 +56,13 @@ class RoutineAddController extends BaseController {
   void loadCategory() {
     category.value =
         _categoryController.getCategoryById(categoryId: categoryId);
+  }
+
+  /*
+    Read Functions
+   */
+  Color getColor() {
+    return paletteController.getDefaultPalette()[category.value.color].color;
   }
 
   /*

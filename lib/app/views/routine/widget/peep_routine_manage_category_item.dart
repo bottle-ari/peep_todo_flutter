@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
@@ -6,12 +7,15 @@ import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 
+import '../../../controllers/data/palette_controller.dart';
+
 class PeepRoutineManageCategoryItem extends StatelessWidget {
+  final PaletteController paletteController = Get.find();
   final CategoryModel category;
   final bool isFolded;
   final VoidCallback onTapAddButton;
 
-  const PeepRoutineManageCategoryItem({
+  PeepRoutineManageCategoryItem({
     Key? key,
     required this.category,
     required this.onTapAddButton,
@@ -43,7 +47,10 @@ class PeepRoutineManageCategoryItem extends StatelessWidget {
                       category.name.length > 10
                           ? "${category.name.substring(0, 10)}..."
                           : category.name,
-                      style: PeepTextStyle.boldL(color: category.color),
+                      style: PeepTextStyle.boldL(
+                          color: paletteController
+                              .getDefaultPalette()[category.color]
+                              .color),
                     ),
                     if (category.type == TodoType.constant)
                       Padding(
@@ -51,7 +58,10 @@ class PeepRoutineManageCategoryItem extends StatelessWidget {
                         child: PeepIcon(
                           Iconsax.constantTodo,
                           size: AppValues.smallIconSize,
-                          color: category.color.withOpacity(AppValues.baseOpacity),
+                          color: paletteController
+                              .getDefaultPalette()[category.color]
+                              .color
+                              .withOpacity(AppValues.baseOpacity),
                         ),
                       ),
                     SizedBox(
@@ -60,7 +70,9 @@ class PeepRoutineManageCategoryItem extends StatelessWidget {
                     PeepIcon(
                       Iconsax.addSquare,
                       size: AppValues.baseIconSize,
-                      color: category.color,
+                      color: paletteController
+                          .getDefaultPalette()[category.color]
+                          .color,
                     ),
                   ],
                 ),

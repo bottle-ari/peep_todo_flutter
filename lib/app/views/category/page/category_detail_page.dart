@@ -107,9 +107,9 @@ class CategoryDetailPage extends BaseView<CategoryDetailController> {
                                 .withOpacity(AppValues.baseOpacity)));
                       }
                     },
-                    backgroundColorOn: controller.category.value.color,
+                    backgroundColorOn: controller.getColor(),
                     backgroundColorOff: Palette.peepGray100,
-                    textColorOn: getTextColorBold(controller.category.value.color),
+                    textColorOn: getTextColorBold(controller.getColor()),
                     textColorOff: Palette.peepGray300,
                     toggleState: controller.category.value.isActive)
               ],

@@ -10,6 +10,7 @@ import 'package:peep_todo_flutter/app/views/routine/widget/ly/peep_daily_conditi
 import 'package:peep_todo_flutter/app/views/routine/widget/ly/peep_monthly_condition.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/ly/peep_weekly_condition.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/ly/peep_yearly_condition.dart';
+import 'package:peep_todo_flutter/app/views/routine/widget/peep_ly_select_button.dart';
 
 class PeepRepeatConditionPicker extends StatelessWidget {
   final Color color;
@@ -28,8 +29,8 @@ class PeepRepeatConditionPicker extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: AppValues.horizontalMargin),
+            padding:
+                EdgeInsets.symmetric(horizontal: AppValues.horizontalMargin),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -56,47 +57,12 @@ class PeepRepeatConditionPicker extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    controller.ly.value = 0;
-                  },
-                  child: Text(
-                    "매일",
-                    style: PeepTextStyle.boldL(color: Palette.peepGray500),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    controller.ly.value = 1;
-                  },
-                  child: Text(
-                    "매주",
-                    style: PeepTextStyle.boldL(color: Palette.peepGray500),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    controller.ly.value = 2;
-                  },
-                  child: Text(
-                    "매월",
-                    style: PeepTextStyle.boldL(color: Palette.peepGray500),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    controller.ly.value = 3;
-                  },
-                  child: Text(
-                    "매년",
-                    style: PeepTextStyle.boldL(color: Palette.peepGray500),
-                  ),
-                ),
-              ],
+            padding: EdgeInsets.symmetric(vertical: AppValues.horizontalMargin),
+            child: PeepLySelectButton(
+              initLyValue: controller.ly.value,
+              onLySelected: (lyValue) {
+                controller.ly.value = lyValue;
+              },
             ),
           ),
           if (controller.ly.value == 0)
@@ -167,7 +133,8 @@ class PeepRepeatConditionPickerController extends GetxController {
    */
   final RxBool yearlyDetailRepeatIsChecked = true.obs;
   final RxString yearlyDetailRepeatValue =
-      "${DateTime.now().month}/${DateTime.now().day}".obs;
+      "${DateTime.now().month.toString().padLeft(2, '0')}/${DateTime.now().day.toString().padLeft(2, '0')}"
+          .obs;
 
   /*
     function
@@ -283,14 +250,12 @@ class PeepRepeatConditionPickerController extends GetxController {
   }
 
   // repeatCondition 을 받아서, controller의 Rx 변수의 값들 초기화하는 함수
-  void initValuesFromSubRepeatCondition(String initRepeatCondition){
-
+  void initValuesFromSubRepeatCondition(String initRepeatCondition) {
     // end date 초기화
     String initEndDate = initRepeatCondition.split(' ')[2];
-    if(initEndDate.isEmpty){
+    if (initEndDate.isEmpty) {
       endIsChecked.value = false;
-    }
-    else{
+    } else {
       endIsChecked.value = true;
       endDate.value = initEndDate;
     }
@@ -301,14 +266,14 @@ class PeepRepeatConditionPickerController extends GetxController {
 
     switch (splitSubConditions[0]) {
       case '0':
-      // daily : "0(daily)-1(일 간격)"
+        // daily : "0(daily)-1(일 간격)"
         ly.value = 0;
         dailyDetailRepeatIsChecked.value = true;
         dailyDetailRepeatValue.value = int.parse(splitSubConditions[1]);
         break;
 
       case '1':
-      // weekly : "1(매주)-02(일,화)-1(주 간격)"
+        // weekly : "1(매주)-02(일,화)-1(주 간격)"
         ly.value = 1;
         weeklyDetailRepeatIsChecked.value = true;
         weeklyDetailRepeatValue.value = int.parse(splitSubConditions[2]);
@@ -319,13 +284,13 @@ class PeepRepeatConditionPickerController extends GetxController {
           int dayIndex = int.parse(splitSubConditions[1][i]);
           weeklyDayRepeatValue[dayIndex] = true;
 
-          if(dayIndex == 2) isWed = true;
+          if (dayIndex == 2) isWed = true;
         }
-        if(!isWed) weeklyDayRepeatValue[2] = false;
+        if (!isWed) weeklyDayRepeatValue[2] = false;
         break;
 
       case '2':
-      // monthly : "2(매월)-0(요일로 반복)-1(번째주)-02(일,화)" || "2(매월)-1(상세히 반복)-10(일에)"
+        // monthly : "2(매월)-0(요일로 반복)-1(번째주)-02(일,화)" || "2(매월)-1(상세히 반복)-10(일에)"
         ly.value = 2;
         // 요일로 반복
         if (splitSubConditions[1] == '0') {
@@ -337,9 +302,9 @@ class PeepRepeatConditionPickerController extends GetxController {
             int dayIndex = int.parse(splitSubConditions[3][i]);
             monthlyDayRepeatValue[dayIndex] = true;
 
-            if(dayIndex == 2) isWed = true;
+            if (dayIndex == 2) isWed = true;
           }
-          if(!isWed) monthlyDayRepeatValue[2] = false;
+          if (!isWed) monthlyDayRepeatValue[2] = false;
         }
         // 상세히 반복
         else {
@@ -349,7 +314,7 @@ class PeepRepeatConditionPickerController extends GetxController {
         break;
 
       case '3':
-      // yearly : "3(매년)-12/21(에)"
+        // yearly : "3(매년)-12/21(에)"
         ly.value = 3;
         yearlyDetailRepeatValue.value = splitSubConditions[1];
         break;
