@@ -176,7 +176,7 @@ class _QuillToolBar extends StatelessWidget {
                 height: AppValues.innerMargin,
               ),
               SizedBox(
-                height: 40.h,
+                height: 48.h,
                 child: QuillToolbar(
                   configurations: const QuillToolbarConfigurations(
                       sharedConfigurations: QuillSharedConfigurations(

@@ -34,7 +34,7 @@ class DiaryEditController extends BaseController {
   QuillController quillController = QuillController.basic();
   final Rx<QuillToolbarEnum> quillToolbarState = QuillToolbarEnum.none.obs;
 
-  final RxDouble toolbarHeight = 50.h.obs;
+  final RxDouble toolbarHeight = 60.h.obs;
 
   final RxString fontSizeText = "보통".obs;
   final Rx<Color> fontColor = Palette.peepBlack.obs;
@@ -184,10 +184,10 @@ class DiaryEditController extends BaseController {
 
   void onTapFontSizeButton() async {
     if (quillToolbarState.value == QuillToolbarEnum.size) {
-      toolbarHeight.value = 50.h;
+      toolbarHeight.value = 60.h;
       quillToolbarState.value = QuillToolbarEnum.none;
     } else {
-      toolbarHeight.value = 150.h;
+      toolbarHeight.value = 160.h;
       await Future.delayed(const Duration(milliseconds: 100));
       quillToolbarState.value = QuillToolbarEnum.size;
     }
@@ -195,10 +195,10 @@ class DiaryEditController extends BaseController {
 
   void onTapFontColorButton() async {
     if (quillToolbarState.value == QuillToolbarEnum.color) {
-      toolbarHeight.value = 50.h;
+      toolbarHeight.value = 60.h;
       quillToolbarState.value = QuillToolbarEnum.none;
     } else {
-      toolbarHeight.value = 150.h;
+      toolbarHeight.value = 160.h;
       await Future.delayed(const Duration(milliseconds: 100));
       quillToolbarState.value = QuillToolbarEnum.color;
     }
@@ -206,10 +206,10 @@ class DiaryEditController extends BaseController {
 
   void onTapFontBackgroundColorButton() async {
     if (quillToolbarState.value == QuillToolbarEnum.background) {
-      toolbarHeight.value = 50.h;
+      toolbarHeight.value = 60.h;
       quillToolbarState.value = QuillToolbarEnum.none;
     } else {
-      toolbarHeight.value = 150.h;
+      toolbarHeight.value = 160.h;
       await Future.delayed(const Duration(milliseconds: 100));
       quillToolbarState.value = QuillToolbarEnum.background;
     }

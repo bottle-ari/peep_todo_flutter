@@ -24,6 +24,10 @@ class TodoSearchPage extends BaseView<SearchItemController> {
 
   @override
   Widget body(BuildContext context) {
+    if (Get.isSnackbarOpen) {
+      Get.back();
+    }
+
     final SearchItemController searchItemController =
         Get.put(SearchItemController());
     final CategoryController categoryController = Get.put(CategoryController());

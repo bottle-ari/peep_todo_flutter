@@ -163,23 +163,23 @@ class PeepTodoItem extends StatelessWidget {
                                   }
                                   selectedTodoController.addNewTodoConfirm();
                                 },
-                                onDoubleTap: () {
-                                  final slidableController =
-                                      Slidable.of(context);
-
-                                  if (slidableController == null) {
-                                    log("Slidable Controller is null");
-                                  } else {
-                                    if (slidableController.ratio != 0) {
-                                      slidableController.close();
-                                      log("CLOSE");
-                                    } else {
-                                      slidableController.openStartActionPane();
-                                      log("OPEN");
-                                    }
-                                  }
-                                  selectedTodoController.addNewTodoConfirm();
-                                },
+                                // onDoubleTap: () {
+                                //   final slidableController =
+                                //       Slidable.of(context);
+                                //
+                                //   if (slidableController == null) {
+                                //     log("Slidable Controller is null");
+                                //   } else {
+                                //     if (slidableController.ratio != 0) {
+                                //       slidableController.close();
+                                //       log("CLOSE");
+                                //     } else {
+                                //       slidableController.openStartActionPane();
+                                //       log("OPEN");
+                                //     }
+                                //   }
+                                //   selectedTodoController.addNewTodoConfirm();
+                                // },
                                 child: SizedBox(
                                   width: 280.w,
                                   child: Padding(

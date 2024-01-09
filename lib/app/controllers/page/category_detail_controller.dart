@@ -125,7 +125,7 @@ class CategoryDetailController extends BaseController {
     loadCategory();
   }
 
-  void deleteCategory() {
-    _categoryController.deleteCategory(category: category.value);
+  Future<bool> deleteCategory() async {
+    return await _categoryController.deleteCategory(category: category.value);
   }
 }

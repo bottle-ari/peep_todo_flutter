@@ -18,6 +18,7 @@ import 'package:peep_todo_flutter/app/views/common/peep_subpage_appbar.dart';
 import 'package:peep_todo_flutter/app/views/common/popup/peep_confirm_popup.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/priority_picker_modal.dart';
 import 'package:peep_todo_flutter/app/views/todo/widget/peep_todo_detail_main_item.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../controllers/data/todo_controller.dart';
 import '../../../controllers/page/todo_detail_controller.dart';
@@ -80,6 +81,35 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
             buttons: [
               PeepAnimationEffect(
                 onTap: () {
+                  Get.back();
+                  // UUID 생성
+                  var uuid = const Uuid();
+                  String newUuid = uuid.v4();
+
+                  controller.todoController.addTodo(
+                      todo: TodoModel(
+                          id: newUuid,
+                          categoryId: todo.categoryId,
+                          reminderId: todo.reminderId,
+                          name: "${todo.name}*",
+                          date: todo.date,
+                          priority: todo.priority,
+                          memo: todo.memo,
+                          isChecked: todo.isChecked,
+                          checkTime: null,
+                          pos: todo.pos));
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: AppValues.innerMargin),
+                  child: PeepIcon(
+                    Iconsax.copy,
+                    size: AppValues.baseIconSize,
+                    color: Palette.peepGray500,
+                  ),
+                ),
+              ),
+              PeepAnimationEffect(
+                onTap: () {
                   Get.dialog(PeepConfirmPopup(
                       icon: Iconsax.trashBold,
                       text: '삭제',
@@ -90,36 +120,39 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
                         deleteTodo();
                       }));
                 },
-                child: PeepIcon(
-                  Iconsax.trash,
-                  size: AppValues.baseIconSize,
-                  color: Palette.peepRed,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: AppValues.innerMargin),
+                  child: PeepIcon(
+                    Iconsax.trash,
+                    size: AppValues.baseIconSize,
+                    color: Palette.peepRed,
+                  ),
                 ),
               ),
-              PeepDropdownMenu(
-                menuItems: [
-                  DropdownMenuItemData(
-                      'popup_action_1',
-                      PeepIcon(Iconsax.categoryboxAdd,
-                          size: AppValues.smallIconSize,
-                          color: Palette.peepBlack),
-                      'Todo 복사'),
-                  DropdownMenuItemData(
-                      'popup_action_2',
-                      PeepIcon(Iconsax.categorybox,
-                          size: AppValues.smallIconSize,
-                          color: Palette.peepBlack),
-                      'Todo 공유'),
-                ],
-                onMenuItemSelected: {
-                  'popup_action_1': () {
-                    debugPrint('1');
-                  },
-                  'popup_action_2': () {
-                    debugPrint('2');
-                  },
-                },
-              ),
+              // PeepDropdownMenu(
+              //   menuItems: [
+              //     DropdownMenuItemData(
+              //         'popup_action_1',
+              //         PeepIcon(Iconsax.categoryboxAdd,
+              //             size: AppValues.smallIconSize,
+              //             color: Palette.peepBlack),
+              //         'Todo 복사'),
+              //     DropdownMenuItemData(
+              //         'popup_action_2',
+              //         PeepIcon(Iconsax.categorybox,
+              //             size: AppValues.smallIconSize,
+              //             color: Palette.peepBlack),
+              //         'Todo 공유'),
+              //   ],
+              //   onMenuItemSelected: {
+              //     'popup_action_1': () {
+              //       debugPrint('1');
+              //     },
+              //     'popup_action_2': () {
+              //       debugPrint('2');
+              //     },
+              //   },
+              // ),
             ],
           ),
         ));
@@ -127,6 +160,10 @@ class TodoDetailPage extends BaseView<TodoDetailController> {
 
   @override
   Widget body(BuildContext context) {
+    if (Get.isSnackbarOpen) {
+      Get.back();
+    }
+
     return SizedBox(
       height: double.infinity,
       child: Padding(

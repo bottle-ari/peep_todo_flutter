@@ -159,12 +159,18 @@ class CategoryController extends BaseController {
   /*
     Delete Functions
    */
-  Future<void> deleteCategory({required CategoryModel category}) async {
+  Future<bool> deleteCategory({required CategoryModel category}) async {
+    if (category.isActive &&
+        categoryList.where((e) => e.isActive).length <= 1) {
+      return false;
+    }
+
     await _service.deleteCategory(category.id);
 
     backup = BackupCategoryModel(
         backupCategoryItem: category, backupIndex: category.pos);
 
     loadCategoryData();
+    return true;
   }
 }

@@ -77,32 +77,32 @@ class _PeepColorPicker extends StatelessWidget {
                   '색 선택하기',
                   style: PeepTextStyle.boldL(color: Palette.peepGray500),
                 ),
-                PeepAnimationEffect(
-                  //TODO : 테마 넣기
-                  onTap: () {},
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppValues.horizontalMargin,
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Palette.peepGray500),
-                        borderRadius:
-                            BorderRadius.circular(AppValues.tinyRadius),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppValues.horizontalMargin,
-                            vertical: AppValues.innerMargin),
-                        child: Text(
-                          '테마 변경',
-                          style:
-                              PeepTextStyle.boldXS(color: Palette.peepGray500),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                // PeepAnimationEffect(
+                //   //TODO : 테마 넣기
+                //   onTap: () {},
+                //   child: Padding(
+                //     padding: EdgeInsets.symmetric(
+                //       horizontal: AppValues.horizontalMargin,
+                //     ),
+                //     child: Container(
+                //       decoration: BoxDecoration(
+                //         border: Border.all(color: Palette.peepGray500),
+                //         borderRadius:
+                //             BorderRadius.circular(AppValues.tinyRadius),
+                //       ),
+                //       child: Padding(
+                //         padding: EdgeInsets.symmetric(
+                //             horizontal: AppValues.horizontalMargin,
+                //             vertical: AppValues.innerMargin),
+                //         child: Text(
+                //           '테마 변경',
+                //           style:
+                //               PeepTextStyle.boldXS(color: Palette.peepGray500),
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
             Padding(

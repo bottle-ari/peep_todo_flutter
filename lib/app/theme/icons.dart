@@ -78,6 +78,7 @@ class Iconsax {
   static const imageAdd = 'assets/image/icon/gallery-add.svg';
   static const close = 'assets/image/icon/close.svg';
   static const brush = 'assets/image/icon/brush.svg';
+  static const copy = 'assets/image/icon/copy.svg';
 }
 
 class PeepIconData {

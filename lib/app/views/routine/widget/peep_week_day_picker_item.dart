@@ -26,32 +26,38 @@ class PeepWeekDayPickerItem extends StatelessWidget {
       onTap: () {
         onTap(dayInt);
       },
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          if (dayPicked)
-            Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: color.withOpacity(AppValues.halfOpacity),
+      child: Container(
+        color: Colors.transparent,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+              vertical: AppValues.verticalMargin,
+              horizontal: AppValues.horizontalMargin * 1.2),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              if (dayPicked)
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: color.withOpacity(AppValues.halfOpacity),
+                  ),
+                  width: AppValues.smallIconSize,
+                  height: AppValues.smallIconSize,
+                )
+              else
+                Container(
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.circle, color: Colors.transparent),
+                  width: AppValues.smallIconSize,
+                  height: AppValues.smallIconSize,
+                ),
+              Text(
+                dayText,
+                style: PeepTextStyle.boldXS(color: textColor),
               ),
-              width: AppValues.smallIconSize,
-              height: AppValues.smallIconSize,
-            )
-          else
-            Container(
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.transparent
-              ),
-              width: AppValues.smallIconSize,
-              height: AppValues.smallIconSize,
-            ),
-          Text(
-            dayText,
-            style: PeepTextStyle.boldXS(color: textColor),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

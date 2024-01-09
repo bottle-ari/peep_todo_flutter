@@ -73,6 +73,7 @@ class PaletteController extends BaseController with PrefController {
       final hexColor = getString(initColor);
 
       if (hexColor == null) {
+
         saveString(initColor, 'FF6D79');
         return const Color(0xFFFF6D79);
       } else {

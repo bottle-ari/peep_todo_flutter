@@ -40,8 +40,7 @@ class PeepMiniCalendarController extends GetxController {
         (callback) => updateCalendarItemCounts());
 
     // 다이어리 데이터 변경 감지
-    ever(_diaryController.diaryData, (callback) {
-    });
+    ever(_diaryController.diaryData, (callback) {});
   }
 
   /*
@@ -86,8 +85,7 @@ class PeepMiniCalendarController extends GetxController {
         getNextMonthStart(_todoController.selectedDate.value)
             .add(const Duration(days: 7));
 
-    Map<String, Map<String, double>> newCalendarItemCounts =
-        Map.from(calendarItemCounts);
+    Map<String, Map<String, double>> newCalendarItemCounts = {};
 
     // StartDate ~ EndDate 까지 반복
     for (DateTime date = startDate;
@@ -129,6 +127,7 @@ class PeepMiniCalendarController extends GetxController {
   }
 
   bool isDiaryData(DateTime date) {
-    return _diaryController.diaryData[DateFormat('yyyyMMdd').format(date)] != null;
+    return _diaryController.diaryData[DateFormat('yyyyMMdd').format(date)] !=
+        null;
   }
 }
