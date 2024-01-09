@@ -19,6 +19,7 @@ abstract class Routes {
   static const FONT_PAGE = _Paths.FONT_PAGE;
   static const DIARY_EDIT_PAGE = _Paths.DIARY_EDIT_PAGE;
   static const FEEDBACK_PAGE = _Paths.FEEDBACK_PAGE;
+  static const CALENDAR_SETTING_PAGE = _Paths.CALENDAR_SETTING_PAGE;
 }
 
 abstract class _Paths {
@@ -38,5 +39,5 @@ abstract class _Paths {
   static const FONT_PAGE = '/mypage/font';
   static const DIARY_EDIT_PAGE = '/diary/edit';
   static const FEEDBACK_PAGE = '/mypage/feedback';
-
+  static const CALENDAR_SETTING_PAGE = '/mypage/calendar_setting';
 }

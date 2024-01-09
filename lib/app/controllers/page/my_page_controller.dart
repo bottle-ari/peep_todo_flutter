@@ -6,17 +6,21 @@ import 'package:peep_todo_flutter/app/controllers/data/pref_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_controller.dart';
 import 'package:peep_todo_flutter/app/theme/app_theme.dart';
 import 'package:http/http.dart' as http;
+import 'package:table_calendar/table_calendar.dart';
 
 class MyPageController extends BaseController with PrefController {
   final keySelectedFont = 'selectedFont';
-
+  final keyStartingDayOfWeek = 'startingDayOfWeek';
   // 기본 폰트
-   //RxString selectedFont = "LeeSeoyun".obs;
   late final RxString selectedFont;
+  // 기본 요일
+  late final RxString startingDayOfWeek;
+  final Rx<StartingDayOfWeek> startingDayOfWeekValue = StartingDayOfWeek.monday.obs;
 
   MyPageController(){
     selectedFont = getString(keySelectedFont)?.obs ?? "Pretendard".obs;
     log("conductor selectedFont {${selectedFont.value}}");
+    startingDayOfWeek = getString(keyStartingDayOfWeek)?.obs ?? "monday".obs;
   }
 
 
@@ -32,13 +36,6 @@ class MyPageController extends BaseController with PrefController {
     ever(selectedFont, (String font) {
       Get.changeTheme(Themes().getThemeByFont(font));
     });
-  }
-
-  String getFont() {
-    String getStr = getString(keySelectedFont) ?? 'Pretendard';
-    log("getFont {$getStr}");
-    selectedFont.value = getStr;
-    return selectedFont.value;
   }
 
   // 사용자가 폰트를 선택하면 저장합니다.
@@ -83,22 +80,34 @@ class MyPageController extends BaseController with PrefController {
       print('Error: $e');
     }
   }
-}
 
-class ThemeChanger extends InheritedWidget {
-  final MyPageController myPageController;
-
-  ThemeChanger(
-      {Key? key, required this.myPageController, required Widget child})
-      : super(key: key, child: child);
-
-  static ThemeChanger of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<ThemeChanger>()!;
+  // 사용자가 시작 요일을 선택하면 저장하고 적용합니다.
+  Future<void> setStartingDayOfWeek(String day) async {
+    startingDayOfWeek.value = day;
+    saveString(keyStartingDayOfWeek, day);
+    log("${startingDayOfWeek.value}");
   }
 
-  @override
-  bool updateShouldNotify(covariant InheritedWidget oldWidget) {
-    return false; // We don't need to rebuild when the data changes
+  StartingDayOfWeek getStartingDayOfWeek(String day) {
+    switch (day.toLowerCase()) {
+      case 'monday':
+        return StartingDayOfWeek.monday;
+      case 'tuesday':
+        return StartingDayOfWeek.tuesday;
+      case 'wednesday':
+        return StartingDayOfWeek.wednesday;
+      case 'thursday':
+        return StartingDayOfWeek.thursday;
+      case 'friday':
+        return StartingDayOfWeek.friday;
+      case 'saturday':
+        return StartingDayOfWeek.saturday;
+      case 'sunday':
+        return StartingDayOfWeek.sunday;
+      default:
+        return StartingDayOfWeek.monday;
+    }
   }
 }
+
 
