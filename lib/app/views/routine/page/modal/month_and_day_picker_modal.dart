@@ -1,35 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:numberpicker/numberpicker.dart';
-import '../../../theme/app_values.dart';
-import '../../../theme/icons.dart';
-import '../../../theme/palette.dart';
-import '../../../theme/text_style.dart';
-import '../../common/buttons/peep_animation_effect.dart';
+import '../../../../theme/app_values.dart';
+import '../../../../theme/icons.dart';
+import '../../../../theme/palette.dart';
+import '../../../../theme/text_style.dart';
+import '../../../common/buttons/peep_animation_effect.dart';
 
-class RoutineIntervalPickerController extends GetxController {
-  RxInt currentValue = 1.obs;
+class MonthAndDatePickerController extends GetxController {
+  RxInt monthValue = 1.obs;
+  RxInt dayValue = 1.obs;
 }
 
-class RoutineIntervalPicker extends StatelessWidget {
-  final int initValue;
+class MonthAndDatePickerModal extends StatelessWidget {
+  final int initMonthValue;
+  final int initDayValue;
   final Color color;
-  final String postfixText;
-  final Function(int) onConfirm;
+  final Function(int, int) onConfirm;
 
-  const RoutineIntervalPicker({
+  const MonthAndDatePickerModal({
     super.key,
     required this.color,
-    required this.initValue,
+    required this.initMonthValue,
     required this.onConfirm,
-    required this.postfixText,
+    required this.initDayValue,
   });
 
   @override
   Widget build(BuildContext context) {
-    RoutineIntervalPickerController controller =
-        RoutineIntervalPickerController();
-    controller.currentValue.value = initValue;
+    MonthAndDatePickerController controller = MonthAndDatePickerController();
+    controller.monthValue.value = initMonthValue;
+    controller.dayValue.value = initDayValue;
 
     return Container(
       decoration: BoxDecoration(
@@ -70,14 +71,15 @@ class RoutineIntervalPicker extends StatelessWidget {
                       horizontal: AppValues.screenPadding,
                     ),
                     child: Text(
-                      "${controller.currentValue.value} $postfixText",
+                      "${controller.monthValue.value < 10 ? '0${controller.monthValue.value}' : controller.monthValue.value}월 ${controller.dayValue.value < 10 ? '0${controller.dayValue.value}' : controller.dayValue.value}일",
                       style: PeepTextStyle.boldL(color: Palette.peepGray500),
                     ),
                   ),
                 ),
                 PeepAnimationEffect(
                   onTap: () {
-                    onConfirm(controller.currentValue.value);
+                    onConfirm(
+                        controller.monthValue.value, controller.dayValue.value);
                     Get.back();
                   },
                   child: Padding(
@@ -94,13 +96,34 @@ class RoutineIntervalPicker extends StatelessWidget {
                 ),
               ],
             ),
-            NumberPicker(
-              value: controller.currentValue.value,
-              minValue: 1,
-              maxValue: 100,
-              onChanged: (value) {
-                controller.currentValue.value = value;
-              },
+            Padding(
+              padding:
+                  EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  NumberPicker(
+                    infiniteLoop: true,
+                    value: controller.monthValue.value,
+                    minValue: 1,
+                    maxValue: 12,
+                    onChanged: (value) {
+                      controller.monthValue.value = value;
+                    },
+                  ),
+                  Text("월"),
+                  NumberPicker(
+                    infiniteLoop: true,
+                    value: controller.dayValue.value,
+                    minValue: 1,
+                    maxValue: 31,
+                    onChanged: (value) {
+                      controller.dayValue.value = value;
+                    },
+                  ),
+                  Text("일"),
+                ],
+              ),
             ),
             SizedBox(height: AppValues.verticalMargin),
           ],

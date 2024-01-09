@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
+import 'package:peep_todo_flutter/app/views/routine/page/modal/month_and_day_picker_modal.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/peep_repeat_condition_item.dart';
 import 'package:peep_todo_flutter/app/views/routine/widget/peep_repeat_condition_picker.dart';
 
@@ -36,7 +37,22 @@ class PeepYearlyCondition extends StatelessWidget {
                 //     !controller.yearlyDetailRepeatIsChecked.value;
               },
               onBoldTextTap: () {
-                // Todo : 월, 일 picker 띄우기
+                String dateStr = controller.yearlyDetailRepeatValue.value;
+                List<String> parts = dateStr.split('/');
+                int initMonthValue = int.tryParse(parts[0]) ?? 0;
+                int initDayValue = int.tryParse(parts[1]) ?? 0;
+
+                Get.bottomSheet(
+                  MonthAndDatePickerModal(
+                    color: color,
+                    initMonthValue: initMonthValue,
+                    initDayValue: initDayValue,
+                    onConfirm: (monthValue, dayValue){
+                      String formattedDate = "${monthValue.toString().padLeft(2, '0')}/${dayValue.toString().padLeft(2, '0')}";
+                      controller.yearlyDetailRepeatValue.value = formattedDate;
+                    },
+                  ),
+                );
               },
               prefixText: '매 년',
             ),
@@ -50,8 +66,7 @@ class PeepYearlyCondition extends StatelessWidget {
               color: color,
               isChecked: controller.endIsChecked.value,
               onCheckButtonTap: () {
-                controller.endIsChecked.value =
-                    !controller.endIsChecked.value;
+                controller.endIsChecked.value = !controller.endIsChecked.value;
               },
               onBoldTextTap: () {
                 Get.bottomSheet(
