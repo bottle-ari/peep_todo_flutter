@@ -85,7 +85,7 @@ class PeepConfirmPopup extends StatelessWidget {
             child: Text(confirmText, style: PeepTextStyle.boldL(color: color))),
       ],
       actionsAlignment: MainAxisAlignment.center,
-      actionsPadding: EdgeInsets.only(bottom: AppValues.verticalMargin),
+      actionsPadding: EdgeInsets.only(bottom: AppValues.verticalMargin * 2),
     );
   }
 }

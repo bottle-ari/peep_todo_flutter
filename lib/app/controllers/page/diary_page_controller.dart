@@ -12,7 +12,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/diary_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/palette_controller.dart';
-import 'package:peep_todo_flutter/app/controllers/widget/peep_mini_calendar_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/main/main_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_controller.dart';
 import 'package:uuid/uuid.dart';
 
@@ -20,9 +20,11 @@ import '../../data/model/diary/diary_model.dart';
 import '../../data/model/diary/diary_todo_model.dart';
 import '../../utils/peep_calendar_util.dart';
 import '../data/todo_controller.dart';
+import '../widget/peep_mini_calendar_controller.dart';
 
 class DiaryPageController extends BaseController {
   final PaletteController paletteController = Get.find();
+  final MainController mainController = Get.find();
   final TodoController _todoController = Get.find();
   final CategoryController _categoryController = Get.find();
   final DiaryController _diaryController = Get.find();
@@ -32,17 +34,16 @@ class DiaryPageController extends BaseController {
   final RxMap<String, List<DiaryTodoModel>> checkedTodo =
       <String, List<DiaryTodoModel>>{}.obs;
 
-  //PageController
-  late final PageController pageController;
-  bool isPageMove = false;
+  //pageController
+  late final Rx<PageController> pageController;
+  bool isPageChange = false;
 
   // Quill
   final RxMap<String, QuillController> quillController =
       <String, QuillController>{}.obs;
 
   DiaryPageController() {
-    pageController = PageController(
-        initialPage: calculatePageIndex(_todoController.selectedDate.value));
+    pageController = PageController(initialPage: calculatePageIndex(_todoController.selectedDate.value)).obs;
   }
 
   @override
@@ -67,8 +68,8 @@ class DiaryPageController extends BaseController {
 
     // 선택된 날짜 변경 감지
     ever(_todoController.selectedDate, (callback) {
-      updateCheckedTodoList();
-      onDateChange(_todoController.selectedDate.value);
+      //updateCheckedTodoList();
+      onMoveDate();
     });
 
     updateCheckedTodoList();
@@ -173,21 +174,25 @@ class DiaryPageController extends BaseController {
     _peepMiniCalendarController.onMoveToday();
   }
 
-  void onPageChange(DateTime date) {
-    isPageMove = true;
+  void onMoveDate() {
+    int newInx = calculatePageIndex(_todoController.selectedDate.value);
 
-    _todoController.selectedDate.value = date;
-    _todoController.focusedDate.value = date;
-
-    isPageMove = false;
+    if(pageController.value.hasClients) {
+      if (!isPageChange) {
+        pageController.value.jumpToPage(newInx);
+      } else {
+        isPageChange = false;
+      }
+    } else {
+      pageController.value =
+          PageController(initialPage: newInx);
+    }
   }
 
-  void onDateChange(DateTime date) {
-    if (!isPageMove) {
-      var index = calculatePageIndex(date);
-      log("onDateChange : $index");
-      pageController.jumpToPage(index);
-    }
+  void onPageChange(DateTime date) {
+    isPageChange = true;
+    _todoController.selectedDate.value = date;
+    _todoController.focusedDate.value = date;
   }
 
   void toggleIsOpen(DateTime date) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
 import 'package:peep_todo_flutter/app/data/model/routine/routine_model.dart';
 import 'package:peep_todo_flutter/app/routes/app_pages.dart';
@@ -31,7 +32,7 @@ class RoutineManualAddPage extends BaseView<RoutineManageController> {
   @override
   Widget body(BuildContext context) {
     return Obx(
-          () => SizedBox(
+      () => SizedBox(
         height: double.infinity,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
@@ -65,7 +66,12 @@ class RoutineManualAddPage extends BaseView<RoutineManageController> {
                             routine: item,
                             onTap: () {
                               // 선택된 루틴을 todo로 변경
-                              controller.selectedTodoController.convertRoutineToTodo(item);
+                              controller.selectedTodoController
+                                  .convertRoutineToTodo(
+                                      DateFormat('yyyyMMdd').format(controller
+                                          .selectedTodoController
+                                          .getSelectedDate()),
+                                      item);
                               Get.back();
                             },
                           ),
@@ -83,7 +89,7 @@ class RoutineManualAddPage extends BaseView<RoutineManageController> {
                                 arguments: {
                                   'category_id': item.id,
                                   'last_pos':
-                                  controller.categoryIndexMap[item.id]![1],
+                                      controller.categoryIndexMap[item.id]![1],
                                 },
                               );
                             },

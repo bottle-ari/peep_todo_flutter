@@ -7,20 +7,19 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:peep_todo_flutter/app/data/model/palette/palette_model.dart';
 import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
-import 'package:peep_todo_flutter/app/views/todo/widget/peep_mini_calendar.dart';
 
 import '../../../controllers/page/diary_page_controller.dart';
 import '../../../core/base/base_view.dart';
 import '../../../utils/peep_calendar_util.dart';
 import '../widget/custom_checkbox_builder.dart';
 import '../widget/peep_checked_todo.dart';
+import '../widget/peep_diary_mini_calendar.dart';
 
 class DiaryPage extends BaseView<DiaryPageController> {
   @override
@@ -71,14 +70,14 @@ class DiaryPage extends BaseView<DiaryPageController> {
               ),
               Padding(
                 padding:
-                    EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
-                child: PeepMiniCalendar(),
+                    EdgeInsets.symmetric(horizontal: AppValues.innerMargin),
+                child: PeepDiaryMiniCalendar(),
               ),
               Expanded(
                 child: PageView.builder(
                   itemCount:
                       calendarEndDate.difference(calendarStartDate).inDays,
-                  controller: controller.pageController,
+                  controller: controller.pageController.value,
                   onPageChanged: (int index) {
                     controller.onPageChange(getDateFromPageIndex(index));
                   },
@@ -201,8 +200,7 @@ class _DiaryText extends StatelessWidget {
             customStyles: DefaultStyles(
               lists: DefaultListBlockStyle(
                 PeepTextStyle.regularM().copyWith(
-                    fontFamily:
-                        Get.textTheme.bodyMedium?.fontFamily ?? "Pretendard"),
+                    fontFamily: controller.mainController.selectedFont.value),
                 VerticalSpacing(4.h, 4.h),
                 VerticalSpacing(4.h, 4.h),
                 const BoxDecoration(),
@@ -211,15 +209,14 @@ class _DiaryText extends StatelessWidget {
               paragraph: DefaultTextBlockStyle(
                   PeepTextStyle.regularM().copyWith(
                       fontFamily:
-                          Get.textTheme.bodyMedium?.fontFamily ?? "Pretendard"),
+                      controller.mainController.selectedFont.value),
                   VerticalSpacing(2.h, 2.h),
                   VerticalSpacing(2.h, 2.h),
                   const BoxDecoration()),
               code: DefaultTextBlockStyle(
                   PeepTextStyle.regularM(color: Palette.peepPriorityLow)
                       .copyWith(
-                          fontFamily: Get.textTheme.bodyMedium?.fontFamily ??
-                              "Pretendard"),
+                          fontFamily: controller.mainController.selectedFont.value),
                   VerticalSpacing(2.h, 2.h),
                   VerticalSpacing(2.h, 2.h),
                   BoxDecoration(

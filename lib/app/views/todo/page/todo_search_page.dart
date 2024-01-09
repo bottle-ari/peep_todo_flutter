@@ -1,17 +1,20 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/page/search_item_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_view.dart';
-import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
+import 'package:peep_todo_flutter/app/utils/custom_color_selection_handle.dart';
+import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
+
+import '../../../controllers/data/palette_controller.dart';
 
 class TodoSearchPage extends BaseView<SearchItemController> {
   @override
@@ -21,14 +24,19 @@ class TodoSearchPage extends BaseView<SearchItemController> {
 
   @override
   Widget body(BuildContext context) {
+    if (Get.isSnackbarOpen) {
+      Get.back();
+    }
+
     final SearchItemController searchItemController =
         Get.put(SearchItemController());
     final CategoryController categoryController = Get.put(CategoryController());
+    final PaletteController paletteController = Get.find();
 
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.all(0.5 * AppValues.horizontalMargin),
+          padding: EdgeInsets.symmetric(vertical: AppValues.verticalMargin),
           child: Container(
             width: AppValues.screenWidth - AppValues.screenPadding * 2,
             height: AppValues.largeItemHeight,
@@ -46,21 +54,43 @@ class TodoSearchPage extends BaseView<SearchItemController> {
                   PeepIcon(
                     Iconsax.calendarSearch,
                     size: AppValues.baseIconSize,
-                    color: Palette.peepPurple,
+                    color: Palette.peepGray400,
                   ),
                   SizedBox(
                     width: 300.w,
-                    child: TextField(
-                      controller: searchItemController.searchFieldController,
-                      onChanged: (value) {
-                        searchItemController.search();
-                      },
-                      style: PeepTextStyle.regularM(color: Palette.peepBlack),
-                      decoration: InputDecoration(
-                        border: InputBorder.none, // 밑줄 제거
-                        hintText: '검색 할 키워드를 입력하세요',
-                        hintStyle:
-                            PeepTextStyle.regularS(color: Palette.peepGray300),
+                    child: Theme(
+                      data: ThemeData.light().copyWith(
+                        textSelectionTheme: TextSelectionThemeData(
+                          cursorColor: paletteController
+                              .getPriorityColor(), // works on iOS
+                          selectionColor: paletteController
+                              .getPriorityColor()
+                              .withOpacity(
+                                  AppValues.halfOpacity), // works on iOS
+                          selectionHandleColor: paletteController
+                              .getPriorityColor(), // not working on iOS
+                        ),
+                        cupertinoOverrideTheme: CupertinoThemeData(
+                          primaryColor: paletteController
+                              .getPriorityColor(), // alternative on iOS for "selectionHandleColor"
+                        ),
+                      ),
+                      child: TextField(
+                        controller: searchItemController.searchFieldController,
+                        onChanged: (value) {
+                          searchItemController.search();
+                        },
+                        style: PeepTextStyle.regularM(color: Palette.peepBlack),
+                        autofocus: true,
+                        selectionControls: CustomColorSelectionHandle(
+                            paletteController.getPriorityColor()),
+                        cursorColor: paletteController.getPriorityColor(),
+                        decoration: InputDecoration(
+                          border: InputBorder.none, // 밑줄 제거
+                          hintText: '검색 할 키워드를 입력하세요',
+                          hintStyle: PeepTextStyle.regularS(
+                              color: Palette.peepGray300),
+                        ),
                       ),
                     ),
                   ),
@@ -95,29 +125,28 @@ class TodoSearchPage extends BaseView<SearchItemController> {
                           return Padding(
                             padding: EdgeInsets.all(
                                 0.5 * AppValues.horizontalMargin),
-                            child: Container(
-                              width: AppValues.screenWidth -
-                                  AppValues.screenPadding * 2,
-                              height: AppValues.largeItemHeight,
-                              decoration: BoxDecoration(
-                                color: Palette.peepGray50,
-                                borderRadius:
-                                    BorderRadius.circular(AppValues.baseRadius),
-                                border: Border.all(
-                                  color:
-                                      categoryController.getCategoryColorById(
-                                          categoryId: item.categoryId),
+                            child: PeepAnimationEffect(
+                              scale: 0.95,
+                              onTap: () async {
+                                await controller.onTapSearchedTodo(item.date);
+                              },
+                              child: Container(
+                                width: AppValues.screenWidth -
+                                    AppValues.screenPadding * 2,
+                                height: AppValues.largeItemHeight,
+                                decoration: BoxDecoration(
+                                  color: Palette.peepGray50,
+                                  borderRadius:
+                                      BorderRadius.circular(AppValues.baseRadius),
+                                  border: Border.all(
+                                    color:
+                                        categoryController.getCategoryColorById(
+                                            categoryId: item.categoryId),
+                                  ),
                                 ),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: AppValues.horizontalMargin),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    controller.selectedDay(item.date);
-                                    Get.toNamed(AppPages.INITIAL);
-                                    controller.initSearchFunction();
-                                  },
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: AppValues.screenPadding),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -125,9 +154,11 @@ class TodoSearchPage extends BaseView<SearchItemController> {
                                         CrossAxisAlignment.center,
                                     children: [
                                       SizedBox(
-                                        width: 300.w,
+                                        width: 280.w,
                                         child: HighlightSearchText(
-                                          text: item.name,
+                                          text: item.name.length > 55
+                                              ? '${item.name.substring(0, 54)}...'
+                                              : item.name,
                                           searchKeyword:
                                               controller.searchKeyword.value,
                                         ),

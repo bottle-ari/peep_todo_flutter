@@ -96,6 +96,8 @@ flutter:
     - assets/image/icon/add.svg
     - assets/image/icon/gallery-add.svg
     - assets/image/icon/close.svg
+    - assets/image/icon/brush.svg
+    - assets/image/icon/copy.svg
 
   uses-material-design: true
 

@@ -48,7 +48,7 @@ class PaletteSettingPage extends BaseView<MyPageController> {
               height: 10.h,
             ),
             SizedBox(
-              height: 90.h,
+              height: 110.h,
               child: GridView.count(
                 crossAxisCount: 5,
                 childAspectRatio: 4 / 3,

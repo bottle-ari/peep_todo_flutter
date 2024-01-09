@@ -4,27 +4,26 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/data/palette_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/pref_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/main/main_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_controller.dart';
 import 'package:peep_todo_flutter/app/theme/app_theme.dart';
 import 'package:http/http.dart' as http;
 import 'package:table_calendar/table_calendar.dart';
 
 class MyPageController extends BaseController with PrefController {
+  final MainController mainController = Get.find();
   final PaletteController paletteController = Get.find();
+
   final keySelectedFont = 'selectedFont';
   final keyStartingDayOfWeek = 'startingDayOfWeek';
   final keySelectedColorInx = 'selectedPrimaryColorIndex';
 
-  // 기본 폰트
-  //RxString selectedFont = "LeeSeoyun".obs;
-  late final RxString selectedFont;
   // 기본 요일
   late final RxString startingDayOfWeek;
-  final Rx<StartingDayOfWeek> startingDayOfWeekValue = StartingDayOfWeek.monday.obs;
+  final Rx<StartingDayOfWeek> startingDayOfWeekValue =
+      StartingDayOfWeek.monday.obs;
 
   MyPageController() {
-    selectedFont = getString(keySelectedFont)?.obs ?? "Pretendard".obs;
-    log("conductor selectedFont {${selectedFont.value}}");
     startingDayOfWeek = getString(keyStartingDayOfWeek)?.obs ?? "monday".obs;
   }
 
@@ -36,8 +35,7 @@ class MyPageController extends BaseController with PrefController {
   void onInit() async {
     super.onInit();
 
-    selectedFont.value = getString(keySelectedFont) ?? 'Pretendard';
-    ever(selectedFont, (String font) {
+    ever(mainController.selectedFont, (String font) {
       Get.changeTheme(Themes().getThemeByFont(font: font));
     });
   }
@@ -49,15 +47,15 @@ class MyPageController extends BaseController with PrefController {
   String getFont() {
     String getStr = getString(keySelectedFont) ?? 'Pretendard';
     log("getFont {$getStr}");
-    selectedFont.value = getStr;
-    return selectedFont.value;
+    mainController.selectedFont.value = getStr;
+    return mainController.selectedFont.value;
   }
 
   // 사용자가 폰트를 선택하면 저장합니다.
   Future<void> setSelectedFont(String font) async {
-    selectedFont.value = font;
+    mainController.selectedFont.value = font;
     saveString(keySelectedFont, font);
-    log("${selectedFont.value}");
+    log(mainController.selectedFont.value);
   }
 
   // 피드백 텍스트 초기화
@@ -67,7 +65,7 @@ class MyPageController extends BaseController with PrefController {
 
   // 피드백 전송
   Future<void> sendFeedbackText() async {
-    final String feedbackApiUrl = 'https://peeptodo.com/api/feedback';
+    const String feedbackApiUrl = 'https://peeptodo.com/api/feedback';
 
     final Map<String, String> feedbackData = {
       'contents': textEditingController.text,
@@ -86,14 +84,14 @@ class MyPageController extends BaseController with PrefController {
 
       if (response.statusCode == 200) {
         // Successfully sent feedback
-        print('Feedback sent successfully');
+        log('Feedback sent successfully');
       } else {
         // Handle the error response
-        print('Error: ${response.statusCode} - ${response.body}');
+        log('Error: ${response.statusCode} - ${response.body}');
       }
     } catch (e) {
       // Handle any exceptions that occurred during the request
-      print('Error: $e');
+      log('Error: $e');
     }
   }
 
@@ -117,10 +115,6 @@ class MyPageController extends BaseController with PrefController {
     await paletteController.updatePalette(name);
     Get.changeTheme(Themes().getThemeByFont(color: getPrimaryColor()));
   }
-}
-
-class ThemeChanger extends InheritedWidget {
-  final MyPageController myPageController;
 
   // 사용자가 시작 요일을 선택하면 저장하고 적용합니다.
   Future<void> setStartingDayOfWeek(String day) async {

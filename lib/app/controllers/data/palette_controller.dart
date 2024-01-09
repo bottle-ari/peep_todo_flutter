@@ -73,6 +73,7 @@ class PaletteController extends BaseController with PrefController {
       final hexColor = getString(initColor);
 
       if (hexColor == null) {
+
         saveString(initColor, 'FF6D79');
         return const Color(0xFFFF6D79);
       } else {
@@ -113,15 +114,3 @@ class PaletteController extends BaseController with PrefController {
     saveString(keySelectedPaletteInx, name);
   }
 }
-
-// List<PaletteModel> newPaletteData = List.from(paletteData);
-//
-// newPaletteData[selectedPalette.value].primaryColor = index;
-//
-// // 옵저버 데이터 변경
-// paletteData.value = newPaletteData;
-// selectedPalette.value = index;
-//
-// // DB 저장
-// saveInt(keySelectedColorInx, index);
-// await _service.updatePalette(newPaletteData[selectedPalette.value]);

@@ -44,9 +44,18 @@ class CategoryDetailPage extends BaseView<CategoryDetailController> {
                       hintText: '카테고리 내 모든 [할 일]이 삭제됩니다!',
                       hintColor: Palette.peepRed,
                       color: Palette.peepRed,
-                      func: () {
-                        Get.back();
-                        controller.deleteCategory();
+                      func: () async {
+                        if(await controller.deleteCategory()){
+                          Get.back();
+                        }
+                        else{
+                          Get.dialog(PeepWarningPopup(
+                              icon: Iconsax.emptyBox,
+                              text: '적어도 한 개 이상의 카테고리가\n남아있어야 해요',
+                              confirmText: '확인',
+                              color: Palette.peepRed.withOpacity(AppValues.baseOpacity)));
+                        }
+
                       }));
                 },
                 child: PeepIcon(

@@ -40,45 +40,41 @@ class PeepRepeatConditionWeekItem extends StatelessWidget {
       List<bool> weekDays = controller.monthlyDayRepeatValue;
 
       int selectedCount = 0;
-      for(int i=0;i<7;i++){
-        if(weekDays[i]){
+      for (int i = 0; i < 7; i++) {
+        if (weekDays[i]) {
           selectedCount++;
         }
       }
       // 하나 이상의 요일을 선택하도록 예외처리
-      if(selectedCount == 1 && weekDays[dayInt]){
+      if (selectedCount == 1 && weekDays[dayInt]) {
         Get.dialog(PeepWarningPopup(
             icon: Iconsax.emptyBox,
             text: '하나 이상의 요일을 선택해주세요!',
             confirmText: '확인',
-            color: Palette.peepRed
-                .withOpacity(AppValues.baseOpacity)));
-      }
-      else{
+            color: Palette.peepRed.withOpacity(AppValues.baseOpacity)));
+      } else {
         controller.monthlyDayRepeatValue[dayInt] =
-        !controller.monthlyDayRepeatValue[dayInt];
+            !controller.monthlyDayRepeatValue[dayInt];
       }
     } else {
       List<bool> weekDays = controller.weeklyDayRepeatValue;
 
       int selectedCount = 0;
-      for(int i=0;i<7;i++){
-        if(weekDays[i]){
+      for (int i = 0; i < 7; i++) {
+        if (weekDays[i]) {
           selectedCount++;
         }
       }
       // 하나 이상의 요일을 선택하도록 예외처리
-      if(selectedCount == 1 && weekDays[dayInt]){
+      if (selectedCount == 1 && weekDays[dayInt]) {
         Get.dialog(PeepWarningPopup(
             icon: Iconsax.emptyBox,
             text: '하나 이상의 요일을 선택해주세요!',
             confirmText: '확인',
-            color: Palette.peepRed
-                .withOpacity(AppValues.baseOpacity)));
-      }
-      else{
+            color: Palette.peepRed.withOpacity(AppValues.baseOpacity)));
+      } else {
         controller.weeklyDayRepeatValue[dayInt] =
-        !controller.weeklyDayRepeatValue[dayInt];
+            !controller.weeklyDayRepeatValue[dayInt];
       }
     }
   }
@@ -148,9 +144,8 @@ class PeepRepeatConditionWeekItem extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: AppValues.screenPadding,
-                  vertical: AppValues.innerMargin),
+              padding:
+                  EdgeInsets.symmetric(horizontal: AppValues.horizontalMargin),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

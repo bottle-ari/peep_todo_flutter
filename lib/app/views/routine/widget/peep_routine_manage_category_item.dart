@@ -34,47 +34,53 @@ class PeepRoutineManageCategoryItem extends StatelessWidget {
             children: [
               PeepAnimationEffect(
                 onTap: onTapAddButton,
-                child: Row(
-                  children: [
-                    Text(
-                      category.emoji,
-                      style: PeepTextStyle.boldL(),
-                    ),
-                    SizedBox(
-                      width: AppValues.horizontalMargin,
-                    ),
-                    Text(
-                      category.name.length > 10
-                          ? "${category.name.substring(0, 10)}..."
-                          : category.name,
-                      style: PeepTextStyle.boldL(
-                          color: paletteController
-                              .getDefaultPalette()[category.color]
-                              .color),
-                    ),
-                    if (category.type == TodoType.constant)
-                      Padding(
-                        padding: EdgeInsets.only(left: AppValues.innerMargin),
-                        child: PeepIcon(
-                          Iconsax.constantTodo,
-                          size: AppValues.smallIconSize,
-                          color: paletteController
-                              .getDefaultPalette()[category.color]
-                              .color
-                              .withOpacity(AppValues.baseOpacity),
+                child: Container(
+                  color: Colors.transparent,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: AppValues.innerMargin),
+                    child: Row(
+                      children: [
+                        Text(
+                          category.emoji,
+                          style: PeepTextStyle.boldL(),
                         ),
-                      ),
-                    SizedBox(
-                      width: AppValues.horizontalMargin,
+                        SizedBox(
+                          width: AppValues.horizontalMargin,
+                        ),
+                        Text(
+                          category.name.length > 10
+                              ? "${category.name.substring(0, 10)}..."
+                              : category.name,
+                          style: PeepTextStyle.boldL(
+                              color: paletteController
+                                  .getDefaultPalette()[category.color]
+                                  .color),
+                        ),
+                        if (category.type == TodoType.constant)
+                          Padding(
+                            padding: EdgeInsets.only(left: AppValues.innerMargin),
+                            child: PeepIcon(
+                              Iconsax.constantTodo,
+                              size: AppValues.smallIconSize,
+                              color: paletteController
+                                  .getDefaultPalette()[category.color]
+                                  .color
+                                  .withOpacity(AppValues.baseOpacity),
+                            ),
+                          ),
+                        SizedBox(
+                          width: AppValues.horizontalMargin,
+                        ),
+                        PeepIcon(
+                          Iconsax.addSquare,
+                          size: AppValues.baseIconSize,
+                          color: paletteController
+                              .getDefaultPalette()[category.color]
+                              .color,
+                        ),
+                      ],
                     ),
-                    PeepIcon(
-                      Iconsax.addSquare,
-                      size: AppValues.baseIconSize,
-                      color: paletteController
-                          .getDefaultPalette()[category.color]
-                          .color,
-                    ),
-                  ],
+                  ),
                 ),
               )
             ],

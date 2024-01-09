@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:peep_todo_flutter/app/controllers/page/my_page_controller.dart';
+import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/common/painter/ring_painter.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -12,13 +12,12 @@ import '../../../controllers/widget/peep_mini_calendar_controller.dart';
 import '../../../theme/app_values.dart';
 import '../../../theme/palette.dart';
 
-class PeepMiniCalendar extends StatelessWidget {
+class PeepDiaryMiniCalendar extends StatelessWidget {
   final PaletteController paletteController = Get.find();
   final TodoController controller = Get.find();
   final PeepMiniCalendarController peepMiniCalendarController = Get.find();
-  final MyPageController myPageController = Get.find();
 
-  PeepMiniCalendar({
+  PeepDiaryMiniCalendar({
     Key? key,
   }) : super(key: key);
 
@@ -80,28 +79,16 @@ class PeepMiniCalendar extends StatelessWidget {
                       children: [
                         Obx(
                           () => Container(
-                            width: 20.w, // Container의 너비
-                            height: 20.w, // Container의 높이
-                            decoration: BoxDecoration(
+                            width: 24.w, // Container의 너비
+                            height: 24.w, // Container의 높이
+                            child: PeepIcon(
+                              Iconsax.egg,
+                              size: AppValues.largeIconSize,
                               color: paletteController
                                   .getPriorityColor()
                                   .withOpacity(AppValues.halfOpacity),
-                              borderRadius:
-                                  BorderRadius.circular(AppValues.baseRadius),
                             ),
                           ),
-                        ),
-                        Obx(
-                          () {
-                            return CustomPaint(
-                              size: Size(32.w, 32.w), // CustomPaint의 크기 고정
-                              painter: RingPainter(
-                                  itemCounts: peepMiniCalendarController
-                                              .calendarItemCounts[
-                                          DateFormat('yyyyMMdd').format(day)] ??
-                                      {}),
-                            );
-                          },
                         ),
                         Center(
                           child: Text(
@@ -123,14 +110,16 @@ class PeepMiniCalendar extends StatelessWidget {
                       alignment: Alignment.center,
                       children: [
                         Obx(
-                          () => CustomPaint(
-                            size: Size(32.w, 32.w),
-                            // CustomPaint의 크기 고정
-                            painter: RingPainter(
-                                itemCounts: peepMiniCalendarController
-                                            .calendarItemCounts[
-                                        DateFormat('yyyyMMdd').format(day)] ??
-                                    {}),
+                          () => Container(
+                            width: 24.w, // Container의 너비
+                            height: 24.w, // Container의 높이
+                            child: PeepIcon(
+                              Iconsax.egg,
+                              size: AppValues.largeIconSize,
+                              color: peepMiniCalendarController.isDiaryData(day)
+                                  ? Palette.peepGray200
+                                  : Colors.transparent,
+                            ),
                           ),
                         ),
                         Text(
@@ -147,14 +136,16 @@ class PeepMiniCalendar extends StatelessWidget {
                       alignment: Alignment.center,
                       children: [
                         Obx(
-                          () => CustomPaint(
-                            size: Size(32.w, 32.w),
-                            // CustomPaint의 크기 고정
-                            painter: RingPainter(
-                                itemCounts: peepMiniCalendarController
-                                            .calendarItemCounts[
-                                        DateFormat('yyyyMMdd').format(day)] ??
-                                    {}),
+                          () => Container(
+                            width: 24.w, // Container의 너비
+                            height: 24.w, // Container의 높이
+                            child: PeepIcon(
+                              Iconsax.egg,
+                              size: AppValues.largeIconSize,
+                              color: peepMiniCalendarController.isDiaryData(day)
+                                  ? Palette.peepGray200
+                                  : Colors.transparent,
+                            ),
                           ),
                         ),
                         Text(
@@ -192,7 +183,7 @@ class PeepMiniCalendar extends StatelessWidget {
               firstDay: DateTime.utc(1923, 1, 1),
               lastDay: DateTime.utc(2123, 12, 31),
               focusedDay: controller.focusedDate.value,
-              startingDayOfWeek: myPageController.getStartingDayOfWeek(myPageController.startingDayOfWeek.value),
+              startingDayOfWeek: StartingDayOfWeek.monday,
               selectedDayPredicate: (day) {
                 return isSameDay(controller.selectedDate.value, day);
               },

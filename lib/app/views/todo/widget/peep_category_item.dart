@@ -2,9 +2,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/data/palette_controller.dart';
-import 'package:peep_todo_flutter/app/controllers/page/selected_todo_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
+import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
@@ -38,85 +38,104 @@ class PeepCategoryItem extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  PeepAnimationEffect(
-                    onTap: onTapAddButton,
-                    child: Row(
-                      children: [
-                        Text(
-                          category.emoji,
-                          style: PeepTextStyle.boldL(),
-                        ),
-                        SizedBox(
-                          width: AppValues.horizontalMargin,
-                        ),
-                        Text(
-                          category.name.length > 10
-                              ? "${category.name.substring(0, 10)}..."
-                              : category.name,
-                          style: PeepTextStyle.boldL(
-                              color: paletteController
-                                  .getDefaultPalette()[category.color]
-                                  .color),
-                        ),
-                        if (category.type == TodoType.constant)
-                          Padding(
-                            padding:
-                                EdgeInsets.only(left: AppValues.innerMargin),
-                            child: PeepIcon(
-                              Iconsax.constantTodo,
-                              size: AppValues.smallIconSize,
-                              color: paletteController
-                                  .getDefaultPalette()[category.color]
-                                  .color
-                                  .withOpacity(AppValues.baseOpacity),
-                            ),
+                  Obx(
+                    () => PeepAnimationEffect(
+                      onTap: onTapAddButton,
+                      onLongPress: () {
+                        Get.toNamed(AppPages.CATEGORY_MANAGE);
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: AppValues.innerMargin),
+                          child: Row(
+                            children: [
+                              Text(
+                                category.emoji,
+                                style: PeepTextStyle.boldL(),
+                              ),
+                              SizedBox(
+                                width: AppValues.horizontalMargin,
+                              ),
+                              Text(
+                                category.name.length > 10
+                                    ? "${category.name.substring(0, 10)}..."
+                                    : category.name,
+                                style: PeepTextStyle.boldL(
+                                    color: paletteController
+                                        .getDefaultPalette()[category.color]
+                                        .color),
+                              ),
+                              if (category.type == TodoType.constant)
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      left: AppValues.innerMargin),
+                                  child: PeepIcon(
+                                    Iconsax.constantTodo,
+                                    size: AppValues.smallIconSize,
+                                    color: paletteController
+                                        .getDefaultPalette()[category.color]
+                                        .color
+                                        .withOpacity(AppValues.baseOpacity),
+                                  ),
+                                ),
+                              SizedBox(
+                                width: AppValues.horizontalMargin,
+                              ),
+                              PeepIcon(
+                                Iconsax.addSquare,
+                                size: AppValues.baseIconSize,
+                                color: paletteController
+                                    .getDefaultPalette()[category.color]
+                                    .color,
+                              ),
+                            ],
                           ),
-                        SizedBox(
-                          width: AppValues.horizontalMargin,
                         ),
-                        PeepIcon(
-                          Iconsax.addSquare,
-                          size: AppValues.baseIconSize,
-                          color: paletteController
-                              .getDefaultPalette()[category.color]
-                              .color,
-                        ),
-                      ],
+                      ),
                     ),
                   )
                 ],
               ),
               GestureDetector(
                 onTap: onTapArrowButton,
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: AppValues.horizontalMargin,
-                    ),
-                    TweenAnimationBuilder(
-                      tween: Tween(
-                        begin: isFolded ? 0.0 : 1.0,
-                        end: isFolded ? 0.0 : 1.0,
+                child: Container(
+                  color: Colors.transparent,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: AppValues.horizontalMargin * 2,
                       ),
-                      duration: const Duration(milliseconds: 120),
-                      builder: (context, double value, child) {
-                        return Transform.rotate(
-                          angle: -value * pi, // 라디안 값으로 회전 (1.0은 180도)
-                          child: child,
-                        );
-                      },
-                      child: PeepIcon(
-                        Iconsax.arrowDown,
-                        size: AppValues.smallIconSize,
-                        color: paletteController
-                            .getDefaultPalette()[category.color]
-                            .color,
+                      TweenAnimationBuilder(
+                        tween: Tween(
+                          begin: isFolded ? 0.0 : 1.0,
+                          end: isFolded ? 0.0 : 1.0,
+                        ),
+                        duration: const Duration(milliseconds: 120),
+                        builder: (context, double value, child) {
+                          return Transform.rotate(
+                            angle: -value * pi, // 라디안 값으로 회전 (1.0은 180도)
+                            child: child,
+                          );
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: AppValues.innerMargin),
+                          child: PeepIcon(
+                            Iconsax.arrowDown,
+                            size: AppValues.smallIconSize,
+                            color: paletteController
+                                .getDefaultPalette()[category.color]
+                                .color,
+                          ),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: AppValues.horizontalMargin,
-                    )
-                  ],
+                      SizedBox(
+                        width: AppValues.horizontalMargin,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ],

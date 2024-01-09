@@ -55,9 +55,9 @@ class PeepRoutineManageListItem extends StatelessWidget {
                 onPressed: (BuildContext context) {
                   deleteCategory();
                 },
-                backgroundColor: Palette.peepRed,
+                backgroundColor: Palette.peepPriorityHigh,
                 foregroundColor: Colors.white,
-                label: '삭제',
+                icon: PeepIconData.trash,
               ),
             ],
           ),
@@ -65,13 +65,13 @@ class PeepRoutineManageListItem extends StatelessWidget {
             onTap: onTap,
             child: Container(
               width: AppValues.screenWidth - AppValues.screenPadding * 2,
-              color:
-              routine.isActive ? Palette.peepWhite : Palette.peepGray100,
+              color: routine.isActive ? Palette.peepWhite : Palette.peepGray100,
               child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: AppValues.largeItemHeight),
+                constraints:
+                    BoxConstraints(minHeight: AppValues.largeItemHeight),
                 child: Padding(
-                  padding:
-                  EdgeInsets.symmetric(horizontal: AppValues.horizontalMargin),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: AppValues.horizontalMargin),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -82,7 +82,7 @@ class PeepRoutineManageListItem extends StatelessWidget {
                           SizedBox(
                             width: AppValues.innerMargin,
                           ),
-                          if(routine.isActive)
+                          if (routine.isActive)
                             Padding(
                               padding: EdgeInsets.symmetric(vertical: 5.h),
                               child: Column(
@@ -93,17 +93,25 @@ class PeepRoutineManageListItem extends StatelessWidget {
                                     width: 230.w,
                                     child: Text(
                                       routine.name,
-                                      style: PeepTextStyle.regularM(color: Palette.peepBlack),
+                                      style: PeepTextStyle.regularM(
+                                          color: Palette.peepBlack),
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 3,
                                     ),
                                   ),
                                   Row(
                                     children: [
-                                      PeepIcon(Iconsax.routineOutline, size: 14.w, color: Palette.peepBlack,),
+                                      PeepIcon(
+                                        Iconsax.routineOutline,
+                                        size: 14.w,
+                                        color: Palette.peepBlack,
+                                      ),
                                       SizedBox(width: AppValues.innerMargin),
-                                      Text(repeatConditionToDescription(routine.repeatCondition),
-                                        style: PeepTextStyle.regularXS(color: Palette.peepBlack),
+                                      Text(
+                                        repeatConditionToDescription(
+                                            routine.repeatCondition),
+                                        style: PeepTextStyle.regularXS(
+                                            color: Palette.peepBlack),
                                       ),
                                     ],
                                   ),
@@ -113,10 +121,26 @@ class PeepRoutineManageListItem extends StatelessWidget {
                           else
                             ColorFiltered(
                               colorFilter: const ColorFilter.matrix([
-                                0.2126, 0.7152, 0.0722, 0, 0,
-                                0.2126, 0.7152, 0.0722, 0, 0,
-                                0.2126, 0.7152, 0.0722, 0, 0,
-                                0,      0,      0,      1, 0,
+                                0.2126,
+                                0.7152,
+                                0.0722,
+                                0,
+                                0,
+                                0.2126,
+                                0.7152,
+                                0.0722,
+                                0,
+                                0,
+                                0.2126,
+                                0.7152,
+                                0.0722,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                1,
+                                0,
                               ]),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(vertical: 5.h),
@@ -128,17 +152,25 @@ class PeepRoutineManageListItem extends StatelessWidget {
                                       width: 230.w,
                                       child: Text(
                                         routine.name,
-                                        style: PeepTextStyle.regularM(color: Palette.peepBlack),
+                                        style: PeepTextStyle.regularM(
+                                            color: Palette.peepBlack),
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 3,
                                       ),
                                     ),
                                     Row(
                                       children: [
-                                        PeepIcon(Iconsax.routineOutline, size: 14.w, color: Palette.peepBlack,),
+                                        PeepIcon(
+                                          Iconsax.routineOutline,
+                                          size: 14.w,
+                                          color: Palette.peepBlack,
+                                        ),
                                         SizedBox(width: AppValues.innerMargin),
-                                        Text(repeatConditionToDescription(routine.repeatCondition),
-                                          style: PeepTextStyle.regularXS(color: Palette.peepBlack),
+                                        Text(
+                                          repeatConditionToDescription(
+                                              routine.repeatCondition),
+                                          style: PeepTextStyle.regularXS(
+                                              color: Palette.peepBlack),
                                         ),
                                       ],
                                     ),

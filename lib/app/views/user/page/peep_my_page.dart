@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/page/my_page_controller.dart';
 import 'package:peep_todo_flutter/app/core/base/base_view.dart';
-import 'package:peep_todo_flutter/app/data/model/palette/palette_model.dart';
 import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
@@ -19,7 +18,8 @@ class PeepMyPage extends BaseView<MyPageController> {
     '일반': ['주 시작 설정'], //, '언어 설정'
     '테마': ['팔레트 테마 변경', '폰트 설정'],
     //'보안': ['앱 잠금'],
-    '기타': ['유저 가이드', '개인정보 보호 정책', '오픈소스 사용 정보'],
+    //'기타': ['유저 가이드', '개인정보 보호 정책', '오픈소스 사용 정보'],
+    '기타': ['오픈소스 사용 정보'],
   };
 
   final Map<String, List<String>> myItemSubList = {
