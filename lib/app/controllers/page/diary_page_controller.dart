@@ -43,7 +43,7 @@ class DiaryPageController extends BaseController {
       <String, QuillController>{}.obs;
 
   DiaryPageController() {
-    pageController = PageController(initialPage: mainController.pageIndex.value).obs;
+    pageController = PageController(initialPage: calculatePageIndex(_todoController.selectedDate.value)).obs;
   }
 
   @override
@@ -70,7 +70,6 @@ class DiaryPageController extends BaseController {
     ever(_todoController.selectedDate, (callback) {
       //updateCheckedTodoList();
       onMoveDate();
-      log('DIARY : ${mainController.pageIndex.value}');
     });
 
     updateCheckedTodoList();
@@ -176,7 +175,6 @@ class DiaryPageController extends BaseController {
   }
 
   void onMoveDate() {
-    int oldInx = mainController.pageIndex.value;
     int newInx = calculatePageIndex(_todoController.selectedDate.value);
 
     if(pageController.value.hasClients) {
@@ -189,8 +187,6 @@ class DiaryPageController extends BaseController {
       pageController.value =
           PageController(initialPage: newInx);
     }
-
-    mainController.pageIndex.value = calculatePageIndex(_todoController.selectedDate.value);
   }
 
   void onPageChange(DateTime date) {

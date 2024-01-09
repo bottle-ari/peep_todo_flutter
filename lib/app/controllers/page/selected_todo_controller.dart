@@ -21,11 +21,9 @@ import '../../utils/peep_calendar_util.dart';
 import '../../utils/routine_util.dart';
 import '../data/pref_controller.dart';
 import '../data/todo_controller.dart';
-import '../main/main_controller.dart';
 
 class SelectedTodoController extends BaseController with PrefController {
   final PaletteController _paletteController = Get.find();
-  final MainController mainController = Get.find();
   final CategoryController _categoryController = Get.find();
   final TodoController _todoController = Get.find();
   final PeepMiniCalendarController _peepMiniCalendarController = Get.find();
@@ -55,7 +53,7 @@ class SelectedTodoController extends BaseController with PrefController {
 
   SelectedTodoController() {
     pageController =
-        PageController(initialPage: mainController.pageIndex.value).obs;
+        PageController(initialPage: calculatePageIndex(_todoController.selectedDate.value)).obs;
   }
 
   @override
@@ -74,7 +72,7 @@ class SelectedTodoController extends BaseController with PrefController {
     // 선택된 날짜 변경 감지
     ever(_todoController.selectedDate, (callback) async {
       log("selected Date Observer : ${_todoController.selectedDate.value}");
-      //onMoveDate();
+      onMoveDate();
     });
 
     // 카테고리 데이터 변경 감지
@@ -488,9 +486,6 @@ class SelectedTodoController extends BaseController with PrefController {
     } else {
       isPageChange = false;
     }
-
-    mainController.pageIndex.value =
-        calculatePageIndex(_todoController.selectedDate.value);
   }
 
   void onPageChange(DateTime date) {
