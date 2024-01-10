@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -76,18 +77,20 @@ class MyPageController extends BaseController with PrefController {
       final response = await http.post(
         Uri.parse(feedbackApiUrl),
         headers: {
-          'Authorization':
-              'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtb2Rlc3R5NjY2QGcuaG9uZ2lrLmFjLmtyIiwiaWF0IjoxNzA0MzUwMTg1LCJleHAiOjE3MDQ1MjI5ODV9.87o7NNNKOLEM7adkt_gBQ1loZH62NbzvrjW-ZHcZ1zhFytQen2RCPVIjJOeAXZ_TZIE6gYl4E5-yd90bzqoBQQ',
+          'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: feedbackData,
+        body: jsonEncode(feedbackData),
       );
 
       if (response.statusCode == 200) {
         // Successfully sent feedback
         log('Feedback sent successfully');
+        Get.back();
+        Get.snackbar('피드백 알림', '피드백을 전송했어요!');
       } else {
         // Handle the error response
         log('Error: ${response.statusCode} - ${response.body}');
+        Get.snackbar('피드백 알림', '에러가 발생했습니다.');
       }
     } catch (e) {
       // Handle any exceptions that occurred during the request
@@ -113,6 +116,7 @@ class MyPageController extends BaseController with PrefController {
 
   void updatePalette(String name) async {
     await paletteController.updatePalette(name);
+    await paletteController.updatePriorityColor(0);
     Get.changeTheme(Themes().getThemeByFont(color: getPrimaryColor()));
   }
 

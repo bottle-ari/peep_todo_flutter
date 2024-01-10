@@ -4,10 +4,11 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
-import 'package:peep_todo_flutter/app/views/common/painter/ring_painter.dart';
+import 'package:peep_todo_flutter/app/utils/peep_calendar_util.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../controllers/data/palette_controller.dart';
 import '../../../controllers/data/todo_controller.dart';
+import '../../../controllers/page/my_page_controller.dart';
 import '../../../controllers/widget/peep_mini_calendar_controller.dart';
 import '../../../theme/app_values.dart';
 import '../../../theme/palette.dart';
@@ -16,6 +17,7 @@ class PeepDiaryMiniCalendar extends StatelessWidget {
   final PaletteController paletteController = Get.find();
   final TodoController controller = Get.find();
   final PeepMiniCalendarController peepMiniCalendarController = Get.find();
+  final MyPageController myPageController = Get.find();
 
   PeepDiaryMiniCalendar({
     Key? key,
@@ -180,10 +182,10 @@ class PeepDiaryMiniCalendar extends StatelessWidget {
               daysOfWeekHeight: 35.h,
               rowHeight: 50.h,
               locale: 'ko_KR',
-              firstDay: DateTime.utc(1923, 1, 1),
-              lastDay: DateTime.utc(2123, 12, 31),
+              firstDay: calendarStartDate,
+              lastDay: calendarEndDate,
               focusedDay: controller.focusedDate.value,
-              startingDayOfWeek: StartingDayOfWeek.monday,
+              startingDayOfWeek: myPageController.getStartingDayOfWeek(myPageController.startingDayOfWeek.value),
               selectedDayPredicate: (day) {
                 return isSameDay(controller.selectedDate.value, day);
               },

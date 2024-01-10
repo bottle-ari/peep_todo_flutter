@@ -11,6 +11,7 @@ import '../../../controllers/data/todo_controller.dart';
 import '../../../controllers/widget/peep_mini_calendar_controller.dart';
 import '../../../theme/app_values.dart';
 import '../../../theme/palette.dart';
+import '../../../utils/peep_calendar_util.dart';
 
 class PeepMiniCalendar extends StatelessWidget {
   final PaletteController paletteController = Get.find();
@@ -189,8 +190,8 @@ class PeepMiniCalendar extends StatelessWidget {
               daysOfWeekHeight: 35.h,
               rowHeight: 50.h,
               locale: 'ko_KR',
-              firstDay: DateTime.utc(1923, 1, 1),
-              lastDay: DateTime.utc(2123, 12, 31),
+              firstDay: calendarStartDate,
+              lastDay: calendarEndDate,
               focusedDay: controller.focusedDate.value,
               startingDayOfWeek: myPageController.getStartingDayOfWeek(myPageController.startingDayOfWeek.value),
               selectedDayPredicate: (day) {

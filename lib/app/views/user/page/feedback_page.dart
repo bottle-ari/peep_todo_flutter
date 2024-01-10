@@ -43,25 +43,36 @@ class FeedbackPage extends BaseView<MyPageController> {
   @override
   Widget body(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SizedBox(
-        width: 300.w,
-        height: double.infinity,
-        child: TextField(
-          controller: controller.textEditingController,
-          style: PeepTextStyle.regularM(color: Palette.peepBlack),
-          decoration: InputDecoration(
-            border: InputBorder.none, // 밑줄 제거
-            hintText: '피드백을 작성해 주세요',
-            hintStyle:
-            PeepTextStyle.regularS(color: Palette.peepGray300),
+      padding: EdgeInsets.symmetric(horizontal: AppValues.screenPadding),
+      child: Container(
+        constraints: BoxConstraints(minHeight: 300.h),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Palette.peepWhite,
+          border: Border.all(color: Palette.peepGray200),
+          borderRadius:
+          BorderRadius.circular(AppValues.baseRadius),
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: AppValues.screenPadding,
+                vertical: AppValues.verticalMargin),
+            child: TextField(
+              controller: controller.textEditingController,
+              style: PeepTextStyle.regularM(color: Palette.peepBlack),
+              autofocus: true,
+              decoration: InputDecoration(
+                border: InputBorder.none, // 밑줄 제거
+                hintText: '피드백을 작성해 주세요',
+                hintStyle:
+                PeepTextStyle.regularS(color: Palette.peepGray300),
+              ),
+              maxLines: null,
+              keyboardType: TextInputType.multiline,
+              textInputAction: TextInputAction.newline,
+            ),
           ),
-          maxLines: null,
-          keyboardType: TextInputType.multiline,
-          textInputAction: TextInputAction.newline,
-          onEditingComplete: () {
-            // Handle the Enter key pressed
-          },
         ),
       ),
     );
