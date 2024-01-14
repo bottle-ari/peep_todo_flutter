@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/data/palette_controller.dart';
 import 'package:peep_todo_flutter/app/data/enums/todo_enum.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/theme/palette.dart';
@@ -14,10 +15,11 @@ import '../../../theme/app_values.dart';
 
 class PeepCategoryToggleButton extends StatelessWidget {
   final CategoryModel category;
+  final PaletteController paletteController = Get.find();
   final CategoryController controller;
   final double? height;
 
-  const PeepCategoryToggleButton(
+  PeepCategoryToggleButton(
       {super.key,
       required this.category,
       this.height,
@@ -59,7 +61,7 @@ class PeepCategoryToggleButton extends StatelessWidget {
                         Container(
                           decoration: BoxDecoration(
                             color: category.isActive
-                                ? category.color
+                                ? paletteController.getDefaultPalette()[category.color].color
                                 : Palette.peepGray300,
                             borderRadius:
                                 BorderRadius.circular(AppValues.baseRadius),

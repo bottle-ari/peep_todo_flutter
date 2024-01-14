@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:peep_todo_flutter/app/controllers/page/my_page_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/widget/peep_date_picker_controller.dart';
 import 'package:peep_todo_flutter/app/theme/app_values.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
@@ -144,9 +145,10 @@ Widget customDowBuilder(BuildContext context, DateTime day) {
 
 class _CalendarPicker extends StatelessWidget {
   final PeepDatePickerController controller;
+  final MyPageController myPageController = Get.find();
   final Color color;
 
-  const _CalendarPicker({required this.controller, required this.color});
+  _CalendarPicker({required this.controller, required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -212,7 +214,7 @@ class _CalendarPicker extends StatelessWidget {
         firstDay: DateTime.utc(1923, 1, 1),
         lastDay: DateTime.utc(2123, 12, 31),
         focusedDay: controller.focusedDate.value,
-        startingDayOfWeek: StartingDayOfWeek.monday,
+        startingDayOfWeek: myPageController.getStartingDayOfWeek(myPageController.startingDayOfWeek.value),
         selectedDayPredicate: (day) {
           return isSameDay(controller.selectedDate.value, day);
         },

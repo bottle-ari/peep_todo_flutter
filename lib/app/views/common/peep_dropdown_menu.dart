@@ -60,10 +60,13 @@ class PeepDropdownMenu extends StatelessWidget {
                             children: [
                               item.icon,
                               SizedBox(width: AppValues.horizontalMargin),
-                              Text(item.text,
+                              Expanded(
+                                child: Text(
+                                  item.text,
                                   style: PeepTextStyle.regularS(
-                                      color: Palette.peepBlack)),
-                              SizedBox(width: AppValues.horizontalMargin),
+                                      color: Palette.peepBlack),
+                                ),
+                              ),
                             ],
                           ),
                         ),

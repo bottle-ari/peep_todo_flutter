@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/controllers/data/palette_controller.dart';
 import 'package:peep_todo_flutter/app/data/model/category/backup_category_model.dart';
 import 'package:peep_todo_flutter/app/data/model/category/category_model.dart';
 import 'package:peep_todo_flutter/app/data/services/category_service.dart';
@@ -11,6 +12,7 @@ import '../../core/base/base_controller.dart';
 import '../../data/enums/todo_enum.dart';
 
 class CategoryController extends BaseController {
+  final PaletteController _paletteController = Get.find();
   final CategoryService _service = Get.put(CategoryService());
 
   // Data
@@ -53,8 +55,19 @@ class CategoryController extends BaseController {
   /*
     Read Functions
    */
+  Color getCategoryColorById({required String categoryId}) {
+    return _paletteController
+        .getDefaultPalette()[getCategoryById(categoryId: categoryId).color]
+        .color;
+  }
+
   CategoryModel getCategoryById({required String categoryId}) {
     return categoryList.firstWhere((element) => element.id == categoryId);
+  }
+
+  Future<CategoryModel> getCategoryByIdAsync(
+      {required String categoryId}) async {
+    return await _service.getCategoryById(categoryId: categoryId);
   }
 
   /*
@@ -80,7 +93,7 @@ class CategoryController extends BaseController {
     update();
   }
 
-  void changeCategoryColor(String categoryId, Color newColor) async {
+  void changeCategoryColor(String categoryId, int newColor) async {
     CategoryModel category = categoryList.firstWhere((e) => e.id == categoryId);
 
     category.color = newColor;
@@ -93,7 +106,8 @@ class CategoryController extends BaseController {
   Future<bool> toggleCategoryActiveState(String categoryId) async {
     CategoryModel category = categoryList.firstWhere((e) => e.id == categoryId);
 
-    if(category.isActive && categoryList.where((e) => e.isActive).length <= 1) {
+    if (category.isActive &&
+        categoryList.where((e) => e.isActive).length <= 1) {
       return false;
     }
 
@@ -109,7 +123,7 @@ class CategoryController extends BaseController {
   void toggleTodoType(String categoryId) async {
     CategoryModel category = categoryList.firstWhere((e) => e.id == categoryId);
 
-    switch(category.type) {
+    switch (category.type) {
       case TodoType.scheduled:
         category.type = TodoType.constant;
 
@@ -145,13 +159,18 @@ class CategoryController extends BaseController {
   /*
     Delete Functions
    */
-  Future<void> deleteCategory({required CategoryModel category}) async {
-    //TODO : 모든 todo를 함께 삭제해야 합니다.
+  Future<bool> deleteCategory({required CategoryModel category}) async {
+    if (category.isActive &&
+        categoryList.where((e) => e.isActive).length <= 1) {
+      return false;
+    }
+
     await _service.deleteCategory(category.id);
 
     backup = BackupCategoryModel(
         backupCategoryItem: category, backupIndex: category.pos);
 
     loadCategoryData();
+    return true;
   }
 }

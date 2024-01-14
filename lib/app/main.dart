@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:peep_todo_flutter/app/controllers/data/pref_controller.dart';
+import 'package:peep_todo_flutter/app/controllers/page/my_page_controller.dart';
+import 'package:peep_todo_flutter/app/core/database/preference_init.dart';
 import 'package:peep_todo_flutter/app/routes/app_pages.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -9,7 +12,8 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'bindings/initial_binding.dart';
 
 void main() async {
-  //WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
+  await GlobalPreferences.init();
   initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
 
@@ -21,16 +25,19 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       ensureScreenSize: true,
       designSize: const Size(393, 852),
-      builder: (buildContext, widget) => GetMaterialApp(
-        title: '삐약Todo',
-        debugShowCheckedModeBanner: false,
-        theme: appThemeData,
-        initialRoute: AppPages.INITIAL,
-        getPages: AppPages.routes,
-        initialBinding: InitialBinding(),
-        defaultTransition: Transition.fade,
-        scrollBehavior: PeepScrollBehavior(),
-      ),
+      builder: (buildContext, widget) {
+        return GetMaterialApp(
+          title: '삐약Todo',
+          debugShowCheckedModeBanner: false,
+          theme: Themes().getThemeByFont(),
+          themeMode: ThemeMode.light,
+          initialRoute: AppPages.INITIAL,
+          getPages: AppPages.routes,
+          initialBinding: InitialBinding(),
+          defaultTransition: Transition.fade,
+          scrollBehavior: PeepScrollBehavior(),
+        );
+      },
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:peep_todo_flutter/app/controllers/data/palette_controller.dart';
 import 'package:peep_todo_flutter/app/theme/icons.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 
@@ -12,7 +13,7 @@ import '../../../theme/text_style.dart';
 class PeepColorPickerButton extends StatelessWidget {
   final Color color;
   final VoidCallback onTap;
-  final Function(Color) onSelected;
+  final Function(int) onSelected;
 
   const PeepColorPickerButton({
     Key? key,
@@ -45,9 +46,10 @@ class PeepColorPickerButton extends StatelessWidget {
 
 class _PeepColorPicker extends StatelessWidget {
   final Color color;
-  final Function(Color) onColorSelected;
+  final PaletteController paletteController = Get.find();
+  final Function(int) onColorSelected;
 
-  const _PeepColorPicker({required this.onColorSelected, required this.color});
+  _PeepColorPicker({required this.onColorSelected, required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -75,32 +77,32 @@ class _PeepColorPicker extends StatelessWidget {
                   '색 선택하기',
                   style: PeepTextStyle.boldL(color: Palette.peepGray500),
                 ),
-                PeepAnimationEffect(
-                  //TODO : 테마 넣기
-                  onTap: () {},
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppValues.horizontalMargin,
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Palette.peepGray500),
-                        borderRadius:
-                            BorderRadius.circular(AppValues.tinyRadius),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: AppValues.horizontalMargin,
-                            vertical: AppValues.innerMargin),
-                        child: Text(
-                          '테마 변경',
-                          style:
-                              PeepTextStyle.boldXS(color: Palette.peepGray500),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                // PeepAnimationEffect(
+                //   //TODO : 테마 넣기
+                //   onTap: () {},
+                //   child: Padding(
+                //     padding: EdgeInsets.symmetric(
+                //       horizontal: AppValues.horizontalMargin,
+                //     ),
+                //     child: Container(
+                //       decoration: BoxDecoration(
+                //         border: Border.all(color: Palette.peepGray500),
+                //         borderRadius:
+                //             BorderRadius.circular(AppValues.tinyRadius),
+                //       ),
+                //       child: Padding(
+                //         padding: EdgeInsets.symmetric(
+                //             horizontal: AppValues.horizontalMargin,
+                //             vertical: AppValues.innerMargin),
+                //         child: Text(
+                //           '테마 변경',
+                //           style:
+                //               PeepTextStyle.boldXS(color: Palette.peepGray500),
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
             Padding(
@@ -108,28 +110,37 @@ class _PeepColorPicker extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  for (int i = 0; i < 1; i++)
                     Padding(
                       padding: EdgeInsets.symmetric(
                           vertical: AppValues.verticalMargin,
                           horizontal: AppValues.horizontalMargin),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          for (var item in defaultPalette.colors)
-                            _PeepColorPickerItem(
-                              color: item.color,
-                              selected: item.color == color,
-                              onTap: () {
-                                onColorSelected(item.color);
-                              },
-                            ),
-                        ],
+                      child: SizedBox(
+                        height: 120.h,
+                        child: GridView.count(
+                          crossAxisCount: 5,
+                          children: [
+                            for (int inx = 0;
+                                inx <
+                                    paletteController.getDefaultPalette().length;
+                                inx++)
+                              Center(
+                                child: _PeepColorPickerItem(
+                                  color: paletteController
+                                      .getDefaultPalette()[inx]
+                                      .color,
+                                  selected: paletteController
+                                          .getDefaultPalette()[inx]
+                                          .color ==
+                                      color,
+                                  onTap: () {
+                                    onColorSelected(inx);
+                                  },
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
                     ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
                 ],
               ),
             ),
@@ -162,12 +173,12 @@ class _PeepColorPickerItem extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if(selected)
-            PeepIcon(
-              Iconsax.check,
-              size: AppValues.smallIconSize,
-              color: Palette.peepWhite,
-            ),
+            if (selected)
+              PeepIcon(
+                Iconsax.check,
+                size: AppValues.smallIconSize,
+                color: Palette.peepWhite,
+              ),
           ],
         ),
       ),

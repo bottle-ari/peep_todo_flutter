@@ -64,18 +64,18 @@ class PeepTodoAppBar extends StatelessWidget {
                                 size: AppValues.smallIconSize,
                                 color: Palette.peepBlack),
                             '카테고리 관리'),
-                        // DropdownMenuItemData(
-                        //     'popup_action_3',
-                        //     PeepIcon(Iconsax.addSquareOutline,
-                        //         size: AppValues.smallIconSize,
-                        //         color: Palette.peepBlack),
-                        //     '루틴 수동 추가'),
-                        // DropdownMenuItemData(
-                        //     'popup_action_4',
-                        //     PeepIcon(Iconsax.routineOutline,
-                        //         size: AppValues.smallIconSize,
-                        //         color: Palette.peepBlack),
-                        //     '루틴 관리'),
+                        DropdownMenuItemData(
+                            'popup_action_3',
+                            PeepIcon(Iconsax.addSquareOutline,
+                                size: AppValues.smallIconSize,
+                                color: Palette.peepBlack),
+                            '루틴 수동 추가'),
+                        DropdownMenuItemData(
+                            'popup_action_4',
+                            PeepIcon(Iconsax.routineOutline,
+                                size: AppValues.smallIconSize,
+                                color: Palette.peepBlack),
+                            '루틴 관리'),
                       ],
                       onMenuItemSelected: {
                         'popup_action_1': () {
@@ -85,10 +85,10 @@ class PeepTodoAppBar extends StatelessWidget {
                           Get.toNamed(Routes.CATEGORY_MANAGE_PAGE);
                         },
                         'popup_action_3': () {
-                          debugPrint('3');
+                          Get.toNamed(Routes.ROUTINE_MANUAL_ADD_PAGE);
                         },
                         'popup_action_4': () {
-                          debugPrint('4');
+                          Get.toNamed(Routes.ROUTINE_MANAGE_PAGE);
                         },
                       },
                     ),

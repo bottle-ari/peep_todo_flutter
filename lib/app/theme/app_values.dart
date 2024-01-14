@@ -30,10 +30,13 @@ abstract class AppValues {
   static double tinyIconSize = 12.w;
   static double miniIconSize = 16.w;
   static double smallIconSize = 20.w;
+  static double diaryIconSize = 21.w;
   static double baseIconSize = 24.w;
   static double mediumIconSize = 28.w;
   static double largeIconSize = 32.w;
   static double xlargeIconSize = 48.w;
+
+  static double imagePreviewSize = 60.h;
 
   static double listBottomEmptySpace = 200.h;
 }

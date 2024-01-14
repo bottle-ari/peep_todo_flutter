@@ -13,7 +13,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: ^4.6.6
   intl: ^0.18.1
-  http: ^1.1.0
+  http: ^1.1.2
   loading_animation_widget: ^1.2.0+4
   shared_preferences: ^2.2.0
   flutter_screenutil: ^5.8.4
@@ -29,7 +29,13 @@ dependencies:
   path_provider: ^2.1.1
   permission_handler: ^11.1.0
   scroll_date_picker: ^3.7.3
+  numberpicker: ^2.1.2
   url_launcher: ^6.2.2
+  flutter_keyboard_visibility: ^6.0.0
+  device_info_plus: ^9.1.1
+  super_clipboard: ^0.8.1
+  flutter_quill: ^9.2.2
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:
@@ -87,27 +93,54 @@ flutter:
     - assets/image/icon/export.svg
     - assets/image/icon/document.svg
     - assets/image/icon/arrow_right.svg
+    - assets/image/icon/add.svg
+    - assets/image/icon/gallery-add.svg
+    - assets/image/icon/close.svg
+    - assets/image/icon/brush.svg
+    - assets/image/icon/copy.svg
 
   uses-material-design: true
 
-fonts:
-  - family: Pretendard
-    fonts:
-      - asset: assets/font/Pretendard-ExtraThin.otf
-        weight: 100
-      - asset: assets/font/Pretendard-Thin.otf
-        weight: 200
-      - asset: assets/font/Pretendard-Light.otf
-        weight: 300
-      - asset: assets/font/Pretendard-Regular.otf
-        weight: 400
-      - asset: assets/font/Pretendard-Medium.otf
-        weight: 500
-      - asset: assets/font/Pretendard-SemiBold.otf
-        weight: 600
-      - asset: assets/font/Pretendard-Bold.otf
-        weight: 700
-      - asset: assets/font/Pretendard-ExtraBold.otf
-        weight: 800
-      - asset: assets/font/Pretendard-Black.otf
-        weight: 900
+  fonts:
+    - family: Pretendard
+      fonts:
+        - asset: assets/font/Pretendard-ExtraLight.otf
+          weight: 100
+        - asset: assets/font/Pretendard-Thin.otf
+          weight: 200
+        - asset: assets/font/Pretendard-Light.otf
+          weight: 300
+        - asset: assets/font/Pretendard-Regular.otf
+          weight: 400
+        - asset: assets/font/Pretendard-Medium.otf
+          weight: 500
+        - asset: assets/font/Pretendard-SemiBold.otf
+          weight: 600
+        - asset: assets/font/Pretendard-Bold.otf
+          weight: 700
+        - asset: assets/font/Pretendard-ExtraBold.otf
+          weight: 800
+        - asset: assets/font/Pretendard-Black.otf
+          weight: 900
+    - family: LeeSeoyun
+      fonts:
+        - asset: assets/font/LeeSeoyun.otf
+    - family: KoPub
+      fonts:
+        - asset: assets/font/KoPubWorld Batang_Pro Light.otf
+          weight: 300
+        - asset: assets/font/KoPubWorld Batang_Pro Medium.otf
+          weight: 500
+        - asset: assets/font/KoPubWorld Batang_Pro Bold.otf
+          weight: 700
+    - family: NanumMyeongjo
+      fonts:
+        - asset: assets/font/NanumMyeongjo.otf
+          weight: 400
+        - asset: assets/font/NanumMyeongjoBold.otf
+          weight: 700
+        - asset: assets/font/NanumMyeongjoExtraBold.otf
+          weight: 800
+    - family: Iconsax
+      fonts:
+        - asset: assets/font/iconsax.ttf

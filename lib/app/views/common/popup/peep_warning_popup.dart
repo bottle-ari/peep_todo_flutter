@@ -14,12 +14,13 @@ class PeepWarningPopup extends StatelessWidget {
   final String confirmText;
   final Color color;
 
-  const PeepWarningPopup(
-      {super.key,
-      required this.icon,
-      required this.text,
-      required this.confirmText,
-      required this.color,});
+  const PeepWarningPopup({
+    super.key,
+    required this.icon,
+    required this.text,
+    required this.confirmText,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -53,10 +54,11 @@ class PeepWarningPopup extends StatelessWidget {
             onTap: () {
               Get.back();
             },
-            child: Text(confirmText, style: PeepTextStyle.boldL(color: Palette.peepBlack))),
+            child: Text(confirmText,
+                style: PeepTextStyle.boldL(color: Palette.peepBlack))),
       ],
       actionsAlignment: MainAxisAlignment.center,
-      actionsPadding: EdgeInsets.only(bottom: AppValues.verticalMargin),
+      actionsPadding: EdgeInsets.only(bottom: AppValues.verticalMargin * 2),
     );
   }
 }
