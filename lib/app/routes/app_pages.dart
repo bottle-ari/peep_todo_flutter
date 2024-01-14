@@ -118,12 +118,12 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.TODO_SEARCH_PAGE,
-      page:() => TodoSearchPage(),
+      page: () => TodoSearchPage(),
       binding: SearchItemBinding(),
     ),
     GetPage(
       name: _Paths.MY_PAGE,
-      page:() => PeepMyPage(),
+      page: () => PeepMyPage(),
       binding: MyPageBinding(),
     ),
     GetPage(

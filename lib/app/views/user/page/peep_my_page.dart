@@ -10,7 +10,6 @@ import 'package:peep_todo_flutter/app/theme/palette.dart';
 import 'package:peep_todo_flutter/app/theme/text_style.dart';
 import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect.dart';
 import 'package:peep_todo_flutter/app/views/common/peep_subpage_appbar.dart';
-import 'package:peep_todo_flutter/app/views/user/widget/user_setting_item.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PeepMyPage extends BaseView<MyPageController> {

@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
+      ensureScreenSize: true,
       designSize: const Size(393, 852),
       builder: (buildContext, widget) {
         return GetMaterialApp(
