@@ -95,6 +95,7 @@ class MyPageController extends BaseController with PrefController {
     } catch (e) {
       // Handle any exceptions that occurred during the request
       log('Error: $e');
+      Get.snackbar('피드백 알림', '에러가 발생했습니다. 인터넷 상태를 확인해주세요!');
     }
   }
 

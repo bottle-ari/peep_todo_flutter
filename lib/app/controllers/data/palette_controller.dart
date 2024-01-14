@@ -14,6 +14,7 @@ class PaletteController extends BaseController with PrefController {
   final PaletteService _service = Get.put(PaletteService());
   final keySelectedPaletteInx = 'selectedPaletteIndex';
   final keySelectedColorInx = 'selectedPrimaryColorIndex';
+  final initColor = 'initPriorityColor';
 
   // Data
   final RxList<PaletteModel> paletteData = <PaletteModel>[].obs;
@@ -67,14 +68,10 @@ class PaletteController extends BaseController with PrefController {
   }
 
   Color getPriorityColor() {
-    const initColor = 'initPriorityColor';
-
     if (paletteData.isEmpty) {
       final hexColor = getString(initColor);
 
       if (hexColor == null) {
-
-        saveString(initColor, 'FF6D79');
         return const Color(0xFFFF6D79);
       } else {
         return Color(int.parse("0xFF$hexColor"));
@@ -102,6 +99,12 @@ class PaletteController extends BaseController with PrefController {
     selectedPrimaryColor.value = index;
 
     // DB 저장
+    saveString(
+        initColor,
+        newSelectedPalette.colors[index].color.value
+            .toRadixString(16)
+            .substring(2, 8)
+            .toUpperCase());
     saveInt(keySelectedColorInx, index);
     await _service.updatePalette(newSelectedPalette);
   }

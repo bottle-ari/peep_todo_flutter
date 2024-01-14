@@ -17,9 +17,11 @@ class Themes with PrefController {
     font ??= getString(keySelectedFont) ?? "Pretendard";
     final hexColor = getString(initColor);
 
-    color ??= hexColor == null
+    color ??= (hexColor == null
         ? const Color(0xFFFF6D79)
-        : Color(int.parse("0xFF$hexColor"));
+        : Color(int.parse("0xFF$hexColor")));
+
+    log('COLOR : $hexColor');
 
     log("Themes font{$font}");
     return ThemeData(
@@ -43,10 +45,6 @@ class Themes with PrefController {
     );
   }
 }
-
-//TextTheme pretendardFontTextTheme = ThemeData.light().textTheme.copywith(
-//
-//)
 
 class PeepScrollBehavior extends MaterialScrollBehavior {
   @override

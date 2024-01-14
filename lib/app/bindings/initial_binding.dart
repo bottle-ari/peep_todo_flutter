@@ -4,8 +4,6 @@ import 'package:peep_todo_flutter/app/controllers/data/category_controller.dart'
 import 'package:peep_todo_flutter/app/controllers/data/palette_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/routine_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/page/my_page_controller.dart';
-
-import '../controllers/data/pref_controller.dart';
 import 'package:peep_todo_flutter/app/controllers/data/diary_controller.dart';
 import '../controllers/data/todo_controller.dart';
 
@@ -16,7 +14,7 @@ class InitialBinding implements Bindings {
     Get.lazyPut<CategoryController>(() => CategoryController(), fenix: true);
     Get.lazyPut<TodoController>(() => TodoController(), fenix: true);
     Get.lazyPut<RoutineController>(() => RoutineController(), fenix: true);
-    Get.lazyPut<DiaryController>(() => DiaryController(), fenix: true);
+    Get.put<DiaryController>(DiaryController(), permanent: true);
     Get.lazyPut<MyPageController>(() => MyPageController(), fenix: true);
   }
 }
