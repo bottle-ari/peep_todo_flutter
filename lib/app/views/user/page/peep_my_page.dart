@@ -12,6 +12,8 @@ import 'package:peep_todo_flutter/app/views/common/buttons/peep_animation_effect
 import 'package:peep_todo_flutter/app/views/common/peep_subpage_appbar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../widget/user_setting_item.dart';
+
 class PeepMyPage extends BaseView<MyPageController> {
   final Map<String, List<String>> myItemList = {
     '일반': ['주 시작 설정'], //, '언어 설정'

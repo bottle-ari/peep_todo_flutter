@@ -64,7 +64,7 @@ class UserSettingItem extends StatelessWidget {
                     } else if (item == "개인정보 보호 정책") {
                       log("개인정보 보호 정책");
                     } else if (item == "오픈소스 사용 정보") {
-                      log("오픈소스 사용 정보");
+                      Get.toNamed(AppPages.OPENSOURCE_PAGE);
                     }
                   },
                   child: Padding(

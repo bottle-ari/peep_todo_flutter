@@ -22,6 +22,7 @@ abstract class Routes {
   static const FEEDBACK_PAGE = _Paths.FEEDBACK_PAGE;
   static const CALENDAR_SETTING_PAGE = _Paths.CALENDAR_SETTING_PAGE;
   static const PALETTE_SETTING_PAGE = _Paths.PALETTE_SETTING_PAGE;
+  static const OPENSOURCE_PAGE = _Paths.OPENSOURCE_PAGE;
 }
 
 abstract class _Paths {
@@ -44,4 +45,5 @@ abstract class _Paths {
   static const FEEDBACK_PAGE = '/mypage/feedback';
   static const CALENDAR_SETTING_PAGE = '/mypage/calendar_setting';
   static const PALETTE_SETTING_PAGE = '/mypage/palette';
+  static const OPENSOURCE_PAGE = '/mypage/opensource';
 }

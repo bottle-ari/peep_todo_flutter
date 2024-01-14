@@ -17,6 +17,5 @@ class MainBinding implements Bindings {
     SelectedTodoBinding().dependencies();
     DiaryBinding().dependencies();
     PeepMiniCalendarBinding().dependencies();
-
   }
 }

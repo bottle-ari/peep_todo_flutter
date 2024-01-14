@@ -22,6 +22,7 @@ import 'package:peep_todo_flutter/app/views/todo/page/todo_detail_page.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/todo_memo_page.dart';
 import 'package:peep_todo_flutter/app/views/todo/page/todo_search_page.dart';
 import 'package:peep_todo_flutter/app/views/user/page/calendar_setting.dart';
+import 'package:peep_todo_flutter/app/views/user/page/etc/opensource_page.dart';
 import 'package:peep_todo_flutter/app/views/user/page/feedback_page.dart';
 import 'package:peep_todo_flutter/app/views/user/page/font_setting.dart';
 import 'package:peep_todo_flutter/app/views/user/page/palette_setting_page.dart';
@@ -29,6 +30,7 @@ import 'package:peep_todo_flutter/app/views/user/page/peep_my_page.dart';
 
 import '../bindings/main/main_binding.dart';
 import '../bindings/page/category_add_binding.dart';
+import '../bindings/page/opensource_page_binding.dart';
 import '../bindings/page/routine_detail_binding.dart';
 import '../views/category/page/category_add_page.dart';
 import '../views/main/page/main_page.dart';
@@ -52,6 +54,7 @@ class AppPages {
   static const FEEDBACKPAGE = Routes.FEEDBACK_PAGE;
   static const CALENDARSETTINGPAGE = Routes.CALENDAR_SETTING_PAGE;
   static const PALETTE_SETTING_PAGE = Routes.PALETTE_SETTING_PAGE;
+  static const OPENSOURCE_PAGE = Routes.OPENSOURCE_PAGE;
 
   static final routes = [
     GetPage(
@@ -149,6 +152,11 @@ class AppPages {
       name: _Paths.CALENDAR_SETTING_PAGE,
       page: () => CalendarSetting(),
       binding: MyPageBinding(),
+    ),
+    GetPage(
+      name: _Paths.OPENSOURCE_PAGE,
+      page: () => OpenSourcePage(),
+      binding: OpenSourcePageBinding(),
     ),
   ];
 }

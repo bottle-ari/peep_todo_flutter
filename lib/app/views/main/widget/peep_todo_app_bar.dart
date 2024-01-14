@@ -64,18 +64,18 @@ class PeepTodoAppBar extends StatelessWidget {
                                 size: AppValues.smallIconSize,
                                 color: Palette.peepBlack),
                             '카테고리 관리'),
-                        // DropdownMenuItemData(
-                        //     'popup_action_3',
-                        //     PeepIcon(Iconsax.addSquareOutline,
-                        //         size: AppValues.smallIconSize,
-                        //         color: Palette.peepBlack),
-                        //     '루틴 수동 추가'),
-                        // DropdownMenuItemData(
-                        //     'popup_action_4',
-                        //     PeepIcon(Iconsax.routineOutline,
-                        //         size: AppValues.smallIconSize,
-                        //         color: Palette.peepBlack),
-                        //     '루틴 관리'),
+                        DropdownMenuItemData(
+                            'popup_action_3',
+                            PeepIcon(Iconsax.addSquareOutline,
+                                size: AppValues.smallIconSize,
+                                color: Palette.peepBlack),
+                            '루틴 수동 추가'),
+                        DropdownMenuItemData(
+                            'popup_action_4',
+                            PeepIcon(Iconsax.routineOutline,
+                                size: AppValues.smallIconSize,
+                                color: Palette.peepBlack),
+                            '루틴 관리'),
                       ],
                       onMenuItemSelected: {
                         'popup_action_1': () {
